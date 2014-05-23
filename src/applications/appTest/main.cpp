@@ -1,5 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/math/vec2.hpp"
+#include "core/math/vec3.hpp"
+#include "core/math/mat3.hpp"
+#include "core/math/mat4.hpp"
 #include "core/tests/tests.hpp"
 //#include "core/script/lua/testlua.hpp"
 #include <iostream>
@@ -53,14 +56,58 @@ int universalExperiment()
     std::cout << "10000000 al : " << 10000000ull*almm << " mm" << std::endl;
 
     std::cout << std::numeric_limits<long long int>::digits10 << std::endl;
+    
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+class AABB
+{
+public:
+    void add(const Vec3& v)
+    {
+        if(v.x < min.x) min.x = v.x;
+        else if(v.x > max.x) max.x = v.x;
+        
+        if(v.y < min.y) min.y = v.y;
+        else if(v.y > max.y) max.y = v.y;
+        
+        if(v.z < min.z) min.z = v.z;
+        else if(v.z > max.z) max.z = v.z;
+    }
+    
+    void add(const AABB& box)
+    {
+        add(box.min);
+        add(box.max);
+    }
+    
+    size_t getMemSize() const
+    {
+        return sizeof(*this);
+    }
+    
+    Vec3 min, max;
+};
+////////////////////////////////////////////////////////////////////////////////
+class Octree
+{
+public:
+    Octree* m_children[8];
+    
+    AABB m_bbox;
+};
+////////////////////////////////////////////////////////////////////////////////
+void octreeTest(int depth)
+{
+    //for(int x = 0; x)
 }
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
-	//luaTest();
+    //luaTest();
 
-	//Vec2 v(0,0);
-	runTests(argc, argv);
+    //Vec2 v(0,0);
+    runTests(argc, argv);
 
     std::cout << std::thread::hardware_concurrency << std::endl;
 
@@ -73,7 +120,32 @@ int main(int argc, char** argv)
     printf("main : %d - %p\n", main, main);
     printf("&main : %d - %p\n", &main, &main);
     printf("*main : %d - %p\n", *main, *main);
+    
+    Mat4 m1(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    std::cout << m1.getMemSize() << std::endl;
+    m1(0,0) = 5;
+    std::cout << m1;
+    
+    Mat4 m2 = m1*4;
+    std::cout << m2.getMemSize() << std::endl;
+    std::cout << m2;
+    
+    Mat4 m3 = m1*m2;
+    std::cout << m3;
+    
+    std::cout << m1*m2;
+    m1 *= m2;
+    std::cout << m1;
+    
+    Vec4 a;
+    
+    Vec4 v(2,1,2,1);
+    std::cout << v << std::endl;
+    Vec4 v2 = m3*v;
+    std::cout << v2 << std::endl;
+    
+    cppunit();
 
-	return 0;
+    return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////

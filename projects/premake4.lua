@@ -5,9 +5,9 @@ solution "ProjectUniverse"
    project "ProjectUniverse"
       kind "ConsoleApp"
       language "C++"
-      files { "../src/**.hpp", "../src/**.cpp" }
-      links { "gtest" }
-      buildoptions { "-std=c++11" }
+      files { "../src/**.hpp", "../src/**.cpp", "../src/**.inl" }
+      links { "gtest", "cppunit" }
+      buildoptions { "-std=c++11 -Wall" }
       includedirs { "../src/" }
       buildoptions {"`pkg-config --cflags lua`" }
       linkoptions {"`pkg-config --libs lua`" }

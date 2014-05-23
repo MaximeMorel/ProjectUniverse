@@ -1,22 +1,22 @@
-#ifndef __VEC2_HPP__
-#define __VEC2_HPP__
+#ifndef __VEC3_HPP__
+#define __VEC3_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include <cstddef>
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-class TVec2
+class TVec3
 {
 public:
-    TVec2();
-    TVec2(const T& x, const T& y);
-
+    TVec3();
+    TVec3(const T& x, const T& y, const T& z);
+    
     size_t getMemSize() const;
 
-    T x, y;
+    T x, y, z;
 };
 ////////////////////////////////////////////////////////////////////////////////
-typedef TVec2<int> Vec2i;
-typedef TVec2<float> Vec2;
-typedef TVec2<double> Vec2d;
+typedef TVec3<int> Vec3i;
+typedef TVec3<float> Vec3;
+typedef TVec3<double> Vec3d;
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __VEC2_HPP__
+#endif // __VEC3_HPP__
