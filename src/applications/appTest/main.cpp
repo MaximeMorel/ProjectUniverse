@@ -61,6 +61,17 @@ int universalExperiment()
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
+class Plane
+{
+public:
+
+};
+////////////////////////////////////////////////////////////////////////////////
+class Frustum
+{
+public:
+};
+////////////////////////////////////////////////////////////////////////////////
 class AABB
 {
 public:
@@ -101,7 +112,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const AABB& aabb)
     {
-        return o << aabb.min << " / " << aabb.max;
+        return o << aabb.min << " / " << aabb.max << " [" << aabb.max.x-aabb.min.x << ", " << aabb.max.y-aabb.min.y << ", " << aabb.max.z-aabb.min.z << "]";
     }
 
     Vec3 min, max;
@@ -115,7 +126,7 @@ class Octree
 {
 public:
     Octree(const AABB& box, Octree* parent=nullptr)
-    : m_parent(parent), m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}, m_bbox(box)
+    : m_parent(parent), m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}, m_bbox(box), m_numElements(0)
     {
 
     }
@@ -130,17 +141,38 @@ public:
 
     size_t getDepth() const
     {
-        if(!m_children[0])
-        {
-            return 0;
-        }
-
-        size_t res = 0;
+        size_t res = 0ul;
+        bool empty = true;
         for(int i=0; i<8; ++i)
         {
+            if(!m_children[i]) continue;
+            empty = false;
             res = std::max(m_children[i]->getDepth(), res);
         }
+
+        return (empty?0:1+res);
+    }
+
+    size_t getNumNodes() const
+    {
+        size_t res = 0ul;
+        for(int i=0; i<8; ++i)
+        {
+            if(!m_children[i]) continue;
+            res += m_children[i]->getNumNodes();
+        }
         return 1+res;
+    }
+
+    size_t getNumElements() const
+    {
+        size_t res = m_numElements; //m_elements.size();
+        for(int i=0; i<8; ++i)
+        {
+            if(!m_children[i]) continue;
+            res += m_children[i]->getNumElements();
+        }
+        return res;
     }
 
     size_t getMemSize() const
@@ -153,6 +185,64 @@ public:
         return res;
     }
 
+    //*
+    Octree* subdivide(const Vec3& p)
+    {
+        Vec3 len = (m_bbox.max - m_bbox.min)*0.5;
+
+        /*
+        for(int i=0; i<2; ++i)
+        {
+            for(int j=0; j<2; ++j)
+            {
+                for(int k=0; k<2; ++k)
+                {
+                    size_t id = i + 2*j + 4*k;
+                    if(!m_children[id])
+                    {
+                        Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
+                        m_children[id] = new Octree(AABB(corner, corner+len), this);
+                    }
+                }
+            }
+        }//*/
+
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        if(p.x > m_bbox.min.x+len.x) i = 1;
+        if(p.y > m_bbox.min.y+len.y) j = 1;
+        if(p.z > m_bbox.min.z+len.z) k = 1;
+
+        size_t id = i + 2*j + 4*k;
+        if(!m_children[id])
+        {
+            Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
+            m_children[id] = new Octree(AABB(corner, corner+len), this);
+            //std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << std::endl;
+        }
+        return m_children[id];
+
+        /*for(int i=0; i<2; ++i)
+        {
+            for(int j=0; j<2; ++j)
+            {
+                for(int k=0; k<2; ++k)
+                {
+                    corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
+                    AABB box(corner, corner+len);
+                    if(box.intersect(p))
+                    {
+                        m_children[j + 2*i + 4*k] = new Octree(box, this);
+                        //std::cout << std::fixed << j + 2*i + 4*k << " " << i << " " << j << " " << k << " -> " << m_children[j + 2*i + 4*k]->m_bbox << std::endl;
+                        return m_children[j + 2*i + 4*k];
+                    }
+                }
+            }
+        }*/
+    }
+    /*/
     void subdivide()
     {
         Vec3 corner, len = (m_bbox.max - m_bbox.min)*0.5f;
@@ -168,13 +258,32 @@ public:
                 }
             }
         }
-    }
+    }//*/
 
+    //*
     void insert(const Vec3& p)
     {
         if(m_bbox.intersect(p))
         {
             if(m_bbox.max.x - m_bbox.min.x > 100.0f)
+            {
+                Octree* child = subdivide(p);
+                child->insert(p);
+            }
+            else
+            {
+                //std::cout << "inserted" << std::endl;
+                //m_elements.push_back(p);
+                ++m_numElements;
+            }
+        }
+    }
+    /*/
+    void insert(const Vec3& p)
+    {
+        if(m_bbox.intersect(p))
+        {
+            if(m_bbox.max.x - m_bbox.min.x > 1.0f)
             {
                 subdivide();
                 for(int i=0; i<8; ++i)
@@ -182,11 +291,17 @@ public:
                     m_children[i]->insert(p);
                 }
             }
+            else
+            {
+                std::cout << "insert bbox : " << m_bbox << std::endl;
+            }
         }
-    }
+    }//*/
 
     Octree* m_parent;
     Octree* m_children[8];
+    std::vector<Vec3> m_elements;
+    int m_numElements;
 
     AABB m_bbox;
 };
@@ -201,21 +316,21 @@ int main(int argc, char** argv)
     //luaTest();
 
     //Vec2 v(0,0);
-    runTests(argc, argv);
+    //runTests(argc, argv);
 
-    std::cout << std::thread::hardware_concurrency << std::endl;
+    //std::cout << std::thread::hardware_concurrency << std::endl;
 
-    universalExperiment();
+    //universalExperiment();
 
-    std::cout << "main : " << main << std::endl;
-    std::cout << "&main : " << &main << std::endl;
-    std::cout << "*main : " << *main << std::endl;
+    //std::cout << "main : " << main << std::endl;
+    //std::cout << "&main : " << &main << std::endl;
+    //std::cout << "*main : " << *main << std::endl;
 
-    printf("main : %d - %p\n", main, main);
-    printf("&main : %d - %p\n", &main, &main);
-    printf("*main : %d - %p\n", *main, *main);
+    //printf("main : %d - %p\n", main, main);
+    //printf("&main : %d - %p\n", &main, &main);
+    //printf("*main : %d - %p\n", *main, *main);
 
-    Mat4 m1(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    /*Mat4 m1(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     std::cout << m1.getMemSize() << std::endl;
     m1(0,0) = 5;
     std::cout << m1;
@@ -236,15 +351,25 @@ int main(int argc, char** argv)
     Vec4 v(2,1,2,1);
     std::cout << v << std::endl;
     Vec4 v2 = m3*v;
-    std::cout << v2 << std::endl;
+    std::cout << v2 << std::endl;*/
 
-    Octree octree(AABB(Vec3(-1000000000, -1000000000, -100000000), Vec3(1000000000, 1000000000, 1000000000)));
-    octree.insert(Vec3(10, 10, 10));
-    std::cout << "octree mem : " << octree.getMemSize() << " depth : " << octree.getDepth() << std::endl;
+    //srand48(time(0));
 
-    WindowContextSDL2 wCtx;
+    Octree octree(AABB(Vec3(-1073741824, -1073741824, -1073741824), Vec3(1073741824, 1073741824, 1073741824)));
+    std::cout << "octree mem : " << octree.getMemSize() << " depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
+    for(int i=0; i<1000000; ++i)
+    {
+        //Vec3 p((drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0);
+        Vec3 p((drand48()-0.5)*20000.0, (drand48()-0.5)*20000.0, (drand48()-0.5)*20000.0);
+        //std::cout << "insert : " << std::fixed << p << std::endl;
+        //std::cout << octree.m_bbox << std::endl;
+        octree.insert(p);
+    }
+    std::cout << "octree mem : " << octree.getMemSize()/(1024*1024) << " depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
 
-    cppunit();
+    //WindowContextSDL2 wCtx;
+
+    //cppunit();
 
     //int i; std::cin >> i;
 
