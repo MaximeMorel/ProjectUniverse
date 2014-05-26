@@ -6,11 +6,11 @@ solution "ProjectUniverse"
       kind "ConsoleApp"
       language "C++"
       files { "../src/**.hpp", "../src/**.cpp", "../src/**.inl" }
-      links { "gtest", "cppunit" }
+      links { "gtest", "cppunit", "GL" }
       buildoptions { "-std=c++11 -Wall" }
       includedirs { "../src/" }
-      buildoptions {"`pkg-config --cflags lua`" }
-      linkoptions {"`pkg-config --libs lua`" }
+      buildoptions {"`pkg-config --cflags lua sdl2`" }
+      linkoptions {"`pkg-config --libs lua sdl2`" }
 
       configuration "Debug"
          defines { "DEBUG" }

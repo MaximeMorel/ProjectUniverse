@@ -1,7 +1,13 @@
 #ifndef __VEC3_HPP__
 #define __VEC3_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include <cstddef>
+#include <ostream>
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+class TVec3;
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const TVec3<T>& v);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TVec3
@@ -9,8 +15,18 @@ class TVec3
 public:
     TVec3();
     TVec3(const T& x, const T& y, const T& z);
-    
+
+    TVec3<T> operator+(const TVec3& v) const;
+    TVec3<T> operator-(const TVec3& v) const;
+
+    TVec3<T> operator*(T f) const;
+    TVec3<T> operator/(T f) const;
+
+    TVec3<T> operator-() const;
+
     size_t getMemSize() const;
+
+    friend std::ostream& operator<< <> (std::ostream& o, const TVec3<T>& v);
 
     T x, y, z;
 };
@@ -18,5 +34,7 @@ public:
 typedef TVec3<int> Vec3i;
 typedef TVec3<float> Vec3;
 typedef TVec3<double> Vec3d;
+////////////////////////////////////////////////////////////////////////////////
+#include "vec3.inl"
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __VEC3_HPP__
