@@ -3,6 +3,8 @@
 #include "core/math/vec3.hpp"
 #include "core/math/mat3.hpp"
 #include "core/math/mat4.hpp"
+#include "core/geom/aabb.hpp"
+#include "core/geom/octree.hpp"
 #include "core/tests/tests.hpp"
 #include "core/render/windowContext/windowContextSDL2/windowContextSDL2.hpp"
 //#include "core/script/lua/testlua.hpp"
@@ -63,195 +65,10 @@ int universalExperiment()
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-class Plane
-{
-public:
-
-};
-////////////////////////////////////////////////////////////////////////////////
 class Frustum
 {
 public:
 };
-////////////////////////////////////////////////////////////////////////////////
-class AABB
-{
-public:
-    AABB(const Vec3& pMin, const Vec3& pMax)
-    : min(pMin), max(pMax)
-    {
-    }
-
-    void add(const Vec3& v)
-    {
-        if(v.x < min.x) min.x = v.x;
-        else if(v.x > max.x) max.x = v.x;
-
-        if(v.y < min.y) min.y = v.y;
-        else if(v.y > max.y) max.y = v.y;
-
-        if(v.z < min.z) min.z = v.z;
-        else if(v.z > max.z) max.z = v.z;
-    }
-
-    void add(const AABB& box)
-    {
-        add(box.min);
-        add(box.max);
-    }
-
-    bool intersect(const Vec3& p) const
-    {
-        return (p.x > min.x && p.x < max.x &&
-                p.y > min.y && p.y < max.y &&
-                p.z > min.z && p.z < max.z);
-    }
-
-    size_t getMemSize() const
-    {
-        return sizeof(*this);
-    }
-
-    friend std::ostream& operator<<(std::ostream& o, const AABB& aabb)
-    {
-        return o << aabb.min << " / " << aabb.max << " [" << aabb.max.x-aabb.min.x << ", " << aabb.max.y-aabb.min.y << ", " << aabb.max.z-aabb.min.z << "]";
-    }
-
-    Vec3 min, max;
-};
-////////////////////////////////////////////////////////////////////////////////
-class Octree
-{
-public:
-    Octree(const AABB& box, Octree* parent=nullptr)
-    : m_parent(parent), m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}, m_bbox(box), m_numElements(0)
-    {
-
-    }
-
-    ~Octree()
-    {
-        for(int i=0; i<8; ++i)
-        {
-            delete m_children[i];
-        }
-    }
-
-    size_t getDepth() const
-    {
-        size_t res = 0ul;
-        bool empty = true;
-        for(int i=0; i<8; ++i)
-        {
-            if(!m_children[i]) continue;
-            empty = false;
-            res = std::max(m_children[i]->getDepth(), res);
-        }
-
-        return (empty?0:1+res);
-    }
-
-    size_t getNumNodes() const
-    {
-        size_t res = 0ul;
-        for(int i=0; i<8; ++i)
-        {
-            if(!m_children[i]) continue;
-            res += m_children[i]->getNumNodes();
-        }
-        return 1+res;
-    }
-
-    size_t getNumElements() const
-    {
-        size_t res = m_numElements; //m_elements.size();
-        for(int i=0; i<8; ++i)
-        {
-            if(!m_children[i]) continue;
-            res += m_children[i]->getNumElements();
-        }
-        return res;
-    }
-
-    size_t getMemSize() const
-    {
-        size_t res = sizeof(*this);
-        for(int i=0; i<8; ++i)
-        {
-            res += (m_children[i]?m_children[i]->getMemSize():0);
-        }
-        return res;
-    }
-
-    Octree* getChild(const Vec3& p)
-    {
-        Vec3 len = (m_bbox.max - m_bbox.min)*0.5;
-
-        /*
-        for(int i=0; i<2; ++i)
-        {
-            for(int j=0; j<2; ++j)
-            {
-                for(int k=0; k<2; ++k)
-                {
-                    size_t id = i + 2*j + 4*k;
-                    if(!m_children[id])
-                    {
-                        Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
-                        m_children[id] = new Octree(AABB(corner, corner+len), this);
-                    }
-                }
-            }
-        }//*/
-
-        int i = 0;
-        int j = 0;
-        int k = 0;
-
-        if(p.x > m_bbox.min.x+len.x) i = 1;
-        if(p.y > m_bbox.min.y+len.y) j = 1;
-        if(p.z > m_bbox.min.z+len.z) k = 1;
-
-        size_t id = i + 2*j + 4*k;
-        if(!m_children[id])
-        {
-            Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
-            m_children[id] = new Octree(AABB(corner, corner+len), this);
-            //std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << std::endl;
-        }
-        return m_children[id];
-    }
-
-    void insert(const Vec3& p)
-    {
-        if(m_bbox.intersect(p))
-        {
-            if(m_bbox.max.x - m_bbox.min.x > 100.0f)
-            {
-                Octree* child = getChild(p);
-                child->insert(p);
-            }
-            else
-            {
-                //std::cout << "inserted" << std::endl;
-                //m_elements.push_back(p);
-                ++m_numElements;
-            }
-        }
-    }
-
-    Octree* m_parent;
-    Octree* m_children[8];
-    //std::vector<Vec3> m_elements;
-    int m_numElements;
-
-    AABB m_bbox;
-};
-////////////////////////////////////////////////////////////////////////////////
-void octreeTest(int depth)
-{
-    //for(int x = 0; x)
-}
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
@@ -297,12 +114,12 @@ int main(int argc, char** argv)
 
     //srand48(time(0));
 
-    Octree octree(AABB(Vec3(-1073741824, -1073741824, -1073741824), Vec3(1073741824, 1073741824, 1073741824)));
+    Octree octree(AABB(Vec3(-8388608, -8388608, -8388608), Vec3(8388608, 8388608, 8388608)));
     std::cout << "octree mem : " << octree.getMemSize() << " B depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
     for(int i=0; i<1000000; ++i)
     {
         //Vec3 p((drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0);
-        Vec3 p((drand48()-0.5)*20000.0, (drand48()-0.5)*20000.0, (drand48()-0.5)*20000.0);
+        Vec3 p((drand48()-0.5)*200000.0, (drand48()-0.5)*200000.0, (drand48()-0.5)*200000.0);
         //std::cout << "insert : " << std::fixed << p << std::endl;
         //std::cout << octree.m_bbox << std::endl;
         octree.insert(p);
