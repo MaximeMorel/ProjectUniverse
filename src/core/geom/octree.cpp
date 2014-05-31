@@ -95,7 +95,7 @@ Octree* Octree::getChild(const Vec3& p)
     {
         Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
         m_children[id] = new Octree(AABB(corner, corner+len), this);
-        std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << std::endl;
+        //std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << std::endl;
     }
     return m_children[id];
 }

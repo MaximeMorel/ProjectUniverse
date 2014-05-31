@@ -1,9 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "mat4.hpp"
+#include <cmath>
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TMat4<T>::TMat4()
 : m_data{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T>::TMat4(T f)
+: m_data{f, 0, 0, 0, 0, f, 0, 0, 0, 0, f, 0, 0, 0, 0, f}
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +85,12 @@ TMat4<T> TMat4<T>::operator*(T f) const
 template <typename T>
 TMat4<T> TMat4<T>::operator/(T f) const
 {
-    return operator*(1.0/f);
+    TMat4<T> res;
+    for(size_t i=0; i<16; ++i)
+    {
+        res.m_data[i] = m_data[i]/f;
+    }
+    return res;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -123,6 +135,57 @@ TMat4<T> TMat4<T>::transpose() const
                     m_data[1], m_data[5], m_data[9], m_data[13],
                     m_data[2], m_data[6], m_data[10], m_data[14],
                     m_data[3], m_data[7], m_data[11], m_data[15]);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T> TMat4<T>::rotate(double angle, const TVec3<T>& axis)
+{
+    TMat4<T> res;
+
+    TVec3<T> axisn = axis.normalize();
+
+    double s = sin(angle*(M_PI/180.0));
+    double c = cos(angle*(M_PI/180.0));
+
+    res.m_data[0] = axisn.x * axisn.x + (1.0 - axisn.x * axisn.x) * c;
+    res.m_data[1] = axisn.x * axisn.y * (1.0 - c) - (axisn.z * s);
+    res.m_data[2] = axisn.x * axisn.z * (1.0 - c) + (axisn.y * s);
+    res.m_data[3] = 0.0;
+
+    res.m_data[4] = axisn.x * axisn.y * (1.0 - c) + (axisn.z * s);
+    res.m_data[5] = axisn.y * axisn.y + (1.0 - axisn.y * axisn.y) * c;
+    res.m_data[6] = axisn.y * axisn.z * (1.0 - c) - (axisn.x * s);
+    res.m_data[7] = 0.0;
+
+    res.m_data[8] = axisn.x * axisn.z * (1.0 - c) - (axisn.y * s);
+    res.m_data[9] = axisn.y * axisn.z * (1.0 - c) + (axisn.x * s);
+    res.m_data[10] = axisn.z * axisn.z + (1.0 - axisn.z * axisn.z) * c;
+    res.m_data[11] = 0.0;
+
+    res.m_data[12] = 0.0;
+    res.m_data[13] = 0.0;
+    res.m_data[14] = 0.0;
+    res.m_data[15] = 1.0;
+
+    return res;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T> TMat4<T>::identity()
+{
+    return TMat4<T>(1);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T> TMat4<T>::translate(const TVec3<T>& v)
+{
+    TMat4<T> res = TMat4<T>::identity();
+
+    res.m_data[12] = v.x;
+    res.m_data[13] = v.y;
+    res.m_data[14] = v.z;
+
+    return res;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

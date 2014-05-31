@@ -1,8 +1,10 @@
 #ifndef __MAT4_HPP__
 #define __MAT4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "vec3.hpp"
 #include "vec4.hpp"
-#include <iostream>
+#include <ostream>
+#include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TMat4;
@@ -15,28 +17,33 @@ class TMat4
 {
 public:
     TMat4();
+    TMat4(T f);
     TMat4(const T* v);
     TMat4(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9, T v10, T v11, T v12, T v13, T v14, T v15, T v16);
-    
+
     T operator()(size_t i, size_t j) const;
     T& operator()(size_t i, size_t j);
-    
+
     TMat4<T> operator*(const TMat4<T>& m) const;
     TVec4<T> operator*(const TVec4<T>& v) const;
     TMat4<T> operator*(T f) const;
     TMat4<T> operator/(T f) const;
-    
+
     TMat4<T>& operator*=(const TMat4<T>& m);
     TMat4<T>& operator*=(T f);
     TMat4<T>& operator/=(T f);
-    
+
     TVec4<T> getRow(size_t j) const;
     TVec4<T> getCol(size_t i) const;
-    
-    TMat4 transpose() const;
-    
+
+    TMat4<T> transpose() const;
+
+    static TMat4<T> identity();
+    static TMat4<T> rotate(double angle, const TVec3<T>& axis);
+    static TMat4<T> translate(const TVec3<T>& v);
+
     size_t getMemSize() const;
-    
+
     friend std::ostream& operator<< <> (std::ostream& o, const TMat4<T>& m);
 
 private:
@@ -44,8 +51,10 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 typedef TMat4<int> Mat4i;
-typedef TMat4<float> Mat4;
+typedef TMat4<float> Mat4f;
 typedef TMat4<double> Mat4d;
+////////////////////////////////////////////////////////////////////////////////
+typedef Mat4f Mat4;
 ////////////////////////////////////////////////////////////////////////////////
 #include "mat4.inl"
 ////////////////////////////////////////////////////////////////////////////////

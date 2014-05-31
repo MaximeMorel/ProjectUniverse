@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "vec3.hpp"
 #include <ostream>
+#include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TVec4;
@@ -16,28 +17,30 @@ class TVec4
 public:
     TVec4();
     TVec4(const T& x, const T& y, const T& z, const T& w);
-    
+
     T operator[](size_t i) const;
     T& operator[](size_t i);
-    
+
     T dot(const TVec4<T>& v) const;
     TVec3<T> cross(const TVec4<T>& v) const;
-    
+
     T length() const;
     T sqrLength() const;
-    
+
     TVec4<T> normalize() const;
-    
+
     size_t getMemSize() const;
-    
+
     friend std::ostream& operator<< <> (std::ostream& o, const TVec4<T>& v);
 
     T x, y, z, w;
 };
 ////////////////////////////////////////////////////////////////////////////////
 typedef TVec4<int> Vec4i;
-typedef TVec4<float> Vec4;
+typedef TVec4<float> Vec4f;
 typedef TVec4<double> Vec4d;
+////////////////////////////////////////////////////////////////////////////////
+typedef Vec4f Vec4;
 ////////////////////////////////////////////////////////////////////////////////
 #include "vec4.inl"
 ////////////////////////////////////////////////////////////////////////////////

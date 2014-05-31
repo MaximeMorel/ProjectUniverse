@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     //printf("&main : %d - %p\n", &main, &main);
     //printf("*main : %d - %p\n", *main, *main);
 
-    /*Mat4 m1(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    /*Mat4 m1 = Mat4::identity();
     std::cout << m1.getMemSize() << std::endl;
     m1(0,0) = 5;
     std::cout << m1;
@@ -111,6 +111,20 @@ int main(int argc, char** argv)
     std::cout << v << std::endl;
     Vec4 v2 = m3*v;
     std::cout << v2 << std::endl;*/
+
+    //Mat3 m(5,1,2,10,5,3,8,1,5);
+    Mat3 m(1,0,0,0,1,0,0,0,0);
+    std::cout << m;
+    try
+    {
+        Mat3 im = m.inverse();
+        std::cout << im;
+        std::cout << im*m;
+    }
+    catch(std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 
     //srand48(time(0));
 

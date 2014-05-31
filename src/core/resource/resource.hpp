@@ -1,20 +1,18 @@
-#ifndef __PLANE_HPP__
-#define __PLANE_HPP__
+#ifndef __RESOURCE_HPP__
+#define __RESOURCE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/math/vec3.hpp"
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class Plane
+class Resource
 {
 public:
-    Plane();
+    Resource();
+    virtual ~Resource();
 
-    size_t getMemSize() const;
+    virtual size_t getMemSize() const;
 
-    friend std::ostream& operator<<(std::ostream& o, const Plane& plane);
-
-    Vec3 min, max;
+    friend std::ostream& operator<<(std::ostream& o, const Resource& res);
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __PLANE_HPP__
+#endif // __RESOURCE_HPP__

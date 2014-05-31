@@ -1,17 +1,18 @@
-#ifndef __LOGMANAGER_HPP__
-#define __LOGMANAGER_HPP__
+#ifndef __LOGGERSTREAM_HPP__
+#define __LOGGERSTREAM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "logger.hpp"
-#include <vector>
 ////////////////////////////////////////////////////////////////////////////////
-class LogManager
+class LoggerStream : public Logger
 {
 public:
-    LogManager();
+    LoggerStream();
+    virtual ~LoggerStream();
+
+    //template <typename T>
+    //virtual Logger& operator<<(T val)=0;
 
 private:
-    std::vector<Logger*> m_loggers;
 };
 ////////////////////////////////////////////////////////////////////////////////
-//ILogger* gLog;
-#endif // __LOGMANAGER_HPP__
+#endif // __LOGGERSTREAM_HPP__
