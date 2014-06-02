@@ -8,9 +8,9 @@ class ResourceManager
 {
 public:
     ResourceManager();
-    virtual ~ResourceManager();
+    ~ResourceManager();
 
-    virtual size_t getMemSize() const;
+    size_t getMemSize() const;
 
     friend std::ostream& operator<<(std::ostream& o, const ResourceManager& res);
 };

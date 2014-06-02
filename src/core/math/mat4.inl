@@ -189,6 +189,46 @@ TMat4<T> TMat4<T>::translate(const TVec3<T>& v)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+TMat4<T> TMat4<T>::ortho(T left, T right, T bottom, T top, T znear, T zfar)
+{
+    T tx = -(right+left)/(right-left);
+    T ty = -(top+bottom)/(top-bottom);
+    T tz = -(zfar+znear)/(zfar-znear);
+
+    return TMat4<T>(2.0/(right-left), 0.0, 0.0, 0.0,
+                    0.0, 2.0/(top-bottom), 0.0, 0.0,
+                    0.0, 0.0, -2.0/(zfar-znear), 0.0,
+                    tx, ty, tz, 1.0);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T> TMat4<T>::perspective(T fovy, T aspect, T znear, T zfar)
+{
+    T ymax = znear*tan(fovy*M_PI/360.0);
+    T ymin = -ymax;
+    T xmin = ymin*aspect;
+    T xmax = ymax*aspect;
+
+    return TMat4<T>::frustum(xmin, xmax, ymin, ymax, znear, zfar);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TMat4<T> TMat4<T>::frustum(T left, T right, T bottom, T top, T znear, T zfar)
+{
+    T x = 2.0*znear/(right-left);
+    T y = 2.0*znear/(top-bottom);
+    T a = (right+left)/(right-left);
+    T b = (top+bottom)/(top-bottom);
+    T c = -(zfar+znear)/(zfar-znear);
+    T d = -2.0*zfar*znear/(zfar-znear);
+
+    return TMat4<T>(x, 0.0, 0.0, 0.0,
+                    0.0, y, 0.0, 0.0,
+                    a, b, c, -1.0,
+                    0.0, 0.0, d, 0.0);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 size_t TMat4<T>::getMemSize() const
 {
     return sizeof(*this);

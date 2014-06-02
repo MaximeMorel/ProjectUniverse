@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "mat3.hpp"
+#include <stdexcept>
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TMat3<T>::TMat3()
@@ -114,7 +115,7 @@ TMat3<T> TMat3<T>::inverse() const
     T det = determinant();
     if(det == 0)
     {
-        throw std::exception();
+        throw std::domain_error("matrix determinant is zero");
     }
     const T* m = m_data;
     return TMat3<T>(m[8]*m[4]-m[7]*m[5], -(m[8]*m[1]-m[7]*m[2]), m[5]*m[1]-m[4]*m[2],

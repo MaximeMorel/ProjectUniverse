@@ -42,6 +42,10 @@ public:
     static TMat4<T> rotate(double angle, const TVec3<T>& axis);
     static TMat4<T> translate(const TVec3<T>& v);
 
+    static TMat4<T> ortho(T left, T right, T bottom, T top, T znear, T zfar);
+    static TMat4<T> perspective(T fovy, T aspect, T znear, T zfar);
+    static TMat4<T> frustum(T left, T right, T bottom, T top, T znear, T zfar);
+
     size_t getMemSize() const;
 
     friend std::ostream& operator<< <> (std::ostream& o, const TMat4<T>& m);
@@ -54,7 +58,7 @@ typedef TMat4<int> Mat4i;
 typedef TMat4<float> Mat4f;
 typedef TMat4<double> Mat4d;
 ////////////////////////////////////////////////////////////////////////////////
-typedef Mat4f Mat4;
+typedef Mat4d Mat4;
 ////////////////////////////////////////////////////////////////////////////////
 #include "mat4.inl"
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
+#include "appTest.hpp"
 #include "core/math/vec2.hpp"
 #include "core/math/vec3.hpp"
 #include "core/math/mat3.hpp"
@@ -65,11 +66,6 @@ int universalExperiment()
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-class Frustum
-{
-public:
-};
-////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
     //luaTest();
@@ -130,7 +126,7 @@ int main(int argc, char** argv)
 
     Octree octree(AABB(Vec3(-8388608, -8388608, -8388608), Vec3(8388608, 8388608, 8388608)));
     std::cout << "octree mem : " << octree.getMemSize() << " B depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
-    for(int i=0; i<1000000; ++i)
+    for(int i=0; i<100000; ++i)
     {
         //Vec3 p((drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0, (drand48()-0.5)*2000000000.0);
         Vec3 p((drand48()-0.5)*200000.0, (drand48()-0.5)*200000.0, (drand48()-0.5)*200000.0);
