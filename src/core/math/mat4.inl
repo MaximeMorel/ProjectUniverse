@@ -25,6 +25,17 @@ TMat4<T>::TMat4(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9, T v10, T v
 : m_data{v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}
 {
 }
+template <typename T>
+T TMat4<T>::operator[](size_t i) const
+{
+    return m_data[i];
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+T& TMat4<T>::operator[](size_t i)
+{
+    return m_data[i];
+}
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T TMat4<T>::operator()(size_t i, size_t j) const
@@ -144,8 +155,8 @@ TMat4<T> TMat4<T>::rotate(double angle, const TVec3<T>& axis)
 
     TVec3<T> axisn = axis.normalize();
 
-    double s = sin(angle*(M_PI/180.0));
-    double c = cos(angle*(M_PI/180.0));
+    const double s = sin(angle*(M_PI/180.0));
+    const double c = cos(angle*(M_PI/180.0));
 
     res.m_data[0] = axisn.x * axisn.x + (1.0 - axisn.x * axisn.x) * c;
     res.m_data[1] = axisn.x * axisn.y * (1.0 - c) - (axisn.z * s);
@@ -226,6 +237,18 @@ TMat4<T> TMat4<T>::frustum(T left, T right, T bottom, T top, T znear, T zfar)
                     0.0, y, 0.0, 0.0,
                     a, b, c, -1.0,
                     0.0, 0.0, d, 0.0);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+const T* TMat4<T>::getArray() const
+{
+    return m_data;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+T* TMat4<T>::getArray()
+{
+    return m_data;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

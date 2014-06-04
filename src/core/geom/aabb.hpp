@@ -2,12 +2,15 @@
 #define __AABB_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/math/vec3.hpp"
-#include <iostream>
+#include <ostream>
+#include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class AABB
 {
 public:
     AABB(const Vec3& pMin, const Vec3& pMax);
+
+    const Vec3& operator[](size_t i) const;
 
     void add(const Vec3& v);
 
@@ -18,6 +21,7 @@ public:
     size_t getMemSize() const;
 
     friend std::ostream& operator<<(std::ostream& o, const AABB& aabb);
+    friend std::ostream& operator<<(Logger& o, const AABB& aabb);
 
     Vec3 min, max;
 };

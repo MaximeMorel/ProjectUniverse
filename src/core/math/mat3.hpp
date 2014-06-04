@@ -7,8 +7,8 @@
 template <typename T>
 class TMat3;
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
+template <typename T> std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
+template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TMat3
@@ -35,6 +35,7 @@ public:
     size_t getMemSize() const;
 
     friend std::ostream& operator<< <> (std::ostream& o, TMat3<T> const& mat);
+    friend Logger& operator<< <> (Logger& o, const TMat3<T>& v);
 
 private:
     T m_data[9];

@@ -6,6 +6,13 @@ AABB::AABB(const Vec3& pMin, const Vec3& pMax)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+const Vec3& AABB::operator[](size_t i) const
+{
+    if(i==0)
+        return min;
+    return max;
+}
+////////////////////////////////////////////////////////////////////////////////
 void AABB::add(const Vec3& v)
 {
     if(v.x < min.x) min.x = v.x;

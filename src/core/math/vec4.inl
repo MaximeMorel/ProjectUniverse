@@ -15,6 +15,12 @@ TVec4<T>::TVec4(const T& x, const T& y, const T& z, const T& w)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+TVec4<T>::TVec4(const TVec3<T>& v, const T& w)
+: x(v.x), y(v.y), z(v.z), w(w)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 T TVec4<T>::operator[](size_t i) const
 {
     return *(((T*)&x)+i);
@@ -55,6 +61,36 @@ TVec4<T> TVec4<T>::normalize() const
 {
     T len = length();
     return TVec4<T>(x/len, y/len, z/len, w/len);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TVec4<T> TVec4<T>::operator+(const TVec4& v) const
+{
+    return TVec3<T>(x+v.x, y+v.y, z+v.z, w+v.w);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TVec4<T> TVec4<T>::operator-(const TVec4& v) const
+{
+    return TVec4<T>(x-v.x, y-v.y, z-v.z, w-v.w);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TVec4<T> TVec4<T>::operator*(T f) const
+{
+    return TVec4<T>(x*f, y*f, z*f, w*f);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TVec4<T> TVec4<T>::operator/(T f) const
+{
+    return TVec4<T>(x/f, y/f, z/f, w/f);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TVec4<T> TVec4<T>::operator-() const
+{
+    return TVec4<T>(-x, -y, -z, -w);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

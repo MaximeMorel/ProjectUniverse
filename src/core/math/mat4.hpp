@@ -6,11 +6,10 @@
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-class TMat4;
+template <typename T> class TMat4;
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-std::ostream& operator<<(std::ostream& o, const TMat4<T>& m);
+template <typename T> std::ostream& operator<<(std::ostream& o, const TMat4<T>& m);
+template <typename T> Logger& operator<<(Logger& o, const TMat4<T>& v);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TMat4
@@ -20,6 +19,9 @@ public:
     TMat4(T f);
     TMat4(const T* v);
     TMat4(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9, T v10, T v11, T v12, T v13, T v14, T v15, T v16);
+
+    T operator[](size_t i) const;
+    T& operator[](size_t i);
 
     T operator()(size_t i, size_t j) const;
     T& operator()(size_t i, size_t j);
@@ -46,9 +48,13 @@ public:
     static TMat4<T> perspective(T fovy, T aspect, T znear, T zfar);
     static TMat4<T> frustum(T left, T right, T bottom, T top, T znear, T zfar);
 
+    const T* getArray() const;
+    T* getArray();
+
     size_t getMemSize() const;
 
     friend std::ostream& operator<< <> (std::ostream& o, const TMat4<T>& m);
+    friend Logger& operator<< <> (Logger& o, const TMat4<T>& v);
 
 private:
     T m_data[16];

@@ -4,6 +4,11 @@
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+template <typename T> class TVec2;
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> std::ostream& operator<<(std::ostream& o, const TVec2<T>& v);
+template <typename T> Logger& operator<<(Logger& o, const TVec2<T>& v);
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TVec2
 {
@@ -12,6 +17,9 @@ public:
     TVec2(const T& x, const T& y);
 
     size_t getMemSize() const;
+
+    friend std::ostream& operator<< <> (std::ostream& o, const TVec2<T>& v);
+    friend Logger& operator<< <> (Logger& o, const TVec2<T>& v);
 
     T x, y;
 };

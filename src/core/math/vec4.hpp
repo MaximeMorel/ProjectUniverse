@@ -5,11 +5,10 @@
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-class TVec4;
+template <typename T> class TVec4;
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-std::ostream& operator<<(std::ostream& o, const TVec4<T>& v);
+template <typename T> std::ostream& operator<<(std::ostream& o, const TVec4<T>& v);
+template <typename T> Logger& operator<<(Logger& o, const TVec4<T>& v);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TVec4
@@ -17,6 +16,7 @@ class TVec4
 public:
     TVec4();
     TVec4(const T& x, const T& y, const T& z, const T& w);
+    TVec4(const TVec3<T>& v, const T& w);
 
     T operator[](size_t i) const;
     T& operator[](size_t i);
@@ -29,9 +29,18 @@ public:
 
     TVec4<T> normalize() const;
 
+    TVec4<T> operator+(const TVec4& v) const;
+    TVec4<T> operator-(const TVec4& v) const;
+
+    TVec4<T> operator*(T f) const;
+    TVec4<T> operator/(T f) const;
+
+    TVec4<T> operator-() const;
+
     size_t getMemSize() const;
 
     friend std::ostream& operator<< <> (std::ostream& o, const TVec4<T>& v);
+    friend Logger& operator<< <> (Logger& o, const TVec4<T>& v);
 
     T x, y, z, w;
 };

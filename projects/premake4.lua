@@ -6,7 +6,7 @@ solution "ProjectUniverse"
       kind "ConsoleApp"
       language "C++"
       files { "../src/**.hpp", "../src/**.cpp", "../src/**.inl" }
-      links { "gtest", "cppunit", "GL" }
+      links { "gtest", "cppunit", "GL", "GLEW" }
       buildoptions { "-std=c++11 -Wall" }
       includedirs { "../src/" }
       buildoptions {"`pkg-config --cflags lua sdl2`" }
@@ -19,4 +19,3 @@ solution "ProjectUniverse"
       configuration "Release"
          defines { "NDEBUG" }
          flags { "Optimize" }
-

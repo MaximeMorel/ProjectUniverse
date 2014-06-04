@@ -6,6 +6,7 @@
 #include "core/math/mat4.hpp"
 #include "core/geom/aabb.hpp"
 #include "core/geom/octree.hpp"
+#include "core/geom/frustum.hpp"
 #include "core/tests/tests.hpp"
 #include "core/render/windowContext/windowContextSDL2/windowContextSDL2.hpp"
 //#include "core/script/lua/testlua.hpp"
@@ -121,6 +122,13 @@ int main(int argc, char** argv)
     {
         std::cout << e.what() << std::endl;
     }
+
+    Mat4 p = Mat4::perspective(90, 16./9., 1., 1000.);
+    //p = Mat4::ortho(-1,1,-1,1,-1,1);
+    std::cout << p;
+
+    Frustum f(p);
+    std::cout << f;
 
     //srand48(time(0));
 
