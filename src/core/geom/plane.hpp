@@ -64,6 +64,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
     size_t getMemSize() const;
 
+    static Vec3 intersect(const Plane& p0, const Plane& p1, const Plane& p2);
+
     friend std::ostream& operator<<(std::ostream& o, const Plane& plane);
     friend Logger& operator<<(Logger& o, const Plane& plane);
 

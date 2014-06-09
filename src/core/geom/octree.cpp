@@ -104,7 +104,7 @@ void Octree::insert(const Vec3& p)
 {
     if(m_bbox.intersect(p))
     {
-        if(m_bbox.max.x - m_bbox.min.x > 100.0f)
+        if(m_bbox.max.x - m_bbox.min.x > 10.0f)
         {
             Octree* child = getChild(p);
             child->insert(p);
@@ -114,6 +114,27 @@ void Octree::insert(const Vec3& p)
             //std::cout << "inserted" << std::endl;
             //m_elements.push_back(p);
             ++m_numElements;
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void Octree::traverse(const Frustum& frustum, std::vector<const Octree*>& res) const
+{
+    if(frustum.intersect(m_bbox))
+    {
+        //bool empty = true;
+        for(int i=0; i<8; ++i)
+        {
+            if(m_children[i])
+            {
+                m_children[i]->traverse(frustum, res);
+                //empty = false;
+            }
+        }
+        //if(empty)
+        if(m_numElements > 0)
+        {
+            res.push_back(this);
         }
     }
 }

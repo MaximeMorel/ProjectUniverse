@@ -15,6 +15,7 @@ class TMat3
 {
 public:
     TMat3();
+    TMat3(T f);
     TMat3(const T* v);
     TMat3(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9);
 

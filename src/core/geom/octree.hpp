@@ -1,7 +1,9 @@
 #ifndef __OCTREE_HPP__
 #define __OCTREE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/geom/frustum.hpp"
 #include "core/geom/aabb.hpp"
+#include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class Octree
 {
@@ -21,6 +23,8 @@ public:
     Octree* getChild(const Vec3& p);
 
     void insert(const Vec3& p);
+
+    void traverse(const Frustum& frustum, std::vector<const Octree*>& res) const;
 
 private:
     Octree* m_parent;

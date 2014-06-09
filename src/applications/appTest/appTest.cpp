@@ -123,14 +123,17 @@ int main(int argc, char** argv)
         std::cout << e.what() << std::endl;
     }
 
-    Mat4 p = Mat4::perspective(90, 16./9., 1., 1000.);
+    Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
+    Mat4 t = Mat4::translate(Vec3(0,5,-5000));
+    p = p*t;
+    //p = Mat4::ortho(-1000,1000,-1000,1000,-1000,1000);
     //p = Mat4::ortho(-1,1,-1,1,-1,1);
     std::cout << p;
 
     Frustum f(p);
     std::cout << f;
 
-    //srand48(time(0));
+    srand48(time(0));
 
     Octree octree(AABB(Vec3(-8388608, -8388608, -8388608), Vec3(8388608, 8388608, 8388608)));
     std::cout << "octree mem : " << octree.getMemSize() << " B depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
@@ -143,6 +146,10 @@ int main(int argc, char** argv)
         octree.insert(p);
     }
     std::cout << "octree mem : " << octree.getMemSize()/(1024*1024) << " MB depth : " << octree.getDepth() << " nodes : " << octree.getNumNodes() << " elements : " << octree.getNumElements() << std::endl;
+
+    std::vector<const Octree*> resTraverse;
+    octree.traverse(f, resTraverse);
+    std::cout << "traverse : " << resTraverse.size() << std::endl;
 
     //WindowContextSDL2 wCtx;
 
