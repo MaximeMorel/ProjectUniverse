@@ -1,20 +1,13 @@
-#include <gtest/gtest.h>
-#include "core/math/vec2.hpp"
+#include "tests.hpp"
+#include <iostream>
+#include <cxxtest/ErrorPrinter.h>
 ////////////////////////////////////////////////////////////////////////////////
-TEST(Vec2, ctor)
+int testRunner()
 {
-	Vec2 v;
-	v.x = 0.0f;
-	v.y = 0.0f;
-	EXPECT_EQ(0.0f, v.x);
-	EXPECT_EQ(0.0f, v.y);
-}	
-////////////////////////////////////////////////////////////////////////////////
-int runTests(int argc, char** argv)
-{
-	::testing::InitGoogleTest(&argc, argv);
-	int res = RUN_ALL_TESTS();
-
-	return res;
+    std::cout << "Starting test runner" << std::endl;
+    int status = CxxTest::ErrorPrinter().run();
+    std::cout << "Stopping test runner" << std::endl;
+    return status;
 }
-////////////////////////////////////////////////////////////////////////////////
+#include <cxxtest/Root.cpp>
+const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";
