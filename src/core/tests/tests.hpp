@@ -1,18 +1,36 @@
 #ifndef __TESTS_HPP__
 #define __TESTS_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include <cxxtest/TestSuite.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/extensions/HelperMacros.h>
 ////////////////////////////////////////////////////////////////////////////////
 int testRunner();
 ////////////////////////////////////////////////////////////////////////////////
-class MyTestSuite : public CxxTest::TestSuite
+class TestBasic : public CppUnit::TestFixture
 {
+    CPPUNIT_TEST_SUITE(TestBasic);
+    CPPUNIT_TEST(testAddition);
+    CPPUNIT_TEST(testMultiply);
+    CPPUNIT_TEST_SUITE_END();
+
 public:
-    void testAddition( void )
+    void setUp()
+    {}
+    void tearDown()
+    {}
+
+protected:
+    void testAddition()
     {
-        TS_ASSERT( 1 + 1 > 1 );
-        TS_ASSERT_EQUALS( 1 + 1, 2 );
+        CPPUNIT_ASSERT(1);
     }
+    void testMultiply()
+    {
+        CPPUNIT_ASSERT(1);
+    }
+
+private:
 };
+CPPUNIT_TEST_SUITE_REGISTRATION(TestBasic);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTS_HPP__

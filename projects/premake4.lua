@@ -9,8 +9,8 @@ solution "ProjectUniverse"
       --links { "GL", "GLEW" }
       buildoptions { "-std=c++11" }
       includedirs { "../src/" }
-      buildoptions {"`pkg-config --cflags lua sdl2 gl glew`" }
-      linkoptions {"`pkg-config --libs    lua sdl2 gl glew`" }
+      buildoptions {"`pkg-config --cflags cppunit lua sdl2 gl glew`" }
+      linkoptions  {"`pkg-config --libs   cppunit lua sdl2 gl glew`" }
       flags { "ExtraWarnings" }
 
       configuration "Debug"

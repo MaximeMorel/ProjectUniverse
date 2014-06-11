@@ -1,13 +1,57 @@
+////////////////////////////////////////////////////////////////////////////////
 #include "tests.hpp"
-#include <iostream>
-#include <cxxtest/ErrorPrinter.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/ui/text/TextTestRunner.h>
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/TestResultCollector.h>
+#include <cppunit/TestRunner.h>
+#include <cppunit/BriefTestProgressListener.h>
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/XmlOutputter.h>
+
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
 ////////////////////////////////////////////////////////////////////////////////
 int testRunner()
 {
-    std::cout << "Starting test runner" << std::endl;
-    int status = CxxTest::ErrorPrinter().run();
-    std::cout << "Stopping test runner" << std::endl;
-    return status;
+    CppUnit::TextUi::TestRunner runner;
+    CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
+    runner.addTest(registry.makeTest());
+    runner.run();
+    return 0;
 }
-#include <cxxtest/Root.cpp>
-const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";
+////////////////////////////////////////////////////////////////////////////////
+int testRunner2()
+{
+    // informs test-listener about testresults
+    CPPUNIT_NS::TestResult testresult;
+
+    // register listener for collecting the test-results
+    CPPUNIT_NS::TestResultCollector collectedresults;
+    testresult.addListener(&collectedresults);
+
+    // register listener for per-test progress output
+    CPPUNIT_NS::BriefTestProgressListener progress;
+    testresult.addListener(&progress);
+
+    // insert test-suite at test-runner by registry
+    CPPUNIT_NS::TestRunner testrunner;
+    testrunner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
+    testrunner.run(testresult);
+
+    // output results in compiler-format
+    CPPUNIT_NS::CompilerOutputter compileroutputter(&collectedresults, std::cerr);
+    compileroutputter.write();
+
+    // Output XML for Jenkins CPPunit plugin
+    std::ofstream xmlFileOut("cppTestBasicMathResults.xml");
+    CPPUNIT_NS::XmlOutputter xmlOut(&collectedresults, xmlFileOut);
+    xmlOut.write();
+
+    // return 0 if tests were successful
+    return collectedresults.wasSuccessful() ? 0 : 1;
+}
+////////////////////////////////////////////////////////////////////////////////
