@@ -2,6 +2,7 @@
 #define __MAT3_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include <ostream>
+#include "core/math/vec3.hpp"
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -9,6 +10,9 @@ class TMat3;
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T> std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
 template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs);
+template <typename T> bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TMat3
@@ -18,6 +22,9 @@ public:
     TMat3(T f);
     TMat3(const T* v);
     TMat3(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9);
+
+    T operator[](size_t i) const;
+    T& operator[](size_t i);
 
     T operator()(size_t i, size_t j) const;
     T& operator()(size_t i, size_t j);
@@ -37,6 +44,9 @@ public:
 
     friend std::ostream& operator<< <> (std::ostream& o, TMat3<T> const& mat);
     friend Logger& operator<< <> (Logger& o, const TMat3<T>& v);
+
+    friend bool operator== <> (const TMat3<T>& lhs, const TMat3<T>& rhs);
+    friend bool operator!= <> (const TMat3<T>& lhs, const TMat3<T>& rhs);
 
 private:
     T m_data[9];

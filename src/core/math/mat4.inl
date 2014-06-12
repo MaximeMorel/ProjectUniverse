@@ -25,26 +25,27 @@ TMat4<T>::TMat4(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9, T v10, T v
 : m_data{v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}
 {
 }
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T TMat4<T>::operator[](size_t i) const
+inline T TMat4<T>::operator[](size_t i) const
 {
     return m_data[i];
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T& TMat4<T>::operator[](size_t i)
+inline T& TMat4<T>::operator[](size_t i)
 {
     return m_data[i];
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T TMat4<T>::operator()(size_t i, size_t j) const
+inline T TMat4<T>::operator()(size_t i, size_t j) const
 {
     return m_data[i + (j*4)];
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T& TMat4<T>::operator()(size_t i, size_t j)
+inline T& TMat4<T>::operator()(size_t i, size_t j)
 {
     return m_data[i + (j*4)];
 }
@@ -264,6 +265,26 @@ std::ostream& operator<<(std::ostream& o, const TMat4<T>& m)
                 "[ " << m.m_data[4] << ", " << m.m_data[5] << ", " << m.m_data[6] << ", " << m.m_data[7] << " ]\n" <<
                 "[ " << m.m_data[8] << ", " << m.m_data[9] << ", " << m.m_data[10] << ", " << m.m_data[11] << " ]\n" <<
                 "[ " << m.m_data[12] << ", " << m.m_data[13] << ", " << m.m_data[14] << ", " << m.m_data[15] << " ]\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs)
+{
+    for(int i=0; i<16; ++i)
+    {
+        if(lhs.m_data[i] != rhs.m_data[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+bool operator!=(const TMat4<T>& lhs, const TMat4<T>& rhs)
+{
+    return !(lhs==rhs);
 }
 ////////////////////////////////////////////////////////////////////////////////
 //template class TMat4<int>;

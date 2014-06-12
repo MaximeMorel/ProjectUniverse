@@ -13,6 +13,7 @@ public:
     virtual size_t getMemSize() const;
 
     friend std::ostream& operator<<(std::ostream& o, const Resource& res);
+    friend Logger& operator<<(Logger& o, const Resource& res);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RESOURCE_HPP__

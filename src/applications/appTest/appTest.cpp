@@ -7,7 +7,7 @@
 #include "core/geom/aabb.hpp"
 #include "core/geom/octree.hpp"
 #include "core/geom/frustum.hpp"
-#include "core/tests/tests.hpp"
+#include "core/tests/testRunner.hpp"
 #include "core/render/windowContext/windowContextSDL2/windowContextSDL2.hpp"
 //#include "core/script/lua/testlua.hpp"
 #include <iostream>

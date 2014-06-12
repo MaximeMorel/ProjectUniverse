@@ -1,4 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
+#include "testRunner.hpp"
 #include "tests.hpp"
 #include <cppunit/TestCase.h>
 #include <cppunit/TestFixture.h>
@@ -11,11 +12,10 @@
 #include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/XmlOutputter.h>
-
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 ////////////////////////////////////////////////////////////////////////////////
-int testRunner()
+int testRunner2()
 {
     CppUnit::TextUi::TestRunner runner;
     CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
@@ -24,31 +24,31 @@ int testRunner()
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int testRunner2()
+int testRunner()
 {
     // informs test-listener about testresults
-    CPPUNIT_NS::TestResult testresult;
+    CppUnit::TestResult testresult;
 
     // register listener for collecting the test-results
-    CPPUNIT_NS::TestResultCollector collectedresults;
+    CppUnit::TestResultCollector collectedresults;
     testresult.addListener(&collectedresults);
 
     // register listener for per-test progress output
-    CPPUNIT_NS::BriefTestProgressListener progress;
+    CppUnit::BriefTestProgressListener progress;
     testresult.addListener(&progress);
 
     // insert test-suite at test-runner by registry
-    CPPUNIT_NS::TestRunner testrunner;
-    testrunner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
+    CppUnit::TestRunner testrunner;
+    testrunner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
     testrunner.run(testresult);
 
     // output results in compiler-format
-    CPPUNIT_NS::CompilerOutputter compileroutputter(&collectedresults, std::cerr);
+    CppUnit::CompilerOutputter compileroutputter(&collectedresults, std::cerr);
     compileroutputter.write();
 
     // Output XML for Jenkins CPPunit plugin
     std::ofstream xmlFileOut("cppTestBasicMathResults.xml");
-    CPPUNIT_NS::XmlOutputter xmlOut(&collectedresults, xmlFileOut);
+    CppUnit::XmlOutputter xmlOut(&collectedresults, xmlFileOut);
     xmlOut.write();
 
     // return 0 if tests were successful

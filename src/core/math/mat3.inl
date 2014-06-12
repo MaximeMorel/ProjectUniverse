@@ -27,13 +27,25 @@ TMat3<T>::TMat3(T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8, T v9)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T TMat3<T>::operator()(size_t i, size_t j) const
+inline T TMat3<T>::operator[](size_t i) const
+{
+    return m_data[i];
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+inline T& TMat3<T>::operator[](size_t i)
+{
+    return m_data[i];
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+inline T TMat3<T>::operator()(size_t i, size_t j) const
 {
     return m_data[i + (j*3)];
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T& TMat3<T>::operator()(size_t i, size_t j)
+inline T& TMat3<T>::operator()(size_t i, size_t j)
 {
     return m_data[i + (j*3)];
 }
@@ -141,6 +153,26 @@ std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat)
     return o << "[ " << mat.m_data[0] << ", " << mat.m_data[1] << ", " << mat.m_data[2] << " ]\n" <<
                 "[ " << mat.m_data[3] << ", " << mat.m_data[4] << ", " << mat.m_data[5] << " ]\n" <<
                 "[ " << mat.m_data[6] << ", " << mat.m_data[7] << ", " << mat.m_data[8] << " ]\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs)
+{
+    for(int i=0; i<9; ++i)
+    {
+        if(lhs.m_data[i] != rhs.m_data[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs)
+{
+    return !(lhs==rhs);
 }
 ////////////////////////////////////////////////////////////////////////////////
 //template class TMat3<int>;

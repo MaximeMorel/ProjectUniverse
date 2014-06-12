@@ -16,6 +16,9 @@ public:
     TVec2();
     TVec2(const T& x, const T& y);
 
+    T operator[](size_t i) const;
+    T& operator[](size_t i);
+
     size_t getMemSize() const;
 
     friend std::ostream& operator<< <> (std::ostream& o, const TVec2<T>& v);
@@ -23,6 +26,9 @@ public:
 
     T x, y;
 };
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> bool operator==(const TVec2<T>& lhs, const TVec2<T>& rhs);
+template <typename T> bool operator!=(const TVec2<T>& lhs, const TVec2<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
 typedef TVec2<int> Vec2i;
 typedef TVec2<float> Vec2f;

@@ -45,6 +45,9 @@ public:
     T x, y, z, w;
 };
 ////////////////////////////////////////////////////////////////////////////////
+template <typename T> bool operator==(const TVec4<T>& lhs, const TVec4<T>& rhs);
+template <typename T> bool operator!=(const TVec4<T>& lhs, const TVec4<T>& rhs);
+////////////////////////////////////////////////////////////////////////////////
 typedef TVec4<int> Vec4i;
 typedef TVec4<float> Vec4f;
 typedef TVec4<double> Vec4d;

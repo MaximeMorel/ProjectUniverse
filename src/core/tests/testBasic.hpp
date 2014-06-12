@@ -1,12 +1,14 @@
-#ifndef __TESTS_HPP__
-#define __TESTS_HPP__
+#ifndef __TESTBASIC_HPP__
+#define __TESTBASIC_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 ////////////////////////////////////////////////////////////////////////////////
-class TestAll : public CppUnit::TestFixture
+class TestBasic : public CppUnit::TestFixture
 {
-    CPPUNIT_TEST_SUITE(TestAll);
+    CPPUNIT_TEST_SUITE(TestBasic);
+    CPPUNIT_TEST(testAddition);
+    CPPUNIT_TEST(testMultiply);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -16,12 +18,17 @@ public:
     {}
 
 protected:
+    void testAddition()
+    {
+        CPPUNIT_ASSERT(1);
+    }
+    void testMultiply()
+    {
+        CPPUNIT_ASSERT(1);
+    }
 
 private:
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestAll, "all");
+CPPUNIT_TEST_SUITE_REGISTRATION(TestBasic);
 ////////////////////////////////////////////////////////////////////////////////
-#include "testBasic.hpp"
-#include "math/testMath.hpp"
-////////////////////////////////////////////////////////////////////////////////
-#endif // __TESTS_HPP__
+#endif // __TESTBASIC_HPP__

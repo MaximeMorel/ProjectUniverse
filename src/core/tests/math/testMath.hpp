@@ -1,12 +1,15 @@
-#ifndef __TESTS_HPP__
-#define __TESTS_HPP__
+#ifndef __TESTMATH_HPP__
+#define __TESTMATH_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include "testMat.hpp"
+#include "testVec.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 ////////////////////////////////////////////////////////////////////////////////
-class TestAll : public CppUnit::TestFixture
+class TestMath : public CppUnit::TestFixture
 {
-    CPPUNIT_TEST_SUITE(TestAll);
+    CPPUNIT_TEST_SUITE(TestMath);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -19,9 +22,6 @@ protected:
 
 private:
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestAll, "all");
+CPPUNIT_TEST_SUITE_REGISTRATION(TestMath);
 ////////////////////////////////////////////////////////////////////////////////
-#include "testBasic.hpp"
-#include "math/testMath.hpp"
-////////////////////////////////////////////////////////////////////////////////
-#endif // __TESTS_HPP__
+#endif // __TESTMATH_HPP__
