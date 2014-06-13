@@ -6,14 +6,6 @@
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T> class TMat4;
-////////////////////////////////////////////////////////////////////////////////
-template <typename T> std::ostream& operator<<(std::ostream& o, const TMat4<T>& m);
-template <typename T> Logger& operator<<(Logger& o, const TMat4<T>& v);
-////////////////////////////////////////////////////////////////////////////////
-template <typename T> bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs);
-template <typename T> bool operator!=(const TMat4<T>& lhs, const TMat4<T>& rhs);
-////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class TMat4
 {
@@ -56,15 +48,15 @@ public:
 
     size_t getMemSize() const;
 
-    friend std::ostream& operator<< <> (std::ostream& o, const TMat4<T>& m);
-    friend Logger& operator<< <> (Logger& o, const TMat4<T>& v);
-
-    friend bool operator== <> (const TMat4<T>& lhs, const TMat4<T>& rhs);
-    friend bool operator!= <> (const TMat4<T>& lhs, const TMat4<T>& rhs);
-
 private:
     T m_data[16];
 };
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> std::ostream& operator<<(std::ostream& o, const TMat4<T>& m);
+template <typename T> Logger& operator<<(Logger& o, const TMat4<T>& v);
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs);
+template <typename T> bool operator!=(const TMat4<T>& lhs, const TMat4<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
 typedef TMat4<int> Mat4i;
 typedef TMat4<float> Mat4f;

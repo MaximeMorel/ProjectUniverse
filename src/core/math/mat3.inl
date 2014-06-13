@@ -150,9 +150,9 @@ size_t TMat3<T>::getMemSize() const
 template <typename T>
 std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat)
 {
-    return o << "[ " << mat.m_data[0] << ", " << mat.m_data[1] << ", " << mat.m_data[2] << " ]\n" <<
-                "[ " << mat.m_data[3] << ", " << mat.m_data[4] << ", " << mat.m_data[5] << " ]\n" <<
-                "[ " << mat.m_data[6] << ", " << mat.m_data[7] << ", " << mat.m_data[8] << " ]\n";
+    return o << "[ " << mat[0] << ", " << mat[1] << ", " << mat[2] << " ]\n" <<
+                "[ " << mat[3] << ", " << mat[4] << ", " << mat[5] << " ]\n" <<
+                "[ " << mat[6] << ", " << mat[7] << ", " << mat[8] << " ]\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -160,7 +160,7 @@ bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs)
 {
     for(int i=0; i<9; ++i)
     {
-        if(lhs.m_data[i] != rhs.m_data[i])
+        if(lhs[i] != rhs[i])
         {
             return false;
         }

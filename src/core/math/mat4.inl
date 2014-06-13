@@ -261,10 +261,10 @@ size_t TMat4<T>::getMemSize() const
 template <typename T>
 std::ostream& operator<<(std::ostream& o, const TMat4<T>& m)
 {
-    return o << "[ " << m.m_data[0] << ", " << m.m_data[1] << ", " << m.m_data[2] << ", " << m.m_data[3] << " ]\n" <<
-                "[ " << m.m_data[4] << ", " << m.m_data[5] << ", " << m.m_data[6] << ", " << m.m_data[7] << " ]\n" <<
-                "[ " << m.m_data[8] << ", " << m.m_data[9] << ", " << m.m_data[10] << ", " << m.m_data[11] << " ]\n" <<
-                "[ " << m.m_data[12] << ", " << m.m_data[13] << ", " << m.m_data[14] << ", " << m.m_data[15] << " ]\n";
+    return o << "[ " << m[0] << ", " << m[1] << ", " << m[2] << ", " << m[3] << " ]\n" <<
+                "[ " << m[4] << ", " << m[5] << ", " << m[6] << ", " << m[7] << " ]\n" <<
+                "[ " << m[8] << ", " << m[9] << ", " << m[10] << ", " << m[11] << " ]\n" <<
+                "[ " << m[12] << ", " << m[13] << ", " << m[14] << ", " << m[15] << " ]\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -272,7 +272,7 @@ bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs)
 {
     for(int i=0; i<16; ++i)
     {
-        if(lhs.m_data[i] != rhs.m_data[i])
+        if(lhs[i] != rhs[i])
         {
             return false;
         }

@@ -6,15 +6,6 @@
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-class TMat3;
-////////////////////////////////////////////////////////////////////////////////
-template <typename T> std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
-template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
-////////////////////////////////////////////////////////////////////////////////
-template <typename T> bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs);
-template <typename T> bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs);
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
 class TMat3
 {
 public:
@@ -42,15 +33,15 @@ public:
 
     size_t getMemSize() const;
 
-    friend std::ostream& operator<< <> (std::ostream& o, TMat3<T> const& mat);
-    friend Logger& operator<< <> (Logger& o, const TMat3<T>& v);
-
-    friend bool operator== <> (const TMat3<T>& lhs, const TMat3<T>& rhs);
-    friend bool operator!= <> (const TMat3<T>& lhs, const TMat3<T>& rhs);
-
 private:
     T m_data[9];
 };
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
+template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
+////////////////////////////////////////////////////////////////////////////////
+template <typename T> bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs);
+template <typename T> bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
 typedef TMat3<int> Mat3i;
 typedef TMat3<float> Mat3f;
