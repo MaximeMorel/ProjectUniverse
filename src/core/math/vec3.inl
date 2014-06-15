@@ -100,6 +100,12 @@ std::ostream& operator<<(std::ostream& o, const TVec3<T>& v)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+Logger& operator<<(Logger& o, const TVec3<T>& v)
+{
+    return o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 bool operator==(const TVec3<T>& lhs, const TVec3<T>& rhs)
 {
     return (lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);

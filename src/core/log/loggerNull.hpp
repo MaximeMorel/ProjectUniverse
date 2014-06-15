@@ -1,14 +1,14 @@
-#ifndef __LOGGERSTREAM_HPP__
-#define __LOGGERSTREAM_HPP__
+#ifndef __LOGGERNULL_HPP__
+#define __LOGGERNULL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "logger.hpp"
-#include <ostream>
+#include <string>
 ////////////////////////////////////////////////////////////////////////////////
-class LoggerStream : public Logger
+class LoggerNull : public Logger
 {
 public:
-    LoggerStream(const std::string& name, std::ostream& stream);
-    virtual ~LoggerStream();
+    LoggerNull(const std::string& name);
+    virtual ~LoggerNull() override;
 
     virtual Logger& operator<<(long rhs) override;
     virtual Logger& operator<<(unsigned long rhs) override;
@@ -30,7 +30,6 @@ public:
     virtual Logger& operator<<(std::ios_base& (*rhs)(std::ios_base&)) override;
 
 private:
-    std::ostream m_outStream;   ///< Out stream
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __LOGGERSTREAM_HPP__
+#endif // __LOGGERNULL_HPP__

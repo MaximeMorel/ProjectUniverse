@@ -1,108 +1,92 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "loggerFile.hpp"
+#include "loggerNull.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-LoggerFile::LoggerFile(const std::string& name, const std::string& fileName)
- : Logger(name), m_outFile(fileName)
+LoggerNull::LoggerNull(const std::string& name)
+ : Logger(name)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-LoggerFile::~LoggerFile()
+LoggerNull::~LoggerNull()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(long rhs)
+Logger& LoggerNull::operator<<(long rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(unsigned long rhs)
+Logger& LoggerNull::operator<<(unsigned long rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(bool rhs)
+Logger& LoggerNull::operator<<(bool rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(short rhs)
+Logger& LoggerNull::operator<<(short rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(unsigned short rhs)
+Logger& LoggerNull::operator<<(unsigned short rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(int rhs)
+Logger& LoggerNull::operator<<(int rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(unsigned int rhs)
+Logger& LoggerNull::operator<<(unsigned int rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(double rhs)
+Logger& LoggerNull::operator<<(double rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(float rhs)
+Logger& LoggerNull::operator<<(float rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(long double rhs)
+Logger& LoggerNull::operator<<(long double rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(const void* rhs)
+Logger& LoggerNull::operator<<(const void* rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(const char* rhs)
+Logger& LoggerNull::operator<<(const char* rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(const std::string& rhs)
+Logger& LoggerNull::operator<<(const std::string& rhs)
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(std::ostream& (*rhs)(std::ostream&))
+Logger& LoggerNull::operator<<(std::ostream& (*rhs)(std::ostream&))
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(std::ios& (*rhs)(std::ios&))
+Logger& LoggerNull::operator<<(std::ios& (*rhs)(std::ios&))
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& LoggerFile::operator<<(std::ios_base& (*rhs)(std::ios_base&))
+Logger& LoggerNull::operator<<(std::ios_base& (*rhs)(std::ios_base&))
 {
-    m_outFile << rhs;
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,12 +1,14 @@
-#ifndef __TESTS_HPP__
-#define __TESTS_HPP__
+#ifndef __TESTGEOM_HPP__
+#define __TESTGEOM_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include "testPlane.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 ////////////////////////////////////////////////////////////////////////////////
-class TestAll : public CppUnit::TestFixture
+class TestGeom : public CppUnit::TestFixture
 {
-    CPPUNIT_TEST_SUITE(TestAll);
+    CPPUNIT_TEST_SUITE(TestGeom);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -19,10 +21,6 @@ protected:
 
 private:
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestAll, "all");
+CPPUNIT_TEST_SUITE_REGISTRATION(TestGeom);
 ////////////////////////////////////////////////////////////////////////////////
-#include "testBasic.hpp"
-#include "math/testMath.hpp"
-#include "geom/testGeom.hpp"
-////////////////////////////////////////////////////////////////////////////////
-#endif // __TESTS_HPP__
+#endif // __TESTGEOM_HPP__

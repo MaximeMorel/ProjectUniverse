@@ -156,6 +156,14 @@ std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+Logger& operator<<(Logger& o, TMat3<T> const& mat)
+{
+    return o << "[ " << mat[0] << ", " << mat[1] << ", " << mat[2] << " ]\n" <<
+                "[ " << mat[3] << ", " << mat[4] << ", " << mat[5] << " ]\n" <<
+                "[ " << mat[6] << ", " << mat[7] << ", " << mat[8] << " ]\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs)
 {
     for(int i=0; i<9; ++i)
@@ -165,14 +173,20 @@ bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs)
             return false;
         }
     }
-
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs)
 {
-    return !(lhs==rhs);
+    for(int i=0; i<9; ++i)
+    {
+        if(lhs[i] != rhs[i])
+        {
+            return true;
+        }
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 //template class TMat3<int>;

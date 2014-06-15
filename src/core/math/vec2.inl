@@ -32,6 +32,18 @@ size_t TVec2<T>::getMemSize() const
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+std::ostream& operator<<(std::ostream& o, const TVec2<T>& v)
+{
+    return o << "(" << v.x << ", " << v.y << ")";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+Logger& operator<<(Logger& o, const TVec2<T>& v)
+{
+    return o << "(" << v.x << ", " << v.y << ")";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 bool operator==(const TVec2<T>& lhs, const TVec2<T>& rhs)
 {
     return (lhs.x == rhs.x && lhs.y == rhs.y);

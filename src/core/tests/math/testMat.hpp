@@ -32,6 +32,7 @@ protected:
         for(int i=0; i<9; ++i)
         {
             m2 = m1;
+            CPPUNIT_ASSERT(m1 == m2);
             m2[i] = 99;
             CPPUNIT_ASSERT(m1 != m2);
         }

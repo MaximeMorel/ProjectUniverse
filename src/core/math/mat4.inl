@@ -268,6 +268,15 @@ std::ostream& operator<<(std::ostream& o, const TMat4<T>& m)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+Logger& operator<<(Logger& o, const TMat4<T>& m)
+{
+    return o << "[ " << m[0] << ", " << m[1] << ", " << m[2] << ", " << m[3] << " ]\n" <<
+                "[ " << m[4] << ", " << m[5] << ", " << m[6] << ", " << m[7] << " ]\n" <<
+                "[ " << m[8] << ", " << m[9] << ", " << m[10] << ", " << m[11] << " ]\n" <<
+                "[ " << m[12] << ", " << m[13] << ", " << m[14] << ", " << m[15] << " ]\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs)
 {
     for(int i=0; i<16; ++i)
@@ -277,14 +286,20 @@ bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs)
             return false;
         }
     }
-
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 bool operator!=(const TMat4<T>& lhs, const TMat4<T>& rhs)
 {
-    return !(lhs==rhs);
+    for(int i=0; i<16; ++i)
+    {
+        if(lhs[i] != rhs[i])
+        {
+            return true;
+        }
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 //template class TMat4<int>;

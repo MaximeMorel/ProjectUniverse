@@ -46,7 +46,7 @@ bool Frustum::intersect(const Vec3& pt) const
     // check box outside/inside of frustum
     for(int p=0; p<6; ++p)
     {
-        if(((planes[p].m_coeffs.dot(Vec4(pt, 1.0))) < 0.0 )?1:0)
+        if(((planes[p].getCoeffs().dot(Vec4(pt, 1.0))) < 0.0 )?1:0)
             return false;
     }
 
@@ -66,7 +66,7 @@ bool Frustum::intersect(const AABB& box) const
                 for(int k=0; k<2; ++k)
                 {
                     //std::cout << "(" << i << "," << j << "," << k << ") : " << Vec4(box[i].x, box[j].y, box[k].z, 1.0) << std::endl;
-                    out += ((planes[p].m_coeffs.dot(Vec4(box[i].x, box[j].y, box[k].z, 1.0)) < 0.0 )?1:0);
+                    out += ((planes[p].getCoeffs().dot(Vec4(box[i].x, box[j].y, box[k].z, 1.0)) < 0.0 )?1:0);
                 }
             }
         }
@@ -90,3 +90,18 @@ std::ostream& operator<<(std::ostream& o, const Frustum& frustum)
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& operator<<(Logger& o, const Frustum& frustum)
+{
+    const char* names[] = {"left  ", "right ", "top   ", "bottom", "near  ", "far   "};
+    for(int i=0; i<6; ++i)
+    {
+        o << names[i] << " : " << frustum.planes[i] << std::endl;
+    }
+    for(int i=0; i<8; ++i)
+    {
+        o << frustum.corners[i] << std::endl;
+    }
+    return o;
+}
+////////////////////////////////////////////////////////////////////////////////
+

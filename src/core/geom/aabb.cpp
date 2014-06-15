@@ -48,3 +48,8 @@ std::ostream& operator<<(std::ostream& o, const AABB& aabb)
     return o << aabb.min << " / " << aabb.max << " [" << aabb.max.x-aabb.min.x << ", " << aabb.max.y-aabb.min.y << ", " << aabb.max.z-aabb.min.z << "]";
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& operator<<(Logger& o, const AABB& aabb)
+{
+    return o << aabb.min << " / " << aabb.max << " [" << aabb.max.x-aabb.min.x << ", " << aabb.max.y-aabb.min.y << ", " << aabb.max.z-aabb.min.z << "]";
+}
+////////////////////////////////////////////////////////////////////////////////
