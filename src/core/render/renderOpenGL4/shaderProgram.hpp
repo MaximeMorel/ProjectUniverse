@@ -1,17 +1,21 @@
-#ifndef __SHADERPROGRAM_HPP__
-#define __SHADERPROGRAM_HPP__
+#ifndef __SHADERPROGRAM_OPENGL4_HPP__
+#define __SHADERPROGRAM_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/shaderProgram.hpp"
+#include "shader.hpp"
+#include <string>
 ////////////////////////////////////////////////////////////////////////////////
-class ShaderProgram : public Resource
+class ShaderProgramGL4 : public ShaderProgram
 {
 public:
-    ShaderProgram();
-    virtual ~ShaderProgram() override;
+    ShaderProgramGL4(const std::string& name);
+
+    virtual ~ShaderProgramGL4() override;
+
+    //virtual void addShader(Shader* shader) override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_shaderProgId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __SHADERPROGRAM_HPP__
+#endif // __SHADERPROGRAM_OPENGL4_HPP__

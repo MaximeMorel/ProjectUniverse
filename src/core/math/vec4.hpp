@@ -20,7 +20,7 @@ public:
     TVec3<T> cross(const TVec4<T>& v) const;
 
     T length() const;
-    T sqrLength() const;
+    T lengthSqr() const;
 
     TVec4<T> normalize() const;
 

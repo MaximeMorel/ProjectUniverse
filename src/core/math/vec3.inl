@@ -15,6 +15,12 @@ TVec3<T>::TVec3(const T& x, const T& y, const T& z)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+TVec3<T>::TVec3(const T& v)
+: x(v), y(v), z(v)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 T TVec3<T>::operator[](size_t i) const
 {
     return *(((T*)&x)+i);
@@ -45,7 +51,7 @@ T TVec3<T>::length() const
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T TVec3<T>::sqrLength() const
+T TVec3<T>::lengthSqr() const
 {
     return x*x + y*y + z*z;
 }

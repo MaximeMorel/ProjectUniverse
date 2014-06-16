@@ -1,17 +1,16 @@
-#ifndef __FBO_HPP__
-#define __FBO_HPP__
+#ifndef __FBO_OPENGL4_HPP__
+#define __FBO_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/fbo.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class FBO : public Resource
+class FBOGL4 : public FBO
 {
 public:
-    FBO();
-    virtual ~FBO() override;
+    FBOGL4(const std::string& name);
+    virtual ~FBOGL4() override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_fboId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __FBO_HPP__
+#endif // __FBO_OPENGL4_HPP__

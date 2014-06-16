@@ -1,17 +1,16 @@
-#ifndef __RBO_HPP__
-#define __RBO_HPP__
+#ifndef __RBO_OPENGL4_HPP__
+#define __RBO_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/rbo.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class RBO : public Resource
+class RBOGL4 : public RBO
 {
 public:
-    RBO();
-    virtual ~RBO() override;
+    RBOGL4(const std::string& name);
+    virtual ~RBOGL4() override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_rboId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __RBO_HPP__
+#endif // __RBO_OPENGL4_HPP__

@@ -1,7 +1,9 @@
 #ifndef __WINDOWCONTEXTSDL2_HPP__
 #define __WINDOWCONTEXTSDL2_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-class WindowContextSDL2
+#include "core/render/windowContext/windowContext.hpp"
+////////////////////////////////////////////////////////////////////////////////
+class WindowContextSDL2 : public WindowContext
 {
 public:
     WindowContextSDL2();

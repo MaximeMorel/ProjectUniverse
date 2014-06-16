@@ -1,17 +1,16 @@
-#ifndef __TEXTURE_HPP__
-#define __TEXTURE_HPP__
+#ifndef __TEXTURE_OPENGL4_HPP__
+#define __TEXTURE_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/texture.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class Texture : public Resource
+class TextureGL4 : public Texture
 {
 public:
-    Texture();
-    virtual ~Texture() override;
+    TextureGL4(const std::string& name);
+    virtual ~TextureGL4() override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_textureId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __TEXTURE_HPP__
+#endif // __TEXTURE_OPENGL4_HPP__

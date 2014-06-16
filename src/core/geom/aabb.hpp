@@ -8,6 +8,7 @@
 class AABB
 {
 public:
+    AABB();
     AABB(const Vec3& pMin, const Vec3& pMax);
 
     const Vec3& operator[](size_t i) const;

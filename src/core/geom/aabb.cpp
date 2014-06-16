@@ -1,5 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "aabb.hpp"
+#include <limits>
+////////////////////////////////////////////////////////////////////////////////
+AABB::AABB()
+: min(std::numeric_limits<double>::max()), max(std::numeric_limits<double>::min())
+{
+}
 ////////////////////////////////////////////////////////////////////////////////
 AABB::AABB(const Vec3& pMin, const Vec3& pMax)
 : min(pMin), max(pMax)
@@ -33,9 +39,9 @@ void AABB::add(const AABB& box)
 ////////////////////////////////////////////////////////////////////////////////
 bool AABB::intersect(const Vec3& p) const
 {
-    return (p.x > min.x && p.x < max.x &&
-            p.y > min.y && p.y < max.y &&
-            p.z > min.z && p.z < max.z);
+    return (p.x >= min.x && p.x <= max.x &&
+            p.y >= min.y && p.y <= max.y &&
+            p.z >= min.z && p.z <= max.z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t AABB::getMemSize() const

@@ -1,17 +1,16 @@
-#ifndef __VAO_HPP__
-#define __VAO_HPP__
+#ifndef __VAO_OPENGL4_HPP__
+#define __VAO_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/vao.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class VAO : public Resource
+class VAOGL4 : public VAO
 {
 public:
-    VAO();
-    virtual ~VAO() override;
+    VAOGL4(const std::string& name);
+    virtual ~VAOGL4() override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_vaoId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __VAO_HPP__
+#endif // __VAO_OPENGL4_HPP__

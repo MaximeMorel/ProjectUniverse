@@ -2,6 +2,10 @@
 #define __TESTGEOM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "testPlane.hpp"
+#include "testFrustum.hpp"
+#include "testAABB.hpp"
+#include "testBoundingSphere.hpp"
+#include "testOBB.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -21,6 +25,9 @@ protected:
 
 private:
 };
+
+
+
 CPPUNIT_TEST_SUITE_REGISTRATION(TestGeom);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTGEOM_HPP__

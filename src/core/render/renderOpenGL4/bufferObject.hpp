@@ -1,17 +1,16 @@
-#ifndef __BUFFEROBJECT_HPP__
-#define __BUFFEROBJECT_HPP__
+#ifndef __BUFFEROBJECT_OPENGL4_HPP__
+#define __BUFFEROBJECT_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/bufferObject.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class BufferObject : public Resource
+class BufferObjectGL4 : public BufferObject
 {
 public:
-    BufferObject();
-    virtual ~BufferObject() override;
+    BufferObjectGL4(const std::string& name);
+    virtual ~BufferObjectGL4() override;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_bufferId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __BUFFEROBJECT_HPP__
+#endif // __BUFFEROBJECT_OPENGL4_HPP__

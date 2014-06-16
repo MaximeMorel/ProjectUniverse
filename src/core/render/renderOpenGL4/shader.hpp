@@ -1,17 +1,18 @@
-#ifndef __SHADER_HPP__
-#define __SHADER_HPP__
+#ifndef __SHADER_OPENGL4_HPP__
+#define __SHADER_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
-#include <GL/glew.h>
+#include "core/render/shader.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class Shader : public Resource
+class ShaderGL4 : public Shader
 {
 public:
-    Shader();
-    virtual ~Shader() override;
+    ShaderGL4(const std::string& name);
+    virtual ~ShaderGL4() override;
+
+    unsigned int getId() const;
 
 private:
-    GLuint m_bufferId;
+    unsigned int m_shaderId;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __SHADER_HPP__
+#endif // __SHADER_OPENGL4_HPP__

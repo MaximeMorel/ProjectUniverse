@@ -22,6 +22,10 @@ solution "ProjectUniverse"
       kind "SharedLib"
       files { "../src/core/render/renderOpenGL4/**.hpp", "../src/core/render/renderOpenGL4/**.cpp" }
 
+   project "RenderNull"
+      kind "SharedLib"
+      files { "../src/core/render/renderNull/**.hpp", "../src/core/render/renderNull/**.cpp" }
+
    -- A project defines one build target
    project "ProjectUniverse"
       kind "ConsoleApp"

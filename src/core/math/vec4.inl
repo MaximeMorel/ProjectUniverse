@@ -51,7 +51,7 @@ T TVec4<T>::length() const
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T TVec4<T>::sqrLength() const
+T TVec4<T>::lengthSqr() const
 {
     return x*x + y*y + z*z + w*w;
 }

@@ -10,6 +10,7 @@ class TVec3
 public:
     TVec3();
     TVec3(const T& x, const T& y, const T& z);
+    TVec3(const T& v);
 
     T operator[](size_t i) const;
     T& operator[](size_t i);
@@ -18,7 +19,7 @@ public:
     TVec3<T> cross(const TVec3<T>& v) const;
 
     T length() const;
-    T sqrLength() const;
+    T lengthSqr() const;
 
     TVec3<T> normalize() const;
 
