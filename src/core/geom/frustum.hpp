@@ -4,7 +4,7 @@
 #include "core/math/vec3.hpp"
 #include "core/math/mat4.hpp"
 #include "core/geom/plane.hpp"
-#include "core/geom/aabb.hpp"
+#include "core/geom/boundingVolume/aabb.hpp"
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////

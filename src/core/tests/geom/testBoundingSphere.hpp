@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include "core/geom/boundingSphere.hpp"
+#include "core/geom/boundingVolume/boundingSphere.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class TestBoundingSphere : public CppUnit::TestFixture
 {
