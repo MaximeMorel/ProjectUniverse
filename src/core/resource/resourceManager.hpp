@@ -4,7 +4,8 @@
 #include "resource.hpp"
 #include <string>
 #include <vector>
-#include <map>
+//#include <map>
+#include <unordered_map>
 #include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,19 +15,22 @@ public:
     ResourceManager();
     ~ResourceManager();
 
-    void addResource(Resource* res);
+    template<class T, typename... Params>
+    ResourcePtr createResource(Params... p);
+
+    void addResource(const ResourcePtr& res);
 
     // get by resource Id, global
-    Resource* getResource(int resId) const;
+    ResourcePtr getResource(int resId);
 
     // get by resource Id and resource type Id
-    Resource* getResource(int resId, int resTypeId) const;
+    ResourcePtr getResource(int resId, int resTypeId);
 
     // get by resource name
-    Resource* getResource(const std::string& name) const;
+    ResourcePtr getResource(const std::string& name);
 
     // get by resource name and resource type Id
-    Resource* getResource(const std::string& name, int resTypeId) const;
+    ResourcePtr getResource(const std::string& name, int resTypeId);
 
     size_t getMemSize() const;
 
@@ -39,7 +43,12 @@ private:
         int id;
     };
 
-    std::vector<std::map<ResNameId, Resource*>> m_resources;
+    // use unordered_map ?
+    //std::vector<std::map<ResNameId, Resource*>> m_resources;
+    //std::vector<std::map<std::string, ResourcePtr>> m_resources;
+    std::vector<std::unordered_map<std::string, ResourcePtr>> m_resources;
 };
+////////////////////////////////////////////////////////////////////////////////
+#include "resourceManager.inl"
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RESOURCEMANAGER_HPP__
