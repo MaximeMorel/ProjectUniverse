@@ -9,6 +9,7 @@ class TestBasic : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE(TestBasic);
     CPPUNIT_TEST(testAddition);
     CPPUNIT_TEST(testMultiply);
+    CPPUNIT_TEST(testTypes);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,6 +26,12 @@ protected:
     void testMultiply()
     {
         CPPUNIT_ASSERT(1);
+    }
+    void testTypes()
+    {
+        CPPUNIT_ASSERT(sizeof(char) == 1);
+        CPPUNIT_ASSERT(sizeof(float) == 4);
+        CPPUNIT_ASSERT(sizeof(double) == 8);
     }
 
 private:
