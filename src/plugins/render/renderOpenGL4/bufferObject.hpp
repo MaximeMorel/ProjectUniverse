@@ -1,0 +1,16 @@
+#ifndef __BUFFEROBJECT_OPENGL4_HPP__
+#define __BUFFEROBJECT_OPENGL4_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include "core/render/bufferObject.hpp"
+////////////////////////////////////////////////////////////////////////////////
+class BufferObjectGL4 : public BufferObject
+{
+public:
+    BufferObjectGL4(const std::string& name);
+    virtual ~BufferObjectGL4() override;
+
+private:
+    unsigned int m_bufferId;
+};
+////////////////////////////////////////////////////////////////////////////////
+#endif // __BUFFEROBJECT_OPENGL4_HPP__
