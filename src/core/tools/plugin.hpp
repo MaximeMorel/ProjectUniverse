@@ -1,7 +1,15 @@
 #ifndef __PLUGIN_HPP__
 #define __PLUGIN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource.hpp"
+#include "core/resource/resource.hpp"
+////////////////////////////////////////////////////////////////////////////////
+struct PluginInfo
+{
+    const char* info;           ///< Plugin info string
+    const char* name;           ///< Plugin name
+    int major;                  ///< Major version number
+    int minor;                  ///< Minor version number
+};
 ////////////////////////////////////////////////////////////////////////////////
 class Plugin : public Resource
 {
@@ -17,7 +25,8 @@ public:
     void* getSymbol(const std::string& symbolname);
 
 private:
-    void* m_handle;     ///< handle for the dynamic library
+    void* m_handle;             ///< Handle for the dynamic library
+    PluginInfo m_pluginInfo;    ///< Details about the plugin
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __CRUSADERNOMERCY_HPP__
+#endif // __PLUGIN_HPP__

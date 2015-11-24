@@ -38,7 +38,8 @@ void* Plugin::getSymbol(const std::string& symbolname)
     symbol = dlsym(m_handle, symbolname.c_str());
 #endif
 #ifdef _WIN32
-    BOOL ret = GetProcAddress(m_handle, symbolname.c_str());
+    FARPROC proc = GetProcAddress(static_cast<HMODULE>(m_handle), symbolname.c_str());
+    symbol = reinterpret_cast<void*>(proc);
 #endif
 
     if (symbol == nullptr)
@@ -61,7 +62,7 @@ Plugin::~Plugin()
         }
 #endif
 #ifdef _WIN32
-        BOOL ret = FreeLibrary(m_handle);
+        BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
         if (ret != 0)
         {
             // log FreeLibrary error

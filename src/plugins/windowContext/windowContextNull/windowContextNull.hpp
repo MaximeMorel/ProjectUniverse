@@ -1,7 +1,7 @@
 #ifndef __WINDOWCONTEXTNULL_HPP__
 #define __WINDOWCONTEXTNULL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/render/windowContext/windowContext.hpp"
+#include "core/windowContext/windowContext.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class WindowContextNull : public WindowContext
 {
