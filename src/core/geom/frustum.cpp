@@ -3,22 +3,22 @@
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////////////
 Frustum::Frustum(const Mat4& p)
-: planes{Plane(p[3]+p[0], p[7]+p[4], p[11]+p[8], p[15]+p[12]), // Left clipping plane
-         Plane(p[3]-p[0], p[7]-p[4], p[11]-p[8], p[15]-p[12]), // Right clipping plane
-         Plane(p[3]-p[1], p[7]-p[5], p[11]-p[9], p[15]-p[13]), // Top clipping plane
-         Plane(p[3]+p[1], p[7]+p[5], p[11]+p[9], p[15]+p[13]), // Bottom clipping plane
-         Plane(p[3]+p[2], p[7]+p[6], p[11]+p[10], p[15]+p[14]), // Near clipping plane
-         Plane(p[3]-p[2], p[7]-p[6], p[11]-p[10], p[15]-p[14]) // Far clipping plane
-        },
-  corners{Plane::intersect(planes[4], planes[0], planes[3]), // near left bottom
-          Plane::intersect(planes[4], planes[1], planes[3]), // near right bottom
-          Plane::intersect(planes[4], planes[1], planes[2]), // near right top
-          Plane::intersect(planes[4], planes[0], planes[2]), // near left top
-          Plane::intersect(planes[5], planes[0], planes[2]), // far left top
-          Plane::intersect(planes[5], planes[1], planes[2]), // far right top
-          Plane::intersect(planes[5], planes[1], planes[3]), // far right bottom
-          Plane::intersect(planes[5], planes[0], planes[3]) // far left bottom
-  }
+    : planes{Plane(p[3]+p[0], p[7]+p[4], p[11]+p[8], p[15]+p[12]), // Left clipping plane
+             Plane(p[3]-p[0], p[7]-p[4], p[11]-p[8], p[15]-p[12]), // Right clipping plane
+             Plane(p[3]-p[1], p[7]-p[5], p[11]-p[9], p[15]-p[13]), // Top clipping plane
+             Plane(p[3]+p[1], p[7]+p[5], p[11]+p[9], p[15]+p[13]), // Bottom clipping plane
+             Plane(p[3]+p[2], p[7]+p[6], p[11]+p[10], p[15]+p[14]), // Near clipping plane
+             Plane(p[3]-p[2], p[7]-p[6], p[11]-p[10], p[15]-p[14]) // Far clipping plane
+            }
+    , corners{Plane::intersect(planes[4], planes[0], planes[3]), // near left bottom
+              Plane::intersect(planes[4], planes[1], planes[3]), // near right bottom
+              Plane::intersect(planes[4], planes[1], planes[2]), // near right top
+              Plane::intersect(planes[4], planes[0], planes[2]), // near left top
+              Plane::intersect(planes[5], planes[0], planes[2]), // far left top
+              Plane::intersect(planes[5], planes[1], planes[2]), // far right top
+              Plane::intersect(planes[5], planes[1], planes[3]), // far right bottom
+              Plane::intersect(planes[5], planes[0], planes[3]) // far left bottom
+             }
 {
     // normalize if we want to be able to compute the distance from planes
     // for frustum culling, often, the sign of the test with the plane is enough

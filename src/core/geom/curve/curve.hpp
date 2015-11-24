@@ -8,8 +8,8 @@
 class Curve
 {
 public:
-    Curve();
-    virtual ~Curve();
+    Curve() {};
+    virtual ~Curve() {};
 
     virtual Vec3 computePoint(double u) const=0;
 

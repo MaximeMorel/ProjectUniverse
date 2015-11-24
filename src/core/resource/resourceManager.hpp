@@ -47,6 +47,10 @@ private:
     //std::vector<std::map<ResNameId, Resource*>> m_resources;
     //std::vector<std::map<std::string, ResourcePtr>> m_resources;
     std::vector<std::unordered_map<std::string, ResourcePtr>> m_resources;
+
+    // registered path list
+
+    // tool to get full path for a resource
 };
 ////////////////////////////////////////////////////////////////////////////////
 #include "resourceManager.inl"

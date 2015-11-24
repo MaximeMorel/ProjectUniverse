@@ -9,8 +9,8 @@
 class Surface
 {
 public:
-    Surface();
-    virtual ~Surface();
+    Surface() {};
+    virtual ~Surface() {};
 
     virtual Vec3 computePoint(const Vec2& uv) const=0;
     virtual Vec3 computePoint(double u, double v) const=0;

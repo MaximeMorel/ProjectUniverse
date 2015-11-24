@@ -2,7 +2,10 @@
 #include "octree.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 Octree::Octree(const AABB& box, Octree* parent)
-: m_parent(parent), m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}, m_numElements(0), m_bbox(box)
+    : m_parent(parent)
+    , m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}
+    , m_numElements(0)
+    , m_bbox(box)
 {
 
 }
