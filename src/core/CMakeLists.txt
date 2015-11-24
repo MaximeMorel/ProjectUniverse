@@ -35,3 +35,4 @@ set(CORE_SOURCE application.cpp
                 tools/plugin.cpp)
 
 add_executable(engine ${CORE_SOURCE})
+target_link_libraries(engine ${CMAKE_DL_LIBS})
