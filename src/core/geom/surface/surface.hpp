@@ -18,7 +18,7 @@ public:
     size_t getMemSize() const;
 
     friend std::ostream& operator<<(std::ostream& o, const Surface& surface);
-    friend Logger& operator<<(Logger& o, const Surface& surface);
+    //friend Logger& operator<<(Logger& o, const Surface& surface);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SURFACE_HPP__

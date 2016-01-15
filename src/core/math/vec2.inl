@@ -55,7 +55,7 @@ bool operator!=(const TVec2<T>& lhs, const TVec2<T>& rhs)
     return (lhs.x != rhs.x || lhs.y != rhs.y);
 }
 ////////////////////////////////////////////////////////////////////////////////
-template class TVec2<int>;
-template class TVec2<float>;
-template class TVec2<double>;
+//template class TVec2<int>;
+//template class TVec2<float>;
+//template class TVec2<double>;
 ////////////////////////////////////////////////////////////////////////////////

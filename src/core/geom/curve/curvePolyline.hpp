@@ -14,7 +14,7 @@ public:
     size_t getMemSize() const;
 
     friend std::ostream& operator<<(std::ostream& o, const CurvePolyline& curve);
-    friend Logger& operator<<(Logger& o, const CurvePolyline& curve);
+    //friend Logger& operator<<(Logger& o, const CurvePolyline& curve);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __CURVEPOLYLINE_HPP__

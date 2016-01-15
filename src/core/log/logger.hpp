@@ -4,6 +4,27 @@
 #include <ostream>
 #include <string>
 ////////////////////////////////////////////////////////////////////////////////
+/*class LoggerBuf : public std::streambuf
+{
+public:
+    LoggerBuf(std::ostream& stream);
+    virtual ~LoggerBuf() override;
+
+    virtual int_type overflow(int_type c = traits_type::eof()) override;
+};
+////////////////////////////////////////////////////////////////////////////////
+class Logger : public std::ostream
+{
+public:
+    Logger(const std::string& name);
+    virtual ~Logger() override;
+
+    const std::string& getName() const;
+
+private:
+    std::string m_name;     ///< Logger name
+};*/
+////////////////////////////////////////////////////////////////////////////////
 class Logger
 {
 public:

@@ -2,8 +2,28 @@
 #define __LOGGERFILE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "logger.hpp"
-#include <string>
 #include <fstream>
+////////////////////////////////////////////////////////////////////////////////
+/*class LoggerFileBuf : public std::filebuf
+{
+public:
+    LoggerFileBuf(const char* filename);
+    virtual ~LoggerFileBuf() override;
+
+    virtual int_type overflow(int_type c = traits_type::eof()) override;
+};
+////////////////////////////////////////////////////////////////////////////////
+class LoggerFile : public Logger
+{
+public:
+    LoggerFile(const std::string& name, const std::string& fileName);
+    LoggerFile(const std::string& name, std::ostream& stream);
+    //LoggerFile(const std::string& name, LoggerStreamBuf& buf);
+    virtual ~LoggerFile() override;
+
+private:
+    LoggerFileBuf m_buf;
+};*/
 ////////////////////////////////////////////////////////////////////////////////
 class LoggerFile : public Logger
 {

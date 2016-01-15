@@ -15,10 +15,10 @@ size_t OBB::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& o, const OBB& obb)
+/*std::ostream& operator<<(std::ostream& o, const OBB& obb)
 {
     return o;
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const OBB& obb)
 {

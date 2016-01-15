@@ -14,7 +14,7 @@ public:
 
     size_t getMemSize() const;
 
-    friend std::ostream& operator<<(std::ostream& o, const OBB& aabb);
+    //friend std::ostream& operator<<(std::ostream& o, const OBB& aabb);
     friend Logger& operator<<(Logger& o, const OBB& aabb);
 
 };

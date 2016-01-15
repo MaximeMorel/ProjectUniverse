@@ -99,11 +99,11 @@ size_t TVec3<T>::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
+/*template <typename T>
 std::ostream& operator<<(std::ostream& o, const TVec3<T>& v)
 {
     return o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Logger& operator<<(Logger& o, const TVec3<T>& v)

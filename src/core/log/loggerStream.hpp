@@ -2,7 +2,27 @@
 #define __LOGGERSTREAM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "logger.hpp"
-#include <ostream>
+#include <sstream>
+////////////////////////////////////////////////////////////////////////////////
+/*class LoggerStringBuf : public std::stringbuf
+{
+public:
+    LoggerStringBuf();//std::ostream& stream);
+    virtual ~LoggerStringBuf() override;
+
+    virtual int_type overflow(int_type c = traits_type::eof()) override;
+};
+////////////////////////////////////////////////////////////////////////////////
+class LoggerString : public Logger
+{
+public:
+    LoggerString(const std::string& name, std::ostream& stream);
+    //LoggerString(const std::string& name, LoggerStreamBuf& buf);
+    virtual ~LoggerString() override;
+
+private:
+    LoggerStringBuf m_buf;
+};*/
 ////////////////////////////////////////////////////////////////////////////////
 class LoggerStream : public Logger
 {

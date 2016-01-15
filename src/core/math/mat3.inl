@@ -147,13 +147,13 @@ size_t TMat3<T>::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
+/*template <typename T>
 std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat)
 {
     return o << "[ " << mat[0] << ", " << mat[1] << ", " << mat[2] << " ]\n" <<
                 "[ " << mat[3] << ", " << mat[4] << ", " << mat[5] << " ]\n" <<
                 "[ " << mat[6] << ", " << mat[7] << ", " << mat[8] << " ]\n";
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Logger& operator<<(Logger& o, TMat3<T> const& mat)

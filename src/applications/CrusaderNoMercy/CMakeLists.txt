@@ -1,1 +1,1 @@
-message(STATUS "Building Kaplacalypse...")
+message(STATUS "Building CrusaderNoMercy...")

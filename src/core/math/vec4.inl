@@ -66,7 +66,7 @@ TVec4<T> TVec4<T>::normalize() const
 template <typename T>
 TVec4<T> TVec4<T>::operator+(const TVec4& v) const
 {
-    return TVec3<T>(x+v.x, y+v.y, z+v.z, w+v.w);
+    return TVec4<T>(x+v.x, y+v.y, z+v.z, w+v.w);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -99,11 +99,11 @@ size_t TVec4<T>::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
+/*template <typename T>
 std::ostream& operator<<(std::ostream& o, const TVec4<T>& v)
 {
     return o << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Logger& operator<<(Logger& o, const TVec4<T>& v)
@@ -123,7 +123,7 @@ bool operator!=(const TVec4<T>& lhs, const TVec4<T>& rhs)
     return (lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z || lhs.w != rhs.w);
 }
 ////////////////////////////////////////////////////////////////////////////////
-/*template class TVec4<int>;
-template class TVec4<float>;
-template class TVec4<double>;*/
+//template class TVec4<int>;
+//template class TVec4<float>;
+//template class TVec4<double>;
 ////////////////////////////////////////////////////////////////////////////////

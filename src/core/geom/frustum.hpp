@@ -16,7 +16,7 @@ public:
     bool intersect(const Vec3& pt) const;
     bool intersect(const AABB& box) const;
 
-    friend std::ostream& operator<<(std::ostream& o, const Frustum& frustum);
+    //friend std::ostream& operator<<(std::ostream& o, const Frustum& frustum);
     friend Logger& operator<<(Logger& o, const Frustum& frustum);
 
     Plane planes[6];

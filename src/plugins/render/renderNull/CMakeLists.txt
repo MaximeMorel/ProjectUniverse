@@ -1,6 +1,6 @@
-message(STATUS "Building renderNull plugin...")
+message(STATUS "Building RenderNull plugin...")
 
-project(renderNull)
+project(RenderNull)
 
 set(CMAKE_CXX_STANDARD 11)
 include_directories(../../../)
@@ -13,4 +13,5 @@ set(PLUGIN_SOURCE bufferObject.cpp
                   texture.cpp
                   vao.cpp)
 
-add_library(renderNull MODULE ${PLUGIN_SOURCE})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/lib)
+add_library(RenderNull MODULE ${PLUGIN_SOURCE})

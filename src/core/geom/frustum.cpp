@@ -76,7 +76,7 @@ bool Frustum::intersect(const AABB& box) const
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& o, const Frustum& frustum)
+/*std::ostream& operator<<(std::ostream& o, const Frustum& frustum)
 {
     const char* names[] = {"left  ", "right ", "top   ", "bottom", "near  ", "far   "};
     for(int i=0; i<6; ++i)
@@ -88,7 +88,7 @@ std::ostream& operator<<(std::ostream& o, const Frustum& frustum)
         o << frustum.corners[i] << std::endl;
     }
     return o;
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Frustum& frustum)
 {

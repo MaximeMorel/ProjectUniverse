@@ -245,8 +245,12 @@ private:
     std::vector<std::basic_streambuf<char> *> mBufs;
 };*/
 
+#include "core/math/mat3.hpp"
+#include "core/math/mat4.hpp"
+
 int main(int argc, char **argv)
 {
+    std::cout << "Start..." << std::endl;
     /*std::ofstream f1("a.txt");
     std::ofstream f2("b.txt");
 
@@ -270,6 +274,18 @@ int main(int argc, char **argv)
 
     LoggerNull n;
     n << "null" << std::endl;*/
+
+    Mat3 m(1,0,0,0,1,0,0,0,0);
+    try
+    {
+        Mat3 im = m.inverse();
+    }
+    catch(std::exception& e)
+    {
+    }
+
+    Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
+    Mat4 t = Mat4::translate(Vec3(0,5,-5000));
 
     return 0;
 }

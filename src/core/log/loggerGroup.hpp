@@ -4,6 +4,32 @@
 #include "logger.hpp"
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
+/*class LoggerGroupBuf : public std::streambuf
+{
+public:
+    LoggerGroupBuf();
+    virtual ~LoggerGroupBuf() override;
+
+    virtual int_type overflow(int_type c = traits_type::eof()) override;
+
+    void add(std::streambuf *buffer);
+
+private:
+    std::vector<std::streambuf*> m_buffers;
+};
+////////////////////////////////////////////////////////////////////////////////
+class LoggerGroup : public Logger
+{
+public:
+    LoggerGroup(const std::string& name);
+    virtual ~LoggerGroup();
+
+    void addLogger(Logger* logger);
+
+private:
+    std::vector <Logger*> m_loggers;
+};*/
+////////////////////////////////////////////////////////////////////////////////
 class LoggerGroup : public Logger
 {
 public:

@@ -27,10 +27,10 @@ size_t BoundingSphere::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& o, const BoundingSphere& bs)
+/*std::ostream& operator<<(std::ostream& o, const BoundingSphere& bs)
 {
     return o << bs.center << " / " << bs.radius;
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const BoundingSphere& bs)
 {

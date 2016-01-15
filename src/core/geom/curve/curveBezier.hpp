@@ -13,7 +13,7 @@ public:
 
     size_t getMemSize() const;
 
-    friend std::ostream& operator<<(std::ostream& o, const CurveBezier& curve);
+    //friend std::ostream& operator<<(std::ostream& o, const CurveBezier& curve);
     friend Logger& operator<<(Logger& o, const CurveBezier& curve);
 };
 ////////////////////////////////////////////////////////////////////////////////

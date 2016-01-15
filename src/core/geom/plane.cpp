@@ -57,10 +57,10 @@ Vec3 Plane::intersect(const Plane& p0, const Plane& p1, const Plane& p2)
     return (-p1.getNormal().cross(p2.getNormal())*p0.m_coeffs.w - p2.getNormal().cross(p0.getNormal())*p1.m_coeffs.w - p0.getNormal().cross(p1.getNormal())*p2.m_coeffs.w)/(p0.getNormal().dot(p1.getNormal().cross(p2.getNormal())));
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& o, const Plane& plane)
+/*std::ostream& operator<<(std::ostream& o, const Plane& plane)
 {
     return o << plane.m_coeffs;
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Plane& plane)
 {
