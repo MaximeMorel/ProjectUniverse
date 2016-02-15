@@ -11,18 +11,18 @@ void TestBasic::tearDown()
 ////////////////////////////////////////////////////////////////////////////////
 void TestBasic::testAddition()
 {
-    CPPUNIT_ASSERT(1 + 1 == 2);
+    CPPUNIT_ASSERT_EQUAL(1 + 1, 2);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void TestBasic::testMultiply()
 {
-    CPPUNIT_ASSERT(1 * 1 == 1);
+    CPPUNIT_ASSERT_EQUAL(1 * 1, 1);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void TestBasic::testTypes()
 {
-    CPPUNIT_ASSERT(sizeof(char) == 1);
-    CPPUNIT_ASSERT(sizeof(float) == 4);
-    CPPUNIT_ASSERT(sizeof(double) == 8);
+    CPPUNIT_ASSERT_EQUAL(sizeof(char), 1ul);
+    CPPUNIT_ASSERT_EQUAL(sizeof(float), 4ul);
+    CPPUNIT_ASSERT_EQUAL(sizeof(double), 8ul);
 }
 ////////////////////////////////////////////////////////////////////////////////

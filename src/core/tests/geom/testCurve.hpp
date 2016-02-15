@@ -1,16 +1,13 @@
-#ifndef __TESTMAT_HPP__
-#define __TESTMAT_HPP__
+#ifndef __TESTCURVE_HPP__
+#define __TESTCURVE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 ////////////////////////////////////////////////////////////////////////////////
-class TestMat : public CppUnit::TestFixture
+class TestCurve : public CppUnit::TestFixture
 {
-    CPPUNIT_TEST_SUITE(TestMat);
-    CPPUNIT_TEST(testEqual3);
-    CPPUNIT_TEST(testEqual4);
-    CPPUNIT_TEST(testMult4);
-    CPPUNIT_TEST(testInv3);
+    CPPUNIT_TEST_SUITE(TestCurve);
+    CPPUNIT_TEST(testBezier);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -18,12 +15,9 @@ public:
     void tearDown();
 
 protected:
-    void testEqual3();
-    void testEqual4();
-    void testMult4();
-    void testInv3();
+    void testBezier();
 };
 ////////////////////////////////////////////////////////////////////////////////
-CPPUNIT_TEST_SUITE_REGISTRATION(TestMat);
+CPPUNIT_TEST_SUITE_REGISTRATION(TestCurve);
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __TESTMAT_HPP__
+#endif // __TESTCURVE_HPP__

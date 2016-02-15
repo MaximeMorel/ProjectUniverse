@@ -59,6 +59,7 @@ set(CORE_SOURCE main.cpp
                 tests/geom/testAABB.cpp
                 tests/geom/testOBB.cpp
                 tests/geom/testBoundingSphere.cpp
+                tests/geom/testCurve.cpp
                 tests/geom/testPlane.cpp
                 tests/geom/testFrustum.cpp
                 )

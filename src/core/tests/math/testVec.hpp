@@ -3,9 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include "core/math/vec2.hpp"
-#include "core/math/vec3.hpp"
-#include "core/math/vec4.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class TestVec : public CppUnit::TestFixture
 {
