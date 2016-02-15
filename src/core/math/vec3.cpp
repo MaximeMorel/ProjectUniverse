@@ -9,4 +9,7 @@ template class TVec3<double>;
 template Logger& operator<<(Logger& o, const TVec3<int>& v);
 template Logger& operator<<(Logger& o, const TVec3<float>& v);
 template Logger& operator<<(Logger& o, const TVec3<double>& v);
+
+template bool operator==(const TVec3<double>& lhs, const TVec3<double>& rhs);
+template bool operator!=(const TVec3<double>& lhs, const TVec3<double>& rhs);
 ////////////////////////////////////////////////////////////////////////////////

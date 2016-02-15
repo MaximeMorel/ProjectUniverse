@@ -5,4 +5,7 @@
 template class TMat4<int>;
 template class TMat4<float>;
 template class TMat4<double>;
+
+template bool operator==(const TMat4<double>& lhs, const TMat4<double>& rhs);
+template bool operator!=(const TMat4<double>& lhs, const TMat4<double>& rhs);
 ////////////////////////////////////////////////////////////////////////////////

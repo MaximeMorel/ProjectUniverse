@@ -3,6 +3,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "curve.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+/// Nurbs curve class
+////////////////////////////////////////////////////////////////////////////////
 class CurveNurbs : public Curve
 {
 public:
@@ -11,10 +13,9 @@ public:
 
     virtual Vec3 computePoint(double u) const override;
 
-    size_t getMemSize() const;
+    virtual size_t getMemSize() const override;
 
-    friend std::ostream& operator<<(std::ostream& o, const CurveNurbs& curve);
-    //friend Logger& operator<<(Logger& o, const CurveNurbs& curve);
+    friend Logger& operator<<(Logger& o, const CurveNurbs& curve);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __CURVENURBS_HPP__

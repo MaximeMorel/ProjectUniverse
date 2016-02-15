@@ -13,29 +13,15 @@ class TestBasic : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp()
-    {}
-    void tearDown()
-    {}
+    void setUp();
+    void tearDown();
 
 protected:
-    void testAddition()
-    {
-        CPPUNIT_ASSERT(1);
-    }
-    void testMultiply()
-    {
-        CPPUNIT_ASSERT(1);
-    }
-    void testTypes()
-    {
-        CPPUNIT_ASSERT(sizeof(char) == 1);
-        CPPUNIT_ASSERT(sizeof(float) == 4);
-        CPPUNIT_ASSERT(sizeof(double) == 8);
-    }
-
-private:
+    void testAddition();
+    void testMultiply();
+    void testTypes();
 };
+////////////////////////////////////////////////////////////////////////////////
 CPPUNIT_TEST_SUITE_REGISTRATION(TestBasic);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTBASIC_HPP__

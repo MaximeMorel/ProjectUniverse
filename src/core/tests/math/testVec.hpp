@@ -4,6 +4,8 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 #include "core/math/vec2.hpp"
+#include "core/math/vec3.hpp"
+#include "core/math/vec4.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class TestVec : public CppUnit::TestFixture
 {
@@ -14,60 +16,15 @@ class TestVec : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp()
-    {}
-    void tearDown()
-    {}
+    void setUp();
+    void tearDown();
 
 protected:
-    void testEqual2()
-    {
-        Vec2 v1(1,1);
-        Vec2 v2 = v1;
-
-        CPPUNIT_ASSERT(v1 == v2);
-
-        for(int i=0; i<2; ++i)
-        {
-            v2 = v1;
-            v2[i] = 99;
-            CPPUNIT_ASSERT(v1 != v2);
-        }
-    }
-
-    void testEqual3()
-    {
-        Vec3 v1(1,2,3);
-        Vec3 v2 = v1;
-
-        CPPUNIT_ASSERT(v1 == v2);
-
-        for(int i=0; i<3; ++i)
-        {
-            v2 = v1;
-            v2[i] = 99;
-            CPPUNIT_ASSERT(v1 != v2);
-        }
-    }
-
-    void testEqual4()
-    {
-        Vec4 v1(1,2,3,4);
-        Vec4 v2 = v1;
-
-        CPPUNIT_ASSERT(v1 == v2);
-
-        for(int i=0; i<4; ++i)
-        {
-            v2 = v1;
-            v2[i] = 99;
-            CPPUNIT_ASSERT(v1 != v2);
-        }
-    }
-
-
-private:
+    void testEqual2();
+    void testEqual3();
+    void testEqual4();
 };
+////////////////////////////////////////////////////////////////////////////////
 CPPUNIT_TEST_SUITE_REGISTRATION(TestVec);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTVEC_HPP__

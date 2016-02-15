@@ -11,17 +11,10 @@ class TestOBB : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp()
-    {}
-    void tearDown()
-    {}
-
-protected:
-
-private:
+    void setUp();
+    void tearDown();
 };
-
+////////////////////////////////////////////////////////////////////////////////
 CPPUNIT_TEST_SUITE_REGISTRATION(TestOBB);
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __TESTFRUSTUM_HPP__
-__TESTOBB_HPP__
+#endif // __TESTOBB_HPP__

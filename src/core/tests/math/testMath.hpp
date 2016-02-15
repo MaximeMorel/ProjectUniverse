@@ -1,8 +1,8 @@
 #ifndef __TESTMATH_HPP__
 #define __TESTMATH_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "testMat.hpp"
-#include "testVec.hpp"
+//#include "testMat.hpp"
+//#include "testVec.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -13,15 +13,10 @@ class TestMath : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp()
-    {}
-    void tearDown()
-    {}
-
-protected:
-
-private:
+    void setUp();
+    void tearDown();
 };
+////////////////////////////////////////////////////////////////////////////////
 CPPUNIT_TEST_SUITE_REGISTRATION(TestMath);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTMATH_HPP__

@@ -37,7 +37,6 @@ private:
     T m_data[9];
 };
 ////////////////////////////////////////////////////////////////////////////////
-//template <typename T> std::ostream& operator<<(std::ostream& o, TMat3<T> const& mat);
 template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T> bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs);

@@ -5,4 +5,7 @@
 template class TVec2<int>;
 template class TVec2<float>;
 template class TVec2<double>;
+
+template bool operator==(const TVec2<double>& lhs, const TVec2<double>& rhs);
+template bool operator!=(const TVec2<double>& lhs, const TVec2<double>& rhs);
 ////////////////////////////////////////////////////////////////////////////////

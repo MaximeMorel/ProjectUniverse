@@ -3,9 +3,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/math/vec3.hpp"
 #include "core/math/mat4.hpp"
-#include "core/geom/plane.hpp"
+#include "core/geom/surface/surfacePlane.hpp"
 #include "core/geom/boundingVolume/aabb.hpp"
-#include <ostream>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Frustum
@@ -16,10 +15,9 @@ public:
     bool intersect(const Vec3& pt) const;
     bool intersect(const AABB& box) const;
 
-    //friend std::ostream& operator<<(std::ostream& o, const Frustum& frustum);
     friend Logger& operator<<(Logger& o, const Frustum& frustum);
 
-    Plane planes[6];
+    SurfacePlane planes[6];
     Vec3 corners[8];
 };
 ////////////////////////////////////////////////////////////////////////////////

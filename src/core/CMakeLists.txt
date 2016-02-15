@@ -10,11 +10,14 @@ set(CORE_SOURCE main.cpp
                 engine.cpp
                 geom/frustum.cpp
                 geom/octree.cpp
-                geom/plane.cpp
                 geom/boundingVolume/aabb.cpp
                 geom/boundingVolume/boundingSphere.cpp
                 geom/boundingVolume/obb.cpp
+                geom/curve/curve.cpp
+                geom/curve/curveLine.cpp
+                geom/curve/curvePolyline.cpp
                 geom/curve/curveBezier.cpp
+                geom/surface/surface.cpp
                 geom/surface/surfacePlane.cpp
                 input/inputDevice.cpp
                 input/inputManager.cpp
@@ -44,8 +47,22 @@ set(CORE_SOURCE main.cpp
                 render/texture.cpp
                 render/vao.cpp
                 resource/resource.cpp
-                resource/resourceManager.cpp)
+                resource/resourceManager.cpp
+
+                tests/testRunner.cpp
+                tests/tests.cpp
+                tests/testBasic.cpp
+                tests/math/testMath.cpp
+                tests/math/testVec.cpp
+                tests/math/testMat.cpp
+                tests/geom/testGeom.cpp
+                tests/geom/testAABB.cpp
+                tests/geom/testOBB.cpp
+                tests/geom/testBoundingSphere.cpp
+                tests/geom/testPlane.cpp
+                tests/geom/testFrustum.cpp
+                )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)
 add_executable(engine ${CORE_SOURCE})
-target_link_libraries(engine ${CMAKE_DL_LIBS})
+target_link_libraries(engine ${CMAKE_DL_LIBS} cppunit)

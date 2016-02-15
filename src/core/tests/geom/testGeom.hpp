@@ -1,11 +1,11 @@
 #ifndef __TESTGEOM_HPP__
 #define __TESTGEOM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "testPlane.hpp"
-#include "testFrustum.hpp"
-#include "testAABB.hpp"
-#include "testBoundingSphere.hpp"
-#include "testOBB.hpp"
+//#include "testPlane.hpp"
+//#include "testFrustum.hpp"
+//#include "testAABB.hpp"
+//#include "testBoundingSphere.hpp"
+//#include "testOBB.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -16,18 +16,10 @@ class TestGeom : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp()
-    {}
-    void tearDown()
-    {}
-
-protected:
-
-private:
+    void setUp();
+    void tearDown();
 };
-
-
-
+////////////////////////////////////////////////////////////////////////////////
 CPPUNIT_TEST_SUITE_REGISTRATION(TestGeom);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TESTGEOM_HPP__

@@ -36,7 +36,6 @@ public:
     T x, y, z;
 };
 ////////////////////////////////////////////////////////////////////////////////
-//template <typename T> std::ostream& operator<<(std::ostream& o, const TVec3<T>& v);
 template <typename T> Logger& operator<<(Logger& o, const TVec3<T>& v);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T> bool operator==(const TVec3<T>& lhs, const TVec3<T>& rhs);

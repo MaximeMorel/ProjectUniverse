@@ -1,53 +1,53 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "curveBezier.hpp"
+#include "curvePolyline.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-CurveBezier::CurveBezier()
-    : m_controlPoints()
+CurvePolyline::CurvePolyline(const Vec3& pointA, const Vec3& pointB)
+    : m_points()
+{
+    addPoint(pointA);
+    addPoint(pointB);
+}
+////////////////////////////////////////////////////////////////////////////////
+CurvePolyline::~CurvePolyline()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-CurveBezier::~CurveBezier()
+void CurvePolyline::addPoint(const Vec3& point)
 {
+    m_points.push_back(point);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void CurveBezier::addControlPoint(const Vec3& point)
+void CurvePolyline::setPoint(size_t id, const Vec3& point)
 {
-    m_controlPoints.push_back(point);
-}
-////////////////////////////////////////////////////////////////////////////////
-void CurveBezier::setControlPoint(size_t id, const Vec3& point)
-{
-    if (m_controlPoints.size() <= id)
+    if (id >= 0 && id < m_points.size())
     {
-        m_controlPoints.resize(id + 1);
+        m_points[id] = point;
     }
-    m_controlPoints[id] = point;
 }
 ////////////////////////////////////////////////////////////////////////////////
-const Vec3& CurveBezier::getControlPoint(size_t id) const
+const Vec3& CurvePolyline::getPoint(size_t id) const
 {
-    return m_controlPoints[id];
+    if (id >= 0 && id < m_points.size())
+    {
+        return m_points[id];
+    }
+    return m_points[0];
 }
 ////////////////////////////////////////////////////////////////////////////////
-Vec3 CurveBezier::computePoint(double u) const
+Vec3 CurvePolyline::computePoint(double u) const
 {
-    return Vec3();
+    return ((m_points[0] * (1.0 - u)) + (m_points[1]) * u);
 }
 ////////////////////////////////////////////////////////////////////////////////
-int CurveBezier::getDegree() const
-{
-    return m_controlPoints.size() - 1;
-}
-////////////////////////////////////////////////////////////////////////////////
-size_t CurveBezier::getMemSize() const
+size_t CurvePolyline::getMemSize() const
 {
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const CurveBezier& curve)
+Logger& operator<<(Logger& o, const CurvePolyline& curve)
 {
-    o << "Bezier curve: degree " << curve.getDegree() << "\n";
-    for (const auto& v : curve.m_controlPoints)
+    o << "Line curve: " << curve.m_points[0] << ", " << curve.m_points[1];
+    for (const Vec3& v : curve.m_points)
     {
         o << "\t" << v << "\n";
     }
