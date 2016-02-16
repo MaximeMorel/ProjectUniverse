@@ -33,12 +33,6 @@ size_t Resource::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& o, const Resource& res)
-{
-    res.printOn(o);
-    return o;
-}
-////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Resource& res)
 {
     res.printOn(o);

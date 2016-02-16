@@ -45,7 +45,6 @@ public:
     friend Logger& operator<<(Logger& o, const Resource& res);
 
 protected:
-    virtual void printOn(std::ostream& o) const=0;
     virtual void printOn(Logger& o) const=0;
 
 private:

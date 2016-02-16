@@ -4,26 +4,7 @@
 #include <ostream>
 #include <string>
 ////////////////////////////////////////////////////////////////////////////////
-/*class LoggerBuf : public std::streambuf
-{
-public:
-    LoggerBuf(std::ostream& stream);
-    virtual ~LoggerBuf() override;
-
-    virtual int_type overflow(int_type c = traits_type::eof()) override;
-};
-////////////////////////////////////////////////////////////////////////////////
-class Logger : public std::ostream
-{
-public:
-    Logger(const std::string& name);
-    virtual ~Logger() override;
-
-    const std::string& getName() const;
-
-private:
-    std::string m_name;     ///< Logger name
-};*/
+/// \brief Logger top class, intended to be used like an ostream
 ////////////////////////////////////////////////////////////////////////////////
 class Logger
 {

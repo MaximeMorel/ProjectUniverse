@@ -1,4 +1,4 @@
-message(STATUS "Building core...")
+message(STATUS "Configuring core...")
 
 project(engine)
 
@@ -21,12 +21,12 @@ set(CORE_SOURCE main.cpp
                 geom/surface/surfacePlane.cpp
                 input/inputDevice.cpp
                 input/inputManager.cpp
+                log/logManager.cpp
                 log/logger.cpp
                 log/loggerFile.cpp
                 log/loggerGroup.cpp
                 log/loggerNull.cpp
                 log/loggerStream.cpp
-                #log/logManager.cpp
                 math/mat3.cpp
                 math/mat3.inl
                 math/mat4.cpp
@@ -49,19 +49,19 @@ set(CORE_SOURCE main.cpp
                 resource/resource.cpp
                 resource/resourceManager.cpp
 
-                tests/testRunner.cpp
-                tests/tests.cpp
-                tests/testBasic.cpp
-                tests/math/testMath.cpp
-                tests/math/testVec.cpp
-                tests/math/testMat.cpp
-                tests/geom/testGeom.cpp
-                tests/geom/testAABB.cpp
-                tests/geom/testOBB.cpp
-                tests/geom/testBoundingSphere.cpp
-                tests/geom/testCurve.cpp
-                tests/geom/testPlane.cpp
-                tests/geom/testFrustum.cpp
+                # tests/testRunner.cpp
+                # tests/tests.cpp
+                # tests/testBasic.cpp
+                # tests/math/testMath.cpp
+                # tests/math/testVec.cpp
+                # tests/math/testMat.cpp
+                # tests/geom/testGeom.cpp
+                # tests/geom/testAABB.cpp
+                # tests/geom/testOBB.cpp
+                # tests/geom/testBoundingSphere.cpp
+                # tests/geom/testCurve.cpp
+                # tests/geom/testPlane.cpp
+                # tests/geom/testFrustum.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)

@@ -19,7 +19,6 @@ public:
 
     size_t getMemSize() const;
 
-    //friend std::ostream& operator<<(std::ostream& o, const BoundingSphere& bs);
     friend Logger& operator<<(Logger& o, const BoundingSphere& bs);
 
     Vec3 center;

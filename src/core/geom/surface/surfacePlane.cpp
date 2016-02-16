@@ -2,27 +2,27 @@
 #include "surfacePlane.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 SurfacePlane::SurfacePlane(double a, double b, double c, double d)
-: m_coeffs(a, b, c, d)
+    : m_coeffs(a, b, c, d)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 SurfacePlane::SurfacePlane(double *coeffs)
-: m_coeffs(coeffs[0], coeffs[1], coeffs[2], coeffs[3])
+    : m_coeffs(coeffs[0], coeffs[1], coeffs[2], coeffs[3])
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 SurfacePlane::SurfacePlane(const Vec4& coeffs)
-: m_coeffs(coeffs)
+    : m_coeffs(coeffs)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 SurfacePlane::SurfacePlane(const Vec3& point, const Vec3& normal)
-: m_coeffs(normal.x, normal.y, normal.z, -normal.dot(point))
+    : m_coeffs(normal.x, normal.y, normal.z, -normal.dot(point))
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 SurfacePlane::SurfacePlane(const Vec3& a, const Vec3& b, const Vec3& c)
-: SurfacePlane(a, ((b - a).cross(c - a)).normalize())
+    : SurfacePlane(a, ((b - a).cross(c - a)).normalize())
 {
 }
 ////////////////////////////////////////////////////////////////////////////////

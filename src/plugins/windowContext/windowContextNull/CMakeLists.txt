@@ -1,4 +1,4 @@
-message(STATUS "Building windowContextNull plugin...")
+message(STATUS "Configuring windowContextNull plugin...")
 
 project(windowContextNull)
 

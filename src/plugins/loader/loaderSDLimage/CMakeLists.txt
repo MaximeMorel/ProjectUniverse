@@ -1,1 +1,1 @@
-message(STATUS "Building loaderSDLimage plugin...")
+message(STATUS "Configuring loaderSDLimage plugin...")

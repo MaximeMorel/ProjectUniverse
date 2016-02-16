@@ -1,4 +1,4 @@
-message(STATUS "Building plugins...")
+message(STATUS "Configuring plugins...")
 
 add_subdirectory(audio)
 add_subdirectory(input)

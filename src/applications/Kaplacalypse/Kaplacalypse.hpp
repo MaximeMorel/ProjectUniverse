@@ -6,7 +6,7 @@
 class ApplicationKaplacalypse : public Application
 {
 public:
-    ApplicationKaplacalypse();
+    ApplicationKaplacalypse(Engine* engine);
     virtual ~ApplicationKaplacalypse() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -47,7 +47,9 @@ bool Frustum::intersect(const Vec3& pt) const
     for (int p = 0; p < 6; ++p)
     {
         if (((planes[p].getCoeffs().dot(Vec4(pt, 1.0))) < 0.0 ) ? 1:0)
+        {
             return false;
+        }
     }
 
     return true;
@@ -94,4 +96,3 @@ Logger& operator<<(Logger& o, const Frustum& frustum)
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////
-

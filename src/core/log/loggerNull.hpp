@@ -5,23 +5,7 @@
 #include <string>
 #include <streambuf>
 ////////////////////////////////////////////////////////////////////////////////
-/*class LoggerNullBuf : public std::streambuf
-{
-public:
-    LoggerNullBuf();
-    virtual ~LoggerNullBuf() override;
-
-    virtual int_type overflow(int_type c = traits_type::eof()) override;
-};
-////////////////////////////////////////////////////////////////////////////////
-class LoggerNull : public Logger
-{
-public:
-    LoggerNull(const std::string& name = "null");
-    virtual ~LoggerNull() override;
-
-private:
-};*/
+/// \brief Null logger, no action
 ////////////////////////////////////////////////////////////////////////////////
 class LoggerNull : public Logger
 {

@@ -47,9 +47,6 @@ Vec4 CurveBezier::computeHPoint(double u) const
     {
         for (size_t j = 0; j < m_controlPoints.size() - i; ++j)
         {
-            size_t a = getPointId(i, j);
-            size_t b = getPointId(i-1, j);
-            size_t c = getPointId(i-1, j+1);
             m_midPoints[getPointId(i, j)] =
                     m_midPoints[getPointId(i - 1, j)] *
                     (1.0 - u) + m_midPoints[getPointId(i - 1, j + 1)] * u;

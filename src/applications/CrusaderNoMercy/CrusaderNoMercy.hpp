@@ -6,7 +6,7 @@
 class ApplicationCrusaderNoMercy : public Application
 {
 public:
-    ApplicationCrusaderNoMercy();
+    ApplicationCrusaderNoMercy(Engine* engine);
     virtual ~ApplicationCrusaderNoMercy() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

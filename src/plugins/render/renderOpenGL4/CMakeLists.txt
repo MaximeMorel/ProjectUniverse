@@ -1,4 +1,4 @@
-message(STATUS "Building renderOpenGL4 plugin...")
+message(STATUS "Configuring renderOpenGL4 plugin...")
 
 project(renderOpenGL4)
 

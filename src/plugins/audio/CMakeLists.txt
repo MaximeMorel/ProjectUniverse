@@ -1,4 +1,4 @@
-message(STATUS "Building audio plugins...")
+message(STATUS "Configuring audio plugins...")
 
 add_subdirectory(audioFmod)
 add_subdirectory(audioNull)

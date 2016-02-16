@@ -6,7 +6,7 @@
 class ApplicationAppTest : public Application
 {
 public:
-    ApplicationAppTest();
+    ApplicationAppTest(Engine* engine);
     virtual ~ApplicationAppTest() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

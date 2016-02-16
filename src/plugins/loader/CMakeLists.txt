@@ -1,3 +1,3 @@
-message(STATUS "Building loader plugins...")
+message(STATUS "Configuring loader plugins...")
 
 add_subdirectory(loaderSDLimage)

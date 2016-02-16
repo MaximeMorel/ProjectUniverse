@@ -1,6 +1,8 @@
-message(STATUS "Build applications...")
+message(STATUS "Configuring applications...")
 
+add_subdirectory(appNull)
 add_subdirectory(appTest)
+add_subdirectory(BrickLand)
 add_subdirectory(CrusaderNoMercy)
 add_subdirectory(Kaplacalypse)
 add_subdirectory(mduelX)

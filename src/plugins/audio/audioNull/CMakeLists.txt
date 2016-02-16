@@ -1,1 +1,1 @@
-message(STATUS "Building audioNull plugin...")
+message(STATUS "Configuring audioNull plugin...")

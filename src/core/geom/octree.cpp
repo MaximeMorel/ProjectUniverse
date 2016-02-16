@@ -12,7 +12,7 @@ Octree::Octree(const AABB& box, Octree* parent)
 ////////////////////////////////////////////////////////////////////////////////
 Octree::~Octree()
 {
-    for(int i=0; i<8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
         delete m_children[i];
     }
@@ -22,9 +22,9 @@ size_t Octree::getDepth() const
 {
     size_t res = 0ul;
     bool empty = true;
-    for(int i=0; i<8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        if(!m_children[i]) continue;
+        if (!m_children[i]) continue;
         empty = false;
         res = std::max(m_children[i]->getDepth(), res);
     }
@@ -35,20 +35,26 @@ size_t Octree::getDepth() const
 size_t Octree::getNumNodes() const
 {
     size_t res = 0ul;
-    for(int i=0; i<8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        if(!m_children[i]) continue;
+        if (!m_children[i])
+        {
+            continue;
+        }
         res += m_children[i]->getNumNodes();
     }
-    return 1+res;
+    return (1 + res);
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t Octree::getNumElements() const
 {
     size_t res = m_numElements; //m_elements.size();
-    for(int i=0; i<8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        if(!m_children[i]) continue;
+        if (!m_children[i])
+        {
+            continue;
+        }
         res += m_children[i]->getNumElements();
     }
     return res;
@@ -57,9 +63,9 @@ size_t Octree::getNumElements() const
 size_t Octree::getMemSize() const
 {
     size_t res = sizeof(*this);
-    for(int i=0; i<8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        res += (m_children[i]?m_children[i]->getMemSize():0);
+        res += (m_children[i] ? m_children[i]->getMemSize() : 0);
     }
     return res;
 }
@@ -89,12 +95,12 @@ Octree* Octree::getChild(const Vec3& p)
     int j = 0;
     int k = 0;
 
-    if(p.x > m_bbox.min.x+len.x) i = 1;
-    if(p.y > m_bbox.min.y+len.y) j = 1;
-    if(p.z > m_bbox.min.z+len.z) k = 1;
+    if (p.x > m_bbox.min.x+len.x) i = 1;
+    if (p.y > m_bbox.min.y+len.y) j = 1;
+    if (p.z > m_bbox.min.z+len.z) k = 1;
 
     size_t id = i + 2*j + 4*k;
-    if(!m_children[id])
+    if (!m_children[id])
     {
         Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
         m_children[id] = new Octree(AABB(corner, corner+len), this);
@@ -105,9 +111,9 @@ Octree* Octree::getChild(const Vec3& p)
 ////////////////////////////////////////////////////////////////////////////////
 void Octree::insert(const Vec3& p)
 {
-    if(m_bbox.intersect(p))
+    if (m_bbox.intersect(p))
     {
-        if(m_bbox.max.x - m_bbox.min.x > 10.0f)
+        if (m_bbox.max.x - m_bbox.min.x > 10.0f)
         {
             Octree* child = getChild(p);
             child->insert(p);
@@ -123,19 +129,19 @@ void Octree::insert(const Vec3& p)
 ////////////////////////////////////////////////////////////////////////////////
 void Octree::traverse(const Frustum& frustum, std::vector<const Octree*>& res) const
 {
-    if(frustum.intersect(m_bbox))
+    if (frustum.intersect(m_bbox))
     {
         //bool empty = true;
-        for(int i=0; i<8; ++i)
+        for (int i = 0; i < 8; ++i)
         {
-            if(m_children[i])
+            if (m_children[i])
             {
                 m_children[i]->traverse(frustum, res);
                 //empty = false;
             }
         }
         //if(empty)
-        if(m_numElements > 0)
+        if (m_numElements > 0)
         {
             res.push_back(this);
         }

@@ -1,1 +1,1 @@
-message(STATUS "Building inputSDL plugin...")
+message(STATUS "Configuring inputSDL plugin...")

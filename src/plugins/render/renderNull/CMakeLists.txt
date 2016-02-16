@@ -1,4 +1,4 @@
-message(STATUS "Building RenderNull plugin...")
+message(STATUS "Configuring RenderNull plugin...")
 
 project(RenderNull)
 

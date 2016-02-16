@@ -1,43 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "loggerGroup.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-/*LoggerGroupBuf::LoggerGroupBuf()
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-LoggerGroupBuf::~LoggerGroupBuf()
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-std::char_traits<char>::int_type LoggerGroupBuf::overflow(int_type c)
-{
-    for (auto* buffer : m_buffers) {
-        buffer->sputc(c);
-    }
-    return c;
-}
-////////////////////////////////////////////////////////////////////////////////
-void LoggerGroupBuf::add(std::streambuf *buffer)
-{
-    m_buffers.push_back(buffer);
-}
-////////////////////////////////////////////////////////////////////////////////
 LoggerGroup::LoggerGroup(const std::string& name)
- : Logger(name)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-LoggerGroup::~LoggerGroup()
-{
-}
-///////////////////////////////////////////////////////////////////////////////
-void LoggerGroup::addLogger(Logger* logger)
-{
-    m_loggers.push_back(logger);
-}*/
-////////////////////////////////////////////////////////////////////////////////
-LoggerGroup::LoggerGroup(const std::string& name)
- : Logger(name)
+    : Logger(name)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +12,7 @@ LoggerGroup::~LoggerGroup()
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(long rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -56,7 +21,7 @@ Logger& LoggerGroup::operator<<(long rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(unsigned long rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -65,7 +30,7 @@ Logger& LoggerGroup::operator<<(unsigned long rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(bool rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -74,7 +39,7 @@ Logger& LoggerGroup::operator<<(bool rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(short rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -83,7 +48,7 @@ Logger& LoggerGroup::operator<<(short rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(unsigned short rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -92,7 +57,7 @@ Logger& LoggerGroup::operator<<(unsigned short rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(int rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -101,7 +66,7 @@ Logger& LoggerGroup::operator<<(int rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(unsigned int rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -110,7 +75,7 @@ Logger& LoggerGroup::operator<<(unsigned int rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(double rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -119,7 +84,7 @@ Logger& LoggerGroup::operator<<(double rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(float rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -128,7 +93,7 @@ Logger& LoggerGroup::operator<<(float rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(long double rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -137,7 +102,7 @@ Logger& LoggerGroup::operator<<(long double rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(const void* rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -146,7 +111,7 @@ Logger& LoggerGroup::operator<<(const void* rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(const char* rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -155,7 +120,7 @@ Logger& LoggerGroup::operator<<(const char* rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(const std::string& rhs)
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -164,7 +129,7 @@ Logger& LoggerGroup::operator<<(const std::string& rhs)
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(std::ostream& (*rhs)(std::ostream&))
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -173,7 +138,7 @@ Logger& LoggerGroup::operator<<(std::ostream& (*rhs)(std::ostream&))
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(std::ios& (*rhs)(std::ios&))
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }
@@ -182,7 +147,7 @@ Logger& LoggerGroup::operator<<(std::ios& (*rhs)(std::ios&))
 ////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(std::ios_base& (*rhs)(std::ios_base&))
 {
-    for(Logger* logger : m_loggers)
+    for (Logger* logger : m_loggers)
     {
         *logger << rhs;
     }

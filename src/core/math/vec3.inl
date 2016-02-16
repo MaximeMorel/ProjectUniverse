@@ -4,87 +4,93 @@
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T>::TVec3()
-: x(0), y(0), z(0)
+    : x(0)
+    , y(0)
+    , z(0)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T>::TVec3(const T& x, const T& y, const T& z)
-: x(x), y(y), z(z)
+    : x(x)
+    , y(y)
+    , z(z)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T>::TVec3(const T& v)
-: x(v), y(v), z(v)
+    : x(v)
+    , y(v)
+    , z(v)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T TVec3<T>::operator[](size_t i) const
 {
-    return *(((T*)&x)+i);
+    return *(((T*)&x) + i);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T& TVec3<T>::operator[](size_t i)
 {
-    return *(((T*)&x)+i);
+    return *(((T*)&x) + i);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T TVec3<T>::dot(const TVec3<T>& v) const
 {
-    return x*v.x + y*v.y + z*v.z;
+    return (x * v.x) + (y * v.y) + (z * v.z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::cross(const TVec3<T>& v) const
 {
-    return TVec3<T>(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
+    return TVec3<T>((y * v.z) - (z * v.y), (z * v.x) - (x * v.z), (x * v.y) - (y * v.x));
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T TVec3<T>::length() const
 {
-    return sqrt(x*x + y*y + z*z);
+    return sqrt(x * x + y * y + z * z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 T TVec3<T>::lengthSqr() const
 {
-    return x*x + y*y + z*z;
+    return x * x + y * y + z * z;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::normalize() const
 {
-    T ilen = 1.0/length();
-    return TVec3<T>(x*ilen, y*ilen, z*ilen);
+    T ilen = 1.0 / length();
+    return TVec3<T>(x * ilen, y * ilen, z * ilen);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::operator+(const TVec3& v) const
 {
-    return TVec3<T>(x+v.x, y+v.y, z+v.z);
+    return TVec3<T>(x + v.x, y + v.y, z + v.z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::operator-(const TVec3& v) const
 {
-    return TVec3<T>(x-v.x, y-v.y, z-v.z);
+    return TVec3<T>(x - v.x, y - v.y, z - v.z);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::operator*(T f) const
 {
-    return TVec3<T>(x*f, y*f, z*f);
+    return TVec3<T>(x * f, y * f, z * f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TVec3<T> TVec3<T>::operator/(T f) const
 {
-    return TVec3<T>(x/f, y/f, z/f);
+    return TVec3<T>(x / f, y / f, z / f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -98,12 +104,6 @@ size_t TVec3<T>::getMemSize() const
 {
     return sizeof(*this);
 }
-////////////////////////////////////////////////////////////////////////////////
-/*template <typename T>
-std::ostream& operator<<(std::ostream& o, const TVec3<T>& v)
-{
-    return o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
-}*/
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Logger& operator<<(Logger& o, const TVec3<T>& v)
@@ -122,8 +122,4 @@ bool operator!=(const TVec3<T>& lhs, const TVec3<T>& rhs)
 {
     return (lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z);
 }
-////////////////////////////////////////////////////////////////////////////////
-//template class TVec3<int>;
-//template class TVec3<float>;
-//template class TVec3<double>;
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,1 +1,1 @@
-message(STATUS "Building windowContextSDL2 plugin...")
+message(STATUS "Configuring windowContextSDL2 plugin...")

@@ -1,1 +1,1 @@
-message(STATUS "Building audioFmod plugin...")
+message(STATUS "Configuring audioFmod plugin...")

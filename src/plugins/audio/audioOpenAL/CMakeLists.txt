@@ -1,1 +1,1 @@
-message(STATUS "Building audioOpenAL plugin...")
+message(STATUS "Configuring audioOpenAL plugin...")

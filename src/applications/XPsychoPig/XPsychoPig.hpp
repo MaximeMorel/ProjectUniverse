@@ -6,7 +6,7 @@
 class ApplicationXPsychoPig : public Application
 {
 public:
-    ApplicationXPsychoPig();
+    ApplicationXPsychoPig(Engine* engine);
     virtual ~ApplicationXPsychoPig() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-message(STATUS "build...")
+message(STATUS "Configuring...")
 
 add_subdirectory(core)
 add_subdirectory(plugins)

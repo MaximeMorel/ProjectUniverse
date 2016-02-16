@@ -6,7 +6,7 @@
 class ApplicationOpenDD : public Application
 {
 public:
-    ApplicationOpenDD();
+    ApplicationOpenDD(Engine* engine);
     virtual ~ApplicationOpenDD() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

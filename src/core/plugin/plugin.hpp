@@ -24,9 +24,13 @@ public:
     /// \return nullptr if symbolname could not be loaded
     void* getSymbol(const std::string& symbolname);
 
+    virtual void printOn(Logger& o) const override;
+
 private:
     void* m_handle;             ///< Handle for the dynamic library
     PluginInfo m_pluginInfo;    ///< Details about the plugin
 };
+////////////////////////////////////////////////////////////////////////////////
+typedef PluginInfo* (*PFNgetPluginInfo)();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGIN_HPP__

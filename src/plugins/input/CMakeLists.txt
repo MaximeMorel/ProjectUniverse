@@ -1,3 +1,3 @@
-message(STATUS "Building input plugins...")
+message(STATUS "Configuring input plugins...")
 
 add_subdirectory(inputSDL)
