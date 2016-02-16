@@ -9,6 +9,9 @@ public:
     Application(Engine* engine);
     virtual ~Application();
 
+    Engine* getEngine();
+    LogManager& log();
+
 private:
     Engine* m_engine;
 };

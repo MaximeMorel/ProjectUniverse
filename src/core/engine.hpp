@@ -10,6 +10,8 @@ public:
     Engine();
     virtual ~Engine();
 
+    LogManager& log();
+
 private:
     LogManager m_logManager;
     PluginManager m_pluginManager;

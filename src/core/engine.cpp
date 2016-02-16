@@ -19,16 +19,28 @@ Engine::Engine()
     m_logManager.log() << getcwd(buf, 256) << std::endl;
 
     Plugin pluginApp("../app/AppNull/libAppNull.so");
-    PFNgetPluginInfo* f = static_cast<PFNgetPluginInfo*>(pluginApp.getSymbol("getPluginInfo"));
-    PluginInfo* p = (f)();
-    m_logManager.log() << p->name << std::endl;
-    m_logManager.log() << p->info << std::endl;
-    m_logManager.log() << p->major << std::endl;
-    m_logManager.log() << p->minor << std::endl;
+    PFNgetPluginInfo f = (PFNgetPluginInfo)(pluginApp.getSymbol("getPluginInfo"));
+    if (f)
+    {
+        PluginInfo* p = f();
+        m_logManager.log() << p->name << " " << p->major << "." << p->minor << "\n";
+        m_logManager.log() << p->info << std::endl;
+    }
+
+    PFNrunPlugin r = (PFNrunPlugin)(pluginApp.getSymbol("runPlugin"));
+    if (r)
+    {
+        r(this);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
     m_logManager.log() << "Engine close..." << std::endl;
+}
+////////////////////////////////////////////////////////////////////////////////
+LogManager& Engine::log()
+{
+    return m_logManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
