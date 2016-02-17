@@ -7,6 +7,8 @@ PluginInfo pluginInfo = { "appNull",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
+ApplicationAppNull* app = nullptr;
+////////////////////////////////////////////////////////////////////////////////
 PluginInfo* getPluginInfo()
 {
     return &pluginInfo;
@@ -14,17 +16,33 @@ PluginInfo* getPluginInfo()
 ////////////////////////////////////////////////////////////////////////////////
 int runPlugin(Engine* engine)
 {
-    ApplicationappNull app(engine);
+    ApplicationAppNull app(engine);
+    return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ApplicationappNull::ApplicationappNull(Engine* engine)
+Application* getAppInstance(Engine* engine)
+{
+    if (app == nullptr)
+    {
+        app = new ApplicationAppNull(engine);
+    }
+    return app;
+}
+////////////////////////////////////////////////////////////////////////////////
+void closeAppInstance()
+{
+    delete app;
+    app = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+ApplicationAppNull::ApplicationAppNull(Engine* engine)
     : Application(engine)
 {
-    log().log() << "ApplicationappNull start..." << std::endl;
+    log().log() << "ApplicationAppNull start..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ApplicationappNull::~ApplicationappNull()
+ApplicationAppNull::~ApplicationAppNull()
 {
-    log().log() << "ApplicationappNull stop..." << std::endl;
+    log().log() << "ApplicationAppNull stop..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////

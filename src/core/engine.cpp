@@ -10,28 +10,34 @@
 // Load app specific config
 // Load plugins
 // Exec app
-///
+////////////////////////////////////////////////////////////////////////////////
+Engine* gEngine = nullptr;
+////////////////////////////////////////////////////////////////////////////////
 Engine::Engine()
 {
+    gEngine = this;
     m_logManager.log() << "Engine init..." << std::endl;
 
     char buf[256];
     m_logManager.log() << getcwd(buf, 256) << std::endl;
 
     Plugin pluginApp("../app/AppNull/libAppNull.so");
-    PFNgetPluginInfo f = (PFNgetPluginInfo)(pluginApp.getSymbol("getPluginInfo"));
-    if (f)
-    {
-        PluginInfo* p = f();
-        m_logManager.log() << p->name << " " << p->major << "." << p->minor << "\n";
-        m_logManager.log() << p->info << std::endl;
-    }
+    m_logManager.log() << pluginApp << std::endl;
 
     PFNrunPlugin r = (PFNrunPlugin)(pluginApp.getSymbol("runPlugin"));
     if (r)
     {
         r(this);
     }
+
+    // AppTest
+    pluginApp = Plugin("../app/AppTest/libAppTest.so");
+    m_logManager.log() << pluginApp  << std::endl;
+
+    PFNgetAppInstance getAppInstance = (PFNgetAppInstance)(pluginApp.getSymbol("getAppInstance"));
+    Application* appTest = getAppInstance(this);
+    PFNcloseAppInstance closeAppInstance = (PFNcloseAppInstance)(pluginApp.getSymbol("closeAppInstance"));
+    closeAppInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
@@ -44,3 +50,7 @@ LogManager& Engine::log()
     return m_logManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Engine* getEngine()
+{
+    return gEngine;
+}

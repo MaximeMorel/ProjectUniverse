@@ -6,32 +6,64 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+#include "../engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 Plugin::Plugin(const std::string& filename)
     : Resource(filename)
     , m_handle(nullptr)
+    , m_pluginInfo{"null", "null", 0, 0}
 {
     // find real path (using resource manager tools and going through the registered paths)
 #ifdef __unix__
     m_handle = dlopen(filename.c_str(), RTLD_LAZY);
-    if (m_handle == nullptr)
-    {
-        // log dlopen error
-    }
 #endif
 #ifdef _WIN32
     // need backslashes
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx
     HMODULE module = LoadLibrary(filename.c_str());
-    if (module == nullptr)
-    {
-        // log LoadLibrary error
-    }
     m_handle = module;
 #endif
+
+    if (m_handle == nullptr)
+    {
+        getEngine()->log().log() << "loadLibrary(" << filename << ") failed" << std::endl;
+    }
+    else
+    {
+        PFNgetPluginInfo getPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
+        if (getPluginInfo)
+        {
+            PluginInfo* p = getPluginInfo();
+            if (p)
+            {
+                m_pluginInfo = *p;
+            }
+        }
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void* Plugin::getSymbol(const std::string& symbolname)
+Plugin::~Plugin()
+{
+    if (m_handle != nullptr)
+    {
+#ifdef __unix__
+        int ret = dlclose(m_handle);
+        if (ret != 0)
+        {
+            getEngine()->log().log() << "dlclose(" << getName() << ") failed" << std::endl;
+        }
+#endif
+#ifdef _WIN32
+        BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
+        if (ret != 0)
+        {
+            getEngine()->log().log() << "FreeLibrary(" << getName() << ") failed" << std::endl;
+        }
+#endif
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void* Plugin::getSymbol(const std::string& symbolname) const
 {
     void* symbol = nullptr;
 #ifdef __unix__
@@ -44,35 +76,20 @@ void* Plugin::getSymbol(const std::string& symbolname)
 
     if (symbol == nullptr)
     {
-        // log getSymbol error
+        getEngine()->log().log() << "getSymbol(" << getName() << ", " << symbolname << ") failed" << std::endl;
     }
 
     return symbol;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Plugin::~Plugin()
+const PluginInfo& Plugin::getInfo() const
 {
-    if (m_handle != nullptr)
-    {
-#ifdef __unix__
-        int ret = dlclose(m_handle);
-        if (ret != 0)
-        {
-            // log dlclose error
-        }
-#endif
-#ifdef _WIN32
-        BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
-        if (ret != 0)
-        {
-            // log FreeLibrary error
-        }
-#endif
-    }
+    return m_pluginInfo;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Plugin::printOn(Logger& o) const
 {
-
+    o << getName() << ": " << m_pluginInfo.name << " " << m_pluginInfo.major << "." << m_pluginInfo.minor << "\n";
+    o << m_pluginInfo.info;
 }
 ////////////////////////////////////////////////////////////////////////////////

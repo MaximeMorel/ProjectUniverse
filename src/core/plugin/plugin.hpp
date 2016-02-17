@@ -23,7 +23,9 @@ public:
     /// Load a symbol form the dynamic library
     /// \param symbolname Symbol to load from the dynamic library
     /// \return nullptr if symbolname could not be loaded
-    void* getSymbol(const std::string& symbolname);
+    void* getSymbol(const std::string& symbolname) const;
+
+    const PluginInfo& getInfo() const;
 
     virtual void printOn(Logger& o) const override;
 
@@ -35,5 +37,8 @@ private:
 using PFNgetPluginInfo = PluginInfo* (*)();
 class Engine;
 using PFNrunPlugin = int (*)(Engine*);
+class Application;
+using PFNgetAppInstance = Application* (*)(Engine*);
+using PFNcloseAppInstance = void (*)();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGIN_HPP__
