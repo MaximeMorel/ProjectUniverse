@@ -16,7 +16,7 @@ Engine* gEngine = nullptr;
 Engine::Engine()
 {
     gEngine = this;
-    m_logManager.log() << "Engine init..." << std::endl;
+    m_logManager.log() << FILEINFO << "Engine init..." << std::endl;
 
     char buf[256];
     m_logManager.log() << getcwd(buf, 256) << std::endl;

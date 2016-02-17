@@ -285,8 +285,8 @@ int main(int argc, char **argv)
     {
     }
 
-    Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
-    Mat4 t = Mat4::translate(Vec3(0,5,-5000));
+    //Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
+    //Mat4 t = Mat4::translate(Vec3(0,5,-5000));
 
     //testRunner();
 
