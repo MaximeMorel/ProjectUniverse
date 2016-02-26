@@ -39,11 +39,13 @@ Plugin::Plugin(const std::string& filename)
                 m_pluginInfo = *p;
             }
         }
+        closeAppInstance = (void (*)())(getSymbol("closeAppInstance"));
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
 Plugin::~Plugin()
 {
+    closeAppInstance();
     if (m_handle != nullptr)
     {
 #ifdef __unix__

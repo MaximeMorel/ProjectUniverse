@@ -36,8 +36,8 @@ Engine::Engine()
 
     PFNgetAppInstance getAppInstance = (PFNgetAppInstance)(pluginApp.getSymbol("getAppInstance"));
     Application* appTest = getAppInstance(this);
-    PFNcloseAppInstance closeAppInstance = (PFNcloseAppInstance)(pluginApp.getSymbol("closeAppInstance"));
-    closeAppInstance();
+    //PFNcloseAppInstance closeAppInstance = (PFNcloseAppInstance)(pluginApp.getSymbol("closeAppInstance"));
+    //closeAppInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()

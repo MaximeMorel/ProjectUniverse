@@ -42,7 +42,6 @@ Vec4 CurveBezier::computeHPoint(double u) const
     {
         initMidPoints();
     }
-
     for (size_t i = 1; i < m_controlPoints.size(); ++i)
     {
         for (size_t j = 0; j < m_controlPoints.size() - i; ++j)
@@ -90,8 +89,11 @@ void CurveBezier::initMidPoints() const
 ////////////////////////////////////////////////////////////////////////////////
 size_t CurveBezier::getPointId(size_t iteration, size_t id) const
 {
-    return ((m_controlPoints.size() * (m_controlPoints.size() + 1)) / 2) - 
-           (((m_controlPoints.size() - iteration) * (m_controlPoints.size() - iteration + 1)) / 2)
-            + id;
+    //return ((m_controlPoints.size() * (m_controlPoints.size() + 1)) / 2) -
+    //       (((m_controlPoints.size() - iteration) * (m_controlPoints.size() - iteration + 1)) / 2)
+    //        + id;
+    //return iteration * (m_controlPoints.size() + (1 - iteration) / 2) + id;
+    //return iteration * m_controlPoints.size() - (iteration * iteration) / 2 + iteration / 2  + id;
+    return iteration * (m_controlPoints.size() - iteration / 2) + iteration / 2 + id;
 }
 ////////////////////////////////////////////////////////////////////////////////

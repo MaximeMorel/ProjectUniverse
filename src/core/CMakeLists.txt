@@ -48,22 +48,8 @@ set(CORE_SOURCE main.cpp
                 render/vao.cpp
                 resource/resource.cpp
                 resource/resourceManager.cpp
-
-                # tests/testRunner.cpp
-                # tests/tests.cpp
-                # tests/testBasic.cpp
-                # tests/math/testMath.cpp
-                # tests/math/testVec.cpp
-                # tests/math/testMat.cpp
-                # tests/geom/testGeom.cpp
-                # tests/geom/testAABB.cpp
-                # tests/geom/testOBB.cpp
-                # tests/geom/testBoundingSphere.cpp
-                # tests/geom/testCurve.cpp
-                # tests/geom/testPlane.cpp
-                # tests/geom/testFrustum.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)
 add_executable(engine ${CORE_SOURCE})
-target_link_libraries(engine ${CMAKE_DL_LIBS} cppunit)
+target_link_libraries(engine ${CMAKE_DL_LIBS})

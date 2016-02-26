@@ -32,6 +32,7 @@ public:
 private:
     void* m_handle;             ///< Handle for the dynamic library
     PluginInfo m_pluginInfo;    ///< Details about the plugin
+    void (*closeAppInstance)();
 };
 ////////////////////////////////////////////////////////////////////////////////
 using PFNgetPluginInfo = PluginInfo* (*)();
@@ -39,6 +40,6 @@ class Engine;
 using PFNrunPlugin = int (*)(Engine*);
 class Application;
 using PFNgetAppInstance = Application* (*)(Engine*);
-using PFNcloseAppInstance = void (*)();
+//using PFNcloseAppInstance = void (*)();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGIN_HPP__
