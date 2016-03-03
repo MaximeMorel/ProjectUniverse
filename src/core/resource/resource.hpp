@@ -17,6 +17,9 @@ private:
     std::string m_typeName;
 };
 ////////////////////////////////////////////////////////////////////////////////
+class Resource;
+typedef std::shared_ptr<Resource> ResourcePtr;
+////////////////////////////////////////////////////////////////////////////////
 /// \brief Resource base class
 ////////////////////////////////////////////////////////////////////////////////
 class Resource
@@ -35,25 +38,25 @@ public:
     /// \brief Get resource id
     /// \return Resource id
     ////////////////////////////////////////////////////////////////////////////
-    int getId() const;
+    size_t getId() const;
 
-    static ResourceType& getType();
+    static const ResourceType& getStaticType();
+    virtual const ResourceType& getType() const;
 
     virtual size_t getMemSize() const;
 
-    friend std::ostream& operator<<(std::ostream& o, const Resource& res);
     friend Logger& operator<<(Logger& o, const Resource& res);
+    friend Logger& operator<<(Logger& o, const ResourcePtr& res);
 
 protected:
-    virtual void printOn(Logger& o) const=0;
+    virtual void printOn(Logger& o) const = 0;
 
 private:
+    size_t m_id;
     std::string m_name;
-    int m_id;
 
     static ResourceType m_type;
+    friend class ResourceManager;
 };
-////////////////////////////////////////////////////////////////////////////////
-typedef std::shared_ptr<Resource> ResourcePtr;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RESOURCE_HPP__

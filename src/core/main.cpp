@@ -276,21 +276,30 @@ int main(int argc, char **argv)
     LoggerNull n;
     n << "null" << std::endl;*/
 
-    Mat3 m(1,0,0,0,1,0,0,0,0);
+    /*Mat3 m(1,0,0,0,1,0,0,0,0);
     try
     {
         Mat3 im = m.inverse();
     }
     catch(std::exception& e)
     {
-    }
+    }*/
 
     //Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
     //Mat4 t = Mat4::translate(Vec3(0,5,-5000));
 
     //testRunner();
 
-    Engine engine;
+    Engine engine("main");
+
+    PluginApp pluginApp("../app/AppNull/libAppNull.so");
+    engine.log().log() << pluginApp << std::endl;
+    pluginApp.getAppInstance(&engine);
+
+    // AppTest
+    pluginApp = PluginApp("../app/AppTest/libAppTest.so");
+    engine.log().log() << pluginApp  << std::endl;
+    pluginApp.getAppInstance(&engine);
 
     return 0;
 }

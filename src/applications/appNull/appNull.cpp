@@ -14,12 +14,6 @@ PluginInfo* getPluginInfo()
     return &pluginInfo;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int runPlugin(Engine* engine)
-{
-    ApplicationAppNull app(engine);
-    return 0;
-}
-////////////////////////////////////////////////////////////////////////////////
 Application* getAppInstance(Engine* engine)
 {
     if (app == nullptr)

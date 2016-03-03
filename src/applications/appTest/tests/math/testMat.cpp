@@ -72,5 +72,14 @@ void TestMat::testInv3()
     Mat3 m3 = m1*m2;
 
     CPPUNIT_ASSERT(m3 == Mat3(1));
+
+    Mat3 m(1,0,0,0,1,0,0,0,0);
+    try
+    {
+        m.inverse();
+    }
+    catch(std::exception& e)
+    {
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////

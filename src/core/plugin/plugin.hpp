@@ -1,8 +1,9 @@
 #ifndef __PLUGIN_HPP__
 #define __PLUGIN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-//#include "core/engine.hpp"
 #include "core/resource/resource.hpp"
+////////////////////////////////////////////////////////////////////////////////
+/// \brief Plugin information structure
 ////////////////////////////////////////////////////////////////////////////////
 struct PluginInfo
 {
@@ -11,6 +12,8 @@ struct PluginInfo
     int major;                  ///< Major version number
     int minor;                  ///< Minor version number
 };
+////////////////////////////////////////////////////////////////////////////////
+/// \brief Plugin class, helper to load a shared library
 ////////////////////////////////////////////////////////////////////////////////
 class Plugin : public Resource
 {
@@ -29,13 +32,14 @@ public:
 
     virtual void printOn(Logger& o) const override;
 
-private:
+protected:
     void* m_handle;             ///< Handle for the dynamic library
     PluginInfo m_pluginInfo;    ///< Details about the plugin
-    void (*closeAppInstance)();
+
+    using PFNgetPluginInfo = PluginInfo* (*)();
+    PFNgetPluginInfo getPluginInfo;
 };
 ////////////////////////////////////////////////////////////////////////////////
-using PFNgetPluginInfo = PluginInfo* (*)();
 class Engine;
 using PFNrunPlugin = int (*)(Engine*);
 class Application;

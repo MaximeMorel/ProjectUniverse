@@ -39,6 +39,8 @@ set(CORE_SOURCE main.cpp
                 math/vec4.inl
                 plugin/pluginManager.cpp
                 plugin/plugin.cpp
+                plugin/pluginApp.cpp
+                plugin/pluginLib.cpp
                 render/bufferObject.cpp
                 render/fbo.cpp
                 render/rbo.cpp

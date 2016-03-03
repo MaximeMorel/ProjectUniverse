@@ -10,9 +10,9 @@ public:
     Curve();
     virtual ~Curve();
 
-    virtual Vec3 computePoint(double u) const=0;
+    virtual Vec3 computePoint(double u) const = 0;
 
-    virtual size_t getMemSize() const=0;
+    virtual size_t getMemSize() const = 0;
 
     friend Logger& operator<<(Logger& o, const Curve& curve);
 };

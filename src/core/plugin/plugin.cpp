@@ -16,21 +16,25 @@ Plugin::Plugin(const std::string& filename)
     // find real path (using resource manager tools and going through the registered paths)
 #ifdef __unix__
     m_handle = dlopen(filename.c_str(), RTLD_LAZY);
+    if (m_handle == nullptr)
+    {
+        getEngine().log().log() << "dlopen(" << filename << ") failed" << std::endl;
+    }
 #endif
 #ifdef _WIN32
     // need backslashes
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx
     HMODULE module = LoadLibrary(filename.c_str());
     m_handle = module;
-#endif
-
     if (m_handle == nullptr)
     {
-        getEngine()->log().log() << "loadLibrary(" << filename << ") failed" << std::endl;
+        getEngine().log().log() << "loadLibrary(" << filename << ") failed" << std::endl;
     }
-    else
+#endif
+
+    if (m_handle != nullptr)
     {
-        PFNgetPluginInfo getPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
+        getPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
         if (getPluginInfo)
         {
             PluginInfo* p = getPluginInfo();
@@ -39,27 +43,25 @@ Plugin::Plugin(const std::string& filename)
                 m_pluginInfo = *p;
             }
         }
-        closeAppInstance = (void (*)())(getSymbol("closeAppInstance"));
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
 Plugin::~Plugin()
 {
-    closeAppInstance();
     if (m_handle != nullptr)
     {
 #ifdef __unix__
         int ret = dlclose(m_handle);
         if (ret != 0)
         {
-            getEngine()->log().log() << "dlclose(" << getName() << ") failed" << std::endl;
+            getEngine().log().log() << "dlclose(" << getName() << ") failed" << std::endl;
         }
 #endif
 #ifdef _WIN32
         BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
         if (ret != 0)
         {
-            getEngine()->log().log() << "FreeLibrary(" << getName() << ") failed" << std::endl;
+            getEngine().log().log() << "FreeLibrary(" << getName() << ") failed" << std::endl;
         }
 #endif
     }
@@ -78,7 +80,7 @@ void* Plugin::getSymbol(const std::string& symbolname) const
 
     if (symbol == nullptr)
     {
-        getEngine()->log().log() << "getSymbol(" << getName() << ", " << symbolname << ") failed" << std::endl;
+        getEngine().log().log() << "getSymbol(" << getName() << ", " << symbolname << ") failed" << std::endl;
     }
 
     return symbol;

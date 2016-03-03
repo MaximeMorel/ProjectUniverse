@@ -19,6 +19,7 @@ set(APP_SOURCE appTest.cpp
                tests/geom/testCurve.cpp
                tests/geom/testPlane.cpp
                tests/geom/testFrustum.cpp
+               tests/engine/testResourceManager.cpp
                )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/app/${PROJECT_NAME})

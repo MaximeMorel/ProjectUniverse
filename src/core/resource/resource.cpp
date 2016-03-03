@@ -4,7 +4,7 @@
 ResourceType Resource::m_type;// = {0, "Resource"};
 ////////////////////////////////////////////////////////////////////////////////
 Resource::Resource(const std::string& name)
-: m_name(name)
+: m_id(0), m_name(name)
 {
 
 }
@@ -18,12 +18,17 @@ const std::string& Resource::getName() const
     return m_name;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int Resource::getId() const
+size_t Resource::getId() const
 {
     return m_id;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ResourceType& Resource::getType()
+const ResourceType& Resource::getStaticType()
+{
+    return m_type;
+}
+////////////////////////////////////////////////////////////////////////////////
+const ResourceType& Resource::getType() const
 {
     return m_type;
 }
@@ -36,6 +41,12 @@ size_t Resource::getMemSize() const
 Logger& operator<<(Logger& o, const Resource& res)
 {
     res.printOn(o);
+    return o;
+}
+////////////////////////////////////////////////////////////////////////////////
+Logger& operator<<(Logger& o, const ResourcePtr& res)
+{
+    res->printOn(o);
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////

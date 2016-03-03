@@ -13,36 +13,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 Engine* gEngine = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
-Engine::Engine()
+Engine::Engine(const std::string& name)
+    : m_logManager()
+    , m_resourecManager(m_logManager)
+    , m_pluginManager()
+    , m_name(name)
 {
-    gEngine = this;
-    m_logManager.log() << FILEINFO << "Engine init..." << std::endl;
+    setGlobalEngine(*this);
+    m_logManager.log() << FILEINFO << "Engine " << m_name << " init..." << std::endl;
 
     char buf[256];
     m_logManager.log() << getcwd(buf, 256) << std::endl;
-
-    Plugin pluginApp("../app/AppNull/libAppNull.so");
-    m_logManager.log() << pluginApp << std::endl;
-
-    PFNrunPlugin r = (PFNrunPlugin)(pluginApp.getSymbol("runPlugin"));
-    if (r)
-    {
-        r(this);
-    }
-
-    // AppTest
-    pluginApp = Plugin("../app/AppTest/libAppTest.so");
-    m_logManager.log() << pluginApp  << std::endl;
-
-    PFNgetAppInstance getAppInstance = (PFNgetAppInstance)(pluginApp.getSymbol("getAppInstance"));
-    Application* appTest = getAppInstance(this);
-    //PFNcloseAppInstance closeAppInstance = (PFNcloseAppInstance)(pluginApp.getSymbol("closeAppInstance"));
-    //closeAppInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
-    m_logManager.log() << "Engine close..." << std::endl;
+    m_logManager.log() << "Engine " << m_name << " close..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
 LogManager& Engine::log()
@@ -50,7 +36,23 @@ LogManager& Engine::log()
     return m_logManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Engine* getEngine()
+ResourceManager& Engine::res()
 {
-    return gEngine;
+    return m_resourecManager;
 }
+////////////////////////////////////////////////////////////////////////////////
+PluginManager& Engine::plugins()
+{
+    return m_pluginManager;
+}
+////////////////////////////////////////////////////////////////////////////////
+void setGlobalEngine(Engine& engine)
+{
+    gEngine = &engine;
+}
+////////////////////////////////////////////////////////////////////////////////
+Engine& getEngine()
+{
+    return *gEngine;
+}
+////////////////////////////////////////////////////////////////////////////////

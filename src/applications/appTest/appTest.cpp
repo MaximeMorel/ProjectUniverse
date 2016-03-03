@@ -239,12 +239,6 @@ PluginInfo* getPluginInfo()
     return &pluginInfo;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int runPlugin(Engine* engine)
-{
-    ApplicationAppTest app(engine);
-    return 0;
-}
-////////////////////////////////////////////////////////////////////////////////
 Application* getAppInstance(Engine* engine)
 {
     if (app == nullptr)
@@ -264,14 +258,14 @@ void closeAppInstance()
 ApplicationAppTest::ApplicationAppTest(Engine* engine)
     : Application(engine)
 {
-    log().log() << "ApplicationAppNull start..." << std::endl;
+    log().log() << "ApplicationAppTest start..." << std::endl;
 
     runTests();
 }
 ////////////////////////////////////////////////////////////////////////////////
 ApplicationAppTest::~ApplicationAppTest()
 {
-    log().log() << "ApplicationAppNull stop..." << std::endl;
+    log().log() << "ApplicationAppTest stop..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
 int ApplicationAppTest::runTests()
