@@ -12,7 +12,7 @@ extern "C" void closeAppInstance();
 class ApplicationAppNull : public Application
 {
 public:
-    ApplicationAppNull(Engine* engine);
+    ApplicationAppNull(Engine& engine);
     virtual ~ApplicationAppNull() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

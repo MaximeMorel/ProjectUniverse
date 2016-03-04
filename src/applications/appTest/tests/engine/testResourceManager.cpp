@@ -20,25 +20,35 @@ public:
     DummyResource(const std::string& name)
         : Resource(name)
     {
-        ++id;
+        id = sid++;
     }
+
+    ~DummyResource()
+    {
+        getEngine().log().log() << "Dtor: " << *this << std::endl;
+    }
+
     static DummyResourcePtr create(const std::string& name)
     {
         return std::shared_ptr<DummyResource>(new DummyResource(name));
     }
+
     virtual size_t getMemSize() const
     {
         return sizeof(*this);
     }
+
 protected:
     virtual void printOn(Logger& o) const
     {
-        o << getName() << " - " << id << "\n";
+        o << getName() << " - " << id;
     }
+
 private:
-    static int id;
+    static int sid;
+    int id = 0;
 };
-int DummyResource::id = 0;
+int DummyResource::sid = 0;
 ////////////////////////////////////////////////////////////////////////////////
 void TestResourceManager::testResources()
 {

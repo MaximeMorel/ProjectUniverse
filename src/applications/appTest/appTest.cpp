@@ -243,7 +243,7 @@ Application* getAppInstance(Engine* engine)
 {
     if (app == nullptr)
     {
-        app = new ApplicationAppTest(engine);
+        app = new ApplicationAppTest(*engine);
     }
     return app;
 }
@@ -255,7 +255,7 @@ void closeAppInstance()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-ApplicationAppTest::ApplicationAppTest(Engine* engine)
+ApplicationAppTest::ApplicationAppTest(Engine& engine)
     : Application(engine)
 {
     log().log() << "ApplicationAppTest start..." << std::endl;

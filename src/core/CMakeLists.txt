@@ -8,6 +8,7 @@ include_directories(../)
 set(CORE_SOURCE main.cpp
                 application.cpp
                 engine.cpp
+                library.cpp
                 geom/frustum.cpp
                 geom/octree.cpp
                 geom/boundingVolume/aabb.cpp

@@ -1,20 +1,13 @@
 #ifndef __APPLICATION_HPP__
 #define __APPLICATION_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "engine.hpp"
+#include "library.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class Application
+class Application : public Library
 {
 public:
-    Application(Engine* engine);
+    Application(Engine& engine);
     virtual ~Application();
-
-    Engine* getEngine();
-    LogManager& log();
-
-private:
-    Engine* m_engine;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __APPLICATION_HPP__
-

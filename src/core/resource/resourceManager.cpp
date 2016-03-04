@@ -122,7 +122,7 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
     size_t i = 0;
     for (auto it : res.m_resources)
     {
-        o << i++ << ": " << it;
+        o << i++ << ": " << it << "\n";
     }
 
     for (auto it : res.m_resourceNames)

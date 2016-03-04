@@ -12,13 +12,15 @@ Plugin::Plugin(const std::string& filename)
     : Resource(filename)
     , m_handle(nullptr)
     , m_pluginInfo{"null", "null", 0, 0}
+    , m_pGetPluginInfo(nullptr)
 {
     // find real path (using resource manager tools and going through the registered paths)
 #ifdef __unix__
     m_handle = dlopen(filename.c_str(), RTLD_LAZY);
     if (m_handle == nullptr)
     {
-        getEngine().log().log() << "dlopen(" << filename << ") failed" << std::endl;
+        getEngine().log().log() << "dlopen(" << filename << ") failed\n";
+        getEngine().log().log() << dlerror() << std::endl;
     }
 #endif
 #ifdef _WIN32
@@ -34,10 +36,10 @@ Plugin::Plugin(const std::string& filename)
 
     if (m_handle != nullptr)
     {
-        getPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
-        if (getPluginInfo)
+        m_pGetPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
+        if (m_pGetPluginInfo)
         {
-            PluginInfo* p = getPluginInfo();
+            PluginInfo* p = m_pGetPluginInfo();
             if (p)
             {
                 m_pluginInfo = *p;
@@ -89,6 +91,11 @@ void* Plugin::getSymbol(const std::string& symbolname) const
 const PluginInfo& Plugin::getInfo() const
 {
     return m_pluginInfo;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool Plugin::isValid() const
+{
+    return (m_handle != nullptr) && (m_pGetPluginInfo != nullptr);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Plugin::printOn(Logger& o) const

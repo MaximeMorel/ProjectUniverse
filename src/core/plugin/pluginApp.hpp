@@ -16,11 +16,17 @@ public:
     PluginApp(const std::string& filename);
     virtual ~PluginApp() override;
 
-    using PFNcloseAppInstance = void (*)();
-    PFNcloseAppInstance closeAppInstance;
+    virtual bool isValid() const;
 
+    Application *getAppInstance(Engine* engine);
+    void closeAppInstance();
+
+private:
     using PFNgetAppInstance = Application* (*)(Engine*);
-    PFNgetAppInstance getAppInstance;
+    PFNgetAppInstance m_pGetAppInstance;
+
+    using PFNcloseAppInstance = void (*)();
+    PFNcloseAppInstance m_pCloseAppInstance;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGINAPP_HPP__

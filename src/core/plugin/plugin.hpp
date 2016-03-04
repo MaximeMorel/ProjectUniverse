@@ -30,6 +30,8 @@ public:
 
     const PluginInfo& getInfo() const;
 
+    virtual bool isValid() const;
+
     virtual void printOn(Logger& o) const override;
 
 protected:
@@ -37,13 +39,7 @@ protected:
     PluginInfo m_pluginInfo;    ///< Details about the plugin
 
     using PFNgetPluginInfo = PluginInfo* (*)();
-    PFNgetPluginInfo getPluginInfo;
+    PFNgetPluginInfo m_pGetPluginInfo;
 };
-////////////////////////////////////////////////////////////////////////////////
-class Engine;
-using PFNrunPlugin = int (*)(Engine*);
-class Application;
-using PFNgetAppInstance = Application* (*)(Engine*);
-//using PFNcloseAppInstance = void (*)();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGIN_HPP__

@@ -3,19 +3,42 @@
 ////////////////////////////////////////////////////////////////////////////////
 PluginLib::PluginLib(const std::string& filename)
     : Plugin(filename)
+    , m_pGetLibInstance(nullptr)
+    , m_pCloseLibInstance(nullptr)
 {
     if (m_handle != nullptr)
     {
-        //getLibInstance = (PFNgetLibInstance)(getSymbol("getLibInstance"));
-        closeLibInstance = (void (*)())(getSymbol("closeLibInstance"));
+        m_pGetLibInstance = (PFNgetLibInstance)(getSymbol("getLibInstance"));
+        m_pCloseLibInstance = (void (*)())(getSymbol("closeLibInstance"));
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginLib::~PluginLib()
 {
-    if (closeLibInstance)
+    closeLibInstance();
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginLib::isValid() const
+{
+    return Plugin::isValid() &&
+           (m_pGetLibInstance != nullptr) &&
+           (m_pCloseLibInstance != nullptr);
+}
+////////////////////////////////////////////////////////////////////////////////
+Library* PluginLib::getLibInstance(Engine* engine)
+{
+    if (m_pGetLibInstance)
     {
-        closeLibInstance();
+        return m_pGetLibInstance(engine);
+    }
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginLib::closeLibInstance()
+{
+    if (m_pCloseLibInstance)
+    {
+        m_pCloseLibInstance();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

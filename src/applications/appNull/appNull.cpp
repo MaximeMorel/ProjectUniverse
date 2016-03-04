@@ -18,7 +18,7 @@ Application* getAppInstance(Engine* engine)
 {
     if (app == nullptr)
     {
-        app = new ApplicationAppNull(engine);
+        app = new ApplicationAppNull(*engine);
     }
     return app;
 }
@@ -29,7 +29,7 @@ void closeAppInstance()
     app = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ApplicationAppNull::ApplicationAppNull(Engine* engine)
+ApplicationAppNull::ApplicationAppNull(Engine& engine)
     : Application(engine)
 {
     log().log() << "ApplicationAppNull start..." << std::endl;

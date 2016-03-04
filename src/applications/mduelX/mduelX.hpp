@@ -6,7 +6,7 @@
 class ApplicationMduelX : public Application
 {
 public:
-    ApplicationMduelX(Engine* engine);
+    ApplicationMduelX(Engine& engine);
     virtual ~ApplicationMduelX() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

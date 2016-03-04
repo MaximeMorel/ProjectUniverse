@@ -6,7 +6,7 @@
 class ApplicationBrickLand : public Application
 {
 public:
-    ApplicationBrickLand(Engine* engine);
+    ApplicationBrickLand(Engine &engine);
     virtual ~ApplicationBrickLand() override;
 };
 ////////////////////////////////////////////////////////////////////////////////

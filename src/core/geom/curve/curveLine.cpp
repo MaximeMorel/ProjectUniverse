@@ -12,7 +12,7 @@ CurveLine::~CurveLine()
 ////////////////////////////////////////////////////////////////////////////////
 void CurveLine::setPoint(size_t id, const Vec3& point)
 {
-    if (id >= 0 && id < 2)
+    if (id < 2)
     {
         m_points[id] = point;
     }
@@ -20,7 +20,7 @@ void CurveLine::setPoint(size_t id, const Vec3& point)
 ////////////////////////////////////////////////////////////////////////////////
 const Vec3& CurveLine::getPoint(size_t id) const
 {
-    if (id >= 0 && id < 2)
+    if (id < 2)
     {
         return m_points[id];
     }

@@ -19,7 +19,7 @@ void CurvePolyline::addPoint(const Vec3& point)
 ////////////////////////////////////////////////////////////////////////////////
 void CurvePolyline::setPoint(size_t id, const Vec3& point)
 {
-    if (id >= 0 && id < m_points.size())
+    if (id < m_points.size())
     {
         m_points[id] = point;
     }
@@ -27,7 +27,7 @@ void CurvePolyline::setPoint(size_t id, const Vec3& point)
 ////////////////////////////////////////////////////////////////////////////////
 const Vec3& CurvePolyline::getPoint(size_t id) const
 {
-    if (id >= 0 && id < m_points.size())
+    if (id < m_points.size())
     {
         return m_points[id];
     }

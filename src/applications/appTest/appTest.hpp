@@ -12,7 +12,7 @@ extern "C" void closeAppInstance();
 class ApplicationAppTest : public Application
 {
 public:
-    ApplicationAppTest(Engine* engine);
+    ApplicationAppTest(Engine &engine);
     virtual ~ApplicationAppTest() override;
 
     int runTests();

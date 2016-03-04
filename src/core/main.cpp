@@ -293,13 +293,29 @@ int main(int argc, char **argv)
     Engine engine("main");
 
     PluginApp pluginApp("../app/AppNull/libAppNull.so");
-    engine.log().log() << pluginApp << std::endl;
-    pluginApp.getAppInstance(&engine);
+    if (pluginApp.isValid())
+    {
+        engine.log().log() << pluginApp << std::endl;
+        pluginApp.getAppInstance(&engine);
+        pluginApp.closeAppInstance();
+    }
 
     // AppTest
     pluginApp = PluginApp("../app/AppTest/libAppTest.so");
-    engine.log().log() << pluginApp  << std::endl;
-    pluginApp.getAppInstance(&engine);
+    if (pluginApp.isValid())
+    {
+        engine.log().log() << pluginApp  << std::endl;
+        pluginApp.getAppInstance(&engine);
+        pluginApp.closeAppInstance();
+    }
+
+    PluginLib lib = PluginLib("../lib/libRenderNull.so");
+    if (lib.isValid())
+    {
+        engine.log().log() << lib << std::endl;
+        lib.getLibInstance(&engine);
+        lib.closeLibInstance();
+    }
 
     return 0;
 }

@@ -6,7 +6,7 @@
 class ApplicationProjectUniverse : public Application
 {
 public:
-    ApplicationProjectUniverse(Engine* engine);
+    ApplicationProjectUniverse(Engine& engine);
     virtual ~ApplicationProjectUniverse() override;
 };
 ////////////////////////////////////////////////////////////////////////////////
