@@ -1,5 +1,5 @@
-#ifndef __WINDOWCONTEXTNULL_HPP__
-#define __WINDOWCONTEXTNULL_HPP__
+#ifndef __WINDOWCONTEXTXLIB_HPP__
+#define __WINDOWCONTEXTXLIB_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/windowContext/windowContext.hpp"
 #include "core/library.hpp"
@@ -10,10 +10,10 @@ extern "C" Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginWindowContextNull : public Library
+class PluginWindowContextXlib : public Library
 {
 public:
-    PluginWindowContextNull(Engine &engine);
+    PluginWindowContextXlib(Engine &engine);
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __WINDOWCONTEXTNULL_HPP__
+#endif // __WINDOWCONTEXTXLIB_HPP__

@@ -8,8 +8,11 @@ PluginLib::PluginLib(const std::string& filename)
 {
     if (m_handle != nullptr)
     {
-        m_pGetLibInstance = (PFNgetLibInstance)(getSymbol("getLibInstance"));
-        m_pCloseLibInstance = (void (*)())(getSymbol("closeLibInstance"));
+        //m_pGetLibInstance = (PFNgetLibInstance)(getSymbol("getLibInstance"));
+        //m_pCloseLibInstance = (void (*)())(getSymbol("closeLibInstance"));
+
+        *(void**)(&m_pGetLibInstance) = getSymbol("getLibInstance");
+        *(void**)(&m_pCloseLibInstance) = getSymbol("closeLibInstance");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

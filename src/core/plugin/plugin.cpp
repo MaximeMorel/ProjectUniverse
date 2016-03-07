@@ -36,7 +36,8 @@ Plugin::Plugin(const std::string& filename)
 
     if (m_handle != nullptr)
     {
-        m_pGetPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
+        //m_pGetPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
+        *(void**)(&m_pGetPluginInfo) = getSymbol("getPluginInfo");
         if (m_pGetPluginInfo)
         {
             PluginInfo* p = m_pGetPluginInfo();
@@ -73,17 +74,23 @@ void* Plugin::getSymbol(const std::string& symbolname) const
 {
     void* symbol = nullptr;
 #ifdef __unix__
+    dlerror();
     symbol = dlsym(m_handle, symbolname.c_str());
+    const char* error = dlerror();
+    if (error)
+    {
+        getEngine().log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
+        getEngine().log().log() << error << std::endl;
+    }
 #endif
 #ifdef _WIN32
     FARPROC proc = GetProcAddress(static_cast<HMODULE>(m_handle), symbolname.c_str());
     symbol = reinterpret_cast<void*>(proc);
-#endif
-
     if (symbol == nullptr)
     {
-        getEngine().log().log() << "getSymbol(" << getName() << ", " << symbolname << ") failed" << std::endl;
+        getEngine().log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed" << std::endl;
     }
+#endif
 
     return symbol;
 }

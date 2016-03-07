@@ -1,7 +1,6 @@
-#ifndef __WINDOWCONTEXTNULL_HPP__
-#define __WINDOWCONTEXTNULL_HPP__
+#ifndef __RENDERNULL_HPP__
+#define __RENDERNULL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/windowContext/windowContext.hpp"
 #include "core/library.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" PluginInfo* getPluginInfo();
@@ -10,10 +9,11 @@ extern "C" Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginWindowContextNull : public Library
+class PluginRenderNull : public Library
 {
 public:
-    PluginWindowContextNull(Engine &engine);
+    PluginRenderNull(Engine& engine);
+    ~PluginRenderNull();
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __WINDOWCONTEXTNULL_HPP__
+#endif // __RENDERNULL_HPP__

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "windowContextNull.hpp"
+#include "windowContextXlib.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-PluginWindowContextNull::PluginWindowContextNull(Engine& engine)
+PluginWindowContextXlib::PluginWindowContextXlib(Engine &engine)
     : Library(engine)
 {
 }

@@ -1,7 +1,6 @@
-#ifndef __WINDOWCONTEXTNULL_HPP__
-#define __WINDOWCONTEXTNULL_HPP__
+#ifndef __INPUTNULL_HPP__
+#define __INPUTNULL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/windowContext/windowContext.hpp"
 #include "core/library.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" PluginInfo* getPluginInfo();
@@ -10,10 +9,11 @@ extern "C" Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginWindowContextNull : public Library
+class PluginInputNull : public Library
 {
 public:
-    PluginWindowContextNull(Engine &engine);
+    PluginInputNull(Engine& engine);
+    ~PluginInputNull();
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __WINDOWCONTEXTNULL_HPP__
+#endif // __INPUTNULL_HPP__

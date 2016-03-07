@@ -8,8 +8,11 @@ PluginApp::PluginApp(const std::string& filename)
 {
     if (m_handle != nullptr)
     {
-        m_pGetAppInstance = (PFNgetAppInstance)(getSymbol("getAppInstance"));
-        m_pCloseAppInstance = (PFNcloseAppInstance)(getSymbol("closeAppInstance"));
+        //m_pGetAppInstance = (PFNgetAppInstance)(getSymbol("getAppInstance"));
+        //m_pCloseAppInstance = (PFNcloseAppInstance)(getSymbol("closeAppInstance"));
+
+        *(void**)(&m_pGetAppInstance) = getSymbol("getAppInstance");
+        *(void**)(&m_pCloseAppInstance) = getSymbol("closeAppInstance");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,6 @@
-#ifndef __WINDOWCONTEXTNULL_HPP__
-#define __WINDOWCONTEXTNULL_HPP__
+#ifndef __INPUTSDL_HPP__
+#define __INPUTSDL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/windowContext/windowContext.hpp"
 #include "core/library.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" PluginInfo* getPluginInfo();
@@ -10,10 +9,11 @@ extern "C" Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginWindowContextNull : public Library
+class PluginInputSDL : public Library
 {
 public:
-    PluginWindowContextNull(Engine &engine);
+    PluginInputSDL(Engine& engine);
+    ~PluginInputSDL();
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __WINDOWCONTEXTNULL_HPP__
+#endif // __INPUTSDL_HPP__

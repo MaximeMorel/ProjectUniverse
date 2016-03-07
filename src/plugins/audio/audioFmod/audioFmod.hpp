@@ -1,7 +1,6 @@
-#ifndef __WINDOWCONTEXTNULL_HPP__
-#define __WINDOWCONTEXTNULL_HPP__
+#ifndef __AUDIOFMOD_HPP__
+#define __AUDIOFMOD_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/windowContext/windowContext.hpp"
 #include "core/library.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" PluginInfo* getPluginInfo();
@@ -10,10 +9,11 @@ extern "C" Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginWindowContextNull : public Library
+class PluginAudioFmod : public Library
 {
 public:
-    PluginWindowContextNull(Engine &engine);
+    PluginAudioFmod(Engine& engine);
+    ~PluginAudioFmod();
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __WINDOWCONTEXTNULL_HPP__
+#endif // __AUDIOFMOD_HPP__
