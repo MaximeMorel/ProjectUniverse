@@ -7,6 +7,7 @@ include_directories(../../)
 
 set(APP_SOURCE appTest.cpp
                tests/testRunner.cpp
+               tests/protector.cpp
                tests/tests.cpp
                tests/testBasic.cpp
                tests/math/testMath.cpp

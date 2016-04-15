@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "testRunner.hpp"
+#include "protector.hpp"
 #include "tests.hpp"
 #include <cppunit/TestCase.h>
 #include <cppunit/TestFixture.h>
@@ -28,6 +29,7 @@ int testRunner()
 {
     // informs test-listener about testresults
     CppUnit::TestResult testresult;
+    testresult.pushProtector(new DefaultProtector());
 
     // register listener for collecting the test-results
     CppUnit::TestResultCollector collectedresults;
