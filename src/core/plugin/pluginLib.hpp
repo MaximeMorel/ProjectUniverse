@@ -16,7 +16,7 @@ public:
     PluginLib(const std::string& filename);
     virtual ~PluginLib() override;
 
-    virtual bool isValid() const;
+    virtual bool isValid() const override;
 
     Library* getLibInstance(Engine* engine);
     void closeLibInstance();

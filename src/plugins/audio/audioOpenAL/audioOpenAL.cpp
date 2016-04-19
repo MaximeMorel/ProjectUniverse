@@ -1,5 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "audioOpenAL.hpp"
+#include <AL/al.h>
+#include <AL/alc.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "audioOpenAL",
                           "audioOpenAL",
@@ -8,7 +10,7 @@ PluginInfo pluginInfo = { "audioOpenAL",
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo* getPluginInfo()
+const PluginInfo* getPluginInfo()
 {
     return &pluginInfo;
 }
@@ -31,9 +33,14 @@ void closeLibInstance()
 PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
     : Library(engine)
 {
+    log().log() << "PluginAudioOpenAL start..." << std::endl;
+    ALCdevice *device;
+    device = alcOpenDevice(NULL);
+    alcCloseDevice(device);
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL::~PluginAudioOpenAL()
 {
+    log().log() << "PluginAudioOpenAL stop..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////

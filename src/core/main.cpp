@@ -292,29 +292,47 @@ int main(int argc, char **argv)
 
     Engine engine("main");
 
-    PluginApp pluginApp("../app/AppNull/libAppNull.so");
-    if (pluginApp.isValid())
     {
-        engine.log().log() << pluginApp << std::endl;
-        pluginApp.getAppInstance(&engine);
-        pluginApp.closeAppInstance();
+        PluginApp app("../app/AppNull/libAppNull.so");
+        if (app.isValid())
+        {
+            engine.log().log() << app << std::endl;
+            app.getAppInstance(&engine);
+            //app.closeAppInstance();
+        }
     }
 
     // AppTest
-    pluginApp = PluginApp("../app/AppTest/libAppTest.so");
-    if (pluginApp.isValid())
     {
-        engine.log().log() << pluginApp  << std::endl;
-        pluginApp.getAppInstance(&engine);
-        pluginApp.closeAppInstance();
+        PluginApp app = PluginApp("../app/AppTest/libAppTest.so");
+        if (app.isValid())
+        {
+            engine.log().log() << app  << std::endl;
+            app.getAppInstance(&engine);
+            //app.closeAppInstance();
+        }
     }
 
-    PluginLib lib = PluginLib("../lib/libRenderNull.so");
-    if (lib.isValid())
     {
-        engine.log().log() << lib << std::endl;
-        lib.getLibInstance(&engine);
-        lib.closeLibInstance();
+        PluginLib lib = PluginLib("../lib/libRenderNull.so");
+        //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
+        if (lib.isValid())
+        {
+            engine.log().log() << lib << std::endl;
+            lib.getLibInstance(&engine);
+            //lib.closeLibInstance();
+        }
+    }
+
+    {
+        PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
+        //lib = PluginLib("../lib/libRenderNull.so");
+        if (lib.isValid())
+        {
+            engine.log().log() << lib << std::endl;
+            lib.getLibInstance(&engine);
+            //lib.closeLibInstance();
+        }
     }
 
     return 0;

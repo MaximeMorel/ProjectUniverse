@@ -8,7 +8,7 @@ PluginInfo pluginInfo = { "renderNull",
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderNull* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo* getPluginInfo()
+const PluginInfo* getPluginInfo()
 {
     return &pluginInfo;
 }
@@ -31,9 +31,11 @@ void closeLibInstance()
 PluginRenderNull::PluginRenderNull(Engine &engine)
     : Library(engine)
 {
+    log().log() << "PluginRenderNull start..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderNull::~PluginRenderNull()
 {
+    log().log() << "PluginRenderNull stop..." << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////

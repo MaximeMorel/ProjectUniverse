@@ -9,3 +9,9 @@ set(PLUGIN_SOURCE audioOpenAL.cpp)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/lib)
 add_library(${PROJECT_NAME} MODULE ${PLUGIN_SOURCE})
+
+find_package (OpenAL)
+if (OPENAL_FOUND)
+    include_directories(${OPENAL_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY})
+endif (OPENAL_FOUND)

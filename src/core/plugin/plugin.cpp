@@ -40,7 +40,7 @@ Plugin::Plugin(const std::string& filename)
         *(void**)(&m_pGetPluginInfo) = getSymbol("getPluginInfo");
         if (m_pGetPluginInfo)
         {
-            PluginInfo* p = m_pGetPluginInfo();
+            const PluginInfo* p = m_pGetPluginInfo();
             if (p)
             {
                 m_pluginInfo = *p;

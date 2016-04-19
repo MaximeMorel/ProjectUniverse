@@ -38,7 +38,7 @@ protected:
     void* m_handle;             ///< Handle for the dynamic library
     PluginInfo m_pluginInfo;    ///< Details about the plugin
 
-    using PFNgetPluginInfo = PluginInfo* (*)();
+    using PFNgetPluginInfo = const PluginInfo* (*)();
     PFNgetPluginInfo m_pGetPluginInfo;
 };
 ////////////////////////////////////////////////////////////////////////////////

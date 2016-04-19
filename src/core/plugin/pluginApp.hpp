@@ -16,7 +16,7 @@ public:
     PluginApp(const std::string& filename);
     virtual ~PluginApp() override;
 
-    virtual bool isValid() const;
+    virtual bool isValid() const override;
 
     Application *getAppInstance(Engine* engine);
     void closeAppInstance();
