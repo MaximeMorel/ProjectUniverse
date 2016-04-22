@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <btBulletDynamicsCommon.h>
 ////////////////////////////////////////////////////////////////////////////////
 int main2(int argc, char** argv)
 {
@@ -333,6 +334,30 @@ int main(int argc, char **argv)
             lib.getLibInstance(&engine);
             //lib.closeLibInstance();
         }
+    }
+
+    {
+        // Build the broadphase
+        btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+
+        // Set up the collision configuration and dispatcher
+        btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+        btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+        // The actual physics solver
+        btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+
+        // The world.
+        btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+        dynamicsWorld->setGravity(btVector3(0, -10, 0));
+
+        // Do_everything_else_here
+        // Clean up behind ourselves like good little programmers
+        delete dynamicsWorld;
+        delete solver;
+        delete dispatcher;
+        delete collisionConfiguration;
+        delete broadphase;
     }
 
     return 0;

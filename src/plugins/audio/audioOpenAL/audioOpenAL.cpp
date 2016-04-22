@@ -29,9 +29,15 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
-    : Library(engine), m_device(nullptr)
+    : Library(engine), m_device(nullptr), m_context(nullptr)
 {
     log().log() << "PluginAudioOpenAL start..." << std::endl;
+
+    ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
+    if (enumeration)
+    {
+        log().log() << "ALC_ENUMERATION_EXT available" << std::endl;
+    }
 
     std::vector<std::string> list = listDevices();
     if (!list.empty())
@@ -44,30 +50,47 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
 
         log().log() << "Using device: " << list[0].c_str() << std::endl;
         m_device = alcOpenDevice(list[0].c_str());
+
+        if (m_device)
+        {
+            m_context = alcCreateContext(m_device, NULL);
+
+            if (m_context)
+            {
+                alcMakeContextCurrent(m_context);
+            }
+        }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL::~PluginAudioOpenAL()
 {
     log().log() << "PluginAudioOpenAL stop..." << std::endl;
+
+    alcMakeContextCurrent(NULL);
+    if (m_context)
+    {
+        alcDestroyContext(m_context);
+        m_context = nullptr;
+    }
     if (m_device)
     {
         alcCloseDevice(m_device);
+        m_device = nullptr;
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> PluginAudioOpenAL::listDevices() const
 {
     const ALCchar *devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-    const ALCchar *device = devices, *next = devices + 1;
+    const ALCchar *device = devices;
     size_t len = 0;
     std::vector<std::string> res;
-    while (device && *device != '\0' && next && *next != '\0')
+    while (device && *device != '\0' && (device + 1) && *(device + 1) != '\0')
     {
         res.push_back(device);
         len = res.back().length();
         device += (len + 1);
-        next += (len + 2);
     }
     return res;
 }

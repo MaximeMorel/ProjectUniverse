@@ -1,6 +1,6 @@
-message(STATUS "Configuring core...")
-
 project(engine)
+
+message(STATUS "Configuring ${PROJECT_NAME}...")
 
 set(CMAKE_CXX_STANDARD 11)
 include_directories(../)
@@ -54,5 +54,11 @@ set(CORE_SOURCE main.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)
-add_executable(engine ${CORE_SOURCE})
-target_link_libraries(engine ${CMAKE_DL_LIBS})
+add_executable(${PROJECT_NAME} ${CORE_SOURCE})
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+
+find_package (Bullet)
+if (BULLET_FOUND)
+    include_directories(${BULLET_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})
+endif (BULLET_FOUND)
