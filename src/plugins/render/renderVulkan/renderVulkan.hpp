@@ -17,9 +17,9 @@ public:
     ~PluginRenderVulkan();
 
 private:
-    vkApplicationInfo m_applicationInfo;
-    vkInstanceCreateInfo m_instanceInfo;
-    vkInstance m_instance;
+    VkApplicationInfo m_applicationInfo;
+    VkInstanceCreateInfo m_instanceInfo;
+    VkInstance m_instance;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RENDERVULKAN_HPP__

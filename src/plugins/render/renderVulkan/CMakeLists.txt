@@ -9,3 +9,5 @@ set(PLUGIN_SOURCE renderVulkan.cpp)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/lib)
 add_library(${PROJECT_NAME} MODULE ${PLUGIN_SOURCE})
+target_link_libraries(${PROJECT_NAME} vulkan)
+

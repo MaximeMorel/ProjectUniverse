@@ -326,6 +326,17 @@ int main(int argc, char **argv)
     }
 
     {
+        PluginLib lib = PluginLib("../lib/libRenderVulkan.so");
+        //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
+        if (lib.isValid())
+        {
+            engine.log().log() << lib << std::endl;
+            lib.getLibInstance(&engine);
+            //lib.closeLibInstance();
+        }
+    }
+
+    {
         PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
         //lib = PluginLib("../lib/libRenderNull.so");
         if (lib.isValid())

@@ -45,7 +45,7 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     // The version of the engine
     m_applicationInfo.engineVersion = 1;
     // The version of Vulkan we're using for this application
-    m_applicationInfo.apiVersion = VK_API_VERSION;
+    m_applicationInfo.apiVersion = VK_API_VERSION_1_0;
 
     // Filling out instance description:
     // sType is mandatory
@@ -64,7 +64,7 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     m_instanceInfo.ppEnabledExtensionNames = nullptr;
 
     // Now create the desired instance
-    vkResult result = vkCreateInstance(&m_instanceInfo, nullptr, &m_instance);
+    VkResult result = vkCreateInstance(&m_instanceInfo, nullptr, &m_instance);
     if (result != VK_SUCCESS)
     {
         log().log() << "Failed to create instance:" << result << std::endl;
