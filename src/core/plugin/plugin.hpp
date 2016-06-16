@@ -23,6 +23,8 @@ public:
     Plugin(const std::string& filename);
     virtual ~Plugin() override;
 
+    Plugin& operator=(const Plugin& plugin);
+
     /// Load a symbol form the dynamic library
     /// \param symbolname Symbol to load from the dynamic library
     /// \return nullptr if symbolname could not be loaded

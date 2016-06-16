@@ -21,6 +21,18 @@ PluginLib::~PluginLib()
     closeLibInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
+PluginLib& PluginLib::operator=(const PluginLib& lib)
+{
+    if (this != &lib)
+    {
+        Plugin::operator=(lib);
+        closeLibInstance();
+        m_pGetLibInstance = lib.m_pGetLibInstance;
+        m_pCloseLibInstance = lib.m_pCloseLibInstance;
+    }
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 bool PluginLib::isValid() const
 {
     return Plugin::isValid() &&

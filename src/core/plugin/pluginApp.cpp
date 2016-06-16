@@ -21,6 +21,18 @@ PluginApp::~PluginApp()
     closeAppInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
+PluginApp& PluginApp::operator=(const PluginApp& app)
+{
+    if (this != &app)
+    {
+        Plugin::operator=(app);
+        closeAppInstance();
+        m_pGetAppInstance = app.m_pGetAppInstance;
+        m_pCloseAppInstance = app.m_pCloseAppInstance;
+    }
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 bool PluginApp::isValid() const
 {
     return Plugin::isValid() &&

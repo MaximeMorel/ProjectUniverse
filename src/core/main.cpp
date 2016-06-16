@@ -293,7 +293,7 @@ int main(int argc, char **argv)
 
     Engine engine("main");
 
-    {
+    //{
         PluginApp app("../app/AppNull/libAppNull.so");
         if (app.isValid())
         {
@@ -301,20 +301,20 @@ int main(int argc, char **argv)
             app.getAppInstance(&engine);
             //app.closeAppInstance();
         }
-    }
+    //}
 
     // AppTest
-    {
-        PluginApp app = PluginApp("../app/AppTest/libAppTest.so");
+    //{
+        /*PluginApp*/ app = PluginApp("../app/AppTest/libAppTest.so");
         if (app.isValid())
         {
             engine.log().log() << app  << std::endl;
             app.getAppInstance(&engine);
             //app.closeAppInstance();
         }
-    }
+    //}
 
-    {
+    //{
         PluginLib lib = PluginLib("../lib/libRenderNull.so");
         //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
         if (lib.isValid())
@@ -323,10 +323,10 @@ int main(int argc, char **argv)
             lib.getLibInstance(&engine);
             //lib.closeLibInstance();
         }
-    }
+    //}
 
-    {
-        PluginLib lib = PluginLib("../lib/libRenderVulkan.so");
+    //{
+        /*PluginLib*/ lib = PluginLib("../lib/libRenderVulkan.so");
         //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
         if (lib.isValid())
         {
@@ -334,10 +334,10 @@ int main(int argc, char **argv)
             lib.getLibInstance(&engine);
             //lib.closeLibInstance();
         }
-    }
+    //}
 
-    {
-        PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
+    //{
+        /*PluginLib*/ lib = PluginLib("../lib/libAudioOpenAL.so");
         //lib = PluginLib("../lib/libRenderNull.so");
         if (lib.isValid())
         {
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
             lib.getLibInstance(&engine);
             //lib.closeLibInstance();
         }
-    }
+    //}
 
     {
         // Build the broadphase

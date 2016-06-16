@@ -16,6 +16,8 @@ public:
     PluginLib(const std::string& filename);
     virtual ~PluginLib() override;
 
+    PluginLib& operator=(const PluginLib& lib);
+
     virtual bool isValid() const override;
 
     Library* getLibInstance(Engine* engine);
@@ -23,9 +25,9 @@ public:
 
 private:
     using PFNgetLibInstance = Library* (*)(Engine*);
-    PFNgetLibInstance m_pGetLibInstance;
-
     using PFNcloseLibInstance = void (*)();
+
+    PFNgetLibInstance m_pGetLibInstance;
     PFNcloseLibInstance m_pCloseLibInstance;
 };
 ////////////////////////////////////////////////////////////////////////////////

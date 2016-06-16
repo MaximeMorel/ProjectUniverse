@@ -16,6 +16,8 @@ public:
     PluginApp(const std::string& filename);
     virtual ~PluginApp() override;
 
+    PluginApp& operator=(const PluginApp& app);
+
     virtual bool isValid() const override;
 
     Application *getAppInstance(Engine* engine);
@@ -23,9 +25,9 @@ public:
 
 private:
     using PFNgetAppInstance = Application* (*)(Engine*);
-    PFNgetAppInstance m_pGetAppInstance;
-
     using PFNcloseAppInstance = void (*)();
+
+    PFNgetAppInstance m_pGetAppInstance;
     PFNcloseAppInstance m_pCloseAppInstance;
 };
 ////////////////////////////////////////////////////////////////////////////////

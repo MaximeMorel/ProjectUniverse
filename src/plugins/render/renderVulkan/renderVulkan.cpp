@@ -30,6 +30,7 @@ void closeLibInstance()
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     : Library(engine)
+    , m_instanceIsValid(0)
 {
     log().log() << "PluginRenderVulkan start..." << std::endl;
 
@@ -69,11 +70,18 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     {
         log().log() << "Failed to create instance:" << result << std::endl;
     }
+    else
+    {
+        m_instanceIsValid = 1;
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderVulkan::~PluginRenderVulkan()
 {
     log().log() << "PluginRenderVulkan stop..." << std::endl;
-    vkDestroyInstance(m_instance, nullptr);
+    if (m_instanceIsValid)
+    {
+        vkDestroyInstance(m_instance, nullptr);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////

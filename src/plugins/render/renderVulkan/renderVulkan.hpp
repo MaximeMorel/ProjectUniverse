@@ -20,6 +20,9 @@ private:
     VkApplicationInfo m_applicationInfo;
     VkInstanceCreateInfo m_instanceInfo;
     VkInstance m_instance;
+
+    // flags
+    int m_instanceIsValid:1;    ///< instance validity flag
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RENDERVULKAN_HPP__
