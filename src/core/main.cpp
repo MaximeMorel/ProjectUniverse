@@ -253,99 +253,43 @@ private:
 int main(int argc, char **argv)
 {
     std::cout << "Start..." << std::endl;
-    /*std::ofstream f1("a.txt");
-    std::ofstream f2("b.txt");
-
-    logfilebuf bufc("c.txt");
-    loggroupbuf buf;
-    buf.add(f1.rdbuf());
-    buf.add(f2.rdbuf());
-    buf.add(&bufc);
-    buf.add(std::cout.rdbuf());
-    //std::ostream os(&buf);
-    log os(&buf);
-
-    os << "hehe" << std::endl;
-    os << "hoho" << std::endl;
-
-    log2 os2("d.txt");
-
-    os2 << "log2" << std::endl;
-
-    //logMan().log(ALL) << "";
-
-    LoggerNull n;
-    n << "null" << std::endl;*/
-
-    /*Mat3 m(1,0,0,0,1,0,0,0,0);
-    try
-    {
-        Mat3 im = m.inverse();
-    }
-    catch(std::exception& e)
-    {
-    }*/
-
-    //Mat4 p = Mat4::perspective(90, 16./9., 1., 10000.);
-    //Mat4 t = Mat4::translate(Vec3(0,5,-5000));
-
-    //testRunner();
-
     Engine engine("main");
 
-    //{
-        PluginApp app("../app/AppNull/libAppNull.so");
-        if (app.isValid())
-        {
-            engine.log().log() << app << std::endl;
-            app.getAppInstance(&engine);
-            //app.closeAppInstance();
-        }
-    //}
+    PluginAppPtr app = PluginApp::create("../app/AppNull/libAppNull.so");
+    if (app->isValid())
+    {
+        engine.log().log() << app << std::endl;
+        app->getAppInstance(&engine);
+    }
 
     // AppTest
-    //{
-        /*PluginApp*/ app = PluginApp("../app/AppTest/libAppTest.so");
-        if (app.isValid())
-        {
-            engine.log().log() << app  << std::endl;
-            app.getAppInstance(&engine);
-            //app.closeAppInstance();
-        }
-    //}
+    app = PluginApp::create("../app/AppTest/libAppTest.so");
+    if (app->isValid())
+    {
+        engine.log().log() << app  << std::endl;
+        app->getAppInstance(&engine);
+    }
 
-    //{
-        PluginLib lib = PluginLib("../lib/libRenderNull.so");
-        //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
-        if (lib.isValid())
-        {
-            engine.log().log() << lib << std::endl;
-            lib.getLibInstance(&engine);
-            //lib.closeLibInstance();
-        }
-    //}
+    PluginLibPtr lib = PluginLib::create("../lib/libRenderNull.so");
+    if (lib->isValid())
+    {
+        engine.log().log() << lib << std::endl;
+        lib->getLibInstance(&engine);
+    }
 
-    //{
-        /*PluginLib*/ lib = PluginLib("../lib/libRenderVulkan.so");
-        //PluginLib lib = PluginLib("../lib/libAudioOpenAL.so");
-        if (lib.isValid())
-        {
-            engine.log().log() << lib << std::endl;
-            lib.getLibInstance(&engine);
-            //lib.closeLibInstance();
-        }
-    //}
+    lib = PluginLib::create("../lib/libRenderVulkan.so");
+    if (lib->isValid())
+    {
+        engine.log().log() << lib << std::endl;
+        lib->getLibInstance(&engine);
+    }
 
-    //{
-        /*PluginLib*/ lib = PluginLib("../lib/libAudioOpenAL.so");
-        //lib = PluginLib("../lib/libRenderNull.so");
-        if (lib.isValid())
-        {
-            engine.log().log() << lib << std::endl;
-            lib.getLibInstance(&engine);
-            //lib.closeLibInstance();
-        }
-    //}
+    lib = PluginLib::create("../lib/libAudioOpenAL.so");
+    if (lib->isValid())
+    {
+        engine.log().log() << lib << std::endl;
+        lib->getLibInstance(&engine);
+    }
 
     {
         // Build the broadphase

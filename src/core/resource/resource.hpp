@@ -28,8 +28,6 @@ public:
     Resource(const std::string& name);
     virtual ~Resource();
 
-    Resource& operator=(const Resource& res);
-
     ////////////////////////////////////////////////////////////////////////////
     /// \brief Get resource name
     /// \return std::string containing resource name

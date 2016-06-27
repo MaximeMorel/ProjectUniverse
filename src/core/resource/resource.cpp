@@ -13,17 +13,6 @@ Resource::~Resource()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-Resource& Resource::operator=(const Resource& res)
-{
-    if (this != &res)
-    {
-        m_id = res.m_id;
-        m_name = res.m_name;
-        m_type = res.m_type;
-    }
-    return *this;
-}
-////////////////////////////////////////////////////////////////////////////////
 const std::string& Resource::getName() const
 {
     return m_name;

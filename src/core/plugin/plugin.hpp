@@ -17,13 +17,13 @@ struct PluginInfo
 ////////////////////////////////////////////////////////////////////////////////
 class Plugin : public Resource
 {
-public:
+protected:
     /// Load library
     /// \param filename dynamic library path
     Plugin(const std::string& filename);
-    virtual ~Plugin() override;
 
-    Plugin& operator=(const Plugin& plugin);
+public:
+    virtual ~Plugin() override;
 
     /// Load a symbol form the dynamic library
     /// \param symbolname Symbol to load from the dynamic library

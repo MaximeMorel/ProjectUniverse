@@ -5,6 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 class Engine;
 class Application;
+class PluginApp;
+typedef std::shared_ptr<PluginApp> PluginAppPtr;
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The PluginApp class, helper to load an application library
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +18,7 @@ public:
     PluginApp(const std::string& filename);
     virtual ~PluginApp() override;
 
-    PluginApp& operator=(const PluginApp& app);
+    static PluginAppPtr create(const std::string& filename);
 
     virtual bool isValid() const override;
 

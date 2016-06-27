@@ -21,16 +21,9 @@ PluginLib::~PluginLib()
     closeLibInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginLib& PluginLib::operator=(const PluginLib& lib)
+PluginLibPtr PluginLib::create(const std::string& filename)
 {
-    if (this != &lib)
-    {
-        Plugin::operator=(lib);
-        closeLibInstance();
-        m_pGetLibInstance = lib.m_pGetLibInstance;
-        m_pCloseLibInstance = lib.m_pCloseLibInstance;
-    }
-    return *this;
+    return std::shared_ptr<PluginLib>(new PluginLib(filename));
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginLib::isValid() const

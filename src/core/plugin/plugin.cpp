@@ -70,18 +70,6 @@ Plugin::~Plugin()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-Plugin& Plugin::operator=(const Plugin& plugin)
-{
-    if (this != &plugin)
-    {
-        Resource::operator=(plugin);
-        m_handle = plugin.m_handle;
-        m_pluginInfo = plugin.m_pluginInfo;
-        m_pGetPluginInfo = plugin.m_pGetPluginInfo;
-    }
-    return *this;
-}
-////////////////////////////////////////////////////////////////////////////////
 void* Plugin::getSymbol(const std::string& symbolname) const
 {
     void* symbol = nullptr;

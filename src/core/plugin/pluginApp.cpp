@@ -21,16 +21,9 @@ PluginApp::~PluginApp()
     closeAppInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginApp& PluginApp::operator=(const PluginApp& app)
+PluginAppPtr PluginApp::create(const std::string& filename)
 {
-    if (this != &app)
-    {
-        Plugin::operator=(app);
-        closeAppInstance();
-        m_pGetAppInstance = app.m_pGetAppInstance;
-        m_pCloseAppInstance = app.m_pCloseAppInstance;
-    }
-    return *this;
+    return std::shared_ptr<PluginApp>(new PluginApp(filename));
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginApp::isValid() const

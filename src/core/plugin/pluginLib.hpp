@@ -5,6 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 class Engine;
 class Library;
+class PluginLib;
+typedef std::shared_ptr<PluginLib> PluginLibPtr;
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The PluginLib class, helper to load a plugin library
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +18,7 @@ public:
     PluginLib(const std::string& filename);
     virtual ~PluginLib() override;
 
-    PluginLib& operator=(const PluginLib& lib);
+    static PluginLibPtr create(const std::string& filename);
 
     virtual bool isValid() const override;
 
