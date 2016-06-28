@@ -1,47 +1,41 @@
 #ifndef __PLUGIN_HPP__
 #define __PLUGIN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
+#include "iplugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-/// \brief Plugin information structure
+class Engine;
 ////////////////////////////////////////////////////////////////////////////////
-struct PluginInfo
+/// \brief The Plugin class, helper to load a plugin library
+////////////////////////////////////////////////////////////////////////////////
+template <class T>
+class Plugin : public IPlugin
 {
-    const char* info;           ///< Plugin info string
-    const char* name;           ///< Plugin name
-    int major;                  ///< Major version number
-    int minor;                  ///< Minor version number
-};
-////////////////////////////////////////////////////////////////////////////////
-/// \brief Plugin class, helper to load a shared library
-////////////////////////////////////////////////////////////////////////////////
-class Plugin : public Resource
-{
-protected:
+public:
     /// Load library
     /// \param filename dynamic library path
     Plugin(const std::string& filename);
-
-public:
     virtual ~Plugin() override;
 
-    /// Load a symbol form the dynamic library
-    /// \param symbolname Symbol to load from the dynamic library
-    /// \return nullptr if symbolname could not be loaded
-    void* getSymbol(const std::string& symbolname) const;
+    static std::shared_ptr<Plugin> create(const std::string& filename);
 
-    const PluginInfo& getInfo() const;
+    virtual bool isValid() const override;
 
-    virtual bool isValid() const;
+    T* getLibInstance(Engine* engine);
+    void closeLibInstance();
 
-    virtual void printOn(Logger& o) const override;
+private:
+    using PFNgetLibInstance = T* (*)(Engine*);
+    using PFNcloseLibInstance = void (*)();
 
-protected:
-    void* m_handle;             ///< Handle for the dynamic library
-    PluginInfo m_pluginInfo;    ///< Details about the plugin
-
-    using PFNgetPluginInfo = const PluginInfo* (*)();
-    PFNgetPluginInfo m_pGetPluginInfo;
+    PFNgetLibInstance m_pGetLibInstance;
+    PFNcloseLibInstance m_pCloseLibInstance;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __PLUGIN_HPP__
+class Library;
+using PluginLib = Plugin<Library>;
+using PluginLibPtr = std::shared_ptr<PluginLib>;
+class Application;
+using PluginApp = Plugin<Application>;
+using PluginAppPtr = std::shared_ptr<PluginApp>;
+////////////////////////////////////////////////////////////////////////////////
+#endif // __PLUGINLIB_HPP__

@@ -13,7 +13,7 @@ void TestResourceManager::tearDown()
 }
 ////////////////////////////////////////////////////////////////////////////////
 class DummyResource;
-typedef std::shared_ptr<DummyResource> DummyResourcePtr;
+using DummyResourcePtr = std::shared_ptr<DummyResource>;
 class DummyResource : public Resource
 {
 public:

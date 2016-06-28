@@ -24,10 +24,10 @@ template <typename T> Logger& operator<<(Logger& o, const TVec2<T>& v);
 template <typename T> bool operator==(const TVec2<T>& lhs, const TVec2<T>& rhs);
 template <typename T> bool operator!=(const TVec2<T>& lhs, const TVec2<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
-typedef TVec2<int> Vec2i;
-typedef TVec2<float> Vec2f;
-typedef TVec2<double> Vec2d;
+using Vec2i = TVec2<int>;
+using Vec2f = TVec2<float>;
+using Vec2d = TVec2<double>;
 ////////////////////////////////////////////////////////////////////////////////
-typedef Vec2d Vec2;
+using Vec2 = Vec2d;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __VEC2_HPP__

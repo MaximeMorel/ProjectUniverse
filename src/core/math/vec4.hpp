@@ -42,10 +42,10 @@ template <typename T> Logger& operator<<(Logger& o, const TVec4<T>& v);
 template <typename T> bool operator==(const TVec4<T>& lhs, const TVec4<T>& rhs);
 template <typename T> bool operator!=(const TVec4<T>& lhs, const TVec4<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
-typedef TVec4<int> Vec4i;
-typedef TVec4<float> Vec4f;
-typedef TVec4<double> Vec4d;
+using Vec4i = TVec4<int>;
+using Vec4f = TVec4<float>;
+using Vec4d = TVec4<double>;
 ////////////////////////////////////////////////////////////////////////////////
-typedef Vec4d Vec4;
+using Vec4 = Vec4d;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __VEC4_HPP__

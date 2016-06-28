@@ -42,10 +42,10 @@ template <typename T> Logger& operator<<(Logger& o, TMat3<T> const& mat);
 template <typename T> bool operator==(const TMat3<T>& lhs, const TMat3<T>& rhs);
 template <typename T> bool operator!=(const TMat3<T>& lhs, const TMat3<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
-typedef TMat3<int> Mat3i;
-typedef TMat3<float> Mat3f;
-typedef TMat3<double> Mat3d;
+using Mat3i = TMat3<int>;
+using Mat3f = TMat3<float>;
+using Mat3d = TMat3<double>;
 ////////////////////////////////////////////////////////////////////////////////
-typedef Mat3d Mat3;
+using Mat3 = Mat3d;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MAT3_HPP__

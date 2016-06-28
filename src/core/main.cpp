@@ -259,7 +259,7 @@ int main(int argc, char **argv)
     if (app->isValid())
     {
         engine.log().log() << app << std::endl;
-        app->getAppInstance(&engine);
+        app->getLibInstance(&engine);
     }
 
     // AppTest
@@ -267,7 +267,7 @@ int main(int argc, char **argv)
     if (app->isValid())
     {
         engine.log().log() << app  << std::endl;
-        app->getAppInstance(&engine);
+        app->getLibInstance(&engine);
     }
 
     PluginLibPtr lib = PluginLib::create("../lib/libRenderNull.so");

@@ -1,113 +1,61 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "plugin.hpp"
-#ifdef __unix__
-#include <dlfcn.h>
-#endif
-#ifdef _WIN32
-#include <windows.h>
-#endif
-#include "../engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-Plugin::Plugin(const std::string& filename)
-    : Resource(filename)
-    , m_handle(nullptr)
-    , m_pluginInfo{"null", "null", 0, 0}
-    , m_pGetPluginInfo(nullptr)
-{
-    // find real path (using resource manager tools and going through the registered paths)
-#ifdef __unix__
-    m_handle = dlopen(filename.c_str(), RTLD_LAZY);
-    if (m_handle == nullptr)
-    {
-        getEngine().log().log() << "dlopen(" << filename << ") failed\n";
-        getEngine().log().log() << dlerror() << std::endl;
-    }
-#endif
-#ifdef _WIN32
-    // need backslashes
-    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx
-    HMODULE module = LoadLibrary(filename.c_str());
-    m_handle = module;
-    if (m_handle == nullptr)
-    {
-        getEngine().log().log() << "loadLibrary(" << filename << ") failed" << std::endl;
-    }
-#endif
-
-    if (m_handle != nullptr)
-    {
-        //m_pGetPluginInfo = (PFNgetPluginInfo)(getSymbol("getPluginInfo"));
-        *(void**)(&m_pGetPluginInfo) = getSymbol("getPluginInfo");
-        if (m_pGetPluginInfo)
-        {
-            const PluginInfo* p = m_pGetPluginInfo();
-            if (p)
-            {
-                m_pluginInfo = *p;
-            }
-        }
-    }
-}
-////////////////////////////////////////////////////////////////////////////////
-Plugin::~Plugin()
+template <class T>
+Plugin<T>::Plugin(const std::string& filename)
+    : IPlugin(filename)
+    , m_pGetLibInstance(nullptr)
+    , m_pCloseLibInstance(nullptr)
 {
     if (m_handle != nullptr)
     {
-#ifdef __unix__
-        int ret = dlclose(m_handle);
-        if (ret != 0)
-        {
-            getEngine().log().log() << "dlclose(" << getName() << ") failed" << std::endl;
-        }
-#endif
-#ifdef _WIN32
-        BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
-        if (ret != 0)
-        {
-            getEngine().log().log() << "FreeLibrary(" << getName() << ") failed" << std::endl;
-        }
-#endif
-    }
-}
-////////////////////////////////////////////////////////////////////////////////
-void* Plugin::getSymbol(const std::string& symbolname) const
-{
-    void* symbol = nullptr;
-#ifdef __unix__
-    dlerror();
-    symbol = dlsym(m_handle, symbolname.c_str());
-    const char* error = dlerror();
-    if (error)
-    {
-        getEngine().log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
-        getEngine().log().log() << error << std::endl;
-    }
-#endif
-#ifdef _WIN32
-    FARPROC proc = GetProcAddress(static_cast<HMODULE>(m_handle), symbolname.c_str());
-    symbol = reinterpret_cast<void*>(proc);
-    if (symbol == nullptr)
-    {
-        getEngine().log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed" << std::endl;
-    }
-#endif
+        //m_pGetLibInstance = (PFNgetLibInstance)(getSymbol("getLibInstance"));
+        //m_pCloseLibInstance = (void (*)())(getSymbol("closeLibInstance"));
 
-    return symbol;
+        *(void**)(&m_pGetLibInstance) = getSymbol("getLibInstance");
+        *(void**)(&m_pCloseLibInstance) = getSymbol("closeLibInstance");
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
-const PluginInfo& Plugin::getInfo() const
+template <class T>
+Plugin<T>::~Plugin()
 {
-    return m_pluginInfo;
+    closeLibInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool Plugin::isValid() const
+template <class T>
+std::shared_ptr<Plugin<T>> Plugin<T>::create(const std::string& filename)
 {
-    return (m_handle != nullptr) && (m_pGetPluginInfo != nullptr);
+    return std::shared_ptr<Plugin<T>>(new Plugin<T>(filename));
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Plugin::printOn(Logger& o) const
+template <class T>
+bool Plugin<T>::isValid() const
 {
-    o << getName() << ": " << m_pluginInfo.name << " " << m_pluginInfo.major << "." << m_pluginInfo.minor << "\n";
-    o << m_pluginInfo.info;
+    return IPlugin::isValid() &&
+           (m_pGetLibInstance != nullptr) &&
+           (m_pCloseLibInstance != nullptr);
 }
+////////////////////////////////////////////////////////////////////////////////
+template <class T>
+T* Plugin<T>::getLibInstance(Engine* engine)
+{
+    if (m_pGetLibInstance)
+    {
+        return m_pGetLibInstance(engine);
+    }
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <class T>
+void Plugin<T>::closeLibInstance()
+{
+    if (m_pCloseLibInstance)
+    {
+        m_pCloseLibInstance();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+template class Plugin<Library>;
+template class Plugin<Application>;
 ////////////////////////////////////////////////////////////////////////////////

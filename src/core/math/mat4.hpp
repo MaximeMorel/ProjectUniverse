@@ -57,10 +57,10 @@ template <typename T> Logger& operator<<(Logger& o, const TMat4<T>& v);
 template <typename T> bool operator==(const TMat4<T>& lhs, const TMat4<T>& rhs);
 template <typename T> bool operator!=(const TMat4<T>& lhs, const TMat4<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
-typedef TMat4<int> Mat4i;
-typedef TMat4<float> Mat4f;
-typedef TMat4<double> Mat4d;
+using Mat4i = TMat4<int>;
+using Mat4f = TMat4<float>;
+using Mat4d = TMat4<double>;
 ////////////////////////////////////////////////////////////////////////////////
-typedef Mat4d Mat4;
+using Mat4 = Mat4d;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MAT4_HPP__
