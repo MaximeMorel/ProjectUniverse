@@ -17,6 +17,19 @@ Plugin<T>::Plugin(const std::string& filename)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+template <>
+Plugin<Application>::Plugin(const std::string& filename)
+    : IPlugin(filename)
+    , m_pGetLibInstance(nullptr)
+    , m_pCloseLibInstance(nullptr)
+{
+    if (m_handle != nullptr)
+    {
+        *(void**)(&m_pGetLibInstance) = getSymbol("getAppInstance");
+        *(void**)(&m_pCloseLibInstance) = getSymbol("closeAppInstance");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
 template <class T>
 Plugin<T>::~Plugin()
 {
