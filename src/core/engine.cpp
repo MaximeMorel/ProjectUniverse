@@ -14,7 +14,8 @@
 Engine* gEngine = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 Engine::Engine(const std::string& name)
-    : m_logManager()
+    : m_config()
+    , m_logManager()
     , m_resourecManager(m_logManager)
     , m_pluginManager()
     , m_name(name)

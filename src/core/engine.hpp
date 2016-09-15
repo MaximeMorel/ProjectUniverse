@@ -4,6 +4,7 @@
 #include "log/logManager.hpp"
 #include "resource/resourceManager.hpp"
 #include "plugin/pluginManager.hpp"
+//#include "config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
 {
@@ -16,6 +17,8 @@ public:
     PluginManager& plugins();
 
 private:
+    //Config m_config;
+    int m_config;
     LogManager m_logManager;
     ResourceManager m_resourecManager;
     PluginManager m_pluginManager;

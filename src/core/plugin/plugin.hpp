@@ -34,11 +34,12 @@ private:
 class Library;
 using PluginLib = Plugin<Library>;
 using PluginLibPtr = std::shared_ptr<PluginLib>;
+
 class Application;
 using PluginApp = Plugin<Application>;
 using PluginAppPtr = std::shared_ptr<PluginApp>;
 ////////////////////////////////////////////////////////////////////////////////
-template <>
-Plugin<Application>::Plugin(const std::string& filename);
+//template <>
+//Plugin<Application>::Plugin(const std::string& filename);
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGINLIB_HPP__
