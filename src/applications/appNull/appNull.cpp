@@ -32,11 +32,11 @@ void closeAppInstance()
 ApplicationAppNull::ApplicationAppNull(Engine& engine)
     : Application(engine)
 {
-    log().log() << "ApplicationAppNull start..." << std::endl;
+    log().log() << "ApplicationAppNull start...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 ApplicationAppNull::~ApplicationAppNull()
 {
-    log().log() << "ApplicationAppNull stop..." << std::endl;
+    log().log() << "ApplicationAppNull stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

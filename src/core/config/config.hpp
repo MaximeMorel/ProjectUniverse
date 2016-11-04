@@ -76,6 +76,8 @@ class Config
 {
 public:
     Config()
+        : app(nullptr)
+        , resolution(nullptr)
     {
         ConfigEntry* c1 = new TConfigEntry<bool>("b1", true);
         m_config[c1->getName()] = c1;
@@ -84,6 +86,21 @@ public:
         //c->
         std::string str("a");
         bool a = get<bool>(str);
+
+        resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
+        m_config["resolution"] = resolution;
+    }
+
+    ~Config()
+    {
+
+    }
+
+    void initDefaultConfig()
+    {
+        if (!resolution)
+            resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
+        m_config["resolution"] = resolution;
     }
 
     const ConfigEntry* getC(const std::string& name) const
@@ -116,6 +133,10 @@ public:
     {
 
     }*/
+
+    TConfigEntry<std::string>* app;
+    TConfigEntry<std::string>* resolution;
+    TConfigEntry<int>* windowmode;
 
 private:
     std::map<std::string,ConfigEntry*> m_config;

@@ -12,6 +12,12 @@ LoggerStream::~LoggerStream()
 
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerStream::operator<<(const LogLine& line)
+{
+    m_outStream << line.getBuf();
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerStream::operator<<(long rhs)
 {
     m_outStream << rhs;

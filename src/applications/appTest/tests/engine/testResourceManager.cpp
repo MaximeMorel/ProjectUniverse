@@ -25,7 +25,7 @@ public:
 
     ~DummyResource()
     {
-        getEngine().log().log() << "Dtor: " << *this << std::endl;
+        getEngine().log().log() << "Dtor: " << *this << "\n";
     }
 
     static DummyResourcePtr create(const std::string& name)

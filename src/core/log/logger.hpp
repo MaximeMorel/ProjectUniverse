@@ -2,7 +2,38 @@
 #define __LOGGER_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include <ostream>
-#include <string>
+#include <sstream>
+////////////////////////////////////////////////////////////////////////////////
+class LogLine
+{
+public:
+    LogLine();
+    ~LogLine();
+
+    std::string getBuf() const;
+
+    LogLine& operator<<(long rhs);
+    LogLine& operator<<(unsigned long rhs);
+    LogLine& operator<<(bool rhs);
+    LogLine& operator<<(short rhs);
+    LogLine& operator<<(unsigned short rhs);
+    LogLine& operator<<(int rhs);
+    LogLine& operator<<(unsigned int rhs);
+    LogLine& operator<<(double rhs);
+    LogLine& operator<<(float rhs);
+    LogLine& operator<<(long double rhs);
+    LogLine& operator<<(const void* rhs);
+    LogLine& operator<<(const char* rhs);
+
+    LogLine& operator<<(const std::string& rhs);
+
+    LogLine& operator<<(std::ostream& (*rhs)(std::ostream&));
+    LogLine& operator<<(std::ios& (*rhs)(std::ios&));
+    LogLine& operator<<(std::ios_base& (*rhs)(std::ios_base&));
+
+private:
+    std::stringstream m_buf;     ///< logging buffer
+};
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief Logger top class, intended to be used like an ostream
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,6 +44,8 @@ public:
     virtual ~Logger();
 
     const std::string& getName() const;
+
+    virtual Logger& operator<<(const LogLine& line)=0;
 
     virtual Logger& operator<<(long rhs)=0;
     virtual Logger& operator<<(unsigned long rhs)=0;

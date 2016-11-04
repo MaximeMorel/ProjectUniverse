@@ -31,9 +31,11 @@ void closeLibInstance()
 PluginInputSDL::PluginInputSDL(Engine &engine)
     : Library(engine)
 {
+    log().log() << "PluginInputSDL start...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginInputSDL::~PluginInputSDL()
 {
+    log().log() << "PluginInputSDL stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

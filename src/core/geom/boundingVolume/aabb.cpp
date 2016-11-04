@@ -3,12 +3,14 @@
 #include <limits>
 ////////////////////////////////////////////////////////////////////////////////
 AABB::AABB()
-    : min(std::numeric_limits<double>::max()), max(std::numeric_limits<double>::min())
+    : min(std::numeric_limits<double>::max())
+    , max(std::numeric_limits<double>::min())
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 AABB::AABB(const Vec3& pMin, const Vec3& pMax)
-    : min(pMin), max(pMax)
+    : min(pMin)
+    , max(pMax)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +53,9 @@ size_t AABB::getMemSize() const
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const AABB& aabb)
 {
-    return o << aabb.min << " / " << aabb.max << " [" << aabb.max.x-aabb.min.x << ", " << aabb.max.y-aabb.min.y << ", " << aabb.max.z-aabb.min.z << "]";
+    return o << aabb.min << " / " << aabb.max <<
+                " [" << aabb.max.x - aabb.min.x <<
+                ", " << aabb.max.y - aabb.min.y <<
+                ", " << aabb.max.z - aabb.min.z << "]";
 }
 ////////////////////////////////////////////////////////////////////////////////

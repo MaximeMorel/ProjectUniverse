@@ -14,6 +14,8 @@ public:
 
     void addLogger(Logger* logger);
 
+    virtual Logger& operator<<(const LogLine& line) override;
+
     virtual Logger& operator<<(long rhs) override;
     virtual Logger& operator<<(unsigned long rhs) override;
     virtual Logger& operator<<(bool rhs) override;

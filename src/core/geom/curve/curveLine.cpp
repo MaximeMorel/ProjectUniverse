@@ -40,7 +40,7 @@ size_t CurveLine::getMemSize() const
 Logger& operator<<(Logger& o, const CurveLine& curve)
 {
     o << "Line curve: " << curve.m_points[0] << ", " << curve.m_points[1];
-    o << std::endl;
+    o << "\n";
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////

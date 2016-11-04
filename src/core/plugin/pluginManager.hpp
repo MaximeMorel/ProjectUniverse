@@ -9,6 +9,8 @@ class PluginManager
 public:
     PluginManager();
     virtual ~PluginManager();
+
+    void discoverPlugins();
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __PLUGINMANAGER_HPP__

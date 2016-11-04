@@ -10,6 +10,15 @@ LoggerGroup::~LoggerGroup()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerGroup::operator<<(const LogLine& line)
+{
+    for (Logger* logger : m_loggers)
+    {
+        *logger << line.getBuf();
+    }
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(long rhs)
 {
     for (Logger* logger : m_loggers)

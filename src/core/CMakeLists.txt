@@ -10,6 +10,8 @@ set(CORE_SOURCE main.cpp
                 engine.cpp
                 library.cpp
                 config/config.cpp
+                console/console.cpp
+                console/consolecommands.cpp
                 coretypes/buffer.cpp
                 coretypes/image.cpp
                 geom/frustum.cpp
@@ -24,6 +26,10 @@ set(CORE_SOURCE main.cpp
                 geom/surface/surface.cpp
                 geom/surface/surfacePlane.cpp
                 input/inputDevice.cpp
+                input/inputDeviceKeyboard.cpp
+                input/inputDeviceMouse.cpp
+                input/inputDeviceJoystick.cpp
+                input/inputDeviceTouchscreen.cpp
                 input/inputManager.cpp
                 log/logManager.cpp
                 log/logger.cpp

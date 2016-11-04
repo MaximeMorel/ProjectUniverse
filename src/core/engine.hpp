@@ -4,6 +4,7 @@
 #include "log/logManager.hpp"
 #include "resource/resourceManager.hpp"
 #include "plugin/pluginManager.hpp"
+#include "input/inputManager.hpp"
 //#include "config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
@@ -15,6 +16,7 @@ public:
     LogManager& log();
     ResourceManager& res();
     PluginManager& plugins();
+    InputManager& input();
 
 private:
     //Config m_config;
@@ -22,6 +24,7 @@ private:
     LogManager m_logManager;
     ResourceManager m_resourecManager;
     PluginManager m_pluginManager;
+    InputManager m_inputManager;
 
     std::string m_name;     ///< engine string identifier
 };

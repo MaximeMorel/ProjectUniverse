@@ -31,11 +31,11 @@ void closeLibInstance()
 PluginRenderNull::PluginRenderNull(Engine &engine)
     : Library(engine)
 {
-    log().log() << "PluginRenderNull start..." << std::endl;
+    log().log() << "PluginRenderNull start...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderNull::~PluginRenderNull()
 {
-    log().log() << "PluginRenderNull stop..." << std::endl;
+    log().log() << "PluginRenderNull stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

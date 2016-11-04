@@ -32,7 +32,7 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     : Library(engine)
     , m_instanceIsValid(0)
 {
-    log().log() << "PluginRenderVulkan start..." << std::endl;
+    log().log() << "PluginRenderVulkan start...\n";
 
     // Filling out application description:
     // sType is mandatory
@@ -68,7 +68,7 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
     VkResult result = vkCreateInstance(&m_instanceInfo, nullptr, &m_instance);
     if (result != VK_SUCCESS)
     {
-        log().log() << "Failed to create instance:" << result << std::endl;
+        log().log() << "Failed to create instance:" << result << "\n";
     }
     else
     {
@@ -78,7 +78,7 @@ PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderVulkan::~PluginRenderVulkan()
 {
-    log().log() << "PluginRenderVulkan stop..." << std::endl;
+    log().log() << "PluginRenderVulkan stop...\n";
     if (m_instanceIsValid)
     {
         vkDestroyInstance(m_instance, nullptr);

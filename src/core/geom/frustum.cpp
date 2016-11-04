@@ -67,7 +67,7 @@ bool Frustum::intersect(const AABB& box) const
             {
                 for (int k = 0; k < 2; ++k)
                 {
-                    //std::cout << "(" << i << "," << j << "," << k << ") : " << Vec4(box[i].x, box[j].y, box[k].z, 1.0) << std::endl;
+                    //std::cout << "(" << i << "," << j << "," << k << ") : " << Vec4(box[i].x, box[j].y, box[k].z, 1.0) << "\n";
                     out += ((planes[p].getCoeffs().dot(Vec4(box[i].x, box[j].y, box[k].z, 1.0)) < 0.0 ) ? 1:0);
                 }
             }

@@ -20,7 +20,7 @@ double BoundingSphere::distance(const Vec3& p) const
 ////////////////////////////////////////////////////////////////////////////////
 bool BoundingSphere::intersect(const Vec3& p) const
 {
-    return (p-center).lengthSqr() <= radius*radius;
+    return (p-center).lengthSqr() <= (radius * radius);
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t BoundingSphere::getMemSize() const

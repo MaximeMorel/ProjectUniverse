@@ -9,12 +9,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main2(int argc, char** argv)
 {
-   /*std::cout << "test log begin" << std::endl;
+   /*std::cout << "test log begin\n";
     LoggerStreamBuf buf(std::cout);
     //LoggerStream log("stdout", buf);
     LoggerStream log("stdout", std::cout);
-    log << "Init main..." << std::endl;
-    std::cout << "test log end" << std::endl;*/
+    log << "Init main...\n";
+    std::cout << "test log end\n";*/
 
     return 0;
 }
@@ -149,13 +149,13 @@ int main4(int argc, char** argv)
     IRes& r2 = a1;
     IRes& r3 = b;
 
-    std::cout << A::_getResTypeId() << std::endl;
-    std::cout << A1::_getResTypeId() << std::endl;
-    std::cout << B::_getResTypeId() << std::endl;
+    std::cout << A::_getResTypeId() << "\n";
+    std::cout << A1::_getResTypeId() << "\n";
+    std::cout << B::_getResTypeId() << "\n";
 
-    std::cout << r1.getResTypeId() << std::endl;
-    std::cout << r2.getResTypeId() << std::endl;
-    std::cout << r3.getResTypeId() << std::endl;
+    std::cout << r1.getResTypeId() << "\n";
+    std::cout << r2.getResTypeId() << "\n";
+    std::cout << r3.getResTypeId() << "\n";
 
     return 0;
 }
@@ -246,19 +246,23 @@ private:
     std::vector<std::basic_streambuf<char> *> mBufs;
 };*/
 
-#include "core/math/mat3.hpp"
-#include "core/math/mat4.hpp"
-#include "core/tests/testRunner.hpp"
+void processArgs(int argc, char **argv)
+{
+    for (int i = 0; i < argc; ++i)
+    {
+
+    }
+}
 
 int main(int argc, char **argv)
 {
-    std::cout << "Start..." << std::endl;
+    std::cout << "Start...\n";
     Engine engine("main");
 
     PluginAppPtr app = PluginApp::create("../app/AppNull/libAppNull.so");
     if (app->isValid())
     {
-        engine.log().log() << app << std::endl;
+        engine.log().log() << app << "\n";
         app->getLibInstance(&engine);
     }
 
@@ -266,30 +270,32 @@ int main(int argc, char **argv)
     app = PluginApp::create("../app/AppTest/libAppTest.so");
     if (app->isValid())
     {
-        engine.log().log() << app  << std::endl;
+        engine.log().log() << app  << "\n";
         app->getLibInstance(&engine);
     }
+    app = nullptr;
 
     PluginLibPtr lib = PluginLib::create("../lib/libRenderNull.so");
     if (lib->isValid())
     {
-        engine.log().log() << lib << std::endl;
+        engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
 
     lib = PluginLib::create("../lib/libRenderVulkan.so");
     if (lib->isValid())
     {
-        engine.log().log() << lib << std::endl;
+        engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
+    lib = nullptr;
 
-    lib = PluginLib::create("../lib/libAudioOpenAL.so");
+    /*lib = PluginLib::create("../lib/libAudioOpenAL.so");
     if (lib->isValid())
     {
-        engine.log().log() << lib << std::endl;
+        engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
-    }
+    }*/
 
     {
         // Build the broadphase
@@ -314,6 +320,38 @@ int main(int argc, char **argv)
         delete collisionConfiguration;
         delete broadphase;
     }
+
+    {
+        PluginLibPtr lib = PluginLib::create("../lib/libInputSDL.so");
+        if (lib->isValid())
+        {
+            engine.log().log() << lib << "\n";
+            lib->getLibInstance(&engine);
+        }
+        if (engine.input().keyboard(0).isPressed(Input::Keyboard::KEY_a))
+        {
+            ;
+        }
+
+        if (engine.input().mouse(0).isPressed(Input::Mouse::BT_1))
+        {
+            ;
+        }
+
+        if (engine.input().joystick(0).isPressed(Input::Joystick::BT_1))
+        {
+            ;
+        }
+
+        if (engine.input().joystick(0).value(Input::Joystick::AXIS_1) > 0.5)
+        {
+            ;
+        }
+    }
+
+    lib = nullptr;
+
+    std::cout << "main exit...\n";
 
     return 0;
 }

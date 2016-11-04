@@ -75,16 +75,16 @@ Octree* Octree::getChild(const Vec3& p)
     Vec3 len = (m_bbox.max - m_bbox.min)*0.5;
 
     /*
-    for(int i=0; i<2; ++i)
+    for (int i = 0; i < 2; ++i)
     {
-        for(int j=0; j<2; ++j)
+        for (int j = 0; j < 2; ++j)
         {
-            for(int k=0; k<2; ++k)
+            for (int k = 0; k < 2; ++k)
             {
-                size_t id = i + 2*j + 4*k;
-                if(!m_children[id])
+                size_t id = i + 2 * j + 4 * k;
+                if (!m_children[id])
                 {
-                    Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
+                    Vec3 corner = m_bbox.min + Vec3(len.x * i, len.y * j, len.z * k);
                     m_children[id] = new Octree(AABB(corner, corner+len), this);
                 }
             }
@@ -95,16 +95,16 @@ Octree* Octree::getChild(const Vec3& p)
     int j = 0;
     int k = 0;
 
-    if (p.x > m_bbox.min.x+len.x) i = 1;
-    if (p.y > m_bbox.min.y+len.y) j = 1;
-    if (p.z > m_bbox.min.z+len.z) k = 1;
+    if (p.x > m_bbox.min.x + len.x) i = 1;
+    if (p.y > m_bbox.min.y + len.y) j = 1;
+    if (p.z > m_bbox.min.z + len.z) k = 1;
 
-    size_t id = i + 2*j + 4*k;
+    size_t id = i + 2 * j + 4 * k;
     if (!m_children[id])
     {
-        Vec3 corner = m_bbox.min + Vec3(len.x*i, len.y*j, len.z*k);
+        Vec3 corner = m_bbox.min + Vec3(len.x * i, len.y * j, len.z * k);
         m_children[id] = new Octree(AABB(corner, corner+len), this);
-        //std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << std::endl;
+        //std::cout << std::fixed << id << " " << i << " " << j << " " << k << " -> " << m_children[id]->m_bbox << "\n";
     }
     return m_children[id];
 }
@@ -120,7 +120,7 @@ void Octree::insert(const Vec3& p)
         }
         else
         {
-            //std::cout << "inserted" << std::endl;
+            //std::cout << "inserted\n";
             //m_elements.push_back(p);
             ++m_numElements;
         }

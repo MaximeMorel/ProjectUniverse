@@ -12,6 +12,8 @@ public:
     LoggerFile(const std::string& name, const std::string& fileName);
     virtual ~LoggerFile() override;
 
+    virtual Logger& operator<<(const LogLine& line) override;
+
     virtual Logger& operator<<(long rhs) override;
     virtual Logger& operator<<(unsigned long rhs) override;
     virtual Logger& operator<<(bool rhs) override;

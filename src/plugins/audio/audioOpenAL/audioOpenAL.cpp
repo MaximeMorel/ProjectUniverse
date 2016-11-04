@@ -31,12 +31,12 @@ void closeLibInstance()
 PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
     : Library(engine), m_device(nullptr), m_context(nullptr)
 {
-    log().log() << "PluginAudioOpenAL start..." << std::endl;
+    log().log() << "PluginAudioOpenAL start...\n";
 
     ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
     if (enumeration)
     {
-        log().log() << "ALC_ENUMERATION_EXT available" << std::endl;
+        log().log() << "ALC_ENUMERATION_EXT available\n";
     }
 
     std::vector<std::string> list = listDevices();
@@ -48,7 +48,7 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
             log().log() << str << "\n";
         }
 
-        log().log() << "Using device: " << list[0].c_str() << std::endl;
+        log().log() << "Using device: " << list[0].c_str() << "\n";
         m_device = alcOpenDevice(list[0].c_str());
 
         if (m_device)
@@ -65,7 +65,7 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL::~PluginAudioOpenAL()
 {
-    log().log() << "PluginAudioOpenAL stop..." << std::endl;
+    log().log() << "PluginAudioOpenAL stop...\n";
 
     alcMakeContextCurrent(NULL);
     if (m_context)

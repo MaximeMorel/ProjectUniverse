@@ -2,6 +2,10 @@
 #include "engine.hpp"
 #include <unistd.h>
 ////////////////////////////////////////////////////////////////////////////////
+// Run main
+// Start engine
+// Process command line parameters (ex: app, resolution)
+// Load config (hardcoded in engine, default engine config, app config)
 // First create loggers
 // Load res manager
 // Load default config
@@ -21,15 +25,16 @@ Engine::Engine(const std::string& name)
     , m_name(name)
 {
     setGlobalEngine(*this);
-    m_logManager.log() << FILEINFO << "Engine " << m_name << " init..." << std::endl;
+    m_logManager.log() << FILEINFO << "Engine " << m_name << " init...\n";
+    m_logManager.log() << (LogLine() << FILEINFO << "Engine " << m_name << " init...\n");
 
     char buf[256];
-    m_logManager.log() << getcwd(buf, 256) << std::endl;
+    m_logManager.log() << getcwd(buf, 256) << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
-    m_logManager.log() << "Engine " << m_name << " close..." << std::endl;
+    m_logManager.log() << "Engine " << m_name << " close...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 LogManager& Engine::log()
@@ -45,6 +50,11 @@ ResourceManager& Engine::res()
 PluginManager& Engine::plugins()
 {
     return m_pluginManager;
+}
+////////////////////////////////////////////////////////////////////////////////
+InputManager& Engine::input()
+{
+    return m_inputManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine)

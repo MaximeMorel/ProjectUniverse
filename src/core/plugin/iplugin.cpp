@@ -20,7 +20,7 @@ IPlugin::IPlugin(const std::string& filename)
     if (m_handle == nullptr)
     {
         getEngine().log().log() << "dlopen(" << filename << ") failed\n";
-        getEngine().log().log() << dlerror() << std::endl;
+        getEngine().log().log() << dlerror() << "\n";
     }
 #endif
 #ifdef _WIN32
@@ -30,7 +30,7 @@ IPlugin::IPlugin(const std::string& filename)
     m_handle = module;
     if (m_handle == nullptr)
     {
-        getEngine().log().log() << "loadLibrary(" << filename << ") failed" << std::endl;
+        getEngine().log().log() << "loadLibrary(" << filename << ") failed\n";
     }
 #endif
 
@@ -57,14 +57,14 @@ IPlugin::~IPlugin()
         int ret = dlclose(m_handle);
         if (ret != 0)
         {
-            getEngine().log().log() << "dlclose(" << getName() << ") failed" << std::endl;
+            getEngine().log().log() << "dlclose(" << getName() << ") failed\n";
         }
 #endif
 #ifdef _WIN32
         BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
         if (ret != 0)
         {
-            getEngine().log().log() << "FreeLibrary(" << getName() << ") failed" << std::endl;
+            getEngine().log().log() << "FreeLibrary(" << getName() << ") failed\n";
         }
 #endif
     }
@@ -80,7 +80,7 @@ void* IPlugin::getSymbol(const std::string& symbolname) const
     if (error)
     {
         getEngine().log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
-        getEngine().log().log() << error << std::endl;
+        getEngine().log().log() << error << "\n";
     }
 #endif
 #ifdef _WIN32
@@ -88,7 +88,7 @@ void* IPlugin::getSymbol(const std::string& symbolname) const
     symbol = reinterpret_cast<void*>(proc);
     if (symbol == nullptr)
     {
-        getEngine().log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed" << std::endl;
+        getEngine().log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed\n";
     }
 #endif
 

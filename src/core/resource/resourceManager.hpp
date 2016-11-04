@@ -18,6 +18,8 @@ public:
     template<class T, typename... Params>
     ResourcePtr createResource(const std::string& name, Params... p);
 
+    void addSearchPath();
+
     void addResource(const ResourcePtr& res);
 
     void delResource(size_t resId);
