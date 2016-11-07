@@ -31,6 +31,7 @@ set(CORE_SOURCE main.cpp
                 input/inputDeviceJoystick.cpp
                 input/inputDeviceTouchscreen.cpp
                 input/inputManager.cpp
+                input/inputPlugin.cpp
                 log/logManager.cpp
                 log/logger.cpp
                 log/loggerFile.cpp

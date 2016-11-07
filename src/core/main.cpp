@@ -327,7 +327,9 @@ int main(int argc, char **argv)
         {
             engine.log().log() << lib << "\n";
             lib->getLibInstance(&engine);
+            engine.input().discoverDevices();
         }
+        engine.input().listDevices(engine.log().log());
         if (engine.input().keyboard(0).isPressed(Input::Keyboard::KEY_a))
         {
             ;

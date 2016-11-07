@@ -3,7 +3,36 @@
 #include <SDL.h>
 #include <GL/gl.h>
 ////////////////////////////////////////////////////////////////////////////////
-WindowContextSDL2::WindowContextSDL2()
+PluginInfo pluginInfo = { "windowSDL",
+                          "WindowSDL",
+                          "window",
+                          0,
+                          1};
+////////////////////////////////////////////////////////////////////////////////
+PluginWindowContextSDL2* lib = nullptr;
+////////////////////////////////////////////////////////////////////////////////
+const PluginInfo* getPluginInfo()
+{
+    return &pluginInfo;
+}
+////////////////////////////////////////////////////////////////////////////////
+Library* getLibInstance(Engine* engine)
+{
+    if (lib == nullptr)
+    {
+        lib = new PluginWindowContextSDL2(*engine);
+    }
+    return lib;
+}
+////////////////////////////////////////////////////////////////////////////////
+void closeLibInstance()
+{
+    delete lib;
+    lib = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
+    : WindowPlugin(engine)
 {
     SDL_Window *window = SDL_CreateWindow("SDL2 window",
                           SDL_WINDOWPOS_UNDEFINED,

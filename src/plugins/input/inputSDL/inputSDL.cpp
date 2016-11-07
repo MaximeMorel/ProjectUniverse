@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "inputSDL",
                           "inputSDL",
+                          "input",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +30,7 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginInputSDL::PluginInputSDL(Engine &engine)
-    : Library(engine)
+    : InputPlugin(engine)
 {
     log().log() << "PluginInputSDL start...\n";
 }

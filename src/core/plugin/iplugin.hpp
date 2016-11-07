@@ -9,6 +9,7 @@ struct PluginInfo
 {
     const char* info;           ///< Plugin info string
     const char* name;           ///< Plugin name
+    const char* type;           ///< Plugin type
     int major;                  ///< Major version number
     int minor;                  ///< Minor version number
 };

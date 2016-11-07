@@ -16,6 +16,8 @@ public:
 
     virtual void printOn(Logger& o) const;
 
+    friend Logger& operator<<(Logger& o, const InputDevice& dev);
+
 private:
 
 };

@@ -9,6 +9,8 @@
 #include "core/log/logger.hpp"
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
+class InputPlugin;
+////////////////////////////////////////////////////////////////////////////////
 class InputManager
 {
 public:
@@ -16,7 +18,7 @@ public:
     ~InputManager();
 
     void discoverDevices();
-    void listDevices() const;
+    void listDevices(Logger& o) const;
 
     void update();
 
@@ -41,6 +43,8 @@ public:
     size_t getNumDevices(DeviceTypes dt) const;
 
 private:
+    InputPlugin* m_plugin;
+
     std::vector<InputDeviceKeyboard> m_keyboard;
     std::vector<InputDeviceMouse> m_mouse;
     std::vector<InputDeviceJoystick> m_joystick;
