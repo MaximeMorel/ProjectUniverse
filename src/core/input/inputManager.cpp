@@ -61,6 +61,22 @@ InputDeviceTouchscreen& InputManager::touchscreen(size_t id)
     return m_touchscreen[id];
 }
 ////////////////////////////////////////////////////////////////////////////////
+InputDevice& InputManager::getDevice(DeviceTypes dt, size_t id)
+{
+    switch(dt)
+    {
+    case DeviceTypes::KEYBOARD:
+        return m_keyboard[id];
+    case DeviceTypes::MOUSE:
+        return m_mouse[id];
+    case DeviceTypes::JOYSTICK:
+        return m_joystick[id];
+    case DeviceTypes::TOUCHSCREEN:
+        return m_touchscreen[id];
+    }
+    return m_keyboard[0];
+}
+////////////////////////////////////////////////////////////////////////////////
 size_t InputManager::getNumDevices(DeviceTypes dt) const
 {
     switch(dt)

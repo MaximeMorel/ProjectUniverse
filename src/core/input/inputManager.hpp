@@ -27,12 +27,6 @@ public:
     InputDeviceJoystick& joystick(size_t id);
     InputDeviceTouchscreen& touchscreen(size_t id);
 
-    //size_t getNumDevices(DeviceTypes dt) const;
-
-    virtual size_t getMemSize() const;
-
-    virtual void printOn(Logger& o) const;
-
     enum class DeviceTypes
     {
         KEYBOARD,
@@ -40,15 +34,20 @@ public:
         JOYSTICK,
         TOUCHSCREEN
     };
+    InputDevice& getDevice(DeviceTypes dt, size_t id);
     size_t getNumDevices(DeviceTypes dt) const;
+
+    virtual size_t getMemSize() const;
+
+    virtual void printOn(Logger& o) const;
 
 private:
     InputPlugin* m_plugin;
 
-    std::vector<InputDeviceKeyboard> m_keyboard;
-    std::vector<InputDeviceMouse> m_mouse;
-    std::vector<InputDeviceJoystick> m_joystick;
-    std::vector<InputDeviceTouchscreen> m_touchscreen;
+    std::vector<InputDeviceKeyboard> m_keyboard;        ///< keyboard devices
+    std::vector<InputDeviceMouse> m_mouse;              ///< mouce devices
+    std::vector<InputDeviceJoystick> m_joystick;        ///< joystick devices
+    std::vector<InputDeviceTouchscreen> m_touchscreen;  ///< touchscreen devices
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __INPUTMANAGER_HPP__

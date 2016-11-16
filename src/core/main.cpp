@@ -330,6 +330,7 @@ int main(int argc, char **argv)
             engine.input().discoverDevices();
         }
         engine.input().listDevices(engine.log().log());
+        engine.input().update();
         if (engine.input().keyboard(0).isPressed(Input::Keyboard::KEY_a))
         {
             ;
