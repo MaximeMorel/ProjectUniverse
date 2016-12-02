@@ -94,6 +94,8 @@ enum Keyboard
     KEY_MENU,
     KEY_ESC,
 
+    KEY_NONE,
+
     NB_KEYS
 };
 } // namespace Input
@@ -111,6 +113,9 @@ public:
     virtual size_t getMemSize() const override;
 
     virtual void printOn(Logger& o) const override;
+
+protected:
+    void set(Input::Keyboard key, Input::KeyMode mode);
 
 private:
     using super = InputDevice;

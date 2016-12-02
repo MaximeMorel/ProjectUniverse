@@ -44,9 +44,11 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
     if (!list.empty())
     {
         log().log() << "OpenAl devices:\n";
+        uint8_t i = 0;
         for (const auto& str : list)
         {
-            log().log() << str << "\n";
+            log().log() << i << " - " << str << "\n";
+            ++i;
         }
 
         log().log() << "Using device: " << list[0].c_str() << "\n";

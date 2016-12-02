@@ -14,6 +14,10 @@ void InputSDLDeviceTouchscreen::update()
     super::update();
 }
 ////////////////////////////////////////////////////////////////////////////////
+void InputSDLDeviceTouchscreen::update(SDL_Event* event)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
 size_t InputSDLDeviceTouchscreen::getMemSize() const
 {
     return super::getMemSize();

@@ -33,19 +33,39 @@ void closeLibInstance()
 ////////////////////////////////////////////////////////////////////////////////
 PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     : WindowPlugin(engine)
+    , m_window(nullptr)
 {
-    SDL_Window *window = SDL_CreateWindow("SDL2 window",
-                          SDL_WINDOWPOS_UNDEFINED,
-                          SDL_WINDOWPOS_UNDEFINED,
-                          640, 480,
-                          SDL_WINDOW_OPENGL);
+    m_window = SDL_CreateWindow("SDL2 window",
+                                SDL_WINDOWPOS_UNDEFINED,
+                                SDL_WINDOWPOS_UNDEFINED,
+                                640, 480,
+                                SDL_WINDOW_OPENGL);
+
+    if (m_window == nullptr)
+    {
+        log().log() << SDL_GetError();
+    }
 
     // Create an OpenGL context associated with the window.
-    SDL_GLContext glcontext = SDL_GL_CreateContext(window);
+    m_glcontext = SDL_GL_CreateContext(m_window);
 
     // now you can make GL calls.
-    glClearColor(1,0,0,1);
+    glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
+
+    swapBuffers();
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginWindowContextSDL2::~PluginWindowContextSDL2()
+{
+    SDL_GL_DeleteContext(m_glcontext);
+
+    SDL_DestroyWindow(m_window);
+    log().log() << SDL_GetError();
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginWindowContextSDL2::swapBuffers()
+{
+    SDL_GL_SwapWindow(m_window);
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -24,6 +24,14 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 namespace Input
 {
+enum class DeviceType
+{
+    KEYBOARD = 0,
+    MOUSE,
+    JOYSTICK,
+    TOUCHSCREEN
+};
+
 enum class KeyMode : std::int8_t
 {
     UP = 0,

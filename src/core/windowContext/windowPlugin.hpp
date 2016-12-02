@@ -12,9 +12,12 @@ public:
     {
     }
 
-    virtual ~WindowPlugin()
+    virtual ~WindowPlugin() override
     {
     }
+
+    virtual void swapBuffers()
+    {}
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __WINDOWCONTEXT_HPP__

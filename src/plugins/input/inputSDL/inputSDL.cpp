@@ -33,10 +33,115 @@ PluginInputSDL::PluginInputSDL(Engine &engine)
     : InputPlugin(engine)
 {
     log().log() << "PluginInputSDL start...\n";
+
+    if (SDL_WasInit(SDL_INIT_GAMECONTROLLER))
+    {
+        log().log() << "SDL Gamecontroller subsystem already started\n";
+    }
+    else
+    {
+        int ret = SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+        if (ret < 0)
+        {
+            log().log() << SDL_GetError();
+        }
+    }
+
+    if (SDL_WasInit(SDL_INIT_EVENTS))
+    {
+        log().log() << "SDL events subsystem already started\n";
+    }
+    else
+    {
+        int ret = SDL_InitSubSystem(SDL_INIT_EVENTS);
+        if (ret < 0)
+        {
+            log().log() << SDL_GetError();
+        }
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginInputSDL::~PluginInputSDL()
 {
     log().log() << "PluginInputSDL stop...\n";
+
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
+    SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginInputSDL::discoverDevices()
+{
+    m_keyboard.emplace_back(InputSDLDeviceKeyboard());
+    m_mouse.emplace_back(InputSDLDeviceMouse());
+}
+////////////////////////////////////////////////////////////////////////////////
+size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
+{
+    switch(dt)
+    {
+        case Input::DeviceType::KEYBOARD:
+            return m_keyboard.size();
+        case Input::DeviceType::MOUSE:
+            return m_mouse.size();
+        case Input::DeviceType::JOYSTICK:
+            return m_joystick.size();
+        case Input::DeviceType::TOUCHSCREEN:
+            return m_touchscreen.size();
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
+{
+    switch(dt)
+    {
+        case Input::DeviceType::KEYBOARD:
+            return &m_keyboard[deviceId];
+        case Input::DeviceType::MOUSE:
+            return &m_mouse[deviceId];
+        case Input::DeviceType::JOYSTICK:
+            return &m_joystick[deviceId];
+        case Input::DeviceType::TOUCHSCREEN:
+            return &m_touchscreen[deviceId];
+    }
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginInputSDL::update()
+{
+    SDL_Event event;
+
+    while(SDL_PollEvent(&event))
+    {
+        for (auto& device : m_keyboard)
+        {
+            device.update(&event);
+        }
+        for (auto device : m_mouse)
+        {
+            device.update(&event);
+        }
+        for (auto device : m_joystick)
+        {
+            device.update(&event);
+        }
+        for (auto device : m_touchscreen)
+        {
+            device.update(&event);
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+size_t PluginInputSDL::getMemSize() const
+{
+    return m_keyboard.size() * sizeof(InputSDLDeviceKeyboard) +
+           m_mouse.size() * sizeof(InputSDLDeviceMouse) +
+           m_joystick.size() * sizeof(InputSDLDeviceJoystick) +
+           m_touchscreen.size() * sizeof(InputSDLDeviceTouchscreen);
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginInputSDL::printOn(Logger& o) const
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////

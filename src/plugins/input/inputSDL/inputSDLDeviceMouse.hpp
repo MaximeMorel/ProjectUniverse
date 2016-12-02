@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/input/inputDeviceMouse.hpp"
 #include "core/log/logger.hpp"
+#include <SDL.h>
 ////////////////////////////////////////////////////////////////////////////////
 class InputSDLDeviceMouse : public InputDeviceMouse
 {
@@ -11,6 +12,7 @@ public:
     virtual ~InputSDLDeviceMouse();
 
     virtual void update() override;
+    void update(SDL_Event* event);
 
     bool isPressed(Input::Mouse button);
 

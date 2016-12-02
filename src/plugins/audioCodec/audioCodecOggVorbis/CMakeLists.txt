@@ -3,7 +3,10 @@ project(AudioCodecOggVorbis)
 message(STATUS "Configuring ${PROJECT_NAME} plugin...")
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 include_directories(../../../)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(PLUGIN_SOURCE audioCodecOggVorbis.cpp)
 

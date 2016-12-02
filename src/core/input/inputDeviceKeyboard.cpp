@@ -20,7 +20,12 @@ void InputDeviceKeyboard::update()
 ////////////////////////////////////////////////////////////////////////////////
 bool InputDeviceKeyboard::isPressed(Input::Keyboard key)
 {
-    return false;
+    return m_keys[key] == Input::KeyMode::DOWN || m_keys[key] == Input::KeyMode::DOWN_ONCE;
+}
+////////////////////////////////////////////////////////////////////////////////
+void InputDeviceKeyboard::set(Input::Keyboard key, Input::KeyMode mode)
+{
+    m_keys[key] = mode;
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t InputDeviceKeyboard::getMemSize() const

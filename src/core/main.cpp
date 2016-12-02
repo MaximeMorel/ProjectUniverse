@@ -2,6 +2,7 @@
 #include "application.hpp"
 #include "core/log/loggerStream.hpp"
 #include "core/log/loggerNull.hpp"
+#include "core/tools/timer.hpp"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -290,12 +291,13 @@ int main(int argc, char **argv)
     }
     lib = nullptr;
 
-    /*lib = PluginLib::create("../lib/libAudioOpenAL.so");
+    lib = PluginLib::create("../lib/libAudioOpenAL.so");
     if (lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
-    }*/
+    }
+    lib = nullptr;
 
     {
         // Build the broadphase
@@ -321,37 +323,98 @@ int main(int argc, char **argv)
         delete broadphase;
     }
 
+    lib = PluginLib::create("../lib/libwindowContextSDL2.so");
+    if (lib->isValid())
+    {
+        engine.log().log() << lib << "\n";
+        lib->getLibInstance(&engine);
+    }
+
+    PluginLibPtr librender = PluginLib::create("../lib/libRenderOpenGL4.so");
+    if (librender->isValid())
+    {
+        engine.log().log() << librender << "\n";
+        librender->getLibInstance(&engine);
+    }
+
     {
         PluginLibPtr lib = PluginLib::create("../lib/libInputSDL.so");
         if (lib->isValid())
         {
             engine.log().log() << lib << "\n";
             lib->getLibInstance(&engine);
+            engine.input().setPlugin(lib);
             engine.input().discoverDevices();
         }
         engine.input().listDevices(engine.log().log());
-        engine.input().update();
-        if (engine.input().keyboard(0).isPressed(Input::Keyboard::KEY_a))
-        {
-            ;
-        }
 
-        if (engine.input().mouse(0).isPressed(Input::Mouse::BT_1))
-        {
-            ;
-        }
+        bool stop = false;
 
-        if (engine.input().joystick(0).isPressed(Input::Joystick::BT_1))
-        {
-            ;
-        }
+        double targetFrameTime = 1000.0 / 60.0;
+        Timer timer;
+        timer.start();
+        int fps = 0;
+        Timer frameTimer;
 
-        if (engine.input().joystick(0).value(Input::Joystick::AXIS_1) > 0.5)
+        while (!stop)
         {
-            ;
+            frameTimer.reset();
+            engine.input().update();
+            if (engine.input().keyboard(0) &&
+                engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_a))
+            {
+                ;
+            }
+
+            if (engine.input().keyboard(0) &&
+                engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_ESC))
+            {
+                stop = true;
+            }
+
+            if (engine.input().mouse(0) &&
+                engine.input().mouse(0)->isPressed(Input::Mouse::BT_1))
+            {
+                ;
+            }
+
+            if (engine.input().joystick(0) &&
+                engine.input().joystick(0)->isPressed(Input::Joystick::BT_1))
+            {
+                ;
+            }
+
+            if (engine.input().joystick(0) &&
+                engine.input().joystick(0)->value(Input::Joystick::AXIS_1) > 0.5)
+            {
+                ;
+            }
+
+            float frameTime = frameTimer.getTime();
+            //engine.log().log() << "frame time: " << frameTime << std::endl;
+            //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
+
+            ++fps;
+            if (frameTime < targetFrameTime)
+            {
+                //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
+                Timer::wait(targetFrameTime - frameTime);
+            }
+            else
+            {
+                engine.log().log() << "frame time: " << frameTime << std::endl;
+            }
+
+            if (timer.getTime() >= 1000)
+            {
+                engine.log().log() << "fps: " << fps << std::endl;
+                fps = 0;
+                timer.reset();
+            }
         }
     }
 
+    librender = nullptr;
     lib = nullptr;
 
     std::cout << "main exit...\n";

@@ -1,19 +1,20 @@
-#ifndef __RENDERNULL_HPP__
-#define __RENDERNULL_HPP__
+#ifndef __RENDEROPENGL4_HPP__
+#define __RENDEROPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/library.hpp"
+#include "renderopengl4_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" const PluginInfo* getPluginInfo();
+extern "C" RENDEROPENGL4_EXPORT const PluginInfo* getPluginInfo();
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" Library* getLibInstance(Engine* engine);
+extern "C" RENDEROPENGL4_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" void closeLibInstance();
+extern "C" RENDEROPENGL4_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginRenderNull : public Library
+class PluginRenderOpenGL4 : public Library
 {
 public:
-    PluginRenderNull(Engine& engine);
-    ~PluginRenderNull();
+    PluginRenderOpenGL4(Engine& engine);
+    virtual ~PluginRenderOpenGL4() override;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __RENDERNULL_HPP__
+#endif // __RENDEROPENGL4_HPP__

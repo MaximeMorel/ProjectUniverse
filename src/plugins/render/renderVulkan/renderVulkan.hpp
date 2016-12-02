@@ -3,18 +3,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/library.hpp"
 #include "vulkan/vulkan.h"
+#include "rendervulkan_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" const PluginInfo* getPluginInfo();
+extern "C" RENDERVULKAN_EXPORT const PluginInfo* getPluginInfo();
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" Library* getLibInstance(Engine* engine);
+extern "C" RENDERVULKAN_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" void closeLibInstance();
+extern "C" RENDERVULKAN_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
 class PluginRenderVulkan : public Library
 {
 public:
     PluginRenderVulkan(Engine& engine);
-    ~PluginRenderVulkan();
+    virtual ~PluginRenderVulkan() override;
 
 private:
     VkApplicationInfo m_applicationInfo;

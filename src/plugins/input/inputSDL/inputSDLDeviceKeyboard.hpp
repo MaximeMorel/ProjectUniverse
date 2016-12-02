@@ -12,6 +12,7 @@ public:
     virtual ~InputSDLDeviceKeyboard();
 
     virtual void update() override;
+    void update(SDL_Event* event);
 
     bool isPressed(Input::Keyboard key);
 
@@ -26,10 +27,13 @@ private:
     {
     public:
         SDLKeyMapping();
+        Input::Keyboard get(SDL_Scancode key);
         Input::Keyboard get(SDL_Keycode key);
     private:
-        Input::Keyboard m_mapping[SDLK_LALT];
+        Input::Keyboard m_mapping[SDL_NUM_SCANCODES];
     };
+
+    SDLKeyMapping m_keyMapping;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __INPUTSDLDEVICEKEYBOARD_HPP__

@@ -14,7 +14,7 @@ class PluginInputNull : public InputPlugin
 {
 public:
     PluginInputNull(Engine& engine);
-    ~PluginInputNull();
+    virtual ~PluginInputNull() override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __INPUTNULL_HPP__

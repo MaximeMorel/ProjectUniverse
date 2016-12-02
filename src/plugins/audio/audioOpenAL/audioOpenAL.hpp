@@ -6,18 +6,19 @@
 #include <string>
 #include <AL/al.h>
 #include <AL/alc.h>
+#include "audioopenal_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" const PluginInfo* getPluginInfo();
+extern "C" AUDIOOPENAL_EXPORT const PluginInfo* getPluginInfo();
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" Library* getLibInstance(Engine* engine);
+extern "C" AUDIOOPENAL_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" void closeLibInstance();
+extern "C" AUDIOOPENAL_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
 class PluginAudioOpenAL : public Library
 {
 public:
     PluginAudioOpenAL(Engine& engine);
-    ~PluginAudioOpenAL();
+    virtual ~PluginAudioOpenAL() override;
 
     std::vector<std::string> listDevices() const;
 
