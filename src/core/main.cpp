@@ -7,6 +7,7 @@
 #include <sstream>
 #include <fstream>
 #include <btBulletDynamicsCommon.h>
+#include "core/render/renderPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 int main2(int argc, char** argv)
 {
@@ -335,6 +336,13 @@ int main(int argc, char **argv)
     {
         engine.log().log() << librender << "\n";
         librender->getLibInstance(&engine);
+        engine.render().setPlugin(librender);
+
+        ShaderProgramPtr prog = engine.render().impl()->createShaderProgram("aaa");
+        ShaderPtr s = engine.render().impl()->createShader("bbb", Shader::Type::FRAGMENT_SHADER);
+        prog->addShader(s);
+        prog->link();
+        prog->bind();
     }
 
     {

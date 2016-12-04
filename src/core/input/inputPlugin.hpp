@@ -9,7 +9,7 @@ class InputPlugin : public Library
 {
 public:
     InputPlugin(Engine& engine);
-    virtual ~InputPlugin();
+    virtual ~InputPlugin() override;
 
     virtual void discoverDevices();
 

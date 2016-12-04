@@ -20,7 +20,7 @@ Engine* gEngine = nullptr;
 Engine::Engine(const std::string& name)
     : m_config()
     , m_logManager()
-    , m_resourecManager(m_logManager)
+    , m_resourceManager(m_logManager)
     , m_pluginManager()
     , m_name(name)
 {
@@ -44,7 +44,7 @@ LogManager& Engine::log()
 ////////////////////////////////////////////////////////////////////////////////
 ResourceManager& Engine::res()
 {
-    return m_resourecManager;
+    return m_resourceManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginManager& Engine::plugins()
@@ -55,6 +55,11 @@ PluginManager& Engine::plugins()
 InputManager& Engine::input()
 {
     return m_inputManager;
+}
+////////////////////////////////////////////////////////////////////////////////
+RenderManager& Engine::render()
+{
+    return m_renderManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine)

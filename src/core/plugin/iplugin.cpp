@@ -20,7 +20,7 @@ IPlugin::IPlugin(const std::string& filename)
     if (m_handle == nullptr)
     {
         getEngine().log().log() << "dlopen(" << filename << ") failed\n";
-        getEngine().log().log() << dlerror() << "\n";
+        getEngine().log().log() << dlerror() << std::endl;
     }
 #endif
 #ifdef _WIN32

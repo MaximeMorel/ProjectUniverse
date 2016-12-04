@@ -4,6 +4,7 @@
 #include "core/resource/resource.hpp"
 #include "shader.hpp"
 #include <string>
+#include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderProgram : public Resource
 {
@@ -12,10 +13,21 @@ public:
 
     virtual ~ShaderProgram() override;
 
-    //virtual void addShader(Shader* shader);
+    uint32_t getProgId() const;
+
+    virtual void bind() const;
+    virtual void unbind() const;
+
+    virtual void addShader(ShaderPtr shader);
+
+    virtual void link();
 
 protected:
-    unsigned int m_shaderProgId;
+    uint32_t m_shaderProgId;
+
+    std::vector<ShaderPtr> m_shaders;
 };
+////////////////////////////////////////////////////////////////////////////////
+using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADERPROGRAM_HPP__

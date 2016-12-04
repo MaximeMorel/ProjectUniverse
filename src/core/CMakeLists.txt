@@ -60,6 +60,8 @@ set(CORE_SOURCE main.cpp
                 render/shaderProgram.cpp
                 render/texture.cpp
                 render/vao.cpp
+                render/renderManager.cpp
+                render/renderPlugin.cpp
                 resource/resource.cpp
                 resource/resourceManager.cpp
                 tools/timer.cpp

@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "renderOpenGL4.hpp"
-#include <GL/gl.h>
+//#include <GL/gl.h>
+#include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "renderOpenGL4",
                           "renderOpenGL4",
@@ -9,7 +10,7 @@ PluginInfo pluginInfo = { "renderOpenGL4",
                           1};
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderOpenGL4* lib = nullptr;
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////input///////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
     return &pluginInfo;
@@ -31,9 +32,11 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderOpenGL4::PluginRenderOpenGL4(Engine &engine)
-    : Library(engine)
+    : RenderPlugin(engine)
 {
     log().log() << "PluginRenderOpenGL4 start...\n";
+
+    glewInit();
 
     const GLubyte* str = nullptr;
 
@@ -62,5 +65,15 @@ PluginRenderOpenGL4::PluginRenderOpenGL4(Engine &engine)
 PluginRenderOpenGL4::~PluginRenderOpenGL4()
 {
     log().log() << "PluginRenderOpenGL4 stop...\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, Shader::Type t)
+{
+    return ShaderGL4::create(name, t);
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name)
+{
+    return ShaderProgramGL4::create(name);
 }
 ////////////////////////////////////////////////////////////////////////////////

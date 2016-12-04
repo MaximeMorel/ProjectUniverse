@@ -11,9 +11,6 @@ template <class T>
 class Plugin : public IPlugin
 {
 public:
-    /// Load library
-    /// \param filename dynamic library path
-    Plugin(const std::string& filename);
     virtual ~Plugin() override;
 
     static std::shared_ptr<Plugin> create(const std::string& filename);
@@ -24,6 +21,10 @@ public:
     void closeLibInstance();
 
 private:
+    /// Load library
+    /// \param filename dynamic library path
+    Plugin(const std::string& filename);
+
     using PFNgetLibInstance = T* (*)(Engine*);
     using PFNcloseLibInstance = void (*)();
 

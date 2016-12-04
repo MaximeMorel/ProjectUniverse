@@ -34,35 +34,36 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
 {
     log().log() << "PluginAudioOpenAL start...\n";
 
-    ALboolean enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
-    if (enumeration)
+    m_device = alcOpenDevice(nullptr);
+    if (m_device)
     {
-        log().log() << "ALC_ENUMERATION_EXT available\n";
-    }
-
-    std::vector<std::string> list = listDevices();
-    if (!list.empty())
-    {
-        log().log() << "OpenAl devices:\n";
-        uint8_t i = 0;
-        for (const auto& str : list)
+        ALboolean enumeration = alcIsExtensionPresent(nullptr, "ALC_ENUMERATION_EXT");
+        if (enumeration)
         {
-            log().log() << i << " - " << str << "\n";
-            ++i;
+            log().log() << "ALC_ENUMERATION_EXT available\n";
         }
 
-        log().log() << "Using device: " << list[0].c_str() << "\n";
-        m_device = alcOpenDevice(list[0].c_str());
-
-        if (m_device)
+        m_context = alcCreateContext(m_device, nullptr);
+        if (m_context)
         {
-            m_context = alcCreateContext(m_device, NULL);
+            alcMakeContextCurrent(m_context);
+        }
 
-            if (m_context)
+        std::vector<std::string> list = listDevices();
+        if (!list.empty())
+        {
+            log().log() << "OpenAl devices:\n";
+            uint8_t i = 0;
+            for (const auto& str : list)
             {
-                alcMakeContextCurrent(m_context);
+                log().log() << i << " - " << str << "\n";
+                ++i;
             }
         }
+    }
+    else
+    {
+        log().log() << "Cannot open OpenAL device\n";
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

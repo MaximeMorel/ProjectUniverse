@@ -6,7 +6,7 @@
 class ShaderNull : public Shader
 {
 public:
-    ShaderNull(const std::string& name);
+    ShaderNull(const std::string& name, Type t);
     virtual ~ShaderNull() override;
 
 private:

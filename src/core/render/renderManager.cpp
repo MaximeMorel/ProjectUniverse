@@ -1,0 +1,44 @@
+////////////////////////////////////////////////////////////////////////////////
+#include "renderManager.hpp"
+#include "renderPlugin.hpp"
+////////////////////////////////////////////////////////////////////////////////
+RenderManager::RenderManager()
+    : m_plugin(nullptr)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+RenderManager::~RenderManager()
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+void RenderManager::setPlugin(PluginLibPtr inputPlugin)
+{
+    if (m_plugin)
+    {
+        // clean current plugin
+        getEngine().log().log() << "Removing current Input Plugin\n";
+    }
+    const PluginInfo& pluginInfo = inputPlugin->getInfo();
+    if (pluginInfo.type == std::string("render"))
+    {
+        RenderPlugin* plugin = static_cast<RenderPlugin*>(inputPlugin->getLibInstance(&getEngine()));
+        m_plugin = plugin;
+
+        getEngine().log().log() << "Input Plugin set\n";
+    }
+    else
+    {
+        getEngine().log().log() << "Wrong Input Plugin\n";
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+size_t RenderManager::getMemSize() const
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+void RenderManager::printOn(Logger& o) const
+{
+
+}
+////////////////////////////////////////////////////////////////////////////////

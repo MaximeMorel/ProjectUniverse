@@ -6,13 +6,25 @@
 class Shader : public Resource
 {
 public:
-    Shader(const std::string& name);
+    enum Type
+    {
+        VERTEX_SHADER = 0,
+        TESS_CONTROL_SHADER,
+        TESS_EVALUATION_SHADER,
+        GEOMETRY_SHADER,
+        FRAGMENT_SHADER,
+        COMPUTE_SHADER
+    };
+
+    Shader(const std::string& name, Type t);
     virtual ~Shader() override;
 
-    unsigned int getId() const;
+    uint32_t getShaderId() const;
 
 protected:
-    unsigned int m_shaderId;
+    uint32_t m_shaderId;
 };
+////////////////////////////////////////////////////////////////////////////////
+using ShaderPtr = std::shared_ptr<Shader>;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_HPP__

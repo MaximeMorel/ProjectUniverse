@@ -49,7 +49,7 @@ public:
     friend Logger& operator<<(Logger& o, const ResourcePtr& res);
 
 protected:
-    virtual void printOn(Logger& o) const = 0;
+    virtual void printOn(Logger& o) const;
 
 private:
     size_t m_id;
