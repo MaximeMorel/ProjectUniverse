@@ -50,7 +50,7 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     m_glcontext = SDL_GL_CreateContext(m_window);
 
     // now you can make GL calls.
-    glClearColor(0,0,1,1);
+    glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     swapBuffers();

@@ -1,13 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "shaderProgram.hpp"
+#include "renderManager.hpp"
+#include "renderPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgram::ShaderProgram(const std::string& name)
-: Resource(name)
+ShaderProgram::ShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders)
+    : Resource(name)
+    , m_isLinked(false)
+    , m_linkError(false)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgram::~ShaderProgram()
 {
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderProgramPtr ShaderProgram::create(const std::string& name,
+                               std::initializer_list<ShaderPtr> shaders)
+{
+    /// virtual constructor idiom, use create facility from render plugin
+    return render().impl()->createShaderProgram(name, shaders);
 }
 ////////////////////////////////////////////////////////////////////////////////
 uint32_t ShaderProgram::getProgId() const
@@ -30,7 +41,12 @@ void ShaderProgram::addShader(ShaderPtr shader)
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgram::link()
+bool ShaderProgram::link()
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgram::printOn(Logger& o) const
 {
 
 }

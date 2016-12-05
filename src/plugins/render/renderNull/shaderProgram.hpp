@@ -8,14 +8,11 @@
 class ShaderProgramNull : public ShaderProgram
 {
 public:
-    ShaderProgramNull(const std::string& name);
+    ShaderProgramNull(const std::string& name, std::initializer_list<ShaderPtr> shaders);
 
     virtual ~ShaderProgramNull() override;
 
     //virtual void addShader(Shader* shader) override;
-
-private:
-    unsigned int m_shaderProgId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADERPROGRAM_NULL_HPP__

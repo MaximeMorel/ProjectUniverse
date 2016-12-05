@@ -54,17 +54,17 @@ void TestResourceManager::testResources()
 {
     Engine engine("test");
 
-    engine.res().addResource(DummyResource::create("a"));
-    engine.res().addResource(DummyResource::create("b"));
-    engine.res().addResource(DummyResource::create("c"));
-    engine.res().addResource(DummyResource::create("d"));
-    engine.res().addResource(DummyResource::create("e"));
-    engine.res().addResource(DummyResource::create("f"));
-    engine.res().addResource(DummyResource::create("g"));
-    engine.res().addResource(DummyResource::create("h"));
-    engine.res().addResource(DummyResource::create("i"));
-    engine.res().addResource(DummyResource::create("k"));
-    engine.res().createResource<DummyResource>("k");
+    ResourcePtr a = engine.res().addResource(DummyResource::create("a"));
+    ResourcePtr b = engine.res().addResource(DummyResource::create("b"));
+    ResourcePtr c = engine.res().addResource(DummyResource::create("c"));
+    ResourcePtr d = engine.res().addResource(DummyResource::create("d"));
+    ResourcePtr e = engine.res().addResource(DummyResource::create("e"));
+    ResourcePtr f = engine.res().addResource(DummyResource::create("f"));
+    ResourcePtr g = engine.res().addResource(DummyResource::create("g"));
+    ResourcePtr h = engine.res().addResource(DummyResource::create("h"));
+    ResourcePtr i = engine.res().addResource(DummyResource::create("i"));
+    ResourcePtr j = engine.res().addResource(DummyResource::create("k"));
+    ResourcePtr k = engine.res().createResource<DummyResource>("k");
 
     //engine.log().log() << engine.res();
 

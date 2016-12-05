@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "shader.hpp"
+#include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::ShaderTypeMapping::ShaderTypeMapping()
@@ -21,14 +22,15 @@ ShaderGL4::ShaderGL4(const std::string& name, Type t)
 : Shader(name, t)
 {
     m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
-    const GLchar* src = "#version 450 core \
-                         out vec4 color; \
-                         void main(void) \
-                         { \
-                             color = vec4(0.0, 0.8, 1.0, 1.0); \
+    const GLchar* src = "#version 130 \n\
+                         out vec4 color; \n\
+                         void main(void) \n\
+                         { \n\
+                             color = vec4(0.0, 0.8, 1.0, 1.0); \n\
                          }";
     glShaderSource(m_shaderId, 1, &src, nullptr);
-    glCompileShader(m_shaderId);
+
+    compile();
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::~ShaderGL4()
@@ -41,8 +43,45 @@ ShaderPtr ShaderGL4::create(const std::string& name, Type t)
     return std::shared_ptr<ShaderGL4>(new ShaderGL4(name, t));
 }
 ////////////////////////////////////////////////////////////////////////////////
-uint32_t ShaderGL4::getId() const
+bool ShaderGL4::compile()
 {
-    return m_shaderId;
+    if (m_isCompiled)
+        return true;
+
+    if (m_compileError)
+        return false;
+
+    glFlushErrors();
+    glCompileShader(m_shaderId);
+    glLogCurrentError();
+
+    GLint status = GL_FALSE;
+    glGetShaderiv(m_shaderId, GL_COMPILE_STATUS, &status);
+    if(status == GL_FALSE)
+    {
+        m_isCompiled = false;
+        log().log() << "Shader " << m_shaderId << " compile failed\n";
+        GLsizei logLength = 0;
+        glGetShaderiv(m_shaderId, GL_INFO_LOG_LENGTH, &logLength);
+        if(logLength > 0)
+        {
+            m_compileError = true;
+            GLsizei charsWritten = 0;
+            std::string infoLog;
+            infoLog.resize(logLength);
+            glGetShaderInfoLog(m_shaderId, logLength, &charsWritten, &infoLog.front());
+            if (charsWritten < logLength)
+                infoLog = infoLog.substr(0, charsWritten);
+            log().log() << "Shader log: " << infoLog << "\n";
+        }
+    }
+    else
+    {
+        m_isCompiled = true;
+        m_compileError = false;
+        log().log() << "Shader " << m_shaderId << " compile success.\n";
+    }
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

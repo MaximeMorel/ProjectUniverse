@@ -338,12 +338,19 @@ int main(int argc, char **argv)
         librender->getLibInstance(&engine);
         engine.render().setPlugin(librender);
 
-        ShaderProgramPtr prog = engine.render().impl()->createShaderProgram("aaa");
-        ShaderPtr s = engine.render().impl()->createShader("bbb", Shader::Type::FRAGMENT_SHADER);
-        prog->addShader(s);
-        prog->link();
-        prog->bind();
+        engine.res().createResource2<ShaderProgram>("bbb");
+        ResourcePtr p1 = engine.res().getResource("bbb");
+        ShaderProgramPtr p2 = std::static_pointer_cast<ShaderProgram>(p1);
+
+        /*ShaderPtr s1 = engine.render().impl()->createShader("bbb", Shader::Type::VERTEX_SHADER);
+        ShaderPtr s2 = engine.render().impl()->createShader("ccc", Shader::Type::FRAGMENT_SHADER);
+        ShaderProgramPtr prog = engine.render().impl()->createShaderProgram("aaa", {s1, s2});
+        //prog->addShader(s2);
+        //prog->link();
+        prog->bind();*/
     }
+
+    engine.log().log() << engine.res() << std::endl;
 
     {
         PluginLibPtr lib = PluginLib::create("../lib/libInputSDL.so");

@@ -36,7 +36,15 @@ PluginRenderOpenGL4::PluginRenderOpenGL4(Engine &engine)
 {
     log().log() << "PluginRenderOpenGL4 start...\n";
 
-    glewInit();
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+    }
+    else
+    {
+        log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
+    }
 
     const GLubyte* str = nullptr;
 
@@ -72,8 +80,8 @@ ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, Shader::Typ
     return ShaderGL4::create(name, t);
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name)
+ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders)
 {
-    return ShaderProgramGL4::create(name);
+    return ShaderProgramGL4::create(name, shaders);
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -18,9 +18,12 @@ public:
     template<class T, typename... Params>
     ResourcePtr createResource(const std::string& name, Params... p);
 
+    template<class T, typename... Params>
+    ResourcePtr createResource2(const std::string& name, Params... p);
+
     void addSearchPath();
 
-    void addResource(const ResourcePtr& res);
+    ResourcePtr addResource(const ResourcePtr& res);
 
     void delResource(size_t resId);
     void delResource(const std::string& name);
@@ -46,6 +49,9 @@ public:
     friend Logger& operator<<(Logger& o, const ResourceManager& res);
 
 private:
+    void addResourceNoCheck(const ResourcePtr& res);
+
+private:
     struct ResNameId
     {
         int id;
@@ -56,7 +62,9 @@ private:
     //std::vector<std::map<ResNameId, Resource*>> m_resources;
     //std::vector<std::map<std::string, ResourcePtr>> m_resources;
     //std::vector<std::unordered_map<std::string, ResourcePtr>> m_resources;
-    std::vector<ResourcePtr> m_resources;    ///< array of resources
+
+    using ResourceWPtr = std::weak_ptr<Resource>;
+    std::vector<ResourceWPtr> m_resources;    ///< array of resources
     std::unordered_map<std::string, size_t> m_resourceNames;
 
     // registered path list

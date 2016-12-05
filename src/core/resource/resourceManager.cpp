@@ -14,10 +14,11 @@ ResourceManager::ResourceManager(LogManager& logManager)
 ////////////////////////////////////////////////////////////////////////////////
 ResourceManager::~ResourceManager()
 {
-
+    // clean resources allocted in plugin before plugin deallocation
+    // use weak ptr ?
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ResourceManager::addResource(const ResourcePtr& res)
+ResourcePtr ResourceManager::addResource(const ResourcePtr& res)
 {
     auto it = m_resourceNames.find(res->getName());
     if (it == m_resourceNames.end())
@@ -26,23 +27,36 @@ void ResourceManager::addResource(const ResourcePtr& res)
         res->m_id = m_resources.size();
         m_resources.push_back(res);
     }
+
+    return res;
+}
+////////////////////////////////////////////////////////////////////////////////
+void ResourceManager::addResourceNoCheck(const ResourcePtr& res)
+{
+    m_resourceNames[res->getName()] = m_resources.size();
+    res->m_id = m_resources.size();
+    m_resources.push_back(res);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId)
 {
     if (resId < m_resources.size())
     {
-        m_resourceNames.erase(m_resources[resId]->getName());
-
-        // manage the hole in the resource array
-        if (resId < m_resources.size() -1)
+        ResourcePtr res = m_resources[resId].lock();
+        if (res)
         {
-            // swap the last element and move it in the hole
-            m_resources[resId] = m_resources.back();
-            m_resources[resId]->m_id = resId;
-            m_resourceNames[m_resources.back()->getName()] = resId;
+            m_resourceNames.erase(res->getName());
+
+            // manage the hole in the resource array
+            if (resId < m_resources.size() -1)
+            {
+                // swap the last element and move it in the hole
+                m_resources[resId] = m_resources.back();
+                m_resources[resId].lock()->m_id = resId;
+                m_resourceNames[m_resources.back().lock()->getName()] = resId;
+            }
+            m_resources.pop_back();
         }
-        m_resources.pop_back();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +76,7 @@ void ResourceManager::delResource(ResourcePtr res)
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::getResource(size_t resId)
 {
-    return m_resources[resId];
+    return m_resources[resId].lock();
 }
 ////////////////////////////////////////////////////////////////////////////////
 /*ResourcePtr ResourceManager::getResource(int resId, int resTypeId)
@@ -83,7 +97,7 @@ ResourcePtr ResourceManager::getResource(const std::string& name)
     auto it = m_resourceNames.find(name);
     if (it != m_resourceNames.end())
     {
-        return m_resources[it->second];
+        return m_resources[it->second].lock();
     }
     return nullptr;
 }
@@ -112,7 +126,7 @@ size_t ResourceManager::getMemSizeFull() const
     size_t mem = getMemSize();
     for (auto it : m_resources)
     {
-        mem += it->getMemSize();
+        mem += it.lock()->getMemSize();
     }
     return mem;
 }
@@ -122,7 +136,7 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
     size_t i = 0;
     for (auto it : res.m_resources)
     {
-        o << i++ << ": " << it << "\n";
+        o << i++ << ": " << it.lock() << "\n";
     }
 
     for (auto it : res.m_resourceNames)

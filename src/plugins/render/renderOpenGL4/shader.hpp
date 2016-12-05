@@ -2,6 +2,7 @@
 #define __SHADER_OPENGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/render/shader.hpp"
+#include "opengltools.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderGL4 : public Shader
 {
@@ -10,11 +11,9 @@ public:
     ShaderGL4(const std::string& name, Type t);
     virtual ~ShaderGL4() override;
 
-    uint32_t getId() const;
+    virtual bool compile() override;
 
 private:
-    uint32_t m_shaderId;
-
     class ShaderTypeMapping
     {
     public:

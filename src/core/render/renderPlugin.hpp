@@ -13,7 +13,8 @@ public:
     virtual ~RenderPlugin() override;
 
     virtual ShaderPtr createShader(const std::string& name, Shader::Type t);
-    virtual ShaderProgramPtr createShaderProgram(const std::string& name);
+    virtual ShaderProgramPtr createShaderProgram(const std::string& name,
+                                                 std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
 
     virtual size_t getMemSize() const;
 

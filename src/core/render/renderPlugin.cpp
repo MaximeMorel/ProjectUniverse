@@ -15,7 +15,8 @@ ShaderPtr RenderPlugin::createShader(const std::string& name, Shader::Type t)
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name)
+ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name,
+                                                   std::initializer_list<ShaderPtr> shaders)
 {
 
 }
