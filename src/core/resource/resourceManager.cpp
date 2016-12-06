@@ -6,6 +6,8 @@
 // later when reinserting a resource, use holes in this list
 // maintain a map of strings / id allowing to lookup by name too
 ////////////////////////////////////////////////////////////////////////////////
+ResourceManager* gRes = nullptr;
+////////////////////////////////////////////////////////////////////////////////
 ResourceManager::ResourceManager(LogManager& logManager)
     : m_logManager(logManager)
 {
@@ -18,7 +20,7 @@ ResourceManager::~ResourceManager()
     // use weak ptr ?
 }
 ////////////////////////////////////////////////////////////////////////////////
-ResourcePtr ResourceManager::addResource(const ResourcePtr& res)
+ResourcePtr ResourceManager::addResource(ResourcePtr res)
 {
     auto it = m_resourceNames.find(res->getName());
     if (it == m_resourceNames.end())
@@ -31,11 +33,47 @@ ResourcePtr ResourceManager::addResource(const ResourcePtr& res)
     return res;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ResourceManager::addResourceNoCheck(const ResourcePtr& res)
+void ResourceManager::addResourceNoCheck(ResourcePtr res)
 {
     m_resourceNames[res->getName()] = m_resources.size();
     res->m_id = m_resources.size();
     m_resources.push_back(res);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ResourceManager::delResource(size_t resId, const std::string& name)
+{
+    if (resId < m_resources.size())
+    {
+        ResourcePtr res = m_resources[resId].lock();
+        if (res)
+        {
+            m_resourceNames.erase(res->getName());
+
+            // manage the hole in the resource array
+            if (resId < m_resources.size() - 1)
+            {
+                // swap the last element and move it in the hole
+                m_resources[resId] = m_resources.back();
+                m_resources[resId].lock()->m_id = resId;
+                m_resourceNames[m_resources.back().lock()->getName()] = resId;
+            }
+            m_resources.pop_back();
+        }
+        else
+        {
+            m_resourceNames.erase(name);
+
+            // manage the hole in the resource array
+            if (resId < m_resources.size() - 1)
+            {
+                // swap the last element and move it in the hole
+                m_resources[resId] = m_resources.back();
+                m_resources[resId].lock()->m_id = resId;
+                m_resourceNames[m_resources.back().lock()->getName()] = resId;
+            }
+            m_resources.pop_back();
+        }
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId)
@@ -48,7 +86,7 @@ void ResourceManager::delResource(size_t resId)
             m_resourceNames.erase(res->getName());
 
             // manage the hole in the resource array
-            if (resId < m_resources.size() -1)
+            if (resId < m_resources.size() - 1)
             {
                 // swap the last element and move it in the hole
                 m_resources[resId] = m_resources.back();
@@ -144,5 +182,16 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
         o << it.first << " - " << it.second << "\n";
     }
     return o;
+}
+////////////////////////////////////////////////////////////////////////////////
+/// Global resource manager access
+void setGlobalResourceManager(ResourceManager& res)
+{
+    gRes = &res;
+}
+////////////////////////////////////////////////////////////////////////////////
+ResourceManager& res()
+{
+    return *gRes;
 }
 ////////////////////////////////////////////////////////////////////////////////

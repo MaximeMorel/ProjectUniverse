@@ -15,7 +15,7 @@ ShaderProgramGL4::ShaderProgramGL4(const std::string& name, std::initializer_lis
     }
 
     // compile and link if we have shaders
-    if (shaders.size())
+    if (shaders.size() > 0)
     {
         link();
     }

@@ -68,6 +68,7 @@ void setGlobalEngine(Engine& engine)
     gEngine = &engine;
     setGlobalLogger(engine.log());
     setGlobalRender(engine.render());
+    setGlobalResourceManager(engine.res());
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine& getEngine()

@@ -21,6 +21,7 @@ ResourcePtr ResourceManager::createResource2(const std::string& name, Params... 
     if (it == m_resourceNames.end())
     {
         ResourcePtr res = T::create(name, p...);
+        res->m_isEngineManaged = true;
         addResourceNoCheck(res);
         return res;
     }

@@ -23,9 +23,10 @@ public:
 
     void addSearchPath();
 
-    ResourcePtr addResource(const ResourcePtr& res);
+    ResourcePtr addResource(ResourcePtr res);
 
     void delResource(size_t resId);
+    void delResource(size_t resId, const std::string& name);
     void delResource(const std::string& name);
     void delResource(ResourcePtr res);
 
@@ -49,7 +50,7 @@ public:
     friend Logger& operator<<(Logger& o, const ResourceManager& res);
 
 private:
-    void addResourceNoCheck(const ResourcePtr& res);
+    void addResourceNoCheck(ResourcePtr res);
 
 private:
     struct ResNameId
@@ -73,6 +74,10 @@ private:
 
     LogManager& m_logManager;
 };
+////////////////////////////////////////////////////////////////////////////////
+/// Global resource manager access
+void setGlobalResourceManager(ResourceManager& res);
+ResourceManager& res();
 ////////////////////////////////////////////////////////////////////////////////
 #include "resourceManager.inl"
 ////////////////////////////////////////////////////////////////////////////////

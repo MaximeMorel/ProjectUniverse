@@ -261,6 +261,7 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
+    //PluginAppPtr app = engine.res().createResource2<PluginApp>("../app/AppNull/libAppNull.so");
     PluginAppPtr app = PluginApp::create("../app/AppNull/libAppNull.so");
     if (app->isValid())
     {
