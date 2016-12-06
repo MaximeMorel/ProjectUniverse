@@ -3,6 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resource.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+class Shader;
+using ShaderPtr = std::shared_ptr<Shader>;
+////////////////////////////////////////////////////////////////////////////////
 class Shader : public Resource
 {
 public:
@@ -16,7 +19,8 @@ public:
         COMPUTE_SHADER
     };
 
-    Shader(const std::string& name, Type t);
+    static ShaderPtr create(const std::string& name, Type t);
+
     virtual ~Shader() override;
 
     /// Get internal shader handle id
@@ -29,11 +33,12 @@ public:
     bool isCompiled() const;
 
 protected:
+    Shader(const std::string& name, Type t);
+
+protected:
     uint32_t m_shaderId;    ///< shader program handle id
     bool m_isCompiled;      ///< is compiled flag
     bool m_compileError;    ///< errors occurred during compilation flag
 };
-////////////////////////////////////////////////////////////////////////////////
-using ShaderPtr = std::shared_ptr<Shader>;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_HPP__

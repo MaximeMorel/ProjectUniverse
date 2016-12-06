@@ -13,7 +13,7 @@ class Plugin : public IPlugin
 public:
     virtual ~Plugin() override;
 
-    static std::shared_ptr<Plugin> create(const std::string& filename);
+    static std::shared_ptr<Plugin<T>> create(const std::string& filename);
 
     virtual bool isValid() const override;
 

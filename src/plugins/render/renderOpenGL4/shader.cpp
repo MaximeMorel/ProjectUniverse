@@ -40,7 +40,17 @@ ShaderGL4::~ShaderGL4()
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr ShaderGL4::create(const std::string& name, Type t)
 {
-    return std::shared_ptr<ShaderGL4>(new ShaderGL4(name, t));
+    struct MakeSharedEnabler : public ShaderGL4
+    {
+        MakeSharedEnabler(const std::string& name, Type t)
+            : ShaderGL4(name, t) {}
+    };
+    return std::make_shared<MakeSharedEnabler>(name, t);
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderPtr ShaderGL4::createFromSource(const std::string& name, Type t, const std::string& src)
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool ShaderGL4::compile()
@@ -71,7 +81,8 @@ bool ShaderGL4::compile()
             infoLog.resize(logLength);
             glGetShaderInfoLog(m_shaderId, logLength, &charsWritten, &infoLog.front());
             if (charsWritten < logLength)
-                infoLog = infoLog.substr(0, charsWritten);
+                //infoLog = infoLog.substr(0, charsWritten);
+                infoLog.resize(charsWritten);
             log().log() << "Shader log: " << infoLog << "\n";
         }
     }

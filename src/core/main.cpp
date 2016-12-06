@@ -261,8 +261,7 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
-    //PluginAppPtr app = engine.res().createResource2<PluginApp>("../app/AppNull/libAppNull.so");
-    PluginAppPtr app = PluginApp::create("../app/AppNull/libAppNull.so");
+    PluginAppPtr app = res().create<PluginApp>("../app/AppNull/libAppNull.so");
     if (app->isValid())
     {
         engine.log().log() << app << "\n";
@@ -270,7 +269,7 @@ int main(int argc, char **argv)
     }
 
     // AppTest
-    app = PluginApp::create("../app/AppTest/libAppTest.so");
+    app = res().create<PluginApp>("../app/AppTest/libAppTest.so");
     if (app->isValid())
     {
         engine.log().log() << app  << "\n";
@@ -278,14 +277,14 @@ int main(int argc, char **argv)
     }
     app = nullptr;
 
-    PluginLibPtr lib = PluginLib::create("../lib/libRenderNull.so");
+    PluginLibPtr lib = res().create<PluginLib>("../lib/libRenderNull.so");
     if (lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
 
-    lib = PluginLib::create("../lib/libRenderVulkan.so");
+    lib = res().create<PluginLib>("../lib/libRenderVulkan.so");
     if (lib->isValid())
     {
         engine.log().log() << lib << "\n";
@@ -293,7 +292,7 @@ int main(int argc, char **argv)
     }
     lib = nullptr;
 
-    lib = PluginLib::create("../lib/libAudioOpenAL.so");
+    lib = res().create<PluginLib>("../lib/libAudioOpenAL.so");
     if (lib->isValid())
     {
         engine.log().log() << lib << "\n";
@@ -325,23 +324,27 @@ int main(int argc, char **argv)
         delete broadphase;
     }
 
-    lib = PluginLib::create("../lib/libwindowContextSDL2.so");
+    lib = res().create<PluginLib>("../lib/libwindowContextSDL2.so");
     if (lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
 
-    PluginLibPtr librender = PluginLib::create("../lib/libRenderOpenGL4.so");
+    ResourcePtr r;
+    PluginLibPtr librender = res().create<PluginLib>("../lib/libRenderOpenGL4.so");
     if (librender->isValid())
     {
         engine.log().log() << librender << "\n";
         librender->getLibInstance(&engine);
         engine.render().setPlugin(librender);
 
-        engine.res().createResource2<ShaderProgram>("bbb");
-        ResourcePtr p1 = engine.res().getResource("bbb");
+        ResourcePtr p = res().create<ShaderProgram>(librender, "bbb");
+        ResourcePtr p1 = res().getResource("bbb");
         ShaderProgramPtr p2 = std::static_pointer_cast<ShaderProgram>(p1);
+        r = p2;
+
+        p2->bind();
 
         /*ShaderPtr s1 = engine.render().impl()->createShader("bbb", Shader::Type::VERTEX_SHADER);
         ShaderPtr s2 = engine.render().impl()->createShader("ccc", Shader::Type::FRAGMENT_SHADER);
@@ -354,7 +357,7 @@ int main(int argc, char **argv)
     engine.log().log() << engine.res() << std::endl;
 
     {
-        PluginLibPtr lib = PluginLib::create("../lib/libInputSDL.so");
+        PluginLibPtr lib = res().create<PluginLib>("../lib/libInputSDL.so");
         if (lib->isValid())
         {
             engine.log().log() << lib << "\n";
@@ -430,7 +433,9 @@ int main(int argc, char **argv)
         }
     }
 
-    librender = nullptr;
+    log().log() << res() << std::endl;
+
+    //librender = nullptr;
     lib = nullptr;
 
     std::cout << "main exit...\n";

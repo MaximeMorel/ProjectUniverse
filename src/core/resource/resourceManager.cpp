@@ -42,6 +42,7 @@ void ResourceManager::addResourceNoCheck(ResourcePtr res)
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId, const std::string& name)
 {
+    m_logManager.log() << "Deleting resource " << resId << " - " << name << "\n";
     if (resId < m_resources.size())
     {
         ResourcePtr res = m_resources[resId].lock();
@@ -83,6 +84,7 @@ void ResourceManager::delResource(size_t resId)
         ResourcePtr res = m_resources[resId].lock();
         if (res)
         {
+            m_logManager.log() << "Deleting resource " << resId << " - " << res->getName() << "\n";
             m_resourceNames.erase(res->getName());
 
             // manage the hole in the resource array

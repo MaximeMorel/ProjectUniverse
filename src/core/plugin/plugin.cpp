@@ -39,7 +39,12 @@ Plugin<T>::~Plugin()
 template <class T>
 std::shared_ptr<Plugin<T>> Plugin<T>::create(const std::string& filename)
 {
-    return std::shared_ptr<Plugin<T>>(new Plugin<T>(filename));
+    struct MakeSharedEnabler : public Plugin<T>
+    {
+        MakeSharedEnabler(const std::string& filename)
+            : Plugin<T>(filename) {}
+    };
+    return std::make_shared<MakeSharedEnabler>(filename);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>

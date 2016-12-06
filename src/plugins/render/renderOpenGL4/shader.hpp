@@ -8,12 +8,14 @@ class ShaderGL4 : public Shader
 {
 public:
     static ShaderPtr create(const std::string& name, Type t);
-    ShaderGL4(const std::string& name, Type t);
+    static ShaderPtr createFromSource(const std::string& name, Type t, const std::string& src);
     virtual ~ShaderGL4() override;
 
     virtual bool compile() override;
 
 private:
+    ShaderGL4(const std::string& name, Type t);
+
     class ShaderTypeMapping
     {
     public:
@@ -23,6 +25,7 @@ private:
         uint32_t m_mapping[6];
     };
 
+    // move that somewhere else (using memory for every shader...)
     ShaderTypeMapping m_shaderTypeMapping;
 };
 ////////////////////////////////////////////////////////////////////////////////

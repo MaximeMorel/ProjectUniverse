@@ -29,16 +29,24 @@ ShaderProgramGL4::~ShaderProgramGL4()
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr ShaderProgramGL4::create(const std::string& name, std::initializer_list<ShaderPtr> shaders)
 {
+    struct MakeSharedEnabler : public ShaderProgramGL4
+    {
+        MakeSharedEnabler(const std::string& name, std::initializer_list<ShaderPtr> shaders)
+            : ShaderProgramGL4(name, shaders) {}
+    };
     // check cache
-    return std::shared_ptr<ShaderProgramGL4>(new ShaderProgramGL4(name, shaders));
+    return std::make_shared<MakeSharedEnabler>(name, shaders);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL4::bind() const
+void ShaderProgramGL4::bind()
 {
+    if (!m_isLinked && !m_linkError)
+        link();
+
     glUseProgram(m_shaderProgId);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL4::unbind() const
+void ShaderProgramGL4::unbind()
 {
     glUseProgram(0);
 }
@@ -91,7 +99,8 @@ bool ShaderProgramGL4::link()
             infoLog.resize(logLength);
             glGetProgramInfoLog(m_shaderProgId, logLength, &charsWritten, &infoLog.front());
             if (charsWritten < logLength)
-                infoLog = infoLog.substr(0, charsWritten);
+                //infoLog = infoLog.substr(0, charsWritten);
+                infoLog.resize(charsWritten);
             log().log() << "Shader program log: " << infoLog.substr(0, charsWritten) << "\n";
         }
     }

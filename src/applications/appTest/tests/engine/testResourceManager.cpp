@@ -17,12 +17,6 @@ using DummyResourcePtr = std::shared_ptr<DummyResource>;
 class DummyResource : public Resource
 {
 public:
-    DummyResource(const std::string& name)
-        : Resource(name)
-    {
-        id = sid++;
-    }
-
     ~DummyResource()
     {
         getEngine().log().log() << "Dtor: " << *this << "\n";
@@ -39,9 +33,15 @@ public:
     }
 
 protected:
+    DummyResource(const std::string& name)
+        : Resource(name)
+    {
+        id = sid++;
+    }
+
     virtual void printOn(Logger& o) const
     {
-        o << getName() << " - " << id;
+        o << "DummyResource: " << getName() << " - " << id;
     }
 
 private:
@@ -54,17 +54,17 @@ void TestResourceManager::testResources()
 {
     Engine engine("test");
 
-    ResourcePtr a = engine.res().addResource(DummyResource::create("a"));
-    ResourcePtr b = engine.res().addResource(DummyResource::create("b"));
-    ResourcePtr c = engine.res().addResource(DummyResource::create("c"));
-    ResourcePtr d = engine.res().addResource(DummyResource::create("d"));
-    ResourcePtr e = engine.res().addResource(DummyResource::create("e"));
-    ResourcePtr f = engine.res().addResource(DummyResource::create("f"));
-    ResourcePtr g = engine.res().addResource(DummyResource::create("g"));
-    ResourcePtr h = engine.res().addResource(DummyResource::create("h"));
-    ResourcePtr i = engine.res().addResource(DummyResource::create("i"));
-    ResourcePtr j = engine.res().addResource(DummyResource::create("k"));
-    ResourcePtr k = engine.res().createResource<DummyResource>("k");
+    DummyResourcePtr a = engine.res().create<DummyResource>("a");
+    DummyResourcePtr b = engine.res().create<DummyResource>("b");
+    DummyResourcePtr c = engine.res().create<DummyResource>("c");
+    DummyResourcePtr d = engine.res().create<DummyResource>("d");
+    DummyResourcePtr e = engine.res().create<DummyResource>("e");
+    DummyResourcePtr f = engine.res().create<DummyResource>("f");
+    DummyResourcePtr g = engine.res().create<DummyResource>("g");
+    DummyResourcePtr h = engine.res().create<DummyResource>("h");
+    DummyResourcePtr i = engine.res().create<DummyResource>("i");
+    DummyResourcePtr j = engine.res().create<DummyResource>("j");
+    DummyResourcePtr k = engine.res().create<DummyResource>("k");
 
     //engine.log().log() << engine.res();
 

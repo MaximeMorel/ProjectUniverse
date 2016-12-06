@@ -17,8 +17,18 @@ ShaderProgram::~ShaderProgram()
 ShaderProgramPtr ShaderProgram::create(const std::string& name,
                                std::initializer_list<ShaderPtr> shaders)
 {
+    // parse name file (ex: effect1.sp, using data path and plugin path),
+    // ex: data/shaders/opengl4/effect1.sp
+    // containing something like:
+    // effect1.vs
+    // effect1.gs
+    // effect1.ps
+    // create shader resource for each line
+    //ShaderPtr s1 = render().impl()->createShader(name, type);
     /// virtual constructor idiom, use create facility from render plugin
-    return render().impl()->createShaderProgram(name, shaders);
+    ShaderProgramPtr res = render().impl()->createShaderProgram(name, shaders);
+    //res->addShader(s1);
+    return res;
 }
 ////////////////////////////////////////////////////////////////////////////////
 uint32_t ShaderProgram::getProgId() const
@@ -26,12 +36,12 @@ uint32_t ShaderProgram::getProgId() const
     return m_shaderProgId;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgram::bind() const
+void ShaderProgram::bind()
 {
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgram::unbind() const
+void ShaderProgram::unbind()
 {
 
 }

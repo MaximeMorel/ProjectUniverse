@@ -15,6 +15,8 @@ public:
 private:
     int m_typeId;
     std::string m_typeName;
+
+    friend class ResourceManager;
 };
 ////////////////////////////////////////////////////////////////////////////////
 class Resource;
@@ -46,17 +48,20 @@ public:
     virtual size_t getMemSize() const;
 
     friend Logger& operator<<(Logger& o, const Resource& res);
-    friend Logger& operator<<(Logger& o, const ResourcePtr& res);
+    friend Logger& operator<<(Logger& o, ResourcePtr res);
 
 protected:
     virtual void printOn(Logger& o) const;
 
 private:
-    size_t m_id;
-    std::string m_name;
+    size_t m_id;            ///< resource id
+    std::string m_name;     ///< resource name
+    bool m_isEngineManaged; ///< flag indicating if the resource is managed by engine (allocation / deletion)
 
-    bool m_isEngineManaged;
+protected:
+    bool m_isFile;
 
+private:
     static ResourceType m_type;
     friend class ResourceManager;
 };

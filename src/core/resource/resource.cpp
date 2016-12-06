@@ -8,6 +8,7 @@ Resource::Resource(const std::string& name)
     : m_id(0)
     , m_name(name)
     , m_isEngineManaged(false)
+    , m_isFile(false)
 {
 
 }
@@ -55,7 +56,7 @@ Logger& operator<<(Logger& o, const Resource& res)
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const ResourcePtr& res)
+Logger& operator<<(Logger& o, ResourcePtr res)
 {
     res->printOn(o);
     return o;

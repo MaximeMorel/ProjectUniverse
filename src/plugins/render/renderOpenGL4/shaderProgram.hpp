@@ -12,17 +12,20 @@ class ShaderProgramGL4 : public ShaderProgram
 public:
     static ShaderProgramPtr create(const std::string& name,
                                    std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
-    ShaderProgramGL4(const std::string& name,
-                     std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
+
 
     virtual ~ShaderProgramGL4() override;
 
-    virtual void bind() const override;
-    virtual void unbind() const override;
+    virtual void bind() override;
+    virtual void unbind() override;
 
     virtual void addShader(ShaderPtr shader) override;
 
     virtual bool link() override;
+
+private:
+    ShaderProgramGL4(const std::string& name,
+                     std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
 
 protected:
     virtual void printOn(Logger& o) const override;
