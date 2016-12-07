@@ -13,12 +13,15 @@ class Plugin : public IPlugin
 protected:
     /// Load library
     /// \param filename dynamic library path
-    Plugin(const std::string& filename);
+    Plugin(const std::string& name, const std::string& fileName);
 
 public:
     virtual ~Plugin() override;
 
-    static std::shared_ptr<Plugin<T>> create(const std::string& filename);
+    static std::shared_ptr<Plugin<T>> create(const std::string& name, const std::string& fileName);
+
+    /// Get the sub search path for this resource
+    static const char* getSearchPath();
 
     virtual bool isValid() const override;
 
@@ -31,6 +34,10 @@ private:
 
     PFNgetLibInstance m_pGetLibInstance;
     PFNcloseLibInstance m_pCloseLibInstance;
+
+public:
+    virtual ResourceType dyntype() override{ return type; }
+    static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
 class Library;

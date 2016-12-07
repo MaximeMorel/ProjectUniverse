@@ -17,6 +17,12 @@ using DummyResourcePtr = std::shared_ptr<DummyResource>;
 class DummyResource : public Resource
 {
 public:
+    DummyResource(const std::string& name)
+        : Resource(name)
+    {
+        id = sid++;
+    }
+
     ~DummyResource()
     {
         getEngine().log().log() << "Dtor: " << *this << "\n";
@@ -24,7 +30,12 @@ public:
 
     static DummyResourcePtr create(const std::string& name)
     {
-        return std::shared_ptr<DummyResource>(new DummyResource(name));
+        return std::make_shared<DummyResource>(name);
+    }
+
+    static const char* getSearchPath()
+    {
+        return ".";
     }
 
     virtual size_t getMemSize() const
@@ -33,12 +44,6 @@ public:
     }
 
 protected:
-    DummyResource(const std::string& name)
-        : Resource(name)
-    {
-        id = sid++;
-    }
-
     virtual void printOn(Logger& o) const
     {
         o << "DummyResource: " << getName() << " - " << id;

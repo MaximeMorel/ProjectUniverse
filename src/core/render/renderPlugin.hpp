@@ -12,9 +12,10 @@ public:
     RenderPlugin(Engine& engine);
     virtual ~RenderPlugin() override;
 
-    virtual ShaderPtr createShader(const std::string& name, Shader::Type t);
-    virtual ShaderProgramPtr createShaderProgram(const std::string& name,
-                                                 std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
+    virtual const char* getSearchPath() const;
+
+    virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
+    virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
 
     virtual size_t getMemSize() const;
 

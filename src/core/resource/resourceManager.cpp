@@ -1,5 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "resourceManager.hpp"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 ////////////////////////////////////////////////////////////////////////////////
 // ideas: store resources in array, ordered, a resource can be found by id
 // when deleting a resource, maintain a list of holes
@@ -11,13 +14,19 @@ ResourceManager* gRes = nullptr;
 ResourceManager::ResourceManager(LogManager& logManager)
     : m_logManager(logManager)
 {
-
+    addSearchPath("data/");
+    addSearchPath("./");
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourceManager::~ResourceManager()
 {
     // clean resources allocted in plugin before plugin deallocation
     // use weak ptr ?
+}
+////////////////////////////////////////////////////////////////////////////////
+void ResourceManager::addSearchPath(const std::string& path)
+{
+    m_searchPaths.push_back(path);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::addResource(ResourcePtr res)
@@ -38,6 +47,22 @@ void ResourceManager::addResourceNoCheck(ResourcePtr res)
     m_resourceNames[res->getName()] = m_resources.size();
     res->m_id = m_resources.size();
     m_resources.push_back(res);
+}
+////////////////////////////////////////////////////////////////////////////////
+std::string ResourceManager::findPathPrefix(const std::string& fileName)
+{
+    std::string path;
+    struct stat st;
+    for (const auto& base : m_searchPaths)
+    {
+        path = base + fileName;
+        int err = stat(path.c_str(), &st);
+        if (err == 0)
+        {
+            return base;
+        }
+    }
+    return "";
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId, const std::string& name)

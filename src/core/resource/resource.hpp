@@ -9,11 +9,12 @@
 class ResourceType
 {
 public:
-    int getTypeId() const;
+    ResourceType(const std::string& typeName);
+    uint32_t getTypeId() const;
     const std::string& getTypeName();
 
 private:
-    int m_typeId;
+    uint32_t m_typeId;
     std::string m_typeName;
 
     friend class ResourceManager;
@@ -56,16 +57,24 @@ protected:
     virtual void printOn(Logger& o) const;
 
 private:
-    size_t m_id;            ///< resource id
-    std::string m_name;     ///< resource name
-    bool m_isEngineManaged; ///< flag indicating if the resource is managed by engine (allocation / deletion)
+    // if resource is a file, m_name holds the file path, without the prefix,
+    // which is the search path, empty for core engine resources in data folder
+    // for app data, prefix can be: app/appTest, and then m_name data/shader/effect1
+
+    size_t m_id;                ///< resource id
+    std::string m_name;         ///< resource name
+    std::string m_pathPrefix;   ///< search path used if any
+    bool m_isEngineManaged;     ///< flag indicating if the resource is managed by engine (allocation / deletion)
 
 protected:
-    bool m_isFile;
+    bool m_isFile;              ///< true if resource is a file, transient if not
 
 private:
-    static ResourceType m_type;
     friend class ResourceManager;
+
+public:
+    virtual ResourceType dyntype() { return type; }
+    static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RESOURCE_HPP__

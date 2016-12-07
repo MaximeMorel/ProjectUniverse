@@ -46,6 +46,31 @@ PluginRenderOpenGL4::PluginRenderOpenGL4(Engine &engine)
         log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
     }
 
+    getInfo();
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginRenderOpenGL4::~PluginRenderOpenGL4()
+{
+    log().log() << "PluginRenderOpenGL4 stop...\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+const char* PluginRenderOpenGL4::getSearchPath() const
+{
+    return "shaders/opengl4/";
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
+{
+    return ShaderGL4::create(name, fileName, t);
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name, const std::string& fileName)
+{
+    return ShaderProgramGL4::create(name, fileName);
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL4::getInfo()
+{
     const GLubyte* str = nullptr;
 
     str = glGetString(GL_VENDOR);
@@ -68,20 +93,5 @@ PluginRenderOpenGL4::PluginRenderOpenGL4(Engine &engine)
 
     str = glGetString(GL_EXTENSIONS);
     log().log() << "GL_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
-}
-////////////////////////////////////////////////////////////////////////////////
-PluginRenderOpenGL4::~PluginRenderOpenGL4()
-{
-    log().log() << "PluginRenderOpenGL4 stop...\n";
-}
-////////////////////////////////////////////////////////////////////////////////
-ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, Shader::Type t)
-{
-    return ShaderGL4::create(name, t);
-}
-////////////////////////////////////////////////////////////////////////////////
-ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders)
-{
-    return ShaderProgramGL4::create(name, shaders);
 }
 ////////////////////////////////////////////////////////////////////////////////

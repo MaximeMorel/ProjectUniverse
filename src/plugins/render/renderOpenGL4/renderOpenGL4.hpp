@@ -19,8 +19,12 @@ public:
     PluginRenderOpenGL4(Engine& engine);
     virtual ~PluginRenderOpenGL4() override;
 
-    virtual ShaderPtr createShader(const std::string& name, Shader::Type t) override;
-    virtual ShaderProgramPtr createShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders) override;
+    virtual const char* getSearchPath() const override;
+
+    virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t) override;
+    virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;
+
+    void getInfo();
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RENDEROPENGL4_HPP__

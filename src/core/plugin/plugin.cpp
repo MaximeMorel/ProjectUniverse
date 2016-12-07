@@ -1,9 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "plugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+template <> ResourceType Plugin<Library>::type("PluginLib");
+template <> ResourceType Plugin<Application>::type("PluginApp");
+////////////////////////////////////////////////////////////////////////////////
 template <class T>
-Plugin<T>::Plugin(const std::string& filename)
-    : IPlugin(filename)
+Plugin<T>::Plugin(const std::string& name, const std::string& fileName)
+    : IPlugin(name, fileName)
     , m_pGetLibInstance(nullptr)
     , m_pCloseLibInstance(nullptr)
 {
@@ -18,8 +21,8 @@ Plugin<T>::Plugin(const std::string& filename)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Plugin<Application>::Plugin(const std::string& filename)
-    : IPlugin(filename)
+Plugin<Application>::Plugin(const std::string& name, const std::string& fileName)
+    : IPlugin(name, fileName)
     , m_pGetLibInstance(nullptr)
     , m_pCloseLibInstance(nullptr)
 {
@@ -36,15 +39,27 @@ Plugin<T>::~Plugin()
     closeLibInstance();
 }
 ////////////////////////////////////////////////////////////////////////////////
+template <>
+const char* Plugin<Library>::getSearchPath()
+{
+    return "lib/";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+const char* Plugin<Application>::getSearchPath()
+{
+    return "app/";
+}
+////////////////////////////////////////////////////////////////////////////////
 template <class T>
-std::shared_ptr<Plugin<T>> Plugin<T>::create(const std::string& filename)
+std::shared_ptr<Plugin<T>> Plugin<T>::create(const std::string& name, const std::string& fileName)
 {
     struct MakeSharedEnabler : public Plugin<T>
     {
-        MakeSharedEnabler(const std::string& filename)
-            : Plugin<T>(filename) {}
+        MakeSharedEnabler(const std::string& name, const std::string& fileName)
+            : Plugin<T>(name, fileName) {}
     };
-    return std::make_shared<MakeSharedEnabler>(filename);
+    return std::make_shared<MakeSharedEnabler>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>

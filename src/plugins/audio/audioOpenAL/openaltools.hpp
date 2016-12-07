@@ -1,0 +1,15 @@
+#ifndef __OPENALTOOLS_HPP__
+#define __OPENALTOOLS_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include <AL/al.h>
+#include <AL/alc.h>
+////////////////////////////////////////////////////////////////////////////////
+void alFlushErrors();
+const char* alGetErrorString(ALenum err);
+void alLogCurrentError();
+
+void alcFlushErrors(ALCdevice* device);
+const char* alcGetErrorString(ALCenum err);
+void alcLogCurrentError(ALCdevice* device);
+////////////////////////////////////////////////////////////////////////////////
+#endif // __OPENALTOOLS_HPP__

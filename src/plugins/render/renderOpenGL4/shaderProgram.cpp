@@ -3,22 +3,10 @@
 #include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgramGL4::ShaderProgramGL4(const std::string& name, std::initializer_list<ShaderPtr> shaders)
-    : ShaderProgram(name, shaders)
+ShaderProgramGL4::ShaderProgramGL4(const std::string& name, const std::string& fileName)
+    : ShaderProgram(name, fileName)
 {
     m_shaderProgId = glCreateProgram();
-
-    // add shaders passed as params if any
-    for (ShaderPtr shader : shaders)
-    {
-        addShader(shader);
-    }
-
-    // compile and link if we have shaders
-    if (shaders.size() > 0)
-    {
-        link();
-    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::~ShaderProgramGL4()
@@ -27,15 +15,15 @@ ShaderProgramGL4::~ShaderProgramGL4()
     glDeleteProgram(m_shaderProgId);
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgramPtr ShaderProgramGL4::create(const std::string& name, std::initializer_list<ShaderPtr> shaders)
+ShaderProgramPtr ShaderProgramGL4::create(const std::string& name, const std::string& fileName)
 {
     struct MakeSharedEnabler : public ShaderProgramGL4
     {
-        MakeSharedEnabler(const std::string& name, std::initializer_list<ShaderPtr> shaders)
-            : ShaderProgramGL4(name, shaders) {}
+        MakeSharedEnabler(const std::string& name, const std::string& fileName)
+            : ShaderProgramGL4(name, fileName) {}
     };
     // check cache
-    return std::make_shared<MakeSharedEnabler>(name, shaders);
+    return std::make_shared<MakeSharedEnabler>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::bind()
@@ -95,11 +83,9 @@ bool ShaderProgramGL4::link()
         {
             m_linkError = true;
             GLsizei charsWritten = 0;
-            std::string infoLog;
-            infoLog.resize(logLength);
+            std::string infoLog(logLength, 0);
             glGetProgramInfoLog(m_shaderProgId, logLength, &charsWritten, &infoLog.front());
             if (charsWritten < logLength)
-                //infoLog = infoLog.substr(0, charsWritten);
                 infoLog.resize(charsWritten);
             log().log() << "Shader program log: " << infoLog.substr(0, charsWritten) << "\n";
         }

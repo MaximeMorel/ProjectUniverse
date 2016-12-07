@@ -8,7 +8,7 @@
 class ShaderProgramNull : public ShaderProgram
 {
 public:
-    ShaderProgramNull(const std::string& name, std::initializer_list<ShaderPtr> shaders);
+    ShaderProgramNull(const std::string& name, const std::string& fileName);
 
     virtual ~ShaderProgramNull() override;
 

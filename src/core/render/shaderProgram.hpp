@@ -12,13 +12,15 @@ using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
 class ShaderProgram : public Resource
 {
 protected:
-    ShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders);
+    ShaderProgram(const std::string& name, const std::string& fileName);
 
 public:
+    static ShaderProgramPtr create(const std::string& name, const std::string& fileName);
+
     virtual ~ShaderProgram() override;
 
-    static ShaderProgramPtr create(const std::string& name,
-                                   std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
+    /// Get the sub search path for this resource
+    static const char* getSearchPath();
 
     /// Get internal shader program handle id
     uint32_t getProgId() const;
@@ -43,6 +45,10 @@ protected:
     bool m_isLinked;                    ///< is linked flag
     bool m_linkError;                   ///< errors occurred during linkage flag
     std::vector<ShaderPtr> m_shaders;   ///< attached shaders
+
+public:
+    virtual ResourceType dyntype() override { return type; }
+    static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADERPROGRAM_HPP__

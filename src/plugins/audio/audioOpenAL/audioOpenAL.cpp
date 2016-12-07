@@ -65,6 +65,8 @@ PluginAudioOpenAL::PluginAudioOpenAL(Engine &engine)
     {
         log().log() << "Cannot open OpenAL device\n";
     }
+
+    getInfo();
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginAudioOpenAL::~PluginAudioOpenAL()
@@ -87,15 +89,41 @@ PluginAudioOpenAL::~PluginAudioOpenAL()
 std::vector<std::string> PluginAudioOpenAL::listDevices() const
 {
     const ALCchar *devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-    const ALCchar *device = devices;
     size_t len = 0;
     std::vector<std::string> res;
-    while (device && *device != '\0' && (device + 1) && *(device + 1) != '\0')
+    while (devices && *devices != '\0' && (devices + 1) && *(devices + 1) != '\0')
     {
-        res.push_back(device);
+        res.push_back(devices);
         len = res.back().length();
-        device += (len + 1);
+        devices += (len + 1);
     }
     return res;
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginAudioOpenAL::getInfo()
+{
+    const ALchar* str = nullptr;
+
+    str = alGetString(AL_VENDOR);
+    log().log() << "AL_VENDOR: " << reinterpret_cast<const char*>(str) << "\n";
+    str = alGetString(AL_VERSION);
+    log().log() << "AL_VERSION: " << reinterpret_cast<const char*>(str) << "\n";
+    str = alGetString(AL_RENDERER);
+    log().log() << "AL_RENDERER: " << reinterpret_cast<const char*>(str) << "\n";
+    str = alGetString(AL_EXTENSIONS);
+    log().log() << "AL_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
+
+    str = alcGetString(m_device, ALC_DEFAULT_DEVICE_SPECIFIER);
+    log().log() << "ALC_DEFAULT_DEVICE_SPECIFIER: " << reinterpret_cast<const char*>(str) << "\n";
+    str = alcGetString(m_device, ALC_DEVICE_SPECIFIER);
+    log().log() << "ALC_DEVICE_SPECIFIER: " << reinterpret_cast<const char*>(str) << "\n";
+    str = alcGetString(m_device, ALC_EXTENSIONS);
+    log().log() << "ALC_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
+
+    ALCint alcMajor = 0;
+    ALCint alcMinor = 0;
+    alcGetIntegerv(m_device, ALC_MAJOR_VERSION, 1, &alcMajor);
+    alcGetIntegerv(m_device, ALC_MINOR_VERSION, 1, &alcMinor);
+    log().log() << "ALC_VERSION: " << alcMajor << "." << alcMinor << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

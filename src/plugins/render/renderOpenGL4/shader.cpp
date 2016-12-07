@@ -20,8 +20,8 @@ uint32_t ShaderGL4::ShaderTypeMapping::get(Type t)
     return m_mapping[t];
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderGL4::ShaderGL4(const std::string& name, Type t)
-: Shader(name, t)
+ShaderGL4::ShaderGL4(const std::string& name, const std::string& fileName, Type t)
+: Shader(name, fileName, t)
 {
     m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
     const GLchar* src = "#version 130 \n\
@@ -40,14 +40,14 @@ ShaderGL4::~ShaderGL4()
     glDeleteShader(m_shaderId);
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderPtr ShaderGL4::create(const std::string& name, Type t)
+ShaderPtr ShaderGL4::create(const std::string& name, const std::string& fileName, Type t)
 {
     struct MakeSharedEnabler : public ShaderGL4
     {
-        MakeSharedEnabler(const std::string& name, Type t)
-            : ShaderGL4(name, t) {}
+        MakeSharedEnabler(const std::string& name, const std::string& fileName, Type t)
+            : ShaderGL4(name, fileName, t) {}
     };
-    return std::make_shared<MakeSharedEnabler>(name, t);
+    return std::make_shared<MakeSharedEnabler>(name, fileName, t);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr ShaderGL4::createFromSource(const std::string& name, Type t, const std::string& src)
@@ -79,11 +79,9 @@ bool ShaderGL4::compile()
         {
             m_compileError = true;
             GLsizei charsWritten = 0;
-            std::string infoLog;
-            infoLog.resize(logLength);
+            std::string infoLog(logLength, 0);
             glGetShaderInfoLog(m_shaderId, logLength, &charsWritten, &infoLog.front());
             if (charsWritten < logLength)
-                //infoLog = infoLog.substr(0, charsWritten);
                 infoLog.resize(charsWritten);
             log().log() << "Shader log: " << infoLog << "\n";
         }
@@ -96,5 +94,10 @@ bool ShaderGL4::compile()
     }
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderGL4::printOn(Logger& o) const
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////

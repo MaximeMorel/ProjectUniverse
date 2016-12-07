@@ -3,7 +3,9 @@
 #include "renderManager.hpp"
 #include "renderPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-Shader::Shader(const std::string& name, Type t)
+ResourceType Shader::type("Shader");
+////////////////////////////////////////////////////////////////////////////////
+Shader::Shader(const std::string& name, const std::string& fileName, Type t)
     : Resource(name)
     , m_shaderId(0)
     , m_isCompiled(false)
@@ -15,10 +17,15 @@ Shader::~Shader()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderPtr Shader::create(const std::string& name, Type t)
+ShaderPtr Shader::create(const std::string& name, const std::string& fileName, Type t)
 {
     /// virtual constructor idiom, use create facility from render plugin
-    return render().impl()->createShader(name, t);
+    return render().impl()->createShader(name, fileName, t);
+}
+////////////////////////////////////////////////////////////////////////////////
+const char* Shader::getSearchPath()
+{
+    return render().impl()->getSearchPath();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Shader::compile()
@@ -34,5 +41,10 @@ bool Shader::isCompiled() const
 uint32_t Shader::getShaderId() const
 {
     return m_shaderId;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Shader::printOn(Logger& o) const
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////

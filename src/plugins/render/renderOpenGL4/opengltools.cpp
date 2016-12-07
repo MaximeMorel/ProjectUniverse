@@ -43,6 +43,6 @@ void glLogCurrentError()
 {
     GLenum err = glGetError();
     if (err != GL_NO_ERROR)
-        log().log() << glGetErrorString(glGetError()) << "\n";
+        log().log() << glGetErrorString(err) << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

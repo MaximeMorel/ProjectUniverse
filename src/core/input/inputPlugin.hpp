@@ -12,7 +12,6 @@ public:
     virtual ~InputPlugin() override;
 
     virtual void discoverDevices();
-
     virtual size_t getNumDevices(Input::DeviceType dt);
     virtual InputDevice* getDevice(Input::DeviceType dt, size_t deviceId);
 

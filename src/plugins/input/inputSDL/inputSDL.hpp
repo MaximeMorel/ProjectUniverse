@@ -21,15 +21,15 @@ public:
     PluginInputSDL(Engine& engine);
     virtual ~PluginInputSDL() override;
 
-    virtual void discoverDevices();
-    virtual size_t getNumDevices(Input::DeviceType dt);
-    virtual InputDevice *getDevice(Input::DeviceType dt, size_t deviceId);
+    virtual void discoverDevices() override;
+    virtual size_t getNumDevices(Input::DeviceType dt) override;
+    virtual InputDevice *getDevice(Input::DeviceType dt, size_t deviceId) override;
 
-    virtual void update();
+    virtual void update() override;
 
-    virtual size_t getMemSize() const;
+    virtual size_t getMemSize() const override;
 
-    virtual void printOn(Logger& o) const;
+    virtual void printOn(Logger& o) const override;
 
 private:
     std::vector<InputSDLDeviceKeyboard> m_keyboard;

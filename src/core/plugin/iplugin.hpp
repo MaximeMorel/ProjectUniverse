@@ -21,7 +21,7 @@ class IPlugin : public Resource
 protected:
     /// Load library
     /// \param filename dynamic library path
-    IPlugin(const std::string& filename);
+    IPlugin(const std::string& name, const std::string& fileName);
 
 public:
     virtual ~IPlugin() override;

@@ -10,13 +10,17 @@ RenderPlugin::~RenderPlugin()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderPtr RenderPlugin::createShader(const std::string& name, Shader::Type t)
+const char* RenderPlugin::getSearchPath() const
+{
+    return "";
+}
+////////////////////////////////////////////////////////////////////////////////
+ShaderPtr RenderPlugin::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name,
-                                                   std::initializer_list<ShaderPtr> shaders)
+ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name, const std::string& fileName)
 {
 
 }

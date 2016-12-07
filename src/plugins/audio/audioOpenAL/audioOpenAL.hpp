@@ -22,6 +22,8 @@ public:
 
     std::vector<std::string> listDevices() const;
 
+    void getInfo();
+
 private:
     ALCdevice* m_device;
     ALCcontext *m_context;

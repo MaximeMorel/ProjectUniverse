@@ -261,39 +261,39 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
-    PluginAppPtr app = res().create<PluginApp>("../app/AppNull/libAppNull.so");
-    if (app->isValid())
+    PluginAppPtr app = res().createFromFile<PluginApp>("AppNull/libAppNull.so");
+    if (app && app->isValid())
     {
         engine.log().log() << app << "\n";
         app->getLibInstance(&engine);
     }
 
     // AppTest
-    app = res().create<PluginApp>("../app/AppTest/libAppTest.so");
-    if (app->isValid())
+    app = res().createFromFile<PluginApp>("AppTest/libAppTest.so");
+    if (app && app->isValid())
     {
         engine.log().log() << app  << "\n";
         app->getLibInstance(&engine);
     }
     app = nullptr;
 
-    PluginLibPtr lib = res().create<PluginLib>("../lib/libRenderNull.so");
-    if (lib->isValid())
+    PluginLibPtr lib = res().createFromFile<PluginLib>("libRenderNull.so");
+    if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
 
-    lib = res().create<PluginLib>("../lib/libRenderVulkan.so");
-    if (lib->isValid())
+    lib = res().createFromFile<PluginLib>("libRenderVulkan.so");
+    if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
     lib = nullptr;
 
-    lib = res().create<PluginLib>("../lib/libAudioOpenAL.so");
-    if (lib->isValid())
+    lib = res().createFromFile<PluginLib>("libAudioOpenAL.so");
+    if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
@@ -324,104 +324,106 @@ int main(int argc, char **argv)
         delete broadphase;
     }
 
-    lib = res().create<PluginLib>("../lib/libwindowContextSDL2.so");
-    if (lib->isValid())
+    lib = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
+    if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
 
-    PluginLibPtr librender = res().create<PluginLib>("../lib/libRenderOpenGL4.so");
-    if (librender->isValid())
+    PluginLibPtr librender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
+    if (librender && librender->isValid())
     {
         engine.log().log() << librender << "\n";
         librender->getLibInstance(&engine);
         engine.render().setPlugin(librender);
 
-        ShaderPtr s1 = res().create<Shader>("bbb", Shader::Type::VERTEX_SHADER);
-        ShaderPtr s2 = res().create<Shader>("ccc", Shader::Type::FRAGMENT_SHADER);
-        auto l = {s1, s2};
-        ShaderProgramPtr p = res().create<ShaderProgram>("aaa", l);
+        //ShaderPtr s1 = res().create<Shader>("bbb", Shader::Type::VERTEX_SHADER);
+        //ShaderPtr s2 = res().create<Shader>("ccc", Shader::Type::FRAGMENT_SHADER);
+        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa");
         //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", {s1, s2});
         //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", std::initializer_list<ShaderPtr>({s1, s2}));
-        p->bind();
+        //p->bind();
+
+        ShaderProgramPtr p2 = res().createFromFile<ShaderProgram>("effect1.sp");
+        p2->bind();
     }
 
     engine.log().log() << engine.res() << std::endl;
 
     {
-        PluginLibPtr lib = res().create<PluginLib>("../lib/libInputSDL.so");
-        if (lib->isValid())
+        PluginLibPtr lib = res().createFromFile<PluginLib>("libInputSDL.so");
+        if (lib && lib->isValid())
         {
             engine.log().log() << lib << "\n";
             lib->getLibInstance(&engine);
             engine.input().setPlugin(lib);
             engine.input().discoverDevices();
-        }
-        engine.input().listDevices(engine.log().log());
+            engine.input().listDevices(engine.log().log());
 
-        bool stop = false;
+            bool stop = false;
 
-        double targetFrameTime = 1000.0 / 60.0;
-        Timer timer;
-        timer.start();
-        int fps = 0;
-        Timer frameTimer;
+            double targetFrameTime = 1000.0 / 60.0;
+            Timer timer;
+            timer.start();
+            int fps = 0;
+            Timer frameTimer;
 
-        while (!stop)
-        {
-            frameTimer.reset();
-            engine.input().update();
-            if (engine.input().keyboard(0) &&
-                engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_a))
+            while (!stop)
             {
-                ;
-            }
+                frameTimer.reset();
+                engine.input().update();
+                if (engine.input().keyboard(0) &&
+                    engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_a))
+                {
+                    ;
+                }
 
-            if (engine.input().keyboard(0) &&
-                engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_ESC))
-            {
-                stop = true;
-            }
+                if (engine.input().keyboard(0) &&
+                    engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_ESC))
+                {
+                    stop = true;
+                }
 
-            if (engine.input().mouse(0) &&
-                engine.input().mouse(0)->isPressed(Input::Mouse::BT_1))
-            {
-                ;
-            }
+                if (engine.input().mouse(0) &&
+                    engine.input().mouse(0)->isPressed(Input::Mouse::BT_1))
+                {
+                    ;
+                }
 
-            if (engine.input().joystick(0) &&
-                engine.input().joystick(0)->isPressed(Input::Joystick::BT_1))
-            {
-                ;
-            }
+                if (engine.input().joystick(0) &&
+                    engine.input().joystick(0)->isPressed(Input::Joystick::BT_1))
+                {
+                    ;
+                }
 
-            if (engine.input().joystick(0) &&
-                engine.input().joystick(0)->value(Input::Joystick::AXIS_1) > 0.5)
-            {
-                ;
-            }
+                if (engine.input().joystick(0) &&
+                    engine.input().joystick(0)->value(Input::Joystick::AXIS_1) > 0.5)
+                {
+                    ;
+                }
 
-            float frameTime = frameTimer.getTime();
-            //engine.log().log() << "frame time: " << frameTime << std::endl;
-            //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
+                float frameTime = frameTimer.getTime();
+                //engine.log().log() << "frame time: " << frameTime << std::endl;
+                //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
-            ++fps;
-            if (frameTime < targetFrameTime)
-            {
-                //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
-                Timer::wait(targetFrameTime - frameTime);
-            }
-            else
-            {
-                engine.log().log() << "frame time: " << frameTime << std::endl;
-            }
+                ++fps;
+                if (frameTime < targetFrameTime)
+                {
+                    //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
+                    Timer::wait(targetFrameTime - frameTime);
+                }
+                else
+                {
+                    engine.log().log() << "frame time: " << frameTime << std::endl;
+                }
 
-            if (timer.getTime() >= 1000)
-            {
-                engine.log().log() << "fps: " << fps << std::endl;
-                fps = 0;
-                timer.reset();
+                if (timer.getTime() >= 1000)
+                {
+                    engine.log().log() << "fps: " << fps << std::endl;
+                    fps = 0;
+                    timer.reset();
+                }
             }
         }
     }

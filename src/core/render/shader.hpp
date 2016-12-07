@@ -20,12 +20,15 @@ public:
     };
 
 protected:
-    Shader(const std::string& name, Type t);
+    Shader(const std::string& name, const std::string& fileName, Type t);
 
 public:
-    static ShaderPtr create(const std::string& name, Type t);
+    static ShaderPtr create(const std::string& name, const std::string& fileName, Type t);
 
     virtual ~Shader() override;
+
+    /// Get the sub search path for this resource
+    static const char* getSearchPath();
 
     /// Get internal shader handle id
     uint32_t getShaderId() const;
@@ -37,9 +40,16 @@ public:
     bool isCompiled() const;
 
 protected:
+    virtual void printOn(Logger& o) const override;
+
+protected:
     uint32_t m_shaderId;    ///< shader program handle id
     bool m_isCompiled;      ///< is compiled flag
     bool m_compileError;    ///< errors occurred during compilation flag
+
+public:
+    virtual ResourceType dyntype() override { return type; }
+    static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_HPP__

@@ -19,10 +19,14 @@ public:
     template<class T, typename... Params>
     std::shared_ptr<T> create(const std::string& name, Params... p);
 
+    ///  Main resource creation facility
+    template<class T, typename... Params>
+    std::shared_ptr<T> createFromFile(const std::string& name, Params... p);
+
     /*template<class T, typename... Params>
     std::shared_ptr<T> create(ResourcePtr parent, const std::string& name, Params... p);*/
 
-    void addSearchPath();
+    void addSearchPath(const std::string& path);
 
     ResourcePtr addResource(ResourcePtr res);
 
@@ -51,7 +55,11 @@ public:
     friend Logger& operator<<(Logger& o, const ResourceManager& res);
 
 private:
+    /// Add a resource without checking if it's already managed
     void addResourceNoCheck(ResourcePtr res);
+
+    /// Find the path prefix of a resource (allowing to know the full path)
+    std::string findPathPrefix(const std::string &fileName);
 
 private:
     struct ResNameId
@@ -69,7 +77,7 @@ private:
     std::vector<ResourceWPtr> m_resources;    ///< array of resources
     std::unordered_map<std::string, size_t> m_resourceNames;
 
-    // registered path list
+    std::vector<std::string> m_searchPaths;     ///< registered path list
 
     // tool to get full path for a resource
 

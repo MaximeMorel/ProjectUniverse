@@ -8,29 +8,29 @@
 #endif
 #include "../engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-IPlugin::IPlugin(const std::string& filename)
-    : Resource(filename)
+IPlugin::IPlugin(const std::string& name, const std::string& fileName)
+    : Resource(name)
     , m_handle(nullptr)
     , m_pluginInfo{"null", "null", 0, 0}
     , m_pGetPluginInfo(nullptr)
 {
     // find real path (using resource manager tools and going through the registered paths)
 #ifdef __unix__
-    m_handle = dlopen(filename.c_str(), RTLD_LAZY);
+    m_handle = dlopen(fileName.c_str(), RTLD_LAZY);
     if (m_handle == nullptr)
     {
-        getEngine().log().log() << "dlopen(" << filename << ") failed\n";
+        getEngine().log().log() << "dlopen(" << fileName << ") failed\n";
         getEngine().log().log() << dlerror() << std::endl;
     }
 #endif
 #ifdef _WIN32
     // need backslashes
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx
-    HMODULE module = LoadLibrary(filename.c_str());
+    HMODULE module = LoadLibrary(fileName.c_str());
     m_handle = module;
     if (m_handle == nullptr)
     {
-        getEngine().log().log() << "loadLibrary(" << filename << ") failed\n";
+        getEngine().log().log() << "loadLibrary(" << fileName << ") failed\n";
     }
 #endif
 
