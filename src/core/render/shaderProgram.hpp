@@ -11,6 +11,9 @@ using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderProgram : public Resource
 {
+protected:
+    ShaderProgram(const std::string& name, std::initializer_list<ShaderPtr> shaders);
+
 public:
     virtual ~ShaderProgram() override;
 
@@ -33,8 +36,6 @@ public:
     virtual bool link();
 
 protected:
-    ShaderProgram(const std::string& name,
-                  std::initializer_list<ShaderPtr> shaders = std::initializer_list<ShaderPtr>());
     virtual void printOn(Logger& o) const override;
 
 protected:

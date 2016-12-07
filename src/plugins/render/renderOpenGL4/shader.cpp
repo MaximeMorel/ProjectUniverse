@@ -3,6 +3,8 @@
 #include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
+ShaderGL4::ShaderTypeMapping ShaderGL4::m_shaderTypeMapping;
+////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::ShaderTypeMapping::ShaderTypeMapping()
 {
     m_mapping[Type::VERTEX_SHADER] = GL_VERTEX_SHADER;

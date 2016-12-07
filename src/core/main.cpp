@@ -331,7 +331,6 @@ int main(int argc, char **argv)
         lib->getLibInstance(&engine);
     }
 
-    ResourcePtr r;
     PluginLibPtr librender = res().create<PluginLib>("../lib/libRenderOpenGL4.so");
     if (librender->isValid())
     {
@@ -339,19 +338,13 @@ int main(int argc, char **argv)
         librender->getLibInstance(&engine);
         engine.render().setPlugin(librender);
 
-        ResourcePtr p = res().create<ShaderProgram>(librender, "bbb");
-        ResourcePtr p1 = res().getResource("bbb");
-        ShaderProgramPtr p2 = std::static_pointer_cast<ShaderProgram>(p1);
-        r = p2;
-
-        p2->bind();
-
-        /*ShaderPtr s1 = engine.render().impl()->createShader("bbb", Shader::Type::VERTEX_SHADER);
-        ShaderPtr s2 = engine.render().impl()->createShader("ccc", Shader::Type::FRAGMENT_SHADER);
-        ShaderProgramPtr prog = engine.render().impl()->createShaderProgram("aaa", {s1, s2});
-        //prog->addShader(s2);
-        //prog->link();
-        prog->bind();*/
+        ShaderPtr s1 = res().create<Shader>("bbb", Shader::Type::VERTEX_SHADER);
+        ShaderPtr s2 = res().create<Shader>("ccc", Shader::Type::FRAGMENT_SHADER);
+        auto l = {s1, s2};
+        ShaderProgramPtr p = res().create<ShaderProgram>("aaa", l);
+        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", {s1, s2});
+        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", std::initializer_list<ShaderPtr>({s1, s2}));
+        p->bind();
     }
 
     engine.log().log() << engine.res() << std::endl;

@@ -6,6 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderGL4 : public Shader
 {
+protected:
+    ShaderGL4(const std::string& name, Type t);
+
 public:
     static ShaderPtr create(const std::string& name, Type t);
     static ShaderPtr createFromSource(const std::string& name, Type t, const std::string& src);
@@ -14,8 +17,6 @@ public:
     virtual bool compile() override;
 
 private:
-    ShaderGL4(const std::string& name, Type t);
-
     class ShaderTypeMapping
     {
     public:
@@ -25,8 +26,8 @@ private:
         uint32_t m_mapping[6];
     };
 
-    // move that somewhere else (using memory for every shader...)
-    ShaderTypeMapping m_shaderTypeMapping;
+    // move that somewhere else (using memory for every shader...) or use static ?
+    static ShaderTypeMapping m_shaderTypeMapping;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_OPENGL4_HPP__

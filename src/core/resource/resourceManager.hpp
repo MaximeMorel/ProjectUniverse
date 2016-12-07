@@ -15,15 +15,12 @@ public:
     ResourceManager(LogManager &logManager);
     ~ResourceManager();
 
-    template<class T, typename... Params>
-    ResourcePtr createResource2(const std::string& name, Params... p);
-
     ///  Main resource creation facility
     template<class T, typename... Params>
     std::shared_ptr<T> create(const std::string& name, Params... p);
 
-    template<class T, typename... Params>
-    std::shared_ptr<T> create(ResourcePtr parent, const std::string& name, Params... p);
+    /*template<class T, typename... Params>
+    std::shared_ptr<T> create(ResourcePtr parent, const std::string& name, Params... p);*/
 
     void addSearchPath();
 

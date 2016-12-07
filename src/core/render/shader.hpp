@@ -19,6 +19,10 @@ public:
         COMPUTE_SHADER
     };
 
+protected:
+    Shader(const std::string& name, Type t);
+
+public:
     static ShaderPtr create(const std::string& name, Type t);
 
     virtual ~Shader() override;
@@ -31,9 +35,6 @@ public:
 
     /// Returns the compilation status of the shader
     bool isCompiled() const;
-
-protected:
-    Shader(const std::string& name, Type t);
 
 protected:
     uint32_t m_shaderId;    ///< shader program handle id
