@@ -345,8 +345,9 @@ int main(int argc, char **argv)
         //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", std::initializer_list<ShaderPtr>({s1, s2}));
         //p->bind();
 
-        ShaderProgramPtr p2 = res().createFromFile<ShaderProgram>("effect1.sp");
-        p2->bind();
+        ShaderProgramPtr p2 = res().createFromFile<ShaderProgram>("effect1.prog");
+        if (p2)
+            p2->bind();
     }
 
     engine.log().log() << engine.res() << std::endl;

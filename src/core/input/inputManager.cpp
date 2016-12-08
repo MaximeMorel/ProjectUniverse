@@ -120,7 +120,7 @@ InputDeviceTouchscreen* InputManager::touchscreen(size_t id)
 ////////////////////////////////////////////////////////////////////////////////
 InputDevice& InputManager::getDevice(Input::DeviceType dt, size_t id)
 {
-    switch(dt)
+    switch (dt)
     {
     case Input::DeviceType::KEYBOARD:
         return *m_keyboard[id];
@@ -136,7 +136,7 @@ InputDevice& InputManager::getDevice(Input::DeviceType dt, size_t id)
 ////////////////////////////////////////////////////////////////////////////////
 size_t InputManager::getNumDevices(Input::DeviceType dt) const
 {
-    switch(dt)
+    switch (dt)
     {
     case Input::DeviceType::KEYBOARD:
         return m_keyboard.size();

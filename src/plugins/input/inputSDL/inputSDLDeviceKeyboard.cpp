@@ -15,7 +15,7 @@ void InputSDLDeviceKeyboard::update()
 
     SDL_Event event;
 
-    while(SDL_PollEvent(&event))
+    while (SDL_PollEvent(&event))
     {
         update(&event);
     }
@@ -23,7 +23,7 @@ void InputSDLDeviceKeyboard::update()
 ////////////////////////////////////////////////////////////////////////////////
 void InputSDLDeviceKeyboard::update(SDL_Event* event)
 {
-    switch(event->type)
+    switch (event->type)
     {
     case SDL_KEYDOWN:
         set(m_keyMapping.get(event->key.keysym.scancode), Input::KeyMode::DOWN_ONCE);

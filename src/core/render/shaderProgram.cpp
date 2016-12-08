@@ -2,6 +2,7 @@
 #include "shaderProgram.hpp"
 #include "renderManager.hpp"
 #include "renderPlugin.hpp"
+#include "core/resource/resourceManager.hpp"
 #include <fstream>
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType ShaderProgram::type("ShaderProgram");
@@ -24,43 +25,36 @@ const char* ShaderProgram::getSearchPath()
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr ShaderProgram::create(const std::string& name, const std::string& fileName)
 {
-    // parse name file (ex: effect1.sp, using data path and plugin path),
-    // ex: data/shaders/opengl4/effect1.sp
+    // parse name file (ex: effect1.prog, using data path and plugin path),
+    // ex: data/shaders/opengl4/effect1.prog
     // containing something like:
     // effect1.vs
     // effect1.gs
     // effect1.ps
     // create shader resource for each line
-    //ShaderPtr s1 = render().impl()->createShader(name, type);
+    //ShaderPtr s = render().impl()->createShader(name, type);
 
     /// virtual constructor idiom, use create facility from render plugin
-    ShaderProgramPtr res = render().impl()->createShaderProgram(name, fileName);
+    ShaderProgramPtr prog = render().impl()->createShaderProgram(name, fileName);
+    if (!prog)
+    {
+        // log error
+        return nullptr;
+    }
+    // parse shader program file, each line contains the name of a shader file to add
     std::ifstream file(fileName);
-    std::string dirname = fileName.substr(0, fileName.rfind('/') + 1);
     std::string line;
     while (file.good())
     {
-        std::string line;
         std::getline(file, line);
-        log().log() << "line: " << dirname << line << std::endl;
-        Shader::Type type = Shader::Type::VERTEX_SHADER;
-        std::string ext = line.substr(line.rfind('.') + 1);
-        if (ext == "vs")
-            type = Shader::Type::VERTEX_SHADER;
-        else if (ext == "tcs")
-            type = Shader::Type::TESS_CONTROL_SHADER;
-        else if (ext == "tes")
-            type = Shader::Type::TESS_EVALUATION_SHADER;
-        else if (ext == "gs")
-            type = Shader::Type::GEOMETRY_SHADER;
-        else if (ext == "fs")
-            type = Shader::Type::FRAGMENT_SHADER;
-        else if (ext == "cs")
-            type = Shader::Type::COMPUTE_SHADER;
-        ShaderPtr s = render().impl()->createShader(line, dirname + line, type);
-        res->addShader(s);
+        if (line[0] == '#' || line[0] == '\n' || line.length() < 4)
+            continue;
+
+        ShaderPtr s = res().createFromFile<Shader>(line);
+        if (s)
+            prog->addShader(s);
     }
-    return res;
+    return prog;
 }
 ////////////////////////////////////////////////////////////////////////////////
 uint32_t ShaderProgram::getProgId() const

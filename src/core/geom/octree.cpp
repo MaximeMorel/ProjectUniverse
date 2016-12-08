@@ -140,7 +140,7 @@ void Octree::traverse(const Frustum& frustum, std::vector<const Octree*>& res) c
                 //empty = false;
             }
         }
-        //if(empty)
+        //if (empty)
         if (m_numElements > 0)
         {
             res.push_back(this);

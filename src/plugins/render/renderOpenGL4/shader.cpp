@@ -24,14 +24,11 @@ ShaderGL4::ShaderGL4(const std::string& name, const std::string& fileName, Type 
 : Shader(name, fileName, t)
 {
     m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
-    const GLchar* src = "#version 130 \n\
-                         out vec4 color; \n\
-                         void main(void) \n\
-                         { \n\
-                             color = vec4(0.0, 0.8, 1.0, 1.0); \n\
-                         }";
-    glShaderSource(m_shaderId, 1, &src, nullptr);
-
+    std::ifstream ifs(fileName);
+    std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+    GLint len = str.size();
+    const GLchar* src = str.c_str();
+    glShaderSource(m_shaderId, 1, &src, &len);
     compile();
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +49,7 @@ ShaderPtr ShaderGL4::create(const std::string& name, const std::string& fileName
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr ShaderGL4::createFromSource(const std::string& name, Type t, const std::string& src)
 {
-
+    return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool ShaderGL4::compile()
@@ -69,13 +66,13 @@ bool ShaderGL4::compile()
 
     GLint status = GL_FALSE;
     glGetShaderiv(m_shaderId, GL_COMPILE_STATUS, &status);
-    if(status == GL_FALSE)
+    if (status == GL_FALSE)
     {
         m_isCompiled = false;
-        log().log() << "Shader " << m_shaderId << " compile failed\n";
+        log().log() << *this << " compile failed\n";
         GLsizei logLength = 0;
         glGetShaderiv(m_shaderId, GL_INFO_LOG_LENGTH, &logLength);
-        if(logLength > 0)
+        if (logLength > 0)
         {
             m_compileError = true;
             GLsizei charsWritten = 0;
@@ -90,7 +87,7 @@ bool ShaderGL4::compile()
     {
         m_isCompiled = true;
         m_compileError = false;
-        log().log() << "Shader " << m_shaderId << " compile success.\n";
+        log().log() << *this << " compile success.\n";
     }
 
     return true;
@@ -98,6 +95,6 @@ bool ShaderGL4::compile()
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderGL4::printOn(Logger& o) const
 {
-
+    o << "Shader " << m_shaderId << " " << Shader::getShaderTypeString(m_type) << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

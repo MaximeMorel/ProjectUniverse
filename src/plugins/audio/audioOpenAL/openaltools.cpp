@@ -17,7 +17,7 @@ void alFlushErrors()
 ////////////////////////////////////////////////////////////////////////////////
 const char* alGetErrorString(ALenum err)
 {
-    switch(err)
+    switch (err)
     {
     case AL_NO_ERROR:
         return "AL_NO_ERROR";
@@ -55,7 +55,7 @@ void alcFlushErrors(ALCdevice *device)
 ////////////////////////////////////////////////////////////////////////////////
 const char* alcGetErrorString(ALCenum err)
 {
-    switch(err)
+    switch (err)
     {
     case ALC_NO_ERROR:
         return "ALC_NO_ERROR";

@@ -23,7 +23,7 @@ protected:
     Shader(const std::string& name, const std::string& fileName, Type t);
 
 public:
-    static ShaderPtr create(const std::string& name, const std::string& fileName, Type t);
+    static ShaderPtr create(const std::string& name, const std::string& fileName);
 
     virtual ~Shader() override;
 
@@ -39,11 +39,14 @@ public:
     /// Returns the compilation status of the shader
     bool isCompiled() const;
 
+    static const char* getShaderTypeString(Shader::Type type);
+
 protected:
     virtual void printOn(Logger& o) const override;
 
 protected:
     uint32_t m_shaderId;    ///< shader program handle id
+    Shader::Type m_type;    ///< shader type (vertex, fragment, geometry, ...)
     bool m_isCompiled;      ///< is compiled flag
     bool m_compileError;    ///< errors occurred during compilation flag
 

@@ -67,7 +67,7 @@ std::string ResourceManager::findPathPrefix(const std::string& fileName)
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId, const std::string& name)
 {
-    m_logManager.log() << "Deleting resource " << resId << " - " << name << "\n";
+    m_logManager.log() << "Deleting resource " << resId << " - " << name << std::endl;
     if (resId < m_resources.size())
     {
         ResourcePtr res = m_resources[resId].lock();
@@ -94,8 +94,11 @@ void ResourceManager::delResource(size_t resId, const std::string& name)
             {
                 // swap the last element and move it in the hole
                 m_resources[resId] = m_resources.back();
-                m_resources[resId].lock()->m_id = resId;
-                m_resourceNames[m_resources.back().lock()->getName()] = resId;
+                if (m_resources[resId].lock())
+                {
+                    m_resources[resId].lock()->m_id = resId;
+                    m_resourceNames[m_resources.back().lock()->getName()] = resId;
+                }
             }
             m_resources.pop_back();
         }
@@ -109,7 +112,7 @@ void ResourceManager::delResource(size_t resId)
         ResourcePtr res = m_resources[resId].lock();
         if (res)
         {
-            m_logManager.log() << "Deleting resource " << resId << " - " << res->getName() << "\n";
+            m_logManager.log() << "Deleting resource " << resId << " - " << res->getName() << std::endl;
             m_resourceNames.erase(res->getName());
 
             // manage the hole in the resource array
@@ -151,10 +154,10 @@ ResourcePtr ResourceManager::getResource(size_t resId)
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::getResource(const std::string& name)
 {
-    /*for(auto& map : m_resources)
+    /*for (auto& map : m_resources)
     {
         auto it = map.find(name);
-        if(it != map.end())
+        if (it != map.end())
         {
             return it->second;
         }

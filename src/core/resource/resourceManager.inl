@@ -47,10 +47,13 @@ std::shared_ptr<T> ResourceManager::createFromFile(const std::string& name, Para
         if (!path.empty())
         {
             std::shared_ptr<T> res = T::create(name, path + subPath + name, p...);
-            res->m_isEngineManaged = true;
-            res->m_isFile = true;
-            addResourceNoCheck(res);
-            return res;
+            if (res)
+            {
+                res->m_isEngineManaged = true;
+                res->m_isFile = true;
+                addResourceNoCheck(res);
+                return res;
+            }
         }
         return nullptr;
     }

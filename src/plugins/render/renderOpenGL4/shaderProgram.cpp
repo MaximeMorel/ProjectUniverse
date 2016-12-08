@@ -22,7 +22,7 @@ ShaderProgramPtr ShaderProgramGL4::create(const std::string& name, const std::st
         MakeSharedEnabler(const std::string& name, const std::string& fileName)
             : ShaderProgramGL4(name, fileName) {}
     };
-    // check cache
+    // check binary shader cache
     return std::make_shared<MakeSharedEnabler>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +41,9 @@ void ShaderProgramGL4::unbind()
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::addShader(ShaderPtr shader)
 {
-    GLenum err = glGetError();
-    while (err != GL_NO_ERROR)
-        err = glGetError();
+    glFlushErrors();
     glAttachShader(m_shaderProgId, shader->getShaderId());
-    err = glGetError();
+    GLenum err = glGetError();
     if (err == GL_NO_ERROR)
         m_shaders.push_back(shader);
     else
@@ -69,17 +67,20 @@ bool ShaderProgramGL4::link()
             allCompiled = false;
     }
 
+    if (!allCompiled)
+        log().log() << *this << "some stages did not compile.\n";
+
     glLinkProgram(m_shaderProgId);
 
     GLint status = GL_FALSE;
     glGetProgramiv(m_shaderProgId, GL_LINK_STATUS, &status);
-    if(status == GL_FALSE)
+    if (status == GL_FALSE)
     {
         m_isLinked = false;
-        log().log() << "Shader program " << m_shaderProgId << " link failed.\n";
+        log().log() << *this << " link failed.\n";
         GLsizei logLength = 0;
         glGetProgramiv(m_shaderProgId, GL_INFO_LOG_LENGTH, &logLength);
-        if(logLength > 0)
+        if (logLength > 0)
         {
             m_linkError = true;
             GLsizei charsWritten = 0;
@@ -94,7 +95,7 @@ bool ShaderProgramGL4::link()
     {
         m_isLinked = true;
         m_linkError = false;
-        log().log() << "Shader program " << m_shaderProgId << " link success.\n";
+        log().log() << *this << " link success." << std::endl;
     }
 
     return true;
@@ -102,6 +103,6 @@ bool ShaderProgramGL4::link()
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::printOn(Logger& o) const
 {
-
+    o << "Shader program " << m_shaderProgId << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

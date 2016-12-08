@@ -17,7 +17,7 @@ void glFlushErrors()
 ////////////////////////////////////////////////////////////////////////////////
 const char* glGetErrorString(GLenum err)
 {
-    switch(err)
+    switch (err)
     {
     case GL_NO_ERROR:
         return "GL_NO_ERROR";

@@ -77,7 +77,7 @@ void PluginInputSDL::discoverDevices()
 ////////////////////////////////////////////////////////////////////////////////
 size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
 {
-    switch(dt)
+    switch (dt)
     {
         case Input::DeviceType::KEYBOARD:
             return m_keyboard.size();
@@ -93,7 +93,7 @@ size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
 ////////////////////////////////////////////////////////////////////////////////
 InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
 {
-    switch(dt)
+    switch (dt)
     {
         case Input::DeviceType::KEYBOARD:
             return &m_keyboard[deviceId];
@@ -111,7 +111,7 @@ void PluginInputSDL::update()
 {
     SDL_Event event;
 
-    while(SDL_PollEvent(&event))
+    while (SDL_PollEvent(&event))
     {
         for (auto& device : m_keyboard)
         {

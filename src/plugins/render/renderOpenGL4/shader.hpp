@@ -29,6 +29,7 @@ private:
         uint32_t m_mapping[6];
     };
 
+private:
     // move that somewhere else (using memory for every shader...) or use static ?
     static ShaderTypeMapping m_shaderTypeMapping;
 };
