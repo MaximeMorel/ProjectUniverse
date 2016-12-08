@@ -11,7 +11,7 @@ class ResourceType
 public:
     ResourceType(const std::string& typeName);
     uint32_t getTypeId() const;
-    const std::string& getTypeName();
+    const std::string& getTypeName() const;
 
 private:
     uint32_t m_typeId;
@@ -56,6 +56,8 @@ public:
 protected:
     virtual void printOn(Logger& o) const;
 
+    bool isEnginemanaged() const;
+
 private:
     // if resource is a file, m_name holds the file path, without the prefix,
     // which is the search path, empty for core engine resources in data folder
@@ -73,7 +75,8 @@ private:
     friend class ResourceManager;
 
 public:
-    virtual ResourceType dyntype() { return type; }
+    virtual ResourceType& dyntype() { return type; }
+    virtual const ResourceType& dyntype() const { return type; }
     static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -107,7 +107,6 @@ bool IPlugin::isValid() const
 ////////////////////////////////////////////////////////////////////////////////
 void IPlugin::printOn(Logger& o) const
 {
-    o << getName() << ": " << m_pluginInfo.name << " " << m_pluginInfo.major << "." << m_pluginInfo.minor << "\n";
-    o << m_pluginInfo.info;
+    o << getName() << " ("  << m_pluginInfo.info << ") : " << m_pluginInfo.name << " " << m_pluginInfo.major << "." << m_pluginInfo.minor;
 }
 ////////////////////////////////////////////////////////////////////////////////

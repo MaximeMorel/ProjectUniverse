@@ -6,10 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderGL4 : public Shader
 {
-protected:
-    ShaderGL4(const std::string& name, const std::string& fileName, Type t);
-
 public:
+    ShaderGL4(const std::string& name, const std::string& fileName, Type t);
     static ShaderPtr create(const std::string& name, const std::string& fileName, Type t);
     static ShaderPtr createFromSource(const std::string& name, Type t, const std::string& src);
     virtual ~ShaderGL4() override;

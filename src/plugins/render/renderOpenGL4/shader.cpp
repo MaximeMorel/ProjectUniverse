@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "shader.hpp"
+#include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,16 +36,17 @@ ShaderGL4::ShaderGL4(const std::string& name, const std::string& fileName, Type 
 ShaderGL4::~ShaderGL4()
 {
     glDeleteShader(m_shaderId);
+
+    if (isEnginemanaged())
+    {
+        log().log() << __FUNCTION__ << ": " << *this << std::endl;
+        res().delResource(getId(), getName());
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr ShaderGL4::create(const std::string& name, const std::string& fileName, Type t)
 {
-    struct MakeSharedEnabler : public ShaderGL4
-    {
-        MakeSharedEnabler(const std::string& name, const std::string& fileName, Type t)
-            : ShaderGL4(name, fileName, t) {}
-    };
-    return std::make_shared<MakeSharedEnabler>(name, fileName, t);
+    return std::make_shared<ShaderGL4>(name, fileName, t);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr ShaderGL4::createFromSource(const std::string& name, Type t, const std::string& src)
@@ -95,6 +97,6 @@ bool ShaderGL4::compile()
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderGL4::printOn(Logger& o) const
 {
-    o << "Shader " << m_shaderId << " " << Shader::getShaderTypeString(m_type) << " " << getName();
+    o << "ShaderGL4 " << m_shaderId << " " << Shader::getShaderTypeString(m_type) << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

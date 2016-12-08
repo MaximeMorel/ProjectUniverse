@@ -67,6 +67,7 @@ PluginInputSDL::~PluginInputSDL()
 
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
     SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+    SDL_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginInputSDL::discoverDevices()

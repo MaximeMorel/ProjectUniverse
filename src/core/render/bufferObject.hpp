@@ -9,8 +9,10 @@ public:
     BufferObject(const std::string& name);
     virtual ~BufferObject() override;
 
+    uint32_t getBufferObjectId() const;
+
 protected:
-    unsigned int m_bufferId;
+    uint32_t m_bufferId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __BUFFEROBJECT_HPP__

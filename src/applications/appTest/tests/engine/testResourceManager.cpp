@@ -25,7 +25,11 @@ public:
 
     ~DummyResource()
     {
-        getEngine().log().log() << "Dtor: " << *this << "\n";
+        if (isEnginemanaged())
+        {
+            log().log() << __FUNCTION__ << ": " << *this << std::endl;
+            res().delResource(getId(), getName());
+        }
     }
 
     static DummyResourcePtr create(const std::string& name)

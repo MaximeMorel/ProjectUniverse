@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "resource.hpp"
 #include "core/resource/resourceManager.hpp"
+#include "core/log/logManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Resource::type("Resource");
 ////////////////////////////////////////////////////////////////////////////////
@@ -15,7 +16,7 @@ uint32_t ResourceType::getTypeId() const
     return m_typeId;
 }
 ////////////////////////////////////////////////////////////////////////////////
-const std::string& ResourceType::getTypeName()
+const std::string& ResourceType::getTypeName() const
 {
     return m_typeName;
 }
@@ -32,8 +33,11 @@ Resource::Resource(const std::string& name)
 Resource::~Resource()
 {
     // remove from resource manager
-    if (m_isEngineManaged)
+    /*if (m_isEngineManaged)
+    {
+        log().log() << __FUNCTION__ << ": " << *this << std::endl;
         res().delResource(m_id, m_name);
+    }*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 const std::string& Resource::getName() const
@@ -61,9 +65,14 @@ size_t Resource::getMemSize() const
     return sizeof(*this);
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool Resource::isEnginemanaged() const
+{
+    return m_isEngineManaged;
+}
+////////////////////////////////////////////////////////////////////////////////
 void Resource::printOn(Logger& o) const
 {
-
+    o << "Resource (" << dyntype().getTypeName() << ") " << getId() << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Resource& res)

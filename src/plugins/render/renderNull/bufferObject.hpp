@@ -10,7 +10,6 @@ public:
     virtual ~BufferObjectNull() override;
 
 private:
-    unsigned int m_bufferId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __BUFFEROBJECT_NULL_HPP__

@@ -1,6 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "renderOpenGL4.hpp"
-//#include <GL/gl.h>
+#include "shader.hpp"
+#include "shaderProgram.hpp"
+#include "vao.hpp"
+#include "opengltools.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "renderOpenGL4",
@@ -59,6 +62,11 @@ const char* PluginRenderOpenGL4::getSearchPath() const
     return "shaders/opengl4/";
 }
 ////////////////////////////////////////////////////////////////////////////////
+VAOPtr PluginRenderOpenGL4::createVao(const std::string& name)
+{
+    return VAOGL4::create(name);
+}
+////////////////////////////////////////////////////////////////////////////////
 ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
     return ShaderGL4::create(name, fileName, t);
@@ -67,6 +75,15 @@ ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, const std::
 ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name, const std::string& fileName)
 {
     return ShaderProgramGL4::create(name, fileName);
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL4::draw()
+{
+    //glFlushErrors();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_POINT_SPRITE);
+    glDrawArrays(GL_POINTS, 0, 1);
+    //glLogCurrentError();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::getInfo()

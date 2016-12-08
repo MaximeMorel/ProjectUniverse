@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "shaderProgram.hpp"
+#include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,17 +14,18 @@ ShaderProgramGL4::~ShaderProgramGL4()
 {
     // attached shaders are automatically detached
     glDeleteProgram(m_shaderProgId);
+
+    if (isEnginemanaged())
+    {
+        log().log() << __FUNCTION__ << ": " << *this << std::endl;
+        res().delResource(getId(), getName());
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr ShaderProgramGL4::create(const std::string& name, const std::string& fileName)
 {
-    struct MakeSharedEnabler : public ShaderProgramGL4
-    {
-        MakeSharedEnabler(const std::string& name, const std::string& fileName)
-            : ShaderProgramGL4(name, fileName) {}
-    };
     // check binary shader cache
-    return std::make_shared<MakeSharedEnabler>(name, fileName);
+    return std::make_shared<ShaderProgramGL4>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::bind()
@@ -101,8 +103,19 @@ bool ShaderProgramGL4::link()
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniform1f(uint32_t id, float v)
+{
+    glProgramUniform1f(m_shaderProgId, id, v);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniform1f(const char* str, float v)
+{
+    GLint loc = glGetUniformLocation(m_shaderProgId, str);
+    setUniform1f(loc, v);
+}
+////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::printOn(Logger& o) const
 {
-    o << "Shader program " << m_shaderProgId << " " << getName();
+    o << "ShaderProgramGL4 " << m_shaderProgId << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

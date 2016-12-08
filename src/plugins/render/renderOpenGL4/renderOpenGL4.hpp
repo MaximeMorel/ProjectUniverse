@@ -3,8 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/library.hpp"
 #include "core/render/renderPlugin.hpp"
-#include "shader.hpp"
-#include "shaderProgram.hpp"
 #include "renderopengl4_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDEROPENGL4_EXPORT const PluginInfo* getPluginInfo();
@@ -21,8 +19,11 @@ public:
 
     virtual const char* getSearchPath() const override;
 
+    virtual VAOPtr createVao(const std::string& name) override;
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t) override;
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;
+
+    virtual void draw() override;
 
     void getInfo();
 };

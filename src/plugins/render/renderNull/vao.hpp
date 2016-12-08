@@ -10,7 +10,6 @@ public:
     virtual ~VAONull() override;
 
 private:
-    unsigned int m_vaoId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __VAO_NULL_HPP__

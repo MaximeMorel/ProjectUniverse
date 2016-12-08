@@ -42,7 +42,7 @@ std::shared_ptr<T> ResourceManager::createFromFile(const std::string& name, Para
         // get resource search path
         std::string subPath = T::getSearchPath();
 
-        // build file path
+        // build and check file path
         std::string path = findPathPrefix(subPath + name);
         if (!path.empty())
         {

@@ -36,7 +36,8 @@ private:
     PFNcloseLibInstance m_pCloseLibInstance;
 
 public:
-    virtual ResourceType dyntype() override{ return type; }
+    virtual ResourceType& dyntype() override { return type; }
+    virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////

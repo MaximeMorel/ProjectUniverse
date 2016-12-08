@@ -8,6 +8,7 @@
 #include <fstream>
 #include <btBulletDynamicsCommon.h>
 #include "core/render/renderPlugin.hpp"
+#include "core/windowContext/windowPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 int main2(int argc, char** argv)
 {
@@ -261,7 +262,7 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
-    PluginAppPtr app = res().createFromFile<PluginApp>("AppNull/libAppNull.so");
+    /*PluginAppPtr app = res().createFromFile<PluginApp>("AppNull/libAppNull.so");
     if (app && app->isValid())
     {
         engine.log().log() << app << "\n";
@@ -292,14 +293,6 @@ int main(int argc, char **argv)
     }
     lib = nullptr;
 
-    lib = res().createFromFile<PluginLib>("libAudioOpenAL.so");
-    if (lib && lib->isValid())
-    {
-        engine.log().log() << lib << "\n";
-        lib->getLibInstance(&engine);
-    }
-    lib = nullptr;
-
     {
         // Build the broadphase
         btBroadphaseInterface* broadphase = new btDbvtBroadphase();
@@ -322,45 +315,42 @@ int main(int argc, char **argv)
         delete dispatcher;
         delete collisionConfiguration;
         delete broadphase;
-    }
-
-    lib = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
-    if (lib && lib->isValid())
-    {
-        engine.log().log() << lib << "\n";
-        lib->getLibInstance(&engine);
-    }
-
-    PluginLibPtr librender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
-    if (librender && librender->isValid())
-    {
-        engine.log().log() << librender << "\n";
-        librender->getLibInstance(&engine);
-        engine.render().setPlugin(librender);
-
-        //ShaderPtr s1 = res().create<Shader>("bbb", Shader::Type::VERTEX_SHADER);
-        //ShaderPtr s2 = res().create<Shader>("ccc", Shader::Type::FRAGMENT_SHADER);
-        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa");
-        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", {s1, s2});
-        //ShaderProgramPtr p = res().create<ShaderProgram>("aaa", std::initializer_list<ShaderPtr>({s1, s2}));
-        //p->bind();
-
-        ShaderProgramPtr p2 = res().createFromFile<ShaderProgram>("effect1.prog");
-        if (p2)
-            p2->bind();
-    }
-
-    engine.log().log() << engine.res() << std::endl;
+    }*/
 
     {
-        PluginLibPtr lib = res().createFromFile<PluginLib>("libInputSDL.so");
-        if (lib && lib->isValid())
+        PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
+        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
+        PluginLibPtr libInput = res().createFromFile<PluginLib>("libInputSDL.so");
+        PluginLibPtr libAudio = res().createFromFile<PluginLib>("libAudioOpenAL.so");
+        if (libAudio && libAudio->isValid())
         {
-            engine.log().log() << lib << "\n";
-            lib->getLibInstance(&engine);
-            engine.input().setPlugin(lib);
+            engine.log().log() << libAudio << "\n";
+            libAudio->getLibInstance(&engine);
+        }
+        if (libWindow && libRender && libInput &&
+            libWindow->isValid() && libRender->isValid() && libInput->isValid())
+        {
+            engine.log().log() << libWindow << "\n";
+            engine.log().log() << libRender << "\n";
+            engine.log().log() << libInput << "\n";
+
+            WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&engine));
+
+            libInput->getLibInstance(&engine);
+            engine.input().setPlugin(libInput);
             engine.input().discoverDevices();
             engine.input().listDevices(engine.log().log());
+
+            libRender->getLibInstance(&engine);
+            engine.render().setPlugin(libRender);
+
+            ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
+            if (prog)
+                prog->bind();
+
+            VAOPtr v = res().create<VAO>("vao");
+            if (v)
+                v->bind();
 
             bool stop = false;
 
@@ -370,6 +360,8 @@ int main(int argc, char **argv)
             int fps = 0;
             Timer frameTimer;
 
+            Timer gameTimer;
+            gameTimer.start();
             while (!stop)
             {
                 frameTimer.reset();
@@ -404,19 +396,25 @@ int main(int argc, char **argv)
                     ;
                 }
 
-                float frameTime = frameTimer.getTime();
+                v->bind();
+                prog->bind();
+                prog->setUniform1f(0u, gameTimer.getTime()/1000.0);
+                render().impl()->draw();
+                w->swapBuffers();
+
+                float frameTimeEnd = frameTimer.getTime();
                 //engine.log().log() << "frame time: " << frameTime << std::endl;
                 //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
                 ++fps;
-                if (frameTime < targetFrameTime)
+                if (frameTimeEnd < targetFrameTime)
                 {
                     //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
-                    Timer::wait(targetFrameTime - frameTime);
+                    Timer::wait(targetFrameTime - frameTimeEnd);
                 }
                 else
                 {
-                    engine.log().log() << "frame time: " << frameTime << std::endl;
+                    engine.log().log() << "frame time: " << frameTimeEnd << std::endl;
                 }
 
                 if (timer.getTime() >= 1000)
@@ -430,9 +428,6 @@ int main(int argc, char **argv)
     }
 
     log().log() << res() << std::endl;
-
-    //librender = nullptr;
-    lib = nullptr;
 
     std::cout << "main exit...\n";
 

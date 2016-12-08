@@ -9,8 +9,10 @@ public:
     FBO(const std::string& name);
     virtual ~FBO() override;
 
+    uint32_t getFboId() const;
+
 protected:
-    unsigned int m_fboId;
+    uint32_t m_fboId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __FBO_HPP__

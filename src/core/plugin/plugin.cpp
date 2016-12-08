@@ -1,5 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "plugin.hpp"
+#include "core/resource/resourceManager.hpp"
+#include "core/log/logManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 template <> ResourceType Plugin<Library>::type("PluginLib");
 template <> ResourceType Plugin<Application>::type("PluginApp");
@@ -37,6 +39,12 @@ template <class T>
 Plugin<T>::~Plugin()
 {
     closeLibInstance();
+
+    if (isEnginemanaged())
+    {
+        log().log() << __FUNCTION__ << ": " << *this << std::endl;
+        res().delResource(getId(), getName());
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>

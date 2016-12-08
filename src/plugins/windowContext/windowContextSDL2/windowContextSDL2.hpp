@@ -19,7 +19,16 @@ public:
     PluginWindowContextSDL2(Engine& Engine);
     virtual ~PluginWindowContextSDL2() override;
 
+    virtual bool setResolution(Vec2i resolution) override;
+
+    virtual bool setPosition(Vec2i position) override;
+
+    virtual bool setTitle(const std::string& title) override;
+
     virtual void swapBuffers() override;
+
+private:
+    void checkAttributes();
 
 private:
     SDL_Window* m_window;

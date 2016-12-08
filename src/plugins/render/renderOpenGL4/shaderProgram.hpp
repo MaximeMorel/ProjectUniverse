@@ -9,10 +9,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderProgramGL4 : public ShaderProgram
 {
-private:
-    ShaderProgramGL4(const std::string& name, const std::string& fileName);
-
 public:
+    ShaderProgramGL4(const std::string& name, const std::string& fileName);
     static ShaderProgramPtr create(const std::string& name, const std::string& fileName);
 
     virtual ~ShaderProgramGL4() override;
@@ -23,6 +21,9 @@ public:
     virtual void addShader(ShaderPtr shader) override;
 
     virtual bool link() override;
+
+    virtual void setUniform1f(uint32_t id, float v) override;
+    virtual void setUniform1f(const char* str, float v) override;
 
 protected:
     virtual void printOn(Logger& o) const override;

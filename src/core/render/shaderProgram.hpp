@@ -3,6 +3,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resource.hpp"
 #include "shader.hpp"
+#include "core/math/mat3.hpp"
+#include "core/math/mat4.hpp"
+#include "core/math/vec2.hpp"
+#include "core/math/vec3.hpp"
+#include "core/math/vec4.hpp"
 #include <string>
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +42,9 @@ public:
     /// Link the program. Will try to compile attached shaders if not done already
     virtual bool link();
 
+    virtual void setUniform1f(uint32_t id, float v);
+    virtual void setUniform1f(const char* str, float v);
+
 protected:
     virtual void printOn(Logger& o) const override;
 
@@ -47,7 +55,8 @@ protected:
     std::vector<ShaderPtr> m_shaders;   ///< attached shaders
 
 public:
-    virtual ResourceType dyntype() override { return type; }
+    virtual ResourceType& dyntype() override { return type; }
+    virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////

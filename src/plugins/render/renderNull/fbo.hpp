@@ -10,7 +10,6 @@ public:
     virtual ~FBONull() override;
 
 private:
-    unsigned int m_fboId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __FBO_NULL_HPP__

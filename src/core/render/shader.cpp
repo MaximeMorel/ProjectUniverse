@@ -16,6 +16,7 @@ Shader::Shader(const std::string& name, const std::string& fileName, Type t)
 ////////////////////////////////////////////////////////////////////////////////
 Shader::~Shader()
 {
+    log().log() << "~Shader: " << *this << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr Shader::create(const std::string& name, const std::string& fileName)
@@ -87,6 +88,6 @@ const char* Shader::getShaderTypeString(Shader::Type type)
 ////////////////////////////////////////////////////////////////////////////////
 void Shader::printOn(Logger& o) const
 {
-
+    o << "Shader " << m_shaderId << " " << Shader::getShaderTypeString(m_type) << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

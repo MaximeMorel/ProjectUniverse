@@ -15,12 +15,22 @@ const char* RenderPlugin::getSearchPath() const
     return "";
 }
 ////////////////////////////////////////////////////////////////////////////////
+VAOPtr RenderPlugin::createVao(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
 ShaderPtr RenderPlugin::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
-
+    return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name, const std::string& fileName)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+void RenderPlugin::draw()
 {
 
 }

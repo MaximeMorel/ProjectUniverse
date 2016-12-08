@@ -1,6 +1,11 @@
-#version 120
+#version 130
+
+uniform float fTime;
 
 void main(void)
 {
-	gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_PointSize = 10.0f * (0.5f + 0.5f * sin(fTime));
+    //gl_PointSize = 10.0f;
+    gl_Position = vec4((0.5f + 0.5f * sin(fTime)) * cos(fTime), (0.5f + 0.5f * cos(fTime)) * sin(fTime), 0.5f, 1.0f);
+    //gl_Position = vec4(0.0f, 0.0f, 0.5f, 1.0f);
 }

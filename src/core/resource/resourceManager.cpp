@@ -201,12 +201,14 @@ size_t ResourceManager::getMemSizeFull() const
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const ResourceManager& res)
 {
+    o << "Resources map:\n";
     size_t i = 0;
     for (auto it : res.m_resources)
     {
         o << i++ << ": " << it.lock() << "\n";
     }
 
+    o << "Resources names:\n";
     for (auto it : res.m_resourceNames)
     {
         o << it.first << " - " << it.second << "\n";
