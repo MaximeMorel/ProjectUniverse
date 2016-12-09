@@ -10,7 +10,6 @@ public:
     virtual ~TextureNull() override;
 
 private:
-    unsigned int m_textureId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TEXTURE_NULL_HPP__

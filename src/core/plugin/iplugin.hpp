@@ -1,5 +1,5 @@
-#ifndef __IPLUGIN_HPP__
-#define __IPLUGIN_HPP__
+#ifndef __PLUGIN_HPP__
+#define __PLUGIN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resource.hpp"
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,15 +16,15 @@ struct PluginInfo
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief IPlugin class, helper to load a shared library
 ////////////////////////////////////////////////////////////////////////////////
-class IPlugin : public Resource
+class Plugin : public Resource
 {
 protected:
     /// Load library
     /// \param filename dynamic library path
-    IPlugin(const std::string& name, const std::string& fileName);
+    Plugin(const std::string& name, const std::string& fileName);
 
 public:
-    virtual ~IPlugin() override;
+    virtual ~Plugin() override;
 
     /// Load a symbol form the dynamic library
     /// \param symbolname Symbol to load from the dynamic library
@@ -45,4 +45,4 @@ protected:
     PFNgetPluginInfo m_pGetPluginInfo;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __IPLUGIN_HPP__
+#endif // __PLUGIN_HPP__

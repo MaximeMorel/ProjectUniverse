@@ -1,12 +1,12 @@
 #ifndef __SHADER_HPP__
 #define __SHADER_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
+#include "core/resource/resourceFile.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Shader;
 using ShaderPtr = std::shared_ptr<Shader>;
 ////////////////////////////////////////////////////////////////////////////////
-class Shader : public Resource
+class Shader : public ResourceFile
 {
 public:
     enum Type
@@ -54,6 +54,9 @@ public:
     virtual ResourceType& dyntype() override { return type; }
     virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
+
+private:
+    using super = ResourceFile;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_HPP__

@@ -8,7 +8,7 @@
 #endif
 #include "../engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-IPlugin::IPlugin(const std::string& name, const std::string& fileName)
+Plugin::Plugin(const std::string& name, const std::string& fileName)
     : Resource(name)
     , m_handle(nullptr)
     , m_pluginInfo{"null", "null", 0, 0}
@@ -49,7 +49,7 @@ IPlugin::IPlugin(const std::string& name, const std::string& fileName)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-IPlugin::~IPlugin()
+Plugin::~Plugin()
 {
     if (m_handle != nullptr)
     {
@@ -70,7 +70,7 @@ IPlugin::~IPlugin()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void* IPlugin::getSymbol(const std::string& symbolname) const
+void* Plugin::getSymbol(const std::string& symbolname) const
 {
     void* symbol = nullptr;
 #ifdef __unix__
@@ -95,17 +95,17 @@ void* IPlugin::getSymbol(const std::string& symbolname) const
     return symbol;
 }
 ////////////////////////////////////////////////////////////////////////////////
-const PluginInfo& IPlugin::getInfo() const
+const PluginInfo& Plugin::getInfo() const
 {
     return m_pluginInfo;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool IPlugin::isValid() const
+bool Plugin::isValid() const
 {
     return (m_handle != nullptr) && (m_pGetPluginInfo != nullptr);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void IPlugin::printOn(Logger& o) const
+void Plugin::printOn(Logger& o) const
 {
     o << getName() << " ("  << m_pluginInfo.info << ") : " << m_pluginInfo.name << " " << m_pluginInfo.major << "." << m_pluginInfo.minor;
 }

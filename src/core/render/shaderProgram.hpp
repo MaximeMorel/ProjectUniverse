@@ -1,7 +1,7 @@
 #ifndef __SHADERPROGRAM_HPP__
 #define __SHADERPROGRAM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/resource/resource.hpp"
+#include "core/resource/resourceFile.hpp"
 #include "shader.hpp"
 #include "core/math/mat3.hpp"
 #include "core/math/mat4.hpp"
@@ -14,7 +14,7 @@
 class ShaderProgram;
 using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
 ////////////////////////////////////////////////////////////////////////////////
-class ShaderProgram : public Resource
+class ShaderProgram : public ResourceFile
 {
 protected:
     ShaderProgram(const std::string& name, const std::string& fileName);
@@ -58,6 +58,9 @@ public:
     virtual ResourceType& dyntype() override { return type; }
     virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
+
+private:
+    using super = ResourceFile;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADERPROGRAM_HPP__

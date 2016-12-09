@@ -22,14 +22,10 @@ uint32_t ShaderGL4::ShaderTypeMapping::get(Type t)
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::ShaderGL4(const std::string& name, const std::string& fileName, Type t)
-: Shader(name, fileName, t)
+: super(name, fileName, t)
 {
     m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
-    std::ifstream ifs(fileName);
-    std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-    GLint len = str.size();
-    const GLchar* src = str.c_str();
-    glShaderSource(m_shaderId, 1, &src, &len);
+    loadSource();
     compile();
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +89,31 @@ bool ShaderGL4::compile()
     }
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderGL4::loadSource()
+{
+    std::ifstream ifs(getFileName());
+    std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+    loadSourceFromBuf(str);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderGL4::loadSourceFromBuf(const std::string& source)
+{
+    GLint len = source.size();
+    const GLchar* src = source.c_str();
+    glShaderSource(m_shaderId, 1, &src, &len);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderGL4::reload()
+{
+    log().log() << "Reload: " << *this << "\n";
+    updateMtime();
+    m_isCompiled = false;
+    m_compileError = false;
+
+    loadSource();
+    compile();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderGL4::printOn(Logger& o) const

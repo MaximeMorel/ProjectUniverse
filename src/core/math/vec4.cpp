@@ -5,6 +5,7 @@
 template class TVec4<int>;
 template class TVec4<float>;
 template class TVec4<double>;
+template class TVec4<uint8_t>;
 
 template Logger& operator<<(Logger& o, const TVec4<int>& v);
 template Logger& operator<<(Logger& o, const TVec4<float>& v);

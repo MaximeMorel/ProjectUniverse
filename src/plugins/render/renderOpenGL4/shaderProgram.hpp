@@ -25,8 +25,13 @@ public:
     virtual void setUniform1f(uint32_t id, float v) override;
     virtual void setUniform1f(const char* str, float v) override;
 
+    void reload() override;
+
 protected:
     virtual void printOn(Logger& o) const override;
+
+private:
+    using super = ShaderProgram;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADERPROGRAM_OPENGL4_HPP__

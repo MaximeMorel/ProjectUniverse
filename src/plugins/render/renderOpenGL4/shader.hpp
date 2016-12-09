@@ -14,6 +14,15 @@ public:
 
     virtual bool compile() override;
 
+    virtual void reload() override;
+
+private:
+    /// Load shader source from resource filename
+    void loadSource();
+
+    /// Load shader source from buffer
+    void loadSourceFromBuf(const std::string& source);
+
 protected:
     virtual void printOn(Logger& o) const override;
 
@@ -30,6 +39,9 @@ private:
 private:
     // move that somewhere else (using memory for every shader...) or use static ?
     static ShaderTypeMapping m_shaderTypeMapping;
+
+private:
+    using super = Shader;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_OPENGL4_HPP__

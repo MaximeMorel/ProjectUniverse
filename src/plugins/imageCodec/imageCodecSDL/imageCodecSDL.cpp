@@ -1,13 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "audioCodecOggVorbis.hpp"
+#include "imageCodecSDL.hpp"
+#include <SDL_image.h>
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo pluginInfo = { "audioCodecOggVorbis",
-                          "audioCodecOggVorbis",
-                          "audiocodec",
+PluginInfo pluginInfo = { "imageCodecSDL",
+                          "imageCodecSDL",
+                          "imagecodec",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis* lib = nullptr;
+PluginImageCodecSDL* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
@@ -18,7 +19,7 @@ Library* getLibInstance(Engine* engine)
 {
     if (lib == nullptr)
     {
-        lib = new PluginAudioCodecOggVorbis(*engine);
+        lib = new PluginImageCodecSDL(*engine);
     }
     return lib;
 }
@@ -29,12 +30,28 @@ void closeLibInstance()
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis::PluginAudioCodecOggVorbis(Engine &engine)
+PluginImageCodecSDL::PluginImageCodecSDL(Engine &engine)
     : Library(engine)
 {
+    log().log() << "PluginImageCodecSDL start...\n";
+
+    const SDL_version* v = IMG_Linked_Version();
+    if (v)
+    {
+        log().log() << "SDL_image " << v->major << "." << v->minor << "." << v->patch << "\n";
+    }
+
+    int initFlags = IMG_INIT_JPG | IMG_INIT_PNG;
+    int ret = IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+    if (ret != 0 && ret != initFlags)
+    {
+        log().log() << "IMG_Init(" << initFlags << ") error: " << ret << "\n";
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis::~PluginAudioCodecOggVorbis()
+PluginImageCodecSDL::~PluginImageCodecSDL()
 {
+    log().log() << "PluginImageCodecSDL stop...\n";
+    IMG_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////

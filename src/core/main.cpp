@@ -6,7 +6,6 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <btBulletDynamicsCommon.h>
 #include "core/render/renderPlugin.hpp"
 #include "core/windowContext/windowPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
@@ -291,31 +290,14 @@ int main(int argc, char **argv)
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
     }
-    lib = nullptr;
+    lib = nullptr;*/
 
+    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
+    if (lib && lib->isValid())
     {
-        // Build the broadphase
-        btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-
-        // Set up the collision configuration and dispatcher
-        btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-        btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-        // The actual physics solver
-        btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-        // The world.
-        btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-        dynamicsWorld->setGravity(btVector3(0, -10, 0));
-
-        // Do_everything_else_here
-        // Clean up behind ourselves like good little programmers
-        delete dynamicsWorld;
-        delete solver;
-        delete dispatcher;
-        delete collisionConfiguration;
-        delete broadphase;
-    }*/
+        engine.log().log() << lib << "\n";
+        lib->getLibInstance(&engine);
+    }
 
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
@@ -335,7 +317,7 @@ int main(int argc, char **argv)
             engine.log().log() << libInput << "\n";
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&engine));
-            //w->setResolution(Vec2i(1280, 720));
+            w->setResolution(Vec2i(100, 100));
 
             libInput->getLibInstance(&engine);
             engine.input().setPlugin(libInput);
@@ -352,6 +334,8 @@ int main(int argc, char **argv)
             VAOPtr v = res().create<VAO>("vao");
             if (v)
                 v->bind();
+
+            ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
 
             bool stop = false;
 
@@ -400,24 +384,24 @@ int main(int argc, char **argv)
 
                 v->bind();
                 prog->bind();
-                prog->setUniform1f(0u, gameTimer.getTime()/1000.0);
+                prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
                 render().impl()->draw();
                 w->swapBuffers();
 
-                double frameTimeEnd = frameTimer.getTime();
+                double frameTime = frameTimer.getTime();
                 //engine.log().log() << "frame time: " << frameTime << std::endl;
                 //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
                 ++fps;
-                if (frameTimeEnd < targetFrameTime)
+                if (frameTime < targetFrameTime)
                 {
                     //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
-                    Timer::wait(targetFrameTime - frameTimeEnd);
-                    timeSlept += targetFrameTime - frameTimeEnd;
+                    Timer::wait(targetFrameTime - frameTime);
+                    timeSlept += targetFrameTime - frameTime;
                 }
                 else
                 {
-                    engine.log().log() << "frame time: " << frameTimeEnd << std::endl;
+                    engine.log().log() << "frame time over " << targetFrameTime << " ms : " << frameTime << std::endl;
                 }
 
                 if (timer.getTime() >= 1000)
@@ -426,8 +410,10 @@ int main(int argc, char **argv)
                     fps = 0;
                     timeSlept = 0.0;
                     timer.reset();
+                    prog->reload();
                 }
             }
+            log().log() << res() << std::endl;
         }
     }
 

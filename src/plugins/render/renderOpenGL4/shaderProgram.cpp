@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::ShaderProgramGL4(const std::string& name, const std::string& fileName)
-    : ShaderProgram(name, fileName)
+    : super(name, fileName)
 {
     m_shaderProgId = glCreateProgram();
 }
@@ -112,6 +112,19 @@ void ShaderProgramGL4::setUniform1f(const char* str, float v)
 {
     GLint loc = glGetUniformLocation(m_shaderProgId, str);
     setUniform1f(loc, v);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::reload()
+{
+    log().log() << "Reload: " << *this << "\n";
+    updateMtime();
+    m_isLinked = false;
+    m_linkError = false;
+    for (ShaderPtr shader : m_shaders)
+    {
+        shader->reload();
+    }
+    link();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::printOn(Logger& o) const

@@ -45,6 +45,9 @@ public:
     ////////////////////////////////////////////////////////////////////////////
     size_t getId() const;
 
+    /// reload filed base resource when modified on disk
+    virtual void reload();
+
     static const ResourceType& getStaticType();
     virtual const ResourceType& getType() const;
 
@@ -57,19 +60,16 @@ protected:
     virtual void printOn(Logger& o) const;
 
     bool isEnginemanaged() const;
+    bool isFile() const;
 
 private:
-    // if resource is a file, m_name holds the file path, without the prefix,
-    // which is the search path, empty for core engine resources in data folder
-    // for app data, prefix can be: app/appTest, and then m_name data/shader/effect1
-
     size_t m_id;                ///< resource id
     std::string m_name;         ///< resource name
     std::string m_pathPrefix;   ///< search path used if any
     bool m_isEngineManaged;     ///< flag indicating if the resource is managed by engine (allocation / deletion)
 
 protected:
-    bool m_isFile;              ///< true if resource is a file, transient if not
+    bool m_isFile;              ///< true if resource is a file
 
 private:
     friend class ResourceManager;

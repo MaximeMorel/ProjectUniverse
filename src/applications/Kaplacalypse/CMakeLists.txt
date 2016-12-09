@@ -15,3 +15,9 @@ add_library(${PROJECT_NAME} MODULE ${APP_SOURCE})
 
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
+
+find_package (Bullet)
+if (BULLET_FOUND)
+    include_directories(${BULLET_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})
+endif (BULLET_FOUND)

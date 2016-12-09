@@ -3,12 +3,12 @@
 #include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-template <> ResourceType Plugin<Library>::type("PluginLib");
-template <> ResourceType Plugin<Application>::type("PluginApp");
+template <> ResourceType TPlugin<Library>::type("PluginLib");
+template <> ResourceType TPlugin<Application>::type("PluginApp");
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-Plugin<T>::Plugin(const std::string& name, const std::string& fileName)
-    : IPlugin(name, fileName)
+TPlugin<T>::TPlugin(const std::string& name, const std::string& fileName)
+    : Plugin(name, fileName)
     , m_pGetLibInstance(nullptr)
     , m_pCloseLibInstance(nullptr)
 {
@@ -23,8 +23,8 @@ Plugin<T>::Plugin(const std::string& name, const std::string& fileName)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Plugin<Application>::Plugin(const std::string& name, const std::string& fileName)
-    : IPlugin(name, fileName)
+TPlugin<Application>::TPlugin(const std::string& name, const std::string& fileName)
+    : Plugin(name, fileName)
     , m_pGetLibInstance(nullptr)
     , m_pCloseLibInstance(nullptr)
 {
@@ -36,7 +36,7 @@ Plugin<Application>::Plugin(const std::string& name, const std::string& fileName
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-Plugin<T>::~Plugin()
+TPlugin<T>::~TPlugin()
 {
     closeLibInstance();
 
@@ -48,38 +48,33 @@ Plugin<T>::~Plugin()
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-const char* Plugin<Library>::getSearchPath()
+const char* TPlugin<Library>::getSearchPath()
 {
     return "lib/";
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-const char* Plugin<Application>::getSearchPath()
+const char* TPlugin<Application>::getSearchPath()
 {
     return "app/";
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-std::shared_ptr<Plugin<T>> Plugin<T>::create(const std::string& name, const std::string& fileName)
+std::shared_ptr<TPlugin<T>> TPlugin<T>::create(const std::string& name, const std::string& fileName)
 {
-    struct MakeSharedEnabler : public Plugin<T>
-    {
-        MakeSharedEnabler(const std::string& name, const std::string& fileName)
-            : Plugin<T>(name, fileName) {}
-    };
-    return std::make_shared<MakeSharedEnabler>(name, fileName);
+    return std::make_shared<TPlugin<T>>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-bool Plugin<T>::isValid() const
+bool TPlugin<T>::isValid() const
 {
-    return IPlugin::isValid() &&
+    return Plugin::isValid() &&
            (m_pGetLibInstance != nullptr) &&
            (m_pCloseLibInstance != nullptr);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-T* Plugin<T>::getLibInstance(Engine* engine)
+T* TPlugin<T>::getLibInstance(Engine* engine)
 {
     if (m_pGetLibInstance)
     {
@@ -89,7 +84,7 @@ T* Plugin<T>::getLibInstance(Engine* engine)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void Plugin<T>::closeLibInstance()
+void TPlugin<T>::closeLibInstance()
 {
     if (m_pCloseLibInstance)
     {
@@ -97,6 +92,6 @@ void Plugin<T>::closeLibInstance()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-template class Plugin<Library>;
-template class Plugin<Application>;
+template class TPlugin<Library>;
+template class TPlugin<Application>;
 ////////////////////////////////////////////////////////////////////////////////

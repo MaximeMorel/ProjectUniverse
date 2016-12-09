@@ -1,3 +1,3 @@
 message(STATUS "Configuring imageCodec plugins...")
 
-#add_subdirectory(imageCodecXXX)
+add_subdirectory(imageCodecSDL)

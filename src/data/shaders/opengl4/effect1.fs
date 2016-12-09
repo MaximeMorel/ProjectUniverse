@@ -9,6 +9,6 @@ void main(void)
         discard;
         //gl_FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     else
-        gl_FragColor = vec4(abs(cos(gl_FragCoord.x/1000.0f)), abs(cos(gl_FragCoord.y/1000.0f)), 0.5f + 0.5f * cos(fTime), 1.0f);
+        gl_FragColor = vec4(gl_PointCoord, 0.5f + 0.5f * cos(fTime), 1.0f);
     //gl_FragColor = vec4(d, 0.5f, 0.5f, 1.0f);
 }

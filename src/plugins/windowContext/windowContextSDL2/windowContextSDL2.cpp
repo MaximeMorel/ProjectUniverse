@@ -38,17 +38,14 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
 {
     log().log() << "PluginWindowContextSDL2 start...\n";
 
-    if (SDL_WasInit(SDL_INIT_VIDEO))
+    int ret = SDL_InitSubSystem(SDL_INIT_VIDEO);
+    if (ret < 0)
     {
-        log().log() << "SDL Video subsystem already started\n";
+        log().log() << SDL_GetError();
     }
-    else
+    else if (ret == 0)
     {
-        int ret = SDL_InitSubSystem(SDL_INIT_VIDEO);
-        if (ret < 0)
-        {
-            log().log() << SDL_GetError();
-        }
+        log().log() << "SDL_INIT_VIDEO success.\n";
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -59,7 +56,7 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     m_window = SDL_CreateWindow("SDL2 window",
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
-                                800, 600,
+                                100, 100,
                                 SDL_WINDOW_OPENGL);
 
     if (m_window == nullptr)

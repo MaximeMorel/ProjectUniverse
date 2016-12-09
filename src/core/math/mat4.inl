@@ -234,10 +234,10 @@ TMat4<T> TMat4<T>::frustum(T left, T right, T bottom, T top, T znear, T zfar)
     T c = -(zfar + znear) / (zfar - znear);
     T d = -2.0 * zfar * znear / (zfar - znear);
 
-    return TMat4<T>(x, 0.0, 0.0, 0.0,
-                    0.0, y, 0.0, 0.0,
-                    a, b, c, -1.0,
-                    0.0, 0.0, d, 0.0);
+    return TMat4<T>(  x, 0.0, 0.0, 0.0,
+                    0.0,   y, 0.0, 0.0,
+                      a,   b,   c,-1.0,
+                    0.0, 0.0,   d, 0.0);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

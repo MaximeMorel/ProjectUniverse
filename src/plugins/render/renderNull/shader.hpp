@@ -10,7 +10,6 @@ public:
     virtual ~ShaderNull() override;
 
 private:
-    unsigned int m_shaderId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SHADER_NULL_HPP__

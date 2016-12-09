@@ -1,5 +1,5 @@
-#ifndef __PLUGIN_HPP__
-#define __PLUGIN_HPP__
+#ifndef __TPLUGIN_HPP__
+#define __TPLUGIN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "iplugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
@@ -8,17 +8,15 @@ class Engine;
 /// \brief The Plugin class, helper to load a plugin library
 ////////////////////////////////////////////////////////////////////////////////
 template <class T>
-class Plugin : public IPlugin
+class TPlugin : public Plugin
 {
-protected:
+public:
     /// Load library
     /// \param filename dynamic library path
-    Plugin(const std::string& name, const std::string& fileName);
+    TPlugin(const std::string& name, const std::string& fileName);
+    virtual ~TPlugin() override;
 
-public:
-    virtual ~Plugin() override;
-
-    static std::shared_ptr<Plugin<T>> create(const std::string& name, const std::string& fileName);
+    static std::shared_ptr<TPlugin<T>> create(const std::string& name, const std::string& fileName);
 
     /// Get the sub search path for this resource
     static const char* getSearchPath();
@@ -42,14 +40,14 @@ public:
 };
 ////////////////////////////////////////////////////////////////////////////////
 class Library;
-using PluginLib = Plugin<Library>;
+using PluginLib = TPlugin<Library>;
 using PluginLibPtr = std::shared_ptr<PluginLib>;
 
 class Application;
-using PluginApp = Plugin<Application>;
+using PluginApp = TPlugin<Application>;
 using PluginAppPtr = std::shared_ptr<PluginApp>;
 ////////////////////////////////////////////////////////////////////////////////
 //template <>
 //Plugin<Application>::Plugin(const std::string& filename);
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __PLUGINLIB_HPP__
+#endif // __TPLUGIN_HPP__

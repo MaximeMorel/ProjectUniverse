@@ -63,6 +63,7 @@ set(CORE_SOURCE main.cpp
                 render/renderManager.cpp
                 render/renderPlugin.cpp
                 resource/resource.cpp
+                resource/resourceFile.cpp
                 resource/resourceManager.cpp
                 tools/timer.cpp
                 )

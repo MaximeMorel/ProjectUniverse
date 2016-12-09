@@ -6,7 +6,7 @@
 ResourceType Shader::type("Shader");
 ////////////////////////////////////////////////////////////////////////////////
 Shader::Shader(const std::string& name, const std::string& fileName, Type t)
-    : Resource(name)
+    : super(name, fileName)
     , m_shaderId(0)
     , m_type(t)
     , m_isCompiled(false)

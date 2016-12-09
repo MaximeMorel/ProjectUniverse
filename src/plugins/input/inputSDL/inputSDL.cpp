@@ -34,30 +34,24 @@ PluginInputSDL::PluginInputSDL(Engine &engine)
 {
     log().log() << "PluginInputSDL start...\n";
 
-    if (SDL_WasInit(SDL_INIT_GAMECONTROLLER))
+    int ret = SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+    if (ret < 0)
     {
-        log().log() << "SDL Gamecontroller subsystem already started\n";
+        log().log() << SDL_GetError();
     }
-    else
+    else if (ret == 0)
     {
-        int ret = SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
-        if (ret < 0)
-        {
-            log().log() << SDL_GetError();
-        }
+        log().log() << "SDL_INIT_GAMECONTROLLER success.\n";
     }
 
-    if (SDL_WasInit(SDL_INIT_EVENTS))
+    ret = SDL_InitSubSystem(SDL_INIT_EVENTS);
+    if (ret < 0)
     {
-        log().log() << "SDL events subsystem already started\n";
+        log().log() << SDL_GetError();
     }
-    else
+    else if (ret == 0)
     {
-        int ret = SDL_InitSubSystem(SDL_INIT_EVENTS);
-        if (ret < 0)
-        {
-            log().log() << SDL_GetError();
-        }
+        log().log() << "SDL_INIT_EVENTS success.\n";
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +88,9 @@ size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
 ////////////////////////////////////////////////////////////////////////////////
 InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
 {
+    if (deviceId >= getNumDevices(dt))
+        return nullptr;
+
     switch (dt)
     {
         case Input::DeviceType::KEYBOARD:

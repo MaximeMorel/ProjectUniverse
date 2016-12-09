@@ -8,7 +8,7 @@
 ResourceType ShaderProgram::type("ShaderProgram");
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgram::ShaderProgram(const std::string& name, const std::string& fileName)
-    : Resource(name)
+    : super(name, fileName)
     , m_isLinked(false)
     , m_linkError(false)
 {
