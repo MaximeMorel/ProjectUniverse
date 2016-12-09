@@ -82,6 +82,7 @@ void PluginRenderOpenGL4::draw()
     //glFlushErrors();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_POINT_SPRITE);
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glDrawArrays(GL_POINTS, 0, 1);
     //glLogCurrentError();
 }

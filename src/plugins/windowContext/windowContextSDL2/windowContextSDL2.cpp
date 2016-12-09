@@ -52,14 +52,14 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
     m_window = SDL_CreateWindow("SDL2 window",
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
-                                100, 100,
+                                800, 600,
                                 SDL_WINDOW_OPENGL);
 
     if (m_window == nullptr)
@@ -76,12 +76,6 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
         m_glcontext = SDL_GL_CreateContext(m_window);
 
         checkAttributes();
-
-        // now you can make GL calls.
-        glClearColor(0,0,0,1);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        swapBuffers();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -169,6 +163,16 @@ void PluginWindowContextSDL2::checkAttributes()
         int v = 0;
         SDL_GL_GetAttribute(attr.first, &v);
         log().log() << attr.second << ": " << v << "\n";
+    }
+
+    log().log() << "SDL window driver: " << SDL_GetCurrentVideoDriver() << "\n";
+    int numDpy = SDL_GetNumVideoDisplays();
+    log().log() << "SDL num displays: " << numDpy << "\n";
+    if (numDpy > 0)
+    {
+        SDL_DisplayMode mode;
+        SDL_GetCurrentDisplayMode(0, &mode);
+        log().log() << "SDL display mode: " << mode.w << "x" << mode.h << " " << mode.refresh_rate << " Hz" << std::endl;
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -335,6 +335,7 @@ int main(int argc, char **argv)
             engine.log().log() << libInput << "\n";
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&engine));
+            //w->setResolution(Vec2i(1280, 720));
 
             libInput->getLibInstance(&engine);
             engine.input().setPlugin(libInput);
@@ -355,6 +356,7 @@ int main(int argc, char **argv)
             bool stop = false;
 
             double targetFrameTime = 1000.0 / 60.0;
+            double timeSlept = 0.0;
             Timer timer;
             timer.start();
             int fps = 0;
@@ -402,7 +404,7 @@ int main(int argc, char **argv)
                 render().impl()->draw();
                 w->swapBuffers();
 
-                float frameTimeEnd = frameTimer.getTime();
+                double frameTimeEnd = frameTimer.getTime();
                 //engine.log().log() << "frame time: " << frameTime << std::endl;
                 //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
@@ -411,6 +413,7 @@ int main(int argc, char **argv)
                 {
                     //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
                     Timer::wait(targetFrameTime - frameTimeEnd);
+                    timeSlept += targetFrameTime - frameTimeEnd;
                 }
                 else
                 {
@@ -419,8 +422,9 @@ int main(int argc, char **argv)
 
                 if (timer.getTime() >= 1000)
                 {
-                    engine.log().log() << "fps: " << fps << std::endl;
+                    engine.log().log() << "fps: " << fps << " (" << timeSlept * 0.1 << "% idle)" << std::endl;
                     fps = 0;
+                    timeSlept = 0.0;
                     timer.reset();
                 }
             }
