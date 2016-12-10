@@ -46,6 +46,7 @@ PluginImageCodecSDL::PluginImageCodecSDL(Engine &engine)
     if (ret != 0 && ret != initFlags)
     {
         log().log() << "IMG_Init(" << initFlags << ") error: " << ret << "\n";
+        log().log() << IMG_GetError() << ret << "\n";
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,5 +54,21 @@ PluginImageCodecSDL::~PluginImageCodecSDL()
 {
     log().log() << "PluginImageCodecSDL stop...\n";
     IMG_Quit();
+}
+////////////////////////////////////////////////////////////////////////////////
+ImagePtr PluginImageCodecSDL::load(const std::string& fileName)
+{
+    SDL_Surface* surface = IMG_Load(fileName.c_str());
+    if (surface == nullptr)
+    {
+        log().log() << "Image load " << fileName << " failed: " << IMG_GetError() << "\n";
+        return nullptr;
+    }
+
+    // put data in ImagePtr
+
+    SDL_FreeSurface(surface);
+
+    return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////

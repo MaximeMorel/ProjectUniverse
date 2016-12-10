@@ -45,6 +45,8 @@ public:
     ////////////////////////////////////////////////////////////////////////////
     size_t getId() const;
 
+    static const char* getSearchPath();
+
     /// reload filed base resource when modified on disk
     virtual void reload();
 

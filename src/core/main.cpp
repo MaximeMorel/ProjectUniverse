@@ -8,6 +8,7 @@
 #include <fstream>
 #include "core/render/renderPlugin.hpp"
 #include "core/windowContext/windowPlugin.hpp"
+#include "core/coretypes/image.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 int main2(int argc, char** argv)
 {
@@ -297,6 +298,8 @@ int main(int argc, char **argv)
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
+
+        ImagePtr im = res().createFromFile<Image>("data/image/im.png");
     }
 
     {
@@ -315,6 +318,15 @@ int main(int argc, char **argv)
             engine.log().log() << libWindow << "\n";
             engine.log().log() << libRender << "\n";
             engine.log().log() << libInput << "\n";
+
+            //SoundPtr sound = res().createFromFile<Sound>("data/sound/test.ogg");
+            //SoundSourcePtr s = res().createFromFile<SoundSource>("data/sound/test.ogg");
+            //sound->play();
+            //audio().play(sound, );
+            //s->position(0,0,0);
+            //s->velocity(1,0,0);
+            //s->volume(0.75);
+            //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&engine));
             w->setResolution(Vec2i(100, 100));

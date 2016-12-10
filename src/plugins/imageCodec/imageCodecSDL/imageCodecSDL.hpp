@@ -2,6 +2,7 @@
 #define __IMAGECODECSDL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/library.hpp"
+#include "core/coretypes/image.hpp"
 #include "imagecodecsdl_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" IMAGECODECSDL_EXPORT const PluginInfo* getPluginInfo();
@@ -15,6 +16,8 @@ class PluginImageCodecSDL : public Library
 public:
     PluginImageCodecSDL(Engine& engine);
     ~PluginImageCodecSDL() override;
+
+    ImagePtr load(const std::string& fileName);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECSDL_HPP__
