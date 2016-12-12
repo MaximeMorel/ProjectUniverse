@@ -1,6 +1,7 @@
 #ifndef __WINDOWCONTEXTSDL2_HPP__
 #define __WINDOWCONTEXTSDL2_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
 #include "core/log/logger.hpp"
 #include "core/windowContext/windowPlugin.hpp"
@@ -19,7 +20,9 @@ public:
     PluginWindowContextSDL2(Engine& Engine);
     virtual ~PluginWindowContextSDL2() override;
 
-    virtual bool setResolution(Vec2i resolution) override;
+    virtual void update() override;
+
+    virtual bool setResolution(uint32_t x, uint32_t y) override;
 
     virtual bool setPosition(Vec2i position) override;
 

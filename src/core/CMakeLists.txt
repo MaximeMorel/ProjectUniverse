@@ -11,6 +11,7 @@ set(CORE_SOURCE main.cpp
                 application.cpp
                 engine.cpp
                 library.cpp
+                codecs/imageCodec.cpp
                 config/config.cpp
                 console/console.cpp
                 console/consolecommands.cpp
@@ -66,6 +67,7 @@ set(CORE_SOURCE main.cpp
                 resource/resourceFile.cpp
                 resource/resourceManager.cpp
                 tools/timer.cpp
+                windowContext/windowPlugin.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)

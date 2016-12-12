@@ -1,6 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/log/logManager.hpp"
 #include "renderManager.hpp"
 #include "renderPlugin.hpp"
+#include "core/engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 RenderManager* gRender = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +20,7 @@ void RenderManager::setPlugin(PluginLibPtr inputPlugin)
     if (m_plugin)
     {
         // clean current plugin
-        getEngine().log().log() << "Removing current Render Plugin\n";
+        log().log() << "Removing current Render Plugin\n";
     }
     const PluginInfo& pluginInfo = inputPlugin->getInfo();
     if (pluginInfo.type == std::string("render"))
@@ -26,11 +28,11 @@ void RenderManager::setPlugin(PluginLibPtr inputPlugin)
         RenderPlugin* plugin = static_cast<RenderPlugin*>(inputPlugin->getLibInstance(&getEngine()));
         m_plugin = plugin;
 
-        getEngine().log().log() << "Render Plugin set\n";
+        log().log() << "Render Plugin set\n";
     }
     else
     {
-        getEngine().log().log() << "Wrong Render Plugin\n";
+        log().log() << "Wrong Render Plugin\n";
     }
 }
 

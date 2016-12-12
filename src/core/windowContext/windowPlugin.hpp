@@ -4,28 +4,18 @@
 #include "core/library.hpp"
 #include "core/log/logger.hpp"
 #include "core/math/vec2.hpp"
+#include "core/render/renderPlugin.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class WindowPlugin : public Library
 {
 public:
-    WindowPlugin(Engine& engine)
-        : Library(engine)
-        , m_title("main")
-        , m_borderless(false)
-        , m_fullscreen(false)
-        , m_resolution(800, 600)
-    {
-    }
+    WindowPlugin(Engine& engine);
+    virtual ~WindowPlugin() override;
 
-    virtual ~WindowPlugin() override
-    {
-    }
+    /// Process window events
+    virtual void update();
 
-    virtual bool setResolution(Vec2i resolution)
-    {
-        m_resolution = resolution;
-        return true;
-    }
+    virtual bool setResolution(uint32_t x, uint32_t y);
 
     virtual bool setPosition(Vec2i position)
     {

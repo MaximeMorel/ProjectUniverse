@@ -1,6 +1,7 @@
 #ifndef __AUDIOOPENAL_HPP__
 #define __AUDIOOPENAL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
 #include <vector>
 #include <string>

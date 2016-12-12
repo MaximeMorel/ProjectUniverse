@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "image.hpp"
+#include "core/engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 Image::Image(const std::string& name, const std::string& fileName)
     : super(name, fileName)
@@ -12,6 +13,13 @@ Image::~Image()
 ////////////////////////////////////////////////////////////////////////////////
 ImagePtr Image::create(const std::string& name, const std::string& fileName)
 {
+    // go through image codecs plugins
+    for (auto* codec : getEngine().getCodecs())
+    {
+        ImagePtr im = codec->load(fileName);
+        if (im)
+            return im;
+    }
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +37,6 @@ TImage<T>::~TImage()
 template <typename T>
 std::shared_ptr<TImage<T>> TImage<T>::create(const std::string& name, const std::string& fileName)
 {
-    //return render().impl()->createShader(name, fileName, type);
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////

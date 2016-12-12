@@ -1,4 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
+#include "engine.hpp"
 #include "application.hpp"
 #include "core/log/loggerStream.hpp"
 #include "core/log/loggerNull.hpp"
@@ -217,7 +218,7 @@ public:
     logfilebuf m_buf;
 };
 
-class logstringbuf : public std::stringbuf
+class logstringbuf : public std::stringbufNew Event
 {
 public:
 
@@ -299,7 +300,7 @@ int main(int argc, char **argv)
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
 
-        ImagePtr im = res().createFromFile<Image>("data/image/im.png");
+        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
     }
 
     {
@@ -329,7 +330,6 @@ int main(int argc, char **argv)
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&engine));
-            w->setResolution(Vec2i(100, 100));
 
             libInput->getLibInstance(&engine);
             engine.input().setPlugin(libInput);
@@ -338,6 +338,8 @@ int main(int argc, char **argv)
 
             libRender->getLibInstance(&engine);
             engine.render().setPlugin(libRender);
+
+            w->setResolution(640, 480);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -363,7 +365,10 @@ int main(int argc, char **argv)
             while (!stop)
             {
                 frameTimer.reset();
+                // process input events
                 engine.input().update();
+                // process window events
+                w->update();
                 if (engine.input().keyboard(0) &&
                     engine.input().keyboard(0)->isPressed(Input::Keyboard::KEY_a))
                 {

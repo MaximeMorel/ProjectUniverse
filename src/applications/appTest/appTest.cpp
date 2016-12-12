@@ -12,6 +12,7 @@
 //#include "core/script/lua/testlua.hpp"
 #include "core/log/loggerStream.hpp"
 #include "core/log/loggerFile.hpp"
+#include "core/log/logManager.hpp"
 #include <iostream>
 #include <thread>
 #include <limits>

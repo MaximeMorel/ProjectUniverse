@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextSDL2.hpp"
+#include "core/log/logManager.hpp"
 #include <SDL.h>
 #include <GL/gl.h>
 #include <map>
@@ -89,12 +90,18 @@ PluginWindowContextSDL2::~PluginWindowContextSDL2()
     log().log() << SDL_GetError();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::setResolution(Vec2i resolution)
+void PluginWindowContextSDL2::update()
 {
-    WindowPlugin::setResolution(resolution);
+
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::setResolution(uint32_t x, uint32_t y)
+{
+    WindowPlugin::setResolution(x, y);
+    WindowPlugin::setResolution(x, y);
     if (m_window)
     {
-        SDL_SetWindowSize(m_window, resolution.x, resolution.y);
+        SDL_SetWindowSize(m_window, x, y);
         return true;
     }
     return false;

@@ -15,6 +15,8 @@ public:
 
     virtual const char* getSearchPath() const;
 
+    virtual void resize(uint32_t x, uint32_t y);
+
     virtual VAOPtr createVao(const std::string& name);
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);

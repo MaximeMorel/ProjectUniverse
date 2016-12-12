@@ -1,7 +1,9 @@
 #ifndef __IMAGECODECSDL_HPP__
 #define __IMAGECODECSDL_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
+#include "core/codecs/imageCodec.hpp"
 #include "core/coretypes/image.hpp"
 #include "imagecodecsdl_export.h"
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,13 +13,13 @@ extern "C" IMAGECODECSDL_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" IMAGECODECSDL_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginImageCodecSDL : public Library
+class PluginImageCodecSDL : public ImageCodec
 {
 public:
     PluginImageCodecSDL(Engine& engine);
     ~PluginImageCodecSDL() override;
 
-    ImagePtr load(const std::string& fileName);
+    virtual ImagePtr load(const std::string& fileName) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECSDL_HPP__

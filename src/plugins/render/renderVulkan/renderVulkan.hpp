@@ -1,6 +1,7 @@
 #ifndef __RENDERVULKAN_HPP__
 #define __RENDERVULKAN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
 #include "vulkan/vulkan.h"
 #include "rendervulkan_export.h"

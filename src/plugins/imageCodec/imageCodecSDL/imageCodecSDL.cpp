@@ -1,5 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "imageCodecSDL.hpp"
+#include "core/log/logManager.hpp"
+#include "core/engine.hpp"
 #include <SDL_image.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "imageCodecSDL",
@@ -20,6 +22,10 @@ Library* getLibInstance(Engine* engine)
     if (lib == nullptr)
     {
         lib = new PluginImageCodecSDL(*engine);
+        if (lib)
+        {
+            engine->addCodec(lib);
+        }
     }
     return lib;
 }
@@ -31,7 +37,7 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginImageCodecSDL::PluginImageCodecSDL(Engine &engine)
-    : Library(engine)
+    : ImageCodec(engine)
 {
     log().log() << "PluginImageCodecSDL start...\n";
 
@@ -64,6 +70,26 @@ ImagePtr PluginImageCodecSDL::load(const std::string& fileName)
         log().log() << "Image load " << fileName << " failed: " << IMG_GetError() << "\n";
         return nullptr;
     }
+
+    log().log() << "flags " << surface->flags << "\n";
+    log().log() << "pitch " << surface->pitch << "\n";
+    log().log() << "offset " << surface->offset << "\n";
+    log().log() << "resolution: " << surface->w << "x" << surface->h << "\n";
+
+    log().log() << "BitsPerPixel: " << surface->format->BitsPerPixel << "\n";
+    log().log() << "BytesPerPixel: " << surface->format->BytesPerPixel << "\n";
+    //log().log() << "Rloss: " << surface->format->Rloss << "\n";
+    //log().log() << "Gloss: " << surface->format->Gloss << "\n";
+    //log().log() << "Bloss: " << surface->format->Bloss << "\n";
+    //log().log() << "Aloss: " << surface->format->Aloss << "\n";
+    //log().log() << "Rshift: " << surface->format->Rshift << "\n";
+    //log().log() << "Gshift: " << surface->format->Gshift << "\n";
+    //log().log() << "Bshift: " << surface->format->Bshift << "\n";
+    //log().log() << "Ashift: " << surface->format->Ashift << "\n";
+    //log().log() << "Rmask: " << surface->format->Rmask << "\n";
+    //log().log() << "Gmask: " << surface->format->Gmask << "\n";
+    //log().log() << "Bmask: " << surface->format->Bmask << "\n";
+    //log().log() << "Amask: " << surface->format->Amask << "\n";
 
     // put data in ImagePtr
 

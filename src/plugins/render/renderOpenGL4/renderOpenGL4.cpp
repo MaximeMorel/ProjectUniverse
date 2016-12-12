@@ -4,6 +4,7 @@
 #include "shaderProgram.hpp"
 #include "vao.hpp"
 #include "opengltools.hpp"
+#include "core/log/logManager.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "renderOpenGL4",
@@ -60,6 +61,11 @@ PluginRenderOpenGL4::~PluginRenderOpenGL4()
 const char* PluginRenderOpenGL4::getSearchPath() const
 {
     return "shaders/opengl4/";
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL4::resize(uint32_t x, uint32_t y)
+{
+    glViewport(0, 0, x, y);
 }
 ////////////////////////////////////////////////////////////////////////////////
 VAOPtr PluginRenderOpenGL4::createVao(const std::string& name)
