@@ -294,14 +294,17 @@ int main(int argc, char **argv)
     }
     lib = nullptr;*/
 
+    ImageRGBAPtr image;
     PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
     if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
 
-        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
+        //ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
+        //image = im;
     }
+    //lib = nullptr;
 
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
@@ -340,6 +343,7 @@ int main(int argc, char **argv)
             engine.render().setPlugin(libRender);
 
             w->setResolution(640, 480);
+            w->setResolution(100, 100);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -350,6 +354,8 @@ int main(int argc, char **argv)
                 v->bind();
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
+
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im.jpg");
 
             bool stop = false;
 

@@ -11,6 +11,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(PLUGIN_SOURCE renderOpenGL4.cpp
                   shader.cpp
                   shaderProgram.cpp
+                  texture.cpp
                   vao.cpp
                   opengltools.cpp)
 

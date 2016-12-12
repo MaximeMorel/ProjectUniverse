@@ -24,8 +24,7 @@ const std::string& ResourceType::getTypeName() const
 Resource::Resource(const std::string& name)
     : m_id(0)
     , m_name(name)
-    , m_isEngineManaged(false)
-    , m_isFile(false)
+    , m_flags(0)
 {
 
 }
@@ -76,12 +75,12 @@ size_t Resource::getMemSize() const
 ////////////////////////////////////////////////////////////////////////////////
 bool Resource::isEnginemanaged() const
 {
-    return m_isEngineManaged;
+    return (m_flags | Flags::ENGINE_MANAGED);
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Resource::isFile() const
 {
-    return m_isFile;
+    return (m_flags | Flags::IS_FILE);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Resource::printOn(Logger& o) const

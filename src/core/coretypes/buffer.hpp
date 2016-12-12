@@ -5,15 +5,33 @@
 #include <vector>
 #include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+class Buffer;
+using BufferPtr = std::shared_ptr<Buffer>;
+////////////////////////////////////////////////////////////////////////////////
+class Buffer : public Resource
+{
+public:
+    Buffer();
+    virtual ~Buffer();
+
+    virtual bool resize(size_t n);
+    virtual size_t size() const;
+    virtual size_t elementSize() const;
+
+private:
+    using super = Resource;
+};
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-class TBuffer : public Resource
+class TBuffer : public Buffer
 {
 public:
     TBuffer();
-    virtual ~TBuffer();
+    virtual ~TBuffer() override;
 
-    bool resize(size_t n);
-    size_t size() const;
+    virtual bool resize(size_t n) override;
+    virtual size_t size() const override;
+    virtual size_t elementSize() const override;
 
     T operator[](size_t n) const;
     T& operator[](size_t n);
@@ -27,7 +45,7 @@ private:
     std::vector<T> m_buf;
 
 private:
-    using super = Resource;
+    using super = Buffer;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __SURFACE_HPP__

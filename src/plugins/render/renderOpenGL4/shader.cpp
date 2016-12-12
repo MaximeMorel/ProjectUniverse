@@ -2,6 +2,7 @@
 #include "shader.hpp"
 #include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
+#include "opengltools.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::ShaderTypeMapping ShaderGL4::m_shaderTypeMapping;

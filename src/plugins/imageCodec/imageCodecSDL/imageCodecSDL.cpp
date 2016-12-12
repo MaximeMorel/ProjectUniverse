@@ -62,13 +62,13 @@ PluginImageCodecSDL::~PluginImageCodecSDL()
     IMG_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
-ImagePtr PluginImageCodecSDL::load(const std::string& fileName)
+bool PluginImageCodecSDL::load(ImageRGBAPtr image)
 {
-    SDL_Surface* surface = IMG_Load(fileName.c_str());
+    SDL_Surface* surface = IMG_Load(image->getFileName().c_str());
     if (surface == nullptr)
     {
-        log().log() << "Image load " << fileName << " failed: " << IMG_GetError() << "\n";
-        return nullptr;
+        log().log() << "Image load " << image->getFileName() << " failed: " << IMG_GetError() << "\n";
+        return false;
     }
 
     log().log() << "flags " << surface->flags << "\n";
@@ -91,10 +91,67 @@ ImagePtr PluginImageCodecSDL::load(const std::string& fileName)
     //log().log() << "Bmask: " << surface->format->Bmask << "\n";
     //log().log() << "Amask: " << surface->format->Amask << "\n";
 
+    if (surface->format->Rmask == 0 &&
+        surface->format->Gmask == 0 &&
+        surface->format->Bmask == 0 &&
+        surface->format->Amask == 0)
+    {
+        log().log() << "Image " << image->getFileName() << " is using palette.\n";
+        return false;
+    }
+
     // put data in ImagePtr
+    image->resize(surface->w, surface->h);
+    uint8_t* pixels = static_cast<uint8_t*>(surface->pixels);
+    for (int h = 0; h < surface->h; ++h)
+    {
+        for (int w = 0 ; w < surface->w; ++w, pixels += surface->format->BytesPerPixel)
+        {
+            uint32_t v = 0;
+            Vec4ui8 p;
+            uint32_t pixel = 0;
+            for (uint8_t i = 0; i < surface->format->BytesPerPixel; ++i)
+            {
+                pixel |= pixels[i] << (8*i);
+            }
+            if (surface->format->Rmask)
+            {
+                v = pixel & surface->format->Rmask;
+                v >>= surface->format->Rshift;
+                v <<= surface->format->Rloss;
+                p.x = v;
+            }
+
+            if (surface->format->Gmask)
+            {
+                v = pixel & surface->format->Gmask;
+                v >>= surface->format->Gshift;
+                v <<= surface->format->Gloss;
+                p.y = v;
+            }
+
+            if (surface->format->Bmask)
+            {
+                v = pixel & surface->format->Bmask;
+                v >>= surface->format->Bshift;
+                v <<= surface->format->Bloss;
+                p.z = v;
+            }
+
+            if (surface->format->Amask)
+            {
+                v = pixel & surface->format->Amask;
+                v >>= surface->format->Ashift;
+                v <<= surface->format->Aloss;
+                p.w = v;
+            }
+
+            image->operator()(w, h) = p;
+        }
+    }
 
     SDL_FreeSurface(surface);
 
-    return nullptr;
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

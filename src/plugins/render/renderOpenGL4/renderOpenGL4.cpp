@@ -2,6 +2,7 @@
 #include "renderOpenGL4.hpp"
 #include "shader.hpp"
 #include "shaderProgram.hpp"
+#include "texture.hpp"
 #include "vao.hpp"
 #include "opengltools.hpp"
 #include "core/log/logManager.hpp"
@@ -81,6 +82,11 @@ ShaderPtr PluginRenderOpenGL4::createShader(const std::string& name, const std::
 ShaderProgramPtr PluginRenderOpenGL4::createShaderProgram(const std::string& name, const std::string& fileName)
 {
     return ShaderProgramGL4::create(name, fileName);
+}
+////////////////////////////////////////////////////////////////////////////////
+TexturePtr PluginRenderOpenGL4::createTexture(const std::string& name, const std::string& fileName)
+{
+    return TextureGL4::create(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::draw()

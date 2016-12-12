@@ -19,6 +19,11 @@ public:
 
     static ImagePtr create(const std::string& name, const std::string& fileName);
 
+    Vec2i getResolution() const;
+
+protected:
+    Vec2i m_resolution;     ///< image resolution
+
 private:
     using super = ResourceFile;
 };
@@ -35,7 +40,7 @@ public:
     /// Get the sub search path for this resource
     static const char* getSearchPath();
 
-    Vec2i getResolution() const;
+    void resize(uint32_t w, uint32_t h);
 
     T operator()(uint32_t x, uint32_t y) const;
     T& operator()(uint32_t x, uint32_t y);
@@ -45,7 +50,6 @@ public:
     virtual void printOn(Logger& o) const override;
 
 private:
-    Vec2i m_resolution;     ///< image resolution
     TBuffer<T> m_buffer;     ///< buffer containing image data
 
 private:
@@ -53,7 +57,9 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 using ImageRGB = TImage<TVec3<uint8_t>>;
-using ImageRGBA = TImage<TVec4<uint8_t>>;
+using ImageRGBA = TImage<Vec4ui8>;
 using ImageHDR = TImage<Vec4f>;
+
+using ImageRGBAPtr = std::shared_ptr<ImageRGBA>;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGE_HPP__

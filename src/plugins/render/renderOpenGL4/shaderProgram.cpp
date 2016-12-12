@@ -2,6 +2,7 @@
 #include "shaderProgram.hpp"
 #include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
+#include "opengltools.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::ShaderProgramGL4(const std::string& name, const std::string& fileName)

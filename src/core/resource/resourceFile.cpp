@@ -14,7 +14,7 @@ ResourceFile::ResourceFile(const std::string& name, const std::string& fileName)
     , m_mtime(0)
 {
     updateMtime();
-    m_isFile = true;
+    m_flags |= Flags::IS_FILE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourceFile::~ResourceFile()

@@ -19,7 +19,7 @@ public:
     PluginImageCodecSDL(Engine& engine);
     ~PluginImageCodecSDL() override;
 
-    virtual ImagePtr load(const std::string& fileName) override;
+    virtual bool load(ImageRGBAPtr image) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECSDL_HPP__

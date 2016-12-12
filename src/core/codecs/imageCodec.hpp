@@ -10,7 +10,7 @@ public:
     ImageCodec(Engine& engine);
     ~ImageCodec() override;
 
-    virtual ImagePtr load(const std::string& fileName);
+    virtual bool load(ImageRGBAPtr image);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODEC_HPP__

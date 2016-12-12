@@ -10,7 +10,6 @@ public:
     virtual ~RBONull() override;
 
 private:
-    unsigned int m_rboId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RBO_NULL_HPP__

@@ -43,6 +43,7 @@ template <typename T> bool operator==(const TVec4<T>& lhs, const TVec4<T>& rhs);
 template <typename T> bool operator!=(const TVec4<T>& lhs, const TVec4<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
 using Vec4i = TVec4<int>;
+using Vec4ui8 = TVec4<uint8_t>;
 using Vec4f = TVec4<float>;
 using Vec4d = TVec4<double>;
 ////////////////////////////////////////////////////////////////////////////////

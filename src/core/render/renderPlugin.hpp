@@ -5,6 +5,7 @@
 #include "core/log/logger.hpp"
 #include "shader.hpp"
 #include "shaderProgram.hpp"
+#include "texture.hpp"
 #include "vao.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class RenderPlugin : public Library
@@ -20,6 +21,7 @@ public:
     virtual VAOPtr createVao(const std::string& name);
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
+    virtual TexturePtr createTexture(const std::string& name, const std::string& fileName);
 
     virtual void draw();
 

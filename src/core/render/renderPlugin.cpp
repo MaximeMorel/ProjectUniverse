@@ -34,6 +34,11 @@ ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name, cons
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
+TexturePtr RenderPlugin::createTexture(const std::string& name, const std::string& fileName)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
 void RenderPlugin::draw()
 {
 

@@ -25,6 +25,7 @@ public:
     virtual VAOPtr createVao(const std::string& name) override;
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t) override;
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;
+    virtual TexturePtr createTexture(const std::string& name, const std::string& fileName) override;
 
     virtual void draw() override;
 

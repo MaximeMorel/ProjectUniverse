@@ -13,14 +13,12 @@ Image::~Image()
 ////////////////////////////////////////////////////////////////////////////////
 ImagePtr Image::create(const std::string& name, const std::string& fileName)
 {
-    // go through image codecs plugins
-    for (auto* codec : getEngine().getCodecs())
-    {
-        ImagePtr im = codec->load(fileName);
-        if (im)
-            return im;
-    }
     return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+Vec2i Image::getResolution() const
+{
+    return m_resolution;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -32,11 +30,30 @@ TImage<T>::TImage(const std::string& name, const std::string& fileName)
 template <typename T>
 TImage<T>::~TImage()
 {
+    if (isEnginemanaged())
+    {
+        log().log() << __FUNCTION__ << ": " << *this << std::endl;
+        res().delResource(getId(), getName());
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 std::shared_ptr<TImage<T>> TImage<T>::create(const std::string& name, const std::string& fileName)
 {
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+std::shared_ptr<ImageRGBA> ImageRGBA::create(const std::string& name, const std::string& fileName)
+{
+    std::shared_ptr<ImageRGBA> image = std::make_shared<ImageRGBA>(name, fileName);
+    // go through image codecs plugins
+    for (auto* codec : getEngine().getCodecs())
+    {
+        bool success = codec->load(image);
+        if (success)
+            return image;
+    }
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +64,11 @@ const char* TImage<T>::getSearchPath()
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-Vec2i TImage<T>::getResolution() const
+void TImage<T>::resize(uint32_t w, uint32_t h)
 {
-    return m_resolution;
+    m_buffer.resize(w * h);
+    m_resolution.x = w;
+    m_resolution.y = h;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

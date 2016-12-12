@@ -17,7 +17,7 @@ Shader::Shader(const std::string& name, const std::string& fileName, Type t)
 ////////////////////////////////////////////////////////////////////////////////
 Shader::~Shader()
 {
-    log().log() << "~Shader: " << *this << std::endl;
+    log().log() << __FUNCTION__ << ": " << *this << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderPtr Shader::create(const std::string& name, const std::string& fileName)

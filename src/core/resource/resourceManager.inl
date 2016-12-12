@@ -17,7 +17,7 @@ std::shared_ptr<T> ResourceManager::create(const std::string& name, Params... p)
     if (it == m_resourceNames.end())
     {
         std::shared_ptr<T> res = T::create(name, p...);
-        res->m_isEngineManaged = true;
+        res->m_flags |= Resource::Flags::ENGINE_MANAGED;
         addResourceNoCheck(res);
         return res;
     }
@@ -49,8 +49,8 @@ std::shared_ptr<T> ResourceManager::createFromFile(const std::string& name, Para
             std::shared_ptr<T> res = T::create(name, path + subPath + name, p...);
             if (res)
             {
-                res->m_isEngineManaged = true;
-                res->m_isFile = true;
+                res->m_flags |= Resource::Flags::ENGINE_MANAGED;
+                res->m_flags |= Resource::Flags::IS_FILE;
                 addResourceNoCheck(res);
                 return res;
             }

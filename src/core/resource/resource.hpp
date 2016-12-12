@@ -64,14 +64,21 @@ protected:
     bool isEnginemanaged() const;
     bool isFile() const;
 
+    enum Flags
+    {
+        ENGINE_MANAGED = 0x00000001,
+        IS_FILE        = 0x00000002
+    };
+
 private:
     size_t m_id;                ///< resource id
     std::string m_name;         ///< resource name
-    std::string m_pathPrefix;   ///< search path used if any
-    bool m_isEngineManaged;     ///< flag indicating if the resource is managed by engine (allocation / deletion)
+    //uint32_t m_flags;           ///< resource flags
+    //bool m_isEngineManaged;     ///< flag indicating if the resource is managed by engine (allocation / deletion)
 
 protected:
-    bool m_isFile;              ///< true if resource is a file
+    uint32_t m_flags;           ///< resource flags
+    //bool m_isFile;              ///< true if resource is a file
 
 private:
     friend class ResourceManager;
