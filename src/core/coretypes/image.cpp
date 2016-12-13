@@ -2,6 +2,8 @@
 #include "image.hpp"
 #include "core/engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+ResourceType Image::type("Image");
+////////////////////////////////////////////////////////////////////////////////
 Image::Image(const std::string& name, const std::string& fileName)
     : super(name, fileName)
 {
@@ -33,7 +35,7 @@ TImage<T>::~TImage()
     if (isEnginemanaged())
     {
         log().log() << __FUNCTION__ << ": " << *this << std::endl;
-        res().delResource(getId(), getName());
+        res().delResource(this);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

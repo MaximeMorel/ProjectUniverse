@@ -32,8 +32,10 @@ public:
 
     void delResource(size_t resId);
     void delResource(size_t resId, const std::string& name);
+    void delResource(size_t resId, size_t poolId, const std::string& name);
     void delResource(const std::string& name);
     void delResource(ResourcePtr res);
+    void delResource(Resource* res);
 
     // get by resource Id, global
     ResourcePtr getResource(size_t resId);
@@ -72,6 +74,26 @@ private:
     //std::vector<std::map<ResNameId, Resource*>> m_resources;
     //std::vector<std::map<std::string, ResourcePtr>> m_resources;
     //std::vector<std::unordered_map<std::string, ResourcePtr>> m_resources;
+
+    class ResourcePool
+    {
+    public:
+        ResourcePool(const std::string& poolName, uint32_t id)
+            : m_name(poolName)
+            , m_id(id)
+        {}
+
+        friend Logger& operator<<(Logger& o, const ResourcePool& pool);
+
+        std::string m_name;
+        uint32_t m_id;
+        using ResourceWPtr = std::weak_ptr<Resource>;
+        std::vector<ResourceWPtr> m_resources;    ///< array of resources
+        std::unordered_map<std::string, size_t> m_resourceNames;
+    };
+    friend Logger& operator<<(Logger& o, const ResourcePool& pool);
+
+    std::vector<ResourcePool> m_pools;
 
     using ResourceWPtr = std::weak_ptr<Resource>;
     std::vector<ResourceWPtr> m_resources;    ///< array of resources

@@ -19,7 +19,7 @@ ShaderProgramGL4::~ShaderProgramGL4()
     if (isEnginemanaged())
     {
         log().log() << __FUNCTION__ << ": " << *this << std::endl;
-        res().delResource(getId(), getName());
+        res().delResource(this);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

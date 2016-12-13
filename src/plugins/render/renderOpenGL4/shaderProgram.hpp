@@ -4,7 +4,6 @@
 #include "core/render/shaderProgram.hpp"
 #include "shader.hpp"
 #include <string>
-#include <initializer_list>
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderProgramGL4 : public ShaderProgram
 {

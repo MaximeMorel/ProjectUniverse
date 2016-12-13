@@ -66,6 +66,7 @@ set(CORE_SOURCE main.cpp
                 resource/resource.cpp
                 resource/resourceFile.cpp
                 resource/resourceManager.cpp
+                resource/resourceManager.inl
                 tools/timer.cpp
                 windowContext/windowPlugin.cpp
                 )

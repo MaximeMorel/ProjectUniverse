@@ -32,6 +32,11 @@ protected:
 protected:
     uint32_t m_textureId;
     ImageRGBAPtr m_image;
+
+public:
+    virtual ResourceType& dyntype() override { return type; }
+    virtual const ResourceType& dyntype() const override { return type; }
+    static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TEXTURE_HPP__

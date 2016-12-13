@@ -301,8 +301,8 @@ int main(int argc, char **argv)
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
 
-        //ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
-        //image = im;
+        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
+        image = im;
     }
     //lib = nullptr;
 

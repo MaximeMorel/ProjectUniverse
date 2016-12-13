@@ -5,6 +5,8 @@
 #include "renderPlugin.hpp"
 #include "core/resource/resourceManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+ResourceType Texture::type("Texture");
+////////////////////////////////////////////////////////////////////////////////
 Texture::Texture(const std::string& name, const std::string& fileName)
     : ResourceFile(name, fileName)
     , m_textureId(0)
@@ -25,7 +27,7 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
         return nullptr;
     }
 
-    ImageRGBAPtr im = res().createFromFile<ImageRGBA>(fileName);
+    ImageRGBAPtr im = res().createFromFile<ImageRGBA>(name);
     tex->setImage(im);
 
     return tex;

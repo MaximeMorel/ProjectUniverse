@@ -16,6 +16,7 @@ ResourceManager::ResourceManager(LogManager& logManager)
 {
     addSearchPath("data/");
     addSearchPath("./");
+    m_pools.emplace_back("Default", 0);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourceManager::~ResourceManager()
@@ -44,9 +45,20 @@ ResourcePtr ResourceManager::addResource(ResourcePtr res)
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::addResourceNoCheck(ResourcePtr res)
 {
-    m_resourceNames[res->getName()] = m_resources.size();
+    // no pool
+    /*m_resourceNames[res->getName()] = m_resources.size();
     res->m_id = m_resources.size();
-    m_resources.push_back(res);
+    m_resources.push_back(res);*/
+
+    // pool
+    uint32_t typeId = res->dyntype().getTypeId();
+    if (typeId < m_pools.size())
+    {
+        ResourcePool& pool = m_pools[typeId];
+        pool.m_resourceNames[res->getName()] = pool.m_resources.size();
+        res->m_id = pool.m_resources.size();
+        pool.m_resources.push_back(res);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 std::string ResourceManager::findPathPrefix(const std::string& fileName)
@@ -105,6 +117,30 @@ void ResourceManager::delResource(size_t resId, const std::string& name)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ResourceManager::delResource(size_t resId, size_t poolId, const std::string& name)
+{
+    m_logManager.log() << "Deleting resource " << resId << " - " << name << " - pool: " << poolId << std::endl;
+    if (poolId < m_pools.size())
+    {
+        ResourcePool& pool = m_pools[poolId];
+        pool.m_resourceNames.erase(name);
+
+        // manage the hole in the resource array
+        if (resId < pool.m_resources.size() - 1)
+        {
+            // swap the last element and move it in the hole
+            pool.m_resources[resId] = pool.m_resources.back();
+            ResourcePtr res = pool.m_resources[resId].lock();
+            if (res)
+            {
+                res->m_id = resId;
+                pool.m_resourceNames[pool.m_resources.back().lock()->getName()] = resId;
+            }
+        }
+        pool.m_resources.pop_back();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(size_t resId)
 {
     if (resId < m_resources.size())
@@ -139,7 +175,12 @@ void ResourceManager::delResource(const std::string& name)
 ////////////////////////////////////////////////////////////////////////////////
 void ResourceManager::delResource(ResourcePtr res)
 {
-    delResource(res->getId());
+    delResource(res->getId(), res->dyntype().getTypeId(), res->getName());
+}
+////////////////////////////////////////////////////////////////////////////////
+void ResourceManager::delResource(Resource* res)
+{
+    delResource(res->getId(), res->dyntype().getTypeId(), res->getName());
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::getResource(size_t resId)
@@ -201,6 +242,12 @@ size_t ResourceManager::getMemSizeFull() const
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const ResourceManager& res)
 {
+    o << "Resource pools:\n";
+    for (const auto& it : res.m_pools)
+    {
+        o << it;
+    }
+
     o << "Resources map:\n";
     size_t i = 0;
     for (auto it : res.m_resources)
@@ -212,6 +259,31 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
     for (auto it : res.m_resourceNames)
     {
         o << it.first << " - " << it.second << "\n";
+    }
+    return o;
+}
+////////////////////////////////////////////////////////////////////////////////
+Logger& operator<<(Logger& o, const ResourceManager::ResourcePool& pool)
+{
+    o << pool.m_id << ": " << pool.m_name;
+    if (pool.m_resources.size() > 0 || pool.m_resourceNames.size() > 0)
+    {
+        o << "\n\tResources map:\n";
+        size_t i = 0;
+        for (auto it : pool.m_resources)
+        {
+            o << "\t" << i++ << ": " << it.lock() << "\n";
+        }
+
+        o << "\tResources names:\n";
+        for (auto it : pool.m_resourceNames)
+        {
+            o << "\t" << it.first << " - " << it.second << "\n";
+        }
+    }
+    else
+    {
+        o << " empty\n";
     }
     return o;
 }
