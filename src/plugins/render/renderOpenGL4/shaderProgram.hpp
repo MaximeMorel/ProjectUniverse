@@ -23,6 +23,8 @@ public:
 
     virtual void setUniform1f(uint32_t id, float v) override;
     virtual void setUniform1f(const char* str, float v) override;
+    virtual void setUniform1i(uint32_t id, int32_t v) override;
+    virtual void setUniform1i(const char* str, int32_t v) override;
 
     void reload() override;
 

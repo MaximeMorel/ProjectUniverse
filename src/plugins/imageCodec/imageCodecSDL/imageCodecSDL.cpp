@@ -78,18 +78,18 @@ bool PluginImageCodecSDL::load(ImageRGBAPtr image)
 
     log().log() << "BitsPerPixel: " << surface->format->BitsPerPixel << "\n";
     log().log() << "BytesPerPixel: " << surface->format->BytesPerPixel << "\n";
-    //log().log() << "Rloss: " << surface->format->Rloss << "\n";
-    //log().log() << "Gloss: " << surface->format->Gloss << "\n";
-    //log().log() << "Bloss: " << surface->format->Bloss << "\n";
-    //log().log() << "Aloss: " << surface->format->Aloss << "\n";
-    //log().log() << "Rshift: " << surface->format->Rshift << "\n";
-    //log().log() << "Gshift: " << surface->format->Gshift << "\n";
-    //log().log() << "Bshift: " << surface->format->Bshift << "\n";
-    //log().log() << "Ashift: " << surface->format->Ashift << "\n";
-    //log().log() << "Rmask: " << surface->format->Rmask << "\n";
-    //log().log() << "Gmask: " << surface->format->Gmask << "\n";
-    //log().log() << "Bmask: " << surface->format->Bmask << "\n";
-    //log().log() << "Amask: " << surface->format->Amask << "\n";
+    log().log() << "Rloss: " << surface->format->Rloss << "\n";
+    log().log() << "Gloss: " << surface->format->Gloss << "\n";
+    log().log() << "Bloss: " << surface->format->Bloss << "\n";
+    log().log() << "Aloss: " << surface->format->Aloss << "\n";
+    log().log() << "Rshift: " << surface->format->Rshift << "\n";
+    log().log() << "Gshift: " << surface->format->Gshift << "\n";
+    log().log() << "Bshift: " << surface->format->Bshift << "\n";
+    log().log() << "Ashift: " << surface->format->Ashift << "\n";
+    log().log() << "Rmask: " << surface->format->Rmask << "\n";
+    log().log() << "Gmask: " << surface->format->Gmask << "\n";
+    log().log() << "Bmask: " << surface->format->Bmask << "\n";
+    log().log() << "Amask: " << surface->format->Amask << "\n";
 
     if (surface->format->Rmask == 0 &&
         surface->format->Gmask == 0 &&

@@ -343,7 +343,7 @@ int main(int argc, char **argv)
             engine.render().setPlugin(libRender);
 
             w->setResolution(640, 480);
-            w->setResolution(100, 100);
+            //w->setResolution(100, 100);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -408,6 +408,7 @@ int main(int argc, char **argv)
                 v->bind();
                 prog->bind();
                 prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
+                prog2->setUniform1i("tex", tex->getTextureId());
                 render().impl()->draw();
                 w->swapBuffers();
 

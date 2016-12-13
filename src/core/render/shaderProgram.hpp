@@ -45,6 +45,9 @@ public:
     virtual void setUniform1f(uint32_t id, float v);
     virtual void setUniform1f(const char* str, float v);
 
+    virtual void setUniform1i(uint32_t id, int32_t v);
+    virtual void setUniform1i(const char* str, int32_t v);
+
 protected:
     virtual void printOn(Logger& o) const override;
 

@@ -27,6 +27,9 @@ public:
     virtual void setImage(ImageRGBAPtr image);
 
 protected:
+    virtual void printOn(Logger& o) const override;
+
+protected:
     uint32_t m_textureId;
     ImageRGBAPtr m_image;
 };

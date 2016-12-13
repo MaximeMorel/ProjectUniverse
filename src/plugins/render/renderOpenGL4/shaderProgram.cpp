@@ -115,6 +115,17 @@ void ShaderProgramGL4::setUniform1f(const char* str, float v)
     setUniform1f(loc, v);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniform1i(uint32_t id, int32_t v)
+{
+    glProgramUniform1i(m_shaderProgId, id, v);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniform1i(const char* str, int32_t v)
+{
+    GLint loc = glGetUniformLocation(m_shaderProgId, str);
+    setUniform1f(loc, v);
+}
+////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::reload()
 {
     log().log() << "Reload: " << *this << "\n";
