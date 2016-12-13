@@ -2,9 +2,10 @@
 #define __IMAGECODEC_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/library.hpp"
+#include "core/codecs/codec.hpp"
 #include "core/coretypes/image.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class ImageCodec : public Library
+class ImageCodec : public Codec
 {
 public:
     ImageCodec(Engine& engine);

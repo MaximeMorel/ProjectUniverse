@@ -437,13 +437,18 @@ int main(int argc, char **argv)
                     prog->reload();
                 }
             }
-            log().log() << res() << std::endl;
+            log().log() << res() << "\n";
         }
     }
 
-    log().log() << res() << std::endl;
+    log().log() << res() << "\n";
 
-    std::cout << "main exit...\n";
+    log().log() << "sizeof(Resource): " << sizeof(Resource) << "\n";
+    log().log() << "sizeof(ResourceFile): " << sizeof(ResourceFile) << "\n";
+    log().log() << "sizeof(ResourcePtr): " << sizeof(ResourcePtr) << "\n";
+    log().log() << "sizeof(std::string): " << sizeof(std::string) << "\n";
+
+    log().log() << "main exit..." << std::endl;
 
     return 0;
 }

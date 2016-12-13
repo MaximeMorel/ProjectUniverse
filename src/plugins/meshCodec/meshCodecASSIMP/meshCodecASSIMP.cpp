@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "meshCodecASSIMP.hpp"
+#include "core/geom/mesh/mesh.hpp"
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
 #include <assimp/Importer.hpp>
@@ -34,6 +35,10 @@ Library* getLibInstance(Engine* engine)
 ////////////////////////////////////////////////////////////////////////////////
 void closeLibInstance()
 {
+    if (lib)
+    {
+
+    }
     delete lib;
     lib = nullptr;
 }
@@ -42,8 +47,6 @@ PluginMeshCodecASSIMP::PluginMeshCodecASSIMP(Engine &engine)
     : Library(engine)
 {
     log().log() << "PluginMeshCodecASSIMP start...\n";
-
-    Assimp::Importer importer;
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginMeshCodecASSIMP::~PluginMeshCodecASSIMP()
@@ -51,8 +54,34 @@ PluginMeshCodecASSIMP::~PluginMeshCodecASSIMP()
     log().log() << "PluginMeshCodecASSIMP stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-/*bool PluginMeshCodecASSIMP::load(ImageRGBAPtr image)
+bool PluginMeshCodecASSIMP::load(Mesh* mesh)
 {
-    return false;
-}*/
+    Assimp::Importer importer;
+
+    const aiScene* scene = importer.ReadFile( "", aiProcessPreset_TargetRealtime_Fast);
+
+    // If the import failed, report it
+    if (!scene)
+    {
+        log().log() << importer.GetErrorString() << "\n";
+        return false;
+    }
+
+    for (uint32_t i = 0; i < scene->mNumMeshes; ++i)
+    {
+        aiMesh* mesh = scene->mMeshes[i];
+        for (uint32_t j = 0; j < mesh->mNumFaces; ++j)
+        {
+            aiFace& face = mesh->mFaces[j];
+            for (uint32_t k = 0; k < face.mNumIndices; ++k)
+            {
+
+            }
+        }
+    }
+
+    //DoTheSceneProcessing( scene);
+
+    return true;
+}
 ////////////////////////////////////////////////////////////////////////////////

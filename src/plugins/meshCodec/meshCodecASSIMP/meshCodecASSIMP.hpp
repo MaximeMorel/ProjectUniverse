@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
+#include "core/geom/mesh/mesh.hpp"
 #include "meshcodecassimp_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" MESHCODECASSIMP_EXPORT const PluginInfo* getPluginInfo();
@@ -17,7 +18,7 @@ public:
     PluginMeshCodecASSIMP(Engine& engine);
     ~PluginMeshCodecASSIMP() override;
 
-    //virtual bool load(ImageRGBAPtr image) override;
+    bool load(Mesh* mesh);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MESHCODECASSIMP_HPP__

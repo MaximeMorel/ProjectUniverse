@@ -26,6 +26,7 @@ set(CORE_SOURCE main.cpp
                 geom/curve/curveLine.cpp
                 geom/curve/curvePolyline.cpp
                 geom/curve/curveBezier.cpp
+                geom/mesh/mesh.cpp
                 geom/surface/surface.cpp
                 geom/surface/surfacePlane.cpp
                 input/inputDevice.cpp

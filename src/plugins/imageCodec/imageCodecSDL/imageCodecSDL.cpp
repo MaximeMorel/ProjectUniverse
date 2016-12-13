@@ -32,6 +32,10 @@ Library* getLibInstance(Engine* engine)
 ////////////////////////////////////////////////////////////////////////////////
 void closeLibInstance()
 {
+    if (lib)
+    {
+
+    }
     delete lib;
     lib = nullptr;
 }
