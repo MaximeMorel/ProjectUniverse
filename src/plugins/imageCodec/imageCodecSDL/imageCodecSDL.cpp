@@ -24,7 +24,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecSDL(*engine);
         if (lib)
         {
-            engine->addCodec(lib);
+            engine->codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -34,7 +34,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-
+        lib->getEngine().codecs().removeImageCodec(lib);
     }
     delete lib;
     lib = nullptr;

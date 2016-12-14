@@ -117,27 +117,30 @@ void ResourceManager::delResource(size_t resId, const std::string& name)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ResourceManager::delResource(size_t resId, size_t poolId, const std::string& name)
+void ResourceManager::delResource(size_t resId, size_t typeId, const std::string& name)
 {
-    m_logManager.log() << "Deleting resource " << resId << " - " << name << " - pool: " << poolId << std::endl;
-    if (poolId < m_pools.size())
+    m_logManager.log() << "Deleting resource " << resId << " - " << name << " - pool: " << typeId << std::endl;
+    if (typeId < m_pools.size())
     {
-        ResourcePool& pool = m_pools[poolId];
+        ResourcePool& pool = m_pools[typeId];
         pool.m_resourceNames.erase(name);
 
         // manage the hole in the resource array
-        if (resId < pool.m_resources.size() - 1)
+        if (pool.m_resources.size() > 0)
         {
-            // swap the last element and move it in the hole
-            pool.m_resources[resId] = pool.m_resources.back();
-            ResourcePtr res = pool.m_resources[resId].lock();
-            if (res)
+            if (resId < pool.m_resources.size() - 1)
             {
-                res->m_id = resId;
-                pool.m_resourceNames[pool.m_resources.back().lock()->getName()] = resId;
+                // swap the last element and move it in the hole
+                pool.m_resources[resId] = pool.m_resources.back();
+                ResourcePtr res = pool.m_resources[resId].lock();
+                if (res)
+                {
+                    res->m_id = resId;
+                    pool.m_resourceNames[pool.m_resources.back().lock()->getName()] = resId;
+                }
             }
+            pool.m_resources.pop_back();
         }
-        pool.m_resources.pop_back();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -183,30 +186,29 @@ void ResourceManager::delResource(Resource* res)
     delResource(res->getId(), res->dyntype().getTypeId(), res->getName());
 }
 ////////////////////////////////////////////////////////////////////////////////
-ResourcePtr ResourceManager::getResource(size_t resId)
+ResourcePtr ResourceManager::getResource(size_t resId, size_t typeId)
 {
-    return m_resources[resId].lock();
+    if (typeId < m_pools.size())
+    {
+        ResourcePool& pool = m_pools[typeId];
+        if (resId < pool.m_resources.size())
+        {
+            return pool.m_resources[resId].lock();
+        }
+    }
+    return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-/*ResourcePtr ResourceManager::getResource(int resId, int resTypeId)
+ResourcePtr ResourceManager::getResource(const std::string& name, size_t typeId)
 {
-    return m_resources[resId];
-}*/
-////////////////////////////////////////////////////////////////////////////////
-ResourcePtr ResourceManager::getResource(const std::string& name)
-{
-    /*for (auto& map : m_resources)
+    if (typeId < m_pools.size())
     {
-        auto it = map.find(name);
-        if (it != map.end())
+        ResourcePool& pool = m_pools[typeId];
+        auto it = pool.m_resourceNames.find(name);
+        if (it != pool.m_resourceNames.end())
         {
-            return it->second;
+            return pool.m_resources[it->second].lock();
         }
-    }*/
-    auto it = m_resourceNames.find(name);
-    if (it != m_resourceNames.end())
-    {
-        return m_resources[it->second].lock();
     }
     return nullptr;
 }
@@ -248,7 +250,7 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
         o << it;
     }
 
-    o << "Resources map:\n";
+    /*o << "Resources map:\n";
     size_t i = 0;
     for (auto it : res.m_resources)
     {
@@ -259,7 +261,7 @@ Logger& operator<<(Logger& o, const ResourceManager& res)
     for (auto it : res.m_resourceNames)
     {
         o << it.first << " - " << it.second << "\n";
-    }
+    }*/
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@
 #include "plugin/pluginManager.hpp"
 #include "input/inputManager.hpp"
 #include "render/renderManager.hpp"
-#include "codecs/imageCodec.hpp"
+#include "codecs/codecManager.hpp"
 //#include "config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
@@ -20,9 +20,7 @@ public:
     PluginManager& plugins();
     InputManager& input();
     RenderManager& render();
-
-    void addCodec(ImageCodec* codec);
-    std::vector<ImageCodec*> getCodecs();
+    CodecManager& codecs();
 
 private:
     //Config m_config;
@@ -32,7 +30,7 @@ private:
     PluginManager m_pluginManager;
     InputManager m_inputManager;
     RenderManager m_renderManager;
-    std::vector<ImageCodec*> m_imageCodecs;
+    CodecManager m_codecManager;
 
     std::string m_name;     ///< engine string identifier
 };

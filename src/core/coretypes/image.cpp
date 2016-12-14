@@ -50,12 +50,13 @@ std::shared_ptr<ImageRGBA> ImageRGBA::create(const std::string& name, const std:
 {
     std::shared_ptr<ImageRGBA> image = std::make_shared<ImageRGBA>(name, fileName);
     // go through image codecs plugins
-    for (auto* codec : getEngine().getCodecs())
+    for (auto* codec : getEngine().codecs().getCodecs())
     {
         bool success = codec->load(image);
         if (success)
             return image;
     }
+    log().log() << "No suitable loader for " << name << "\n";
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////

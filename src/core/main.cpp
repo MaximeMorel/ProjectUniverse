@@ -295,7 +295,27 @@ int main(int argc, char **argv)
     lib = nullptr;*/
 
     ImageRGBAPtr image;
-    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
+    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
+    if (lib && lib->isValid())
+    {
+        engine.log().log() << lib << "\n";
+        lib->getLibInstance(&engine);
+
+        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
+        image = im;
+    }
+
+    PluginLibPtr libPNG = res().createFromFile<PluginLib>("libImageCodecPNG.so");
+    if (libPNG && libPNG->isValid())
+    {
+        engine.log().log() << libPNG << "\n";
+        libPNG->getLibInstance(&engine);
+
+        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.png");
+        image = im;
+    }
+
+    lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
     if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
@@ -342,8 +362,9 @@ int main(int argc, char **argv)
             libRender->getLibInstance(&engine);
             engine.render().setPlugin(libRender);
 
+            w->setResolution(1280, 720);
             w->setResolution(640, 480);
-            //w->setResolution(100, 100);
+            w->setResolution(100, 100);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -447,6 +468,9 @@ int main(int argc, char **argv)
     log().log() << "sizeof(ResourceFile): " << sizeof(ResourceFile) << "\n";
     log().log() << "sizeof(ResourcePtr): " << sizeof(ResourcePtr) << "\n";
     log().log() << "sizeof(std::string): " << sizeof(std::string) << "\n";
+    log().log() << "sizeof(std::vector<int>): " << sizeof(std::vector<int>) << "\n";
+    log().log() << "sizeof(std::vector<int*>): " << sizeof(std::vector<int*>) << "\n";
+    log().log() << "sizeof(std::vector<ResourceFile>): " << sizeof(std::vector<ResourceFile>) << "\n";
 
     log().log() << "main exit..." << std::endl;
 

@@ -11,6 +11,7 @@ set(CORE_SOURCE main.cpp
                 application.cpp
                 engine.cpp
                 library.cpp
+                codecs/codecManager.cpp
                 codecs/imageCodec.cpp
                 config/config.cpp
                 console/console.cpp

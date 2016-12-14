@@ -32,19 +32,19 @@ public:
 
     void delResource(size_t resId);
     void delResource(size_t resId, const std::string& name);
-    void delResource(size_t resId, size_t poolId, const std::string& name);
+    void delResource(size_t resId, size_t typeId, const std::string& name);
     void delResource(const std::string& name);
     void delResource(ResourcePtr res);
     void delResource(Resource* res);
 
     // get by resource Id, global
-    ResourcePtr getResource(size_t resId);
+    ResourcePtr getResource(size_t resId, size_t typeId);
 
     // get by resource Id and resource type Id
     //ResourcePtr getResource(int resId, int resTypeId);
 
     // get by resource name
-    ResourcePtr getResource(const std::string& name);
+    ResourcePtr getResource(const std::string& name, size_t typeId);
 
     // get by resource name and resource type Id
     //ResourcePtr getResource(const std::string& name, int resTypeId);
