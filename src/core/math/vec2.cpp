@@ -2,7 +2,8 @@
 #include "vec2.hpp"
 #include "vec2.inl"
 ////////////////////////////////////////////////////////////////////////////////
-template class TVec2<int>;
+template class TVec2<int32_t>;
+template class TVec2<uint32_t>;
 template class TVec2<float>;
 template class TVec2<double>;
 

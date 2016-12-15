@@ -24,7 +24,8 @@ template <typename T> Logger& operator<<(Logger& o, const TVec2<T>& v);
 template <typename T> bool operator==(const TVec2<T>& lhs, const TVec2<T>& rhs);
 template <typename T> bool operator!=(const TVec2<T>& lhs, const TVec2<T>& rhs);
 ////////////////////////////////////////////////////////////////////////////////
-using Vec2i = TVec2<int>;
+using Vec2i = TVec2<int32_t>;
+using Vec2ui = TVec2<uint32_t>;
 using Vec2f = TVec2<float>;
 using Vec2d = TVec2<double>;
 ////////////////////////////////////////////////////////////////////////////////

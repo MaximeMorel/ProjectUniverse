@@ -24,7 +24,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecSDL(*engine);
         if (lib)
         {
-            engine->codecs().addImageCodec(lib);
+            //engine->codecs().addImageCodec(lib);
         }
     }
     return lib;

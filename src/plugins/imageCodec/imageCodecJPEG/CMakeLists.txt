@@ -16,7 +16,7 @@ add_library(${PROJECT_NAME} MODULE ${PLUGIN_SOURCE})
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
 
-find_package (JPEG_image)
+find_package (JPEG)
 if (JPEG_FOUND)
     include_directories(${JPEG_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} ${JPEG_LIBRARIES})

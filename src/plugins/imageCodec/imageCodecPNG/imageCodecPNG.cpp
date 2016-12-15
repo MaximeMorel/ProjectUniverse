@@ -67,15 +67,15 @@ void abort_(const char * s, ...)
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecPNG::load(ImageRGBAPtr image)
 {
-    class PNGLoader
+    class PNGreader
     {
     public:
-        PNGLoader()
+        PNGreader()
             : fp(nullptr)
             , png_ptr(nullptr)
             , info_ptr(nullptr)
         {}
-        ~PNGLoader()
+        ~PNGreader()
         {
             if (png_ptr && info_ptr)
             {
@@ -100,13 +100,13 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
     };
 
     const char* file_name = image->getFileName().c_str();
-    if (!file_name)
+    if (!file_name || image->getFileName().length() < 5) // min 5 chars to have something like x.png
     {
         log().log() << "image resource is not a file\n";
         return false;
     }
 
-    PNGLoader pngLoader;
+    PNGreader pngLoader;
 
     /* open file and test for it being a png */
     pngLoader.fp = fopen(file_name, "rb");
@@ -215,6 +215,126 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecPNG::save(ImageRGBAPtr image, const std::string& filePath)
 {
-    return false;
+   return save(image.get(), filePath);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecPNG::save(ImageRGBA* image, const std::string& filePath)
+{
+    class PNGwriter
+    {
+    public:
+        PNGwriter()
+            : fp(nullptr)
+            , png_ptr(nullptr)
+            , info_ptr(nullptr)
+        {}
+        ~PNGwriter()
+        {
+            if (png_ptr && info_ptr)
+            {
+                png_destroy_info_struct(png_ptr, &info_ptr);
+                info_ptr = nullptr;
+            }
+
+            if (png_ptr)
+            {
+                png_destroy_write_struct(&png_ptr, &info_ptr);
+                png_ptr = nullptr;
+            }
+
+            if (fp)
+                fclose(fp);
+        }
+
+        FILE *fp;
+        png_structp png_ptr;
+        png_infop info_ptr;
+    };
+
+    const char* file_name = filePath.c_str();
+    if (!file_name || filePath.length() < 5) // min 5 chars to have something like x.png
+    {
+        log().log() << "image resource is not a file\n";
+        return false;
+    }
+
+    PNGwriter pngWriter;
+
+    pngWriter.fp = fopen(file_name, "wb");
+    if (!pngWriter.fp)
+    {
+        log().log() << file_name << "cannot be opened for writing\n";
+        return false;
+    }
+
+    /* initialize stuff */
+    pngWriter.png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!pngWriter.png_ptr)
+    {
+        log().log() << file_name << ": png_create_write_struct failed\n";
+        return false;
+    }
+
+    pngWriter.info_ptr = png_create_info_struct(pngWriter.png_ptr);
+    if (!pngWriter.info_ptr)
+    {
+        log().log() << file_name << ": png_create_info_struct failed\n";
+        return false;
+    }
+
+    if (setjmp(png_jmpbuf(pngWriter.png_ptr)))
+    {
+        log().log() << file_name << ": Error during init_io\n";
+        return false;
+    }
+
+    png_init_io(pngWriter.png_ptr, pngWriter.fp);
+
+    /* write header */
+    if (setjmp(png_jmpbuf(pngWriter.png_ptr)))
+    {
+        log().log() << file_name << ": Error during writing header\n";
+        return false;
+    }
+
+    Vec2ui r = image->resolution();
+    png_set_IHDR(pngWriter.png_ptr, pngWriter.info_ptr, r.x, r.y,
+                 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE,
+                 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
+    png_write_info(pngWriter.png_ptr, pngWriter.info_ptr);
+
+    /* write bytes */
+    if (setjmp(png_jmpbuf(pngWriter.png_ptr)))
+    {
+        log().log() << file_name << ": Error during writing bytes\n";
+        return false;
+    }
+
+    uint8_t nch = 4;
+    std::vector<png_byte> row(r.x * nch);
+    for (uint32_t y = 0; y < r.y; ++y)
+    {
+        for (uint32_t x = 0; x < r.x; ++x)
+        {
+            Vec4ui8 v = (*image)(x, y);
+            row[x*nch + 0] = v.x;
+            row[x*nch + 1] = v.y;
+            row[x*nch + 2] = v.z;
+            row[x*nch + 3] = 255;
+        }
+        png_write_row(pngWriter.png_ptr, &row.front());
+    }
+
+    /* end write */
+    if (setjmp(png_jmpbuf(pngWriter.png_ptr)))
+    {
+        log().log() << file_name << ": Error during end of write\n";
+        return false;
+    }
+
+    png_write_end(pngWriter.png_ptr, NULL);
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -295,13 +295,14 @@ int main(int argc, char **argv)
     lib = nullptr;*/
 
     ImageRGBAPtr image;
-    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
-    if (lib && lib->isValid())
+    PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
+    if (libJPEG && libJPEG->isValid())
     {
-        engine.log().log() << lib << "\n";
-        lib->getLibInstance(&engine);
+        engine.log().log() << libJPEG << "\n";
+        libJPEG->getLibInstance(&engine);
 
         ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
+        im->save("a.jpg");
         image = im;
     }
 
@@ -315,13 +316,14 @@ int main(int argc, char **argv)
         image = im;
     }
 
-    lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
+    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
     if (lib && lib->isValid())
     {
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
 
         ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
+        im->save("a.png");
         image = im;
     }
     //lib = nullptr;
@@ -376,7 +378,7 @@ int main(int argc, char **argv)
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im2.png");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im.jpg");
 
             bool stop = false;
 
@@ -477,6 +479,10 @@ int main(int argc, char **argv)
     log().log() << "sizeof(std::vector<int>): " << sizeof(std::vector<int>) << "\n";
     log().log() << "sizeof(std::vector<int*>): " << sizeof(std::vector<int*>) << "\n";
     log().log() << "sizeof(std::vector<ResourceFile>): " << sizeof(std::vector<ResourceFile>) << "\n";
+    log().log() << "sizeof(float): " << sizeof(float) << "\n";
+    log().log() << "sizeof(double): " << sizeof(double) << "\n";
+    log().log() << "sizeof(Vec2ui): " << sizeof(Vec2ui) << "\n";
+    log().log() << "sizeof(Vec4f): " << sizeof(Vec4f) << "\n";
 
     log().log() << "main exit..." << std::endl;
 
