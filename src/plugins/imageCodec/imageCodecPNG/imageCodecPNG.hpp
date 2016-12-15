@@ -20,6 +20,7 @@ public:
     ~PluginImageCodecPNG() override;
 
     virtual bool load(ImageRGBAPtr image) override;
+    virtual bool save(ImageRGBAPtr image, const std::string& filePath) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECPNG_HPP__

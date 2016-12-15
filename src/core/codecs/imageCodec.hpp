@@ -12,6 +12,7 @@ public:
     ~ImageCodec() override;
 
     virtual bool load(ImageRGBAPtr image);
+    virtual bool save(ImageRGBAPtr image, const std::string& filePath);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODEC_HPP__

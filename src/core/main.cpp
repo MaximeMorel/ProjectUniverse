@@ -311,7 +311,7 @@ int main(int argc, char **argv)
         engine.log().log() << libPNG << "\n";
         libPNG->getLibInstance(&engine);
 
-        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.png");
+        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im2.png");
         image = im;
     }
 
@@ -376,7 +376,7 @@ int main(int argc, char **argv)
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im.jpg");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im2.png");
 
             bool stop = false;
 
@@ -426,10 +426,16 @@ int main(int argc, char **argv)
                     ;
                 }
 
-                v->bind();
-                prog->bind();
-                prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
-                prog2->setUniform1i("tex", tex->getTextureId());
+                if (v)
+                    v->bind();
+
+                if (prog)
+                {
+                    prog->bind();
+                    prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
+                    if (tex)
+                        prog2->setUniform1i("tex", tex->getTextureId());
+                }
                 render().impl()->draw();
                 w->swapBuffers();
 

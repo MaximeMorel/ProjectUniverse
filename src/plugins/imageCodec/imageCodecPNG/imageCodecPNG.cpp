@@ -148,8 +148,8 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
 
     png_read_info(pngLoader.png_ptr, pngLoader.info_ptr);
 
-    int width = png_get_image_width(pngLoader.png_ptr, pngLoader.info_ptr);
-    int height = png_get_image_height(pngLoader.png_ptr, pngLoader.info_ptr);
+    uint32_t width = png_get_image_width(pngLoader.png_ptr, pngLoader.info_ptr);
+    uint32_t height = png_get_image_height(pngLoader.png_ptr, pngLoader.info_ptr);
     png_byte color_type = png_get_color_type(pngLoader.png_ptr, pngLoader.info_ptr);
     png_byte bit_depth = png_get_bit_depth(pngLoader.png_ptr, pngLoader.info_ptr);
 
@@ -163,12 +163,58 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
         return false;
     }
 
-    png_bytep* row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
-    for (int y=0; y<height; y++)
-        row_pointers[y] = (png_byte*) malloc(png_get_rowbytes(pngLoader.png_ptr, pngLoader.info_ptr));
+    if (bit_depth != 8)
+    {
+        log().log() << file_name << ": bit depth " << bit_depth << " not supported\n";
+        return false;
+    }
 
-    png_read_image(pngLoader.png_ptr, row_pointers);
+    if (number_of_passes != 1)
+    {
+        log().log() << file_name << ": number of passes " << number_of_passes << " not supported\n";
+        return false;
+    }
+
+    image->resize(width, height);
+    png_size_t rowbytes = png_get_rowbytes(pngLoader.png_ptr, pngLoader.info_ptr);
+    std::vector<png_byte> row(rowbytes);
+    for (uint32_t y = 0; y < height; ++y)
+    {
+        png_read_row(pngLoader.png_ptr, &row.front(), nullptr);
+
+        for (uint32_t x = 0; x < width; ++x)
+        {
+            if (color_type == PNG_COLOR_TYPE_RGB)
+            {
+                image->operator ()(x, y) = Vec4ui8(row[x*3 + 0], row[x*3 + 1], row[x*3 + 2], 255);
+            }
+            else if (color_type == PNG_COLOR_TYPE_RGB_ALPHA)
+            {
+                image->operator ()(x, y) = Vec4ui8(row[x*4 + 0], row[x*4 + 1], row[x*4 + 2], row[x*4 + 3]);
+            }
+            else if (color_type == PNG_COLOR_TYPE_GRAY)
+            {
+                log().log() << file_name << ": PNG_COLOR_TYPE_GRAY not supported\n";
+                return false;
+            }
+            else if (color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+            {
+                log().log() << file_name << ": PNG_COLOR_TYPE_GRAY_ALPHA not supported\n";
+                return false;
+            }
+            else if (color_type == PNG_COLOR_TYPE_PALETTE)
+            {
+                log().log() << file_name << ": PNG_COLOR_TYPE_PALETTE not supported\n";
+                return false;
+            }
+        }
+    }
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecPNG::save(ImageRGBAPtr image, const std::string& filePath)
+{
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
