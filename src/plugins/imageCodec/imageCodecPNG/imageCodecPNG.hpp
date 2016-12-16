@@ -19,9 +19,9 @@ public:
     PluginImageCodecPNG(Engine& engine);
     ~PluginImageCodecPNG() override;
 
-    virtual bool load(ImageRGBAPtr image) override;
-    virtual bool save(ImageRGBAPtr image, const std::string& filePath) override;
-    virtual bool save(ImageRGBA* image, const std::string& filePath) override;
+    virtual bool load(ImagePtr image) override;
+    virtual bool save(ImagePtr image, const std::string& filePath) override;
+    virtual bool save(Image* image, const std::string& filePath) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECPNG_HPP__

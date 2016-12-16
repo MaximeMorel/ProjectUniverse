@@ -2,6 +2,7 @@
 #include "imageCodecPNG.hpp"
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
+#include <functional>
 #include <png.h>
 #include <zlib.h>
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ void abort_(const char * s, ...)
         abort();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::load(ImageRGBAPtr image)
+bool PluginImageCodecPNG::load(ImagePtr image)
 {
     class PNGreader
     {
@@ -82,22 +83,26 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
                 png_destroy_info_struct(png_ptr, &info_ptr);
                 info_ptr = nullptr;
             }
-
             if (png_ptr)
             {
                 png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
                 png_ptr = nullptr;
             }
-
             if (fp)
+            {
                 fclose(fp);
+                fp = nullptr;
+            }
         }
 
         png_byte header[8];
-        FILE *fp;
+        FILE* fp;
         png_structp png_ptr;
         png_infop info_ptr;
     };
+
+    if (!image)
+        return false;
 
     const char* file_name = image->getFileName().c_str();
     if (!file_name || image->getFileName().length() < 5) // min 5 chars to have something like x.png
@@ -163,62 +168,108 @@ bool PluginImageCodecPNG::load(ImageRGBAPtr image)
         return false;
     }
 
-    if (bit_depth != 8)
-    {
-        log().log() << file_name << ": bit depth " << bit_depth << " not supported\n";
-        return false;
-    }
-
     if (number_of_passes != 1)
     {
         log().log() << file_name << ": number of passes " << number_of_passes << " not supported\n";
         return false;
     }
 
+    //std::function<void(uint32_t y)> setRow = [&image](uint32_t y){};
+
+    Image::Type imageType = Image::Type::RGBA8;
+    if (color_type == PNG_COLOR_TYPE_RGB)
+    {
+        switch (bit_depth)
+        {
+        case 8:
+            imageType = Image::Type::RGB8;
+            break;
+        case 16:
+        default:
+            log().log() << file_name << ": PNG_COLOR_TYPE_RGB (" << bit_depth << ") not supported\n";
+            return false;
+        }
+    }
+    else if (color_type == PNG_COLOR_TYPE_RGB_ALPHA)
+    {
+        switch (bit_depth)
+        {
+        case 8:
+            imageType = Image::Type::RGBA8;
+            break;
+        case 16:
+        default:
+            log().log() << file_name << ": PNG_COLOR_TYPE_RGB_ALPHA (" << bit_depth << ") not supported\n";
+            return false;
+        }
+    }
+    else if (color_type == PNG_COLOR_TYPE_GRAY)
+    {
+        switch (bit_depth)
+        {
+        case 8:
+            imageType = Image::Type::GRAY8;
+            break;
+        case 1:
+        case 2:
+        case 4:
+        case 16:
+        default:
+            log().log() << file_name << ": PNG_COLOR_TYPE_GRAY (" << bit_depth << ") not supported\n";
+            return false;
+        }
+    }
+    else if (color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+    {
+        switch (bit_depth)
+        {
+        case 8:
+        case 16:
+        default:
+            log().log() << file_name << ": PNG_COLOR_TYPE_GRAY_ALPHA (" << bit_depth << ") not supported\n";
+            return false;
+        }
+    }
+    else if (color_type == PNG_COLOR_TYPE_PALETTE)
+    {
+        switch (bit_depth)
+        {
+        case 1:
+        case 2:
+        case 4:
+        case 8:
+        default:
+            log().log() << file_name << ": PNG_COLOR_TYPE_PALETTE (" << bit_depth << ") not supported\n";
+            return false;
+        }
+    }
+    else
+    {
+        log().log() << file_name << ": PNG_COLOR_TYPE " << color_type << " (" << bit_depth << ") not supported\n";
+        return false;
+    }
+    image->setImageType(imageType);
+
     image->resize(width, height);
     png_size_t rowbytes = png_get_rowbytes(pngLoader.png_ptr, pngLoader.info_ptr);
-    std::vector<png_byte> row(rowbytes);
+    if (rowbytes != (image->bitsPerPixel() / 8) * image->width())
+    {
+        log().log() << file_name << ": Bad row length\n";
+    }
     for (uint32_t y = 0; y < height; ++y)
     {
-        png_read_row(pngLoader.png_ptr, &row.front(), nullptr);
-
-        for (uint32_t x = 0; x < width; ++x)
-        {
-            if (color_type == PNG_COLOR_TYPE_RGB)
-            {
-                image->operator ()(x, y) = Vec4ui8(row[x*3 + 0], row[x*3 + 1], row[x*3 + 2], 255);
-            }
-            else if (color_type == PNG_COLOR_TYPE_RGB_ALPHA)
-            {
-                image->operator ()(x, y) = Vec4ui8(row[x*4 + 0], row[x*4 + 1], row[x*4 + 2], row[x*4 + 3]);
-            }
-            else if (color_type == PNG_COLOR_TYPE_GRAY)
-            {
-                log().log() << file_name << ": PNG_COLOR_TYPE_GRAY not supported\n";
-                return false;
-            }
-            else if (color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
-            {
-                log().log() << file_name << ": PNG_COLOR_TYPE_GRAY_ALPHA not supported\n";
-                return false;
-            }
-            else if (color_type == PNG_COLOR_TYPE_PALETTE)
-            {
-                log().log() << file_name << ": PNG_COLOR_TYPE_PALETTE not supported\n";
-                return false;
-            }
-        }
+        png_read_row(pngLoader.png_ptr, image->getui8(0, y), nullptr);
     }
 
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::save(ImageRGBAPtr image, const std::string& filePath)
+bool PluginImageCodecPNG::save(ImagePtr image, const std::string& filePath)
 {
    return save(image.get(), filePath);
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::save(ImageRGBA* image, const std::string& filePath)
+bool PluginImageCodecPNG::save(Image* image, const std::string& filePath)
 {
     class PNGwriter
     {
@@ -235,21 +286,34 @@ bool PluginImageCodecPNG::save(ImageRGBA* image, const std::string& filePath)
                 png_destroy_info_struct(png_ptr, &info_ptr);
                 info_ptr = nullptr;
             }
-
             if (png_ptr)
             {
                 png_destroy_write_struct(&png_ptr, &info_ptr);
                 png_ptr = nullptr;
             }
-
             if (fp)
+            {
                 fclose(fp);
+                fp = nullptr;
+            }
         }
 
-        FILE *fp;
+        FILE* fp;
         png_structp png_ptr;
         png_infop info_ptr;
     };
+
+    if (!image)
+        return false;
+
+    size_t pos = filePath.rfind('.');
+    if (pos != std::string::npos)
+    {
+        if (filePath.substr(pos) != ".png")
+        {
+            return false;
+        }
+    }
 
     const char* file_name = filePath.c_str();
     if (!file_name || filePath.length() < 5) // min 5 chars to have something like x.png
@@ -297,9 +361,33 @@ bool PluginImageCodecPNG::save(ImageRGBA* image, const std::string& filePath)
         return false;
     }
 
+    int bit_depth = 8;
+    int color_type = PNG_COLOR_TYPE_RGB_ALPHA;
+    switch (image->imageType())
+    {
+    case Image::Type::GRAY8:
+        bit_depth = 8;
+        color_type = PNG_COLOR_TYPE_GRAY;
+        break;
+    case Image::Type::RGB8:
+        bit_depth = 8;
+        color_type = PNG_COLOR_TYPE_RGB;
+        break;
+    case Image::Type::RGBA8:
+        bit_depth = 8;
+        color_type = PNG_COLOR_TYPE_RGB_ALPHA;
+        break;
+    case Image::Type::GRAYFP32:
+    case Image::Type::RGBFP32:
+    case Image::Type::RGBAFP32:
+    default:
+        log().log() << file_name << ": png write not supported for " << image->channels() << " channels and bit depth " << image->bitsPerComponent() << "\n";
+        return false;
+    }
+
     Vec2ui r = image->resolution();
     png_set_IHDR(pngWriter.png_ptr, pngWriter.info_ptr, r.x, r.y,
-                 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE,
+                 bit_depth, color_type, PNG_INTERLACE_NONE,
                  PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
     png_write_info(pngWriter.png_ptr, pngWriter.info_ptr);
@@ -311,19 +399,9 @@ bool PluginImageCodecPNG::save(ImageRGBA* image, const std::string& filePath)
         return false;
     }
 
-    uint8_t nch = 4;
-    std::vector<png_byte> row(r.x * nch);
     for (uint32_t y = 0; y < r.y; ++y)
     {
-        for (uint32_t x = 0; x < r.x; ++x)
-        {
-            Vec4ui8 v = (*image)(x, y);
-            row[x*nch + 0] = v.x;
-            row[x*nch + 1] = v.y;
-            row[x*nch + 2] = v.z;
-            row[x*nch + 3] = 255;
-        }
-        png_write_row(pngWriter.png_ptr, &row.front());
+        png_write_row(pngWriter.png_ptr, image->getui8(0, y));
     }
 
     /* end write */

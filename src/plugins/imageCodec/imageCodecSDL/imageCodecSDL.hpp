@@ -19,7 +19,7 @@ public:
     PluginImageCodecSDL(Engine& engine);
     ~PluginImageCodecSDL() override;
 
-    virtual bool load(ImageRGBAPtr image) override;
+    virtual bool load(ImagePtr image) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECSDL_HPP__

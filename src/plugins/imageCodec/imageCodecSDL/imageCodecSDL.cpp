@@ -24,7 +24,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecSDL(*engine);
         if (lib)
         {
-            //engine->codecs().addImageCodec(lib);
+            engine->codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -66,7 +66,7 @@ PluginImageCodecSDL::~PluginImageCodecSDL()
     IMG_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecSDL::load(ImageRGBAPtr image)
+bool PluginImageCodecSDL::load(ImagePtr image)
 {
     SDL_Surface* surface = IMG_Load(image->getFileName().c_str());
     if (surface == nullptr)
@@ -104,26 +104,43 @@ bool PluginImageCodecSDL::load(ImageRGBAPtr image)
         return false;
     }
 
+    Image::Type imageType = Image::Type::RGB8;
+    switch (surface->format->BytesPerPixel)
+    {
+    case 1:
+        imageType = Image::Type::GRAY8;
+        break;
+    case 3:
+        imageType = Image::Type::RGB8;
+        break;
+    case 4:
+        imageType = Image::Type::RGBA8;
+        break;
+    default:
+        break;
+    }
+    image->setImageType(imageType);
+
     // put data in ImagePtr
     image->resize(surface->w, surface->h);
     uint8_t* pixels = static_cast<uint8_t*>(surface->pixels);
-    for (int h = 0; h < surface->h; ++h)
+    /*for (int h = 0; h < surface->h; ++h)
     {
         for (int w = 0 ; w < surface->w; ++w, pixels += surface->format->BytesPerPixel)
         {
             uint32_t v = 0;
-            Vec4ui8 p;
             uint32_t pixel = 0;
             for (uint8_t i = 0; i < surface->format->BytesPerPixel; ++i)
             {
                 pixel |= pixels[i] << (8*i);
             }
+            uint8_t* pPixel = image->getui8(w, h);
             if (surface->format->Rmask)
             {
                 v = pixel & surface->format->Rmask;
                 v >>= surface->format->Rshift;
                 v <<= surface->format->Rloss;
-                p.x = v;
+                pPixel[0] = v;
             }
 
             if (surface->format->Gmask)
@@ -131,7 +148,7 @@ bool PluginImageCodecSDL::load(ImageRGBAPtr image)
                 v = pixel & surface->format->Gmask;
                 v >>= surface->format->Gshift;
                 v <<= surface->format->Gloss;
-                p.y = v;
+                pPixel[1] = v;
             }
 
             if (surface->format->Bmask)
@@ -139,7 +156,7 @@ bool PluginImageCodecSDL::load(ImageRGBAPtr image)
                 v = pixel & surface->format->Bmask;
                 v >>= surface->format->Bshift;
                 v <<= surface->format->Bloss;
-                p.z = v;
+                pPixel[2] = v;
             }
 
             if (surface->format->Amask)
@@ -147,12 +164,11 @@ bool PluginImageCodecSDL::load(ImageRGBAPtr image)
                 v = pixel & surface->format->Amask;
                 v >>= surface->format->Ashift;
                 v <<= surface->format->Aloss;
-                p.w = v;
+                pPixel[3] = v;
             }
-
-            image->operator()(w, h) = p;
         }
-    }
+    }*/
+    std::copy(pixels, pixels + (surface->w * surface->h * surface->format->BytesPerPixel), image->getui8(0, 0));
 
     SDL_FreeSurface(surface);
 

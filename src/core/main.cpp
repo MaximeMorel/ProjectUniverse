@@ -294,15 +294,16 @@ int main(int argc, char **argv)
     }
     lib = nullptr;*/
 
-    ImageRGBAPtr image;
-    PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
+    ImagePtr image;
+    /*PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
     if (libJPEG && libJPEG->isValid())
     {
         engine.log().log() << libJPEG << "\n";
         libJPEG->getLibInstance(&engine);
 
-        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
-        im->save("a.jpg");
+        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
+        if (im)
+            im->save("im_copy.jpg");
         image = im;
     }
 
@@ -312,9 +313,11 @@ int main(int argc, char **argv)
         engine.log().log() << libPNG << "\n";
         libPNG->getLibInstance(&engine);
 
-        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im2.png");
+        ImagePtr im = res().createFromFile<Image>("data/images/im2.png");
+        if (im)
+            im->save("im2_copy.png");
         image = im;
-    }
+    }*/
 
     PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
     if (lib && lib->isValid())
@@ -322,8 +325,9 @@ int main(int argc, char **argv)
         engine.log().log() << lib << "\n";
         lib->getLibInstance(&engine);
 
-        ImageRGBAPtr im = res().createFromFile<ImageRGBA>("data/images/im.jpg");
-        im->save("a.png");
+        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
+        if (im)
+            im->save("a.png");
         image = im;
     }
     //lib = nullptr;
@@ -378,7 +382,7 @@ int main(int argc, char **argv)
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im.jpg");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im2.png");
 
             bool stop = false;
 

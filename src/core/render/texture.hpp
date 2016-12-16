@@ -24,14 +24,14 @@ public:
     /// Unbind / deactivate the texture
     virtual void unbind();
 
-    virtual void setImage(ImageRGBAPtr image);
+    virtual void setImage(ImagePtr image);
 
 protected:
     virtual void printOn(Logger& o) const override;
 
 protected:
     uint32_t m_textureId;
-    ImageRGBAPtr m_image;
+    ImagePtr m_image;
 
 public:
     virtual ResourceType& dyntype() override { return type; }

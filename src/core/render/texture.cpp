@@ -27,7 +27,7 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
         return nullptr;
     }
 
-    ImageRGBAPtr im = res().createFromFile<ImageRGBA>(name);
+    ImagePtr im = res().createFromFile<Image>(name);
     tex->setImage(im);
 
     return tex;
@@ -46,7 +46,7 @@ void Texture::unbind()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Texture::setImage(ImageRGBAPtr image)
+void Texture::setImage(ImagePtr image)
 {
     m_image = image;
 }

@@ -14,7 +14,7 @@ public:
     virtual void bind() override;
     virtual void unbind() override;
 
-    virtual void setImage(ImageRGBAPtr image) override;
+    virtual void setImage(ImagePtr image) override;
 
 private:
 };

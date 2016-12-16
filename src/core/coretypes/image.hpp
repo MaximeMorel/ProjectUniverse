@@ -33,6 +33,9 @@ public:
     /// Save image to file
     virtual bool save(const std::string& filePath);
 
+    /// Get the sub search path for this resource
+    static const char* getSearchPath();
+
     /// Get image resolution
     Vec2ui resolution() const;
 
@@ -57,11 +60,11 @@ public:
      /// Get type of image (GRAY, RGB, RGBA, ...)
     void setImageType(Type type);
 
-    /// Resize image. Set number of channels and bits per component before, use setType
+    /// Resize image. Set number of channels and bits per component before, use setImageType
     void resize(uint32_t w, uint32_t h);
 
     /// pixel and component access functions
-    uint8_t& getui8(uint32_t x, uint32_t y);
+    uint8_t* getui8(uint32_t x, uint32_t y);
     float& getfp32(uint32_t x, uint32_t y);
     Vec3ui8 get3ui8(uint32_t x, uint32_t y);
     Vec4ui8 get4ui8(uint32_t x, uint32_t y);
@@ -80,41 +83,5 @@ public:
     virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
 };
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-class TImage : public Image
-{
-public:
-    TImage(const std::string& name, const std::string& fileName);
-    virtual ~TImage() override;
-
-    static std::shared_ptr<TImage<T>> create(const std::string& name, const std::string& fileName);
-
-    virtual bool save(const std::string& filePath) override;
-
-    /// Get the sub search path for this resource
-    static const char* getSearchPath();
-
-    void resize(uint32_t w, uint32_t h);
-
-    T operator()(uint32_t x, uint32_t y) const;
-    T& operator()(uint32_t x, uint32_t y);
-
-    virtual size_t getMemSize() const override;
-
-    virtual void printOn(Logger& o) const override;
-
-private:
-    TBuffer<T> m_buffer;     ///< buffer containing image data
-
-private:
-    using super = Image;
-};
-////////////////////////////////////////////////////////////////////////////////
-using ImageRGB = TImage<TVec3<uint8_t>>;
-using ImageRGBA = TImage<Vec4ui8>;
-using ImageHDR = TImage<Vec4f>;
-
-using ImageRGBAPtr = std::shared_ptr<ImageRGBA>;
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGE_HPP__

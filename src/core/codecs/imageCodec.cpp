@@ -10,17 +10,17 @@ ImageCodec::~ImageCodec()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool ImageCodec::load(ImageRGBAPtr image)
+bool ImageCodec::load(ImagePtr image)
 {
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool ImageCodec::save(ImageRGBAPtr image, const std::string& filePath)
+bool ImageCodec::save(ImagePtr image, const std::string& filePath)
 {
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool ImageCodec::save(ImageRGBA* image, const std::string& filePath)
+bool ImageCodec::save(Image* image, const std::string& filePath)
 {
     return false;
 }

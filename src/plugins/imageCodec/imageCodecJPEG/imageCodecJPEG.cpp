@@ -45,6 +45,12 @@ PluginImageCodecJPEG::PluginImageCodecJPEG(Engine &engine)
     : ImageCodec(engine)
 {
     log().log() << "PluginImageCodecJPEG start...\n";
+
+#define JPEG_xstr(s) JPEG_str(s)
+#define JPEG_str(s) #s
+
+    log().log() << "LIBJPEG_TURBO_VERSION: " << JPEG_xstr(LIBJPEG_TURBO_VERSION) << "\n";
+    log().log() << "JPEG_LIB_VERSION: " << JPEG_LIB_VERSION << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginImageCodecJPEG::~PluginImageCodecJPEG()
@@ -69,7 +75,7 @@ void JPEGerrorExit(j_common_ptr cinfo)
         {
             /* Always display the message. */
             /* We could postpone this until after returning, if we chose. */
-            (*cinfo->err->output_message) (cinfo);
+            //(*cinfo->err->output_message) (cinfo);
 
             char jpegLastErrorMsg[JMSG_LENGTH_MAX];
             /* Create the message */
@@ -78,34 +84,51 @@ void JPEGerrorExit(j_common_ptr cinfo)
 
             (*cinfo->err->output_message) (cinfo);
 
-            /* Return control to the setjmp point */
-            //longjmp(myerr->setjmp_buffer, 1);
             jpeg_abort(cinfo);
+
+            /* Return control to the setjmp point */
+            longjmp(myerr->setjmp_buffer, 1);
         }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecJPEG::load(ImageRGBAPtr image)
+bool PluginImageCodecJPEG::load(ImagePtr image)
 {
     class JPEGreader
     {
     public:
         JPEGreader()
             : fp(nullptr)
+            , decompressCreated(false)
+            , decompressStarted(false)
         {
             cinfo.err = jpeg_std_error(&jerr.pub);
             jerr.pub.error_exit = JPEGerrorExit;
         }
         ~JPEGreader()
         {
-            jpeg_finish_decompress(&cinfo);
-            jpeg_destroy_decompress(&cinfo);
-            fclose(fp);
+            if (decompressCreated && decompressStarted)
+            {
+                decompressStarted = false;
+                jpeg_finish_decompress(&cinfo);
+            }
+            if (decompressCreated)
+            {
+                decompressCreated = false;
+                jpeg_destroy_decompress(&cinfo);
+            }
+            if (fp)
+            {
+                fclose(fp);
+                fp = nullptr;
+            }
         }
 
         struct jpeg_decompress_struct cinfo;
         struct my_error_mgr jerr;
-        FILE *fp;
+        FILE* fp;
+        bool decompressCreated;
+        bool decompressStarted;
     };
 
     const char* file_name = image->getFileName().c_str();
@@ -128,12 +151,12 @@ bool PluginImageCodecJPEG::load(ImageRGBAPtr image)
     /* Establish the setjmp return context for my_error_exit to use. */
     if (setjmp(jpegReader.jerr.setjmp_buffer))
     {
-        log().log() << file_name << ": Error jpeg init\n";
         return false;
     }
 
     /* Now we can initialize the JPEG decompression object. */
     jpeg_create_decompress(&jpegReader.cinfo);
+    jpegReader.decompressCreated = true;
 
     /* Step 2: specify data source (eg, a file) */
     jpeg_stdio_src(&jpegReader.cinfo, jpegReader.fp);
@@ -153,6 +176,7 @@ bool PluginImageCodecJPEG::load(ImageRGBAPtr image)
         log().log() << file_name << ": jpeg decompression failed\n";
         return false;
     }
+    jpegReader.decompressStarted = true;
 
     if (jpegReader.cinfo.output_components != 3)
     {
@@ -160,26 +184,30 @@ bool PluginImageCodecJPEG::load(ImageRGBAPtr image)
         return false;
     }
 
-    /* JSAMPLEs per row in output buffer */
-    int row_stride = jpegReader.cinfo.output_width * jpegReader.cinfo.output_components;
-    std::vector<JSAMPLE> buf(row_stride);
-    JSAMPROW rowbuffer = &buf.front();
-    JSAMPARRAY buffer = &rowbuffer;
+    Image::Type imageType = Image::Type::RGB8;
+    switch (jpegReader.cinfo.output_components)
+    {
+    case 1:
+        imageType = Image::Type::GRAY8;
+        break;
+    case 3:
+        imageType = Image::Type::RGB8;
+        break;
+    case 4:
+        imageType = Image::Type::RGBA8;
+        break;
+    default:
+        log().log() << file_name << ": " << jpegReader.cinfo.output_components << " components not supported\n";
+        return false;
+    }
+    image->setImageType(imageType);
     image->resize(jpegReader.cinfo.output_width, jpegReader.cinfo.output_height);
 
     /* Step 6: Process scanlines */
-    uint32_t y = 0;
     while (jpegReader.cinfo.output_scanline < jpegReader.cinfo.output_height)
     {
-        JDIMENSION dim = jpeg_read_scanlines(&jpegReader.cinfo, buffer, 1);
-        if (dim > 0)
-        {
-            for (uint32_t x = 0; x < jpegReader.cinfo.output_width; ++x)
-            {
-                (*image)(x, y) = Vec4ui8(rowbuffer[x*3 + 0], rowbuffer[x*3 + 1], rowbuffer[x*3 + 2], 255);
-            }
-        }
-        ++y;
+        JSAMPROW buffer = image->getui8(0, jpegReader.cinfo.output_scanline);
+        jpeg_read_scanlines(&jpegReader.cinfo, &buffer, 1);
     }
 
     /* At this point you may want to check to see whether any corrupt-data
@@ -196,33 +224,58 @@ bool PluginImageCodecJPEG::load(ImageRGBAPtr image)
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecJPEG::save(ImageRGBAPtr image, const std::string& filePath)
+bool PluginImageCodecJPEG::save(ImagePtr image, const std::string& filePath)
 {
     return save(image.get(), filePath);
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecJPEG::save(ImageRGBA* image, const std::string& filePath)
+bool PluginImageCodecJPEG::save(Image* image, const std::string& filePath)
 {
     class JPEGwriter
     {
     public:
         JPEGwriter()
             : fp(nullptr)
+            , compressCreated(false)
+            , compressStarted(false)
         {
             cinfo.err = jpeg_std_error(&jerr.pub);
             jerr.pub.error_exit = JPEGerrorExit;
         }
         ~JPEGwriter()
         {
-            jpeg_finish_compress(&cinfo);
-            fclose(fp);
-            jpeg_destroy_compress(&cinfo);
+            if (compressCreated && compressStarted)
+            {
+                jpeg_finish_compress(&cinfo);
+                compressStarted = false;
+            }
+            if (fp)
+            {
+                fclose(fp);
+                fp = nullptr;
+            }
+            if (compressCreated)
+            {
+                jpeg_destroy_compress(&cinfo);
+                compressCreated = false;
+            }
         }
 
         struct jpeg_compress_struct cinfo;
         struct my_error_mgr jerr;
-        FILE *fp;
+        FILE* fp;
+        bool compressCreated;
+        bool compressStarted;
     };
+
+    size_t pos = filePath.rfind('.');
+    if (pos != std::string::npos)
+    {
+        if (filePath.substr(pos) != ".jpg")
+        {
+            return false;
+        }
+    }
 
     const char* file_name = filePath.c_str();
     if (!file_name || filePath.length() < 5) // min 5 chars to have something like x.png
@@ -233,8 +286,15 @@ bool PluginImageCodecJPEG::save(ImageRGBA* image, const std::string& filePath)
 
     JPEGwriter jpegWriter;
 
+    /* Establish the setjmp return context for my_error_exit to use. */
+    if (setjmp(jpegWriter.jerr.setjmp_buffer))
+    {
+        return false;
+    }
+
     /* Step 1: allocate and initialize JPEG compression object */
     jpeg_create_compress(&jpegWriter.cinfo);
+    jpegWriter.compressCreated = true;
 
     /* Step 2: specify data destination (eg, a file) */
     /* Note: steps 2 and 3 can be done in either order. */
@@ -252,6 +312,28 @@ bool PluginImageCodecJPEG::save(ImageRGBA* image, const std::string& filePath)
     jpegWriter.cinfo.image_height = r.y;
     jpegWriter.cinfo.input_components = 3;           /* # of color components per pixel */
     jpegWriter.cinfo.in_color_space = JCS_RGB;       /* colorspace of input image */
+
+    switch (image->imageType())
+    {
+    case Image::Type::GRAY8:
+        jpegWriter.cinfo.input_components = 1;
+        jpegWriter.cinfo.in_color_space = JCS_GRAYSCALE;
+        break;
+    case Image::Type::RGB8:
+        jpegWriter.cinfo.input_components = 3;
+        jpegWriter.cinfo.in_color_space = JCS_RGB;
+        break;
+    case Image::Type::RGBA8:
+        jpegWriter.cinfo.input_components = 4;
+        jpegWriter.cinfo.in_color_space = JCS_EXT_RGBA;
+        break;
+    case Image::Type::GRAYFP32:
+    case Image::Type::RGBFP32:
+    case Image::Type::RGBAFP32:
+    default:
+        log().log() << file_name << ": jpeg write not supported for " << image->channels() << " channels and bit depth " << image->bitsPerComponent() << "\n";
+        return false;
+    }
     /* Now use the library's routine to set default compression parameters.
      * (You must set at least cinfo.in_color_space before calling this,
      * since the defaults depend on the source color space.)
@@ -264,6 +346,7 @@ bool PluginImageCodecJPEG::save(ImageRGBA* image, const std::string& filePath)
 
     /* Step 4: Start compressor */
     jpeg_start_compress(&jpegWriter.cinfo, TRUE);
+    jpegWriter.compressStarted = true;
 
     /* Step 5: Process scanlines */
 
@@ -272,22 +355,10 @@ bool PluginImageCodecJPEG::save(ImageRGBA* image, const std::string& filePath)
      * To keep things simple, we pass one scanline per call; you can pass
      * more if you wish, though.
      */
-    int row_stride = r.x * 3; /* JSAMPLEs per row in image_buffer */
-    std::vector<JSAMPLE> buf(row_stride);
-    JSAMPROW rowbuffer = &buf.front();
-    JSAMPARRAY buffer = &rowbuffer;
-    uint32_t y = 0;
     while (jpegWriter.cinfo.next_scanline < jpegWriter.cinfo.image_height)
     {
-        for (uint32_t x = 0; x < jpegWriter.cinfo.image_width; ++x)
-        {
-            Vec4ui8 v = (*image)(x, y);
-            rowbuffer[x*3 + 0] = v.x;
-            rowbuffer[x*3 + 1] = v.y;
-            rowbuffer[x*3 + 2] = v.z;
-        }
-        jpeg_write_scanlines(&jpegWriter.cinfo, buffer, 1);
-        ++y;
+        JSAMPROW buffer = image->getui8(0, jpegWriter.cinfo.next_scanline);
+        jpeg_write_scanlines(&jpegWriter.cinfo, &buffer, 1);
     }
 
     /* Step 6: Finish compression */
