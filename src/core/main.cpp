@@ -295,7 +295,7 @@ int main(int argc, char **argv)
     lib = nullptr;*/
 
     ImagePtr image;
-    /*PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
+    PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
     if (libJPEG && libJPEG->isValid())
     {
         engine.log().log() << libJPEG << "\n";
@@ -317,7 +317,7 @@ int main(int argc, char **argv)
         if (im)
             im->save("im2_copy.png");
         image = im;
-    }*/
+    }
 
     PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
     if (lib && lib->isValid())
@@ -382,7 +382,7 @@ int main(int argc, char **argv)
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im2.png");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
 
             bool stop = false;
 
@@ -468,6 +468,7 @@ int main(int argc, char **argv)
                     timeSlept = 0.0;
                     timer.reset();
                     prog->reload();
+                    tex->reload();
                 }
             }
             log().log() << res() << "\n";
@@ -487,6 +488,7 @@ int main(int argc, char **argv)
     log().log() << "sizeof(double): " << sizeof(double) << "\n";
     log().log() << "sizeof(Vec2ui): " << sizeof(Vec2ui) << "\n";
     log().log() << "sizeof(Vec4f): " << sizeof(Vec4f) << "\n";
+    log().log() << "sizeof(bool): " << sizeof(bool) << "\n";
 
     log().log() << "main exit..." << std::endl;
 

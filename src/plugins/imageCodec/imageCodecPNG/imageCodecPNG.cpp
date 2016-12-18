@@ -56,17 +56,12 @@ PluginImageCodecPNG::~PluginImageCodecPNG()
     log().log() << "PluginImageCodecPNG stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-void abort_(const char * s, ...)
+bool PluginImageCodecPNG::load(ImagePtr image)
 {
-        va_list args;
-        va_start(args, s);
-        vfprintf(stderr, s, args);
-        fprintf(stderr, "\n");
-        va_end(args);
-        abort();
+    return load(image.get());
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::load(ImagePtr image)
+bool PluginImageCodecPNG::load(Image* image)
 {
     class PNGreader
     {
@@ -103,6 +98,15 @@ bool PluginImageCodecPNG::load(ImagePtr image)
 
     if (!image)
         return false;
+
+    size_t pos = image->getFileName().rfind('.');
+    if (pos != std::string::npos)
+    {
+        if (image->getFileName().substr(pos) != ".png")
+        {
+            return false;
+        }
+    }
 
     const char* file_name = image->getFileName().c_str();
     if (!file_name || image->getFileName().length() < 5) // min 5 chars to have something like x.png

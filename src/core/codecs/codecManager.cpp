@@ -10,6 +10,30 @@ CodecManager::~CodecManager()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+void CodecManager::addAudioCodec(AudioCodec* codec)
+{
+    m_audioCodecs.push_back(codec);
+}
+////////////////////////////////////////////////////////////////////////////////
+void CodecManager::removeAudioCodec(AudioCodec* codec)
+{
+    auto it = std::find(m_audioCodecs.begin(), m_audioCodecs.end(), codec);
+    if (it != m_audioCodecs.end())
+    {
+        m_audioCodecs.erase(it);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+std::vector<AudioCodec*>& CodecManager::getAudioCodecs()
+{
+    return m_audioCodecs;
+}
+////////////////////////////////////////////////////////////////////////////////
+const std::vector<AudioCodec*>& CodecManager::getAudioCodecs() const
+{
+    return m_audioCodecs;
+}
+////////////////////////////////////////////////////////////////////////////////
 void CodecManager::addImageCodec(ImageCodec* codec)
 {
     m_imageCodecs.push_back(codec);
@@ -24,8 +48,37 @@ void CodecManager::removeImageCodec(ImageCodec* codec)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-std::vector<ImageCodec*> CodecManager::getCodecs()
+std::vector<ImageCodec*>& CodecManager::getImageCodecs()
 {
     return m_imageCodecs;
+}
+////////////////////////////////////////////////////////////////////////////////
+const std::vector<ImageCodec*>& CodecManager::getImageCodecs() const
+{
+    return m_imageCodecs;
+}
+////////////////////////////////////////////////////////////////////////////////
+void CodecManager::addMeshCodec(MeshCodec* codec)
+{
+    m_meshCodecs.push_back(codec);
+}
+////////////////////////////////////////////////////////////////////////////////
+void CodecManager::removeMeshCodec(MeshCodec* codec)
+{
+    auto it = std::find(m_meshCodecs.begin(), m_meshCodecs.end(), codec);
+    if (it != m_meshCodecs.end())
+    {
+        m_meshCodecs.erase(it);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+std::vector<MeshCodec*>& CodecManager::getMeshCodecs()
+{
+    return m_meshCodecs;
+}
+////////////////////////////////////////////////////////////////////////////////
+const std::vector<MeshCodec*>& CodecManager::getMeshCodecs() const
+{
+    return m_meshCodecs;
 }
 ////////////////////////////////////////////////////////////////////////////////

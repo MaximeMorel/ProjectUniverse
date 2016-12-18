@@ -9,6 +9,14 @@ ShaderProgramGL4::ShaderProgramGL4(const std::string& name, const std::string& f
     : super(name, fileName)
 {
     m_shaderProgId = glCreateProgram();
+
+    /*GLenum binaryFormat = 0;
+    std::ifstream file(getFileName() + ".cache", std::ios_base::binary);
+    std::vector<uint8_t> binary((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    GLsizei length=binary.size();
+    const void* s = reinterpret_cast<const void*>(&binary.front());
+    binaryFormat = *reinterpret_cast<GLenum*>(&binary.front());
+    glProgramBinary(m_shaderProgId, binaryFormat, s + sizeof(binaryFormat), length - sizeof(binaryFormat));*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::~ShaderProgramGL4()
@@ -99,6 +107,27 @@ bool ShaderProgramGL4::link()
         m_isLinked = true;
         m_linkError = false;
         log().log() << *this << " link success." << std::endl;
+
+        GLint binLength = 0;
+        glGetProgramiv(m_shaderProgId, GL_PROGRAM_BINARY_LENGTH, &binLength);
+        if (binLength > 0)
+        {
+            std::vector<uint8_t> binary(binLength);
+            GLsizei lenWritten = 0;
+            GLenum binaryFormat = 0;
+            glGetProgramBinary(m_shaderProgId, binary.size(), &lenWritten, &binaryFormat, &binary.front());
+            if (lenWritten > 0)
+            {
+                if (lenWritten < binLength)
+                    binary.resize(lenWritten);
+                log().log() << "Shader program " << m_shaderProgId << " binary: " << binary.size() << " bytes, format: " << binaryFormat << "\n";
+                std::ofstream file(getFileName() + ".cache", std::ios_base::binary);
+                const char* s = reinterpret_cast<const char*>(&binaryFormat);
+                file.write(s, sizeof(binaryFormat));
+                s = reinterpret_cast<const char*>(&binary.front());
+                file.write(s, binary.size());
+            }
+        }
     }
 
     return true;

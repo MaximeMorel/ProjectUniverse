@@ -31,6 +31,12 @@ protected:
     virtual void printOn(Logger& o) const override;
 
 private:
+    bool checkLinkError();
+
+private:
+    uint32_t    m_mtimeCache;        ///< last cache file modification time
+
+private:
     using super = ShaderProgram;
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
 {
     ImagePtr image = std::make_shared<Image>(name, fileName);
     // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getCodecs())
+    for (auto* codec : getEngine().codecs().getImageCodecs())
     {
         bool success = codec->load(image);
         if (success)
@@ -38,7 +38,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
 bool Image::save(const std::string& filePath)
 {
     // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getCodecs())
+    for (auto* codec : getEngine().codecs().getImageCodecs())
     {
         bool success = codec->save(this, filePath);
         if (success)
@@ -168,5 +168,18 @@ Vec3ui8 Image::get3ui8(uint32_t x, uint32_t y)
 Vec4ui8 Image::get4ui8(uint32_t x, uint32_t y)
 {
     return Vec4ui8(&m_buffer.front());
+}
+////////////////////////////////////////////////////////////////////////////////
+void Image::reload()
+{
+    updateMtime();
+    // go through image codecs plugins
+    for (auto* codec : getEngine().codecs().getImageCodecs())
+    {
+        bool success = codec->load(this);
+        if (success)
+            break;
+    }
+    log().log() << "No suitable reader for " << getName() << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////

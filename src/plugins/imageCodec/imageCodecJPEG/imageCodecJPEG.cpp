@@ -94,6 +94,11 @@ void JPEGerrorExit(j_common_ptr cinfo)
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecJPEG::load(ImagePtr image)
 {
+    return load(image.get());
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecJPEG::load(Image* image)
+{
     class JPEGreader
     {
     public:
@@ -130,6 +135,18 @@ bool PluginImageCodecJPEG::load(ImagePtr image)
         bool decompressCreated;
         bool decompressStarted;
     };
+
+    if (!image)
+        return false;
+
+    size_t pos = image->getFileName().rfind('.');
+    if (pos != std::string::npos)
+    {
+        if (image->getFileName().substr(pos) != ".jpg")
+        {
+            return false;
+        }
+    }
 
     const char* file_name = image->getFileName().c_str();
     if (!file_name || image->getFileName().length() < 5) // min 5 chars to have something like x.png

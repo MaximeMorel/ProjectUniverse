@@ -20,6 +20,7 @@ public:
     ~PluginImageCodecPNG() override;
 
     virtual bool load(ImagePtr image) override;
+    virtual bool load(Image* image) override;
     virtual bool save(ImagePtr image, const std::string& filePath) override;
     virtual bool save(Image* image, const std::string& filePath) override;
 };

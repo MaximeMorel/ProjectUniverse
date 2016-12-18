@@ -12,7 +12,9 @@ set(CORE_SOURCE main.cpp
                 engine.cpp
                 library.cpp
                 codecs/codecManager.cpp
+                codecs/audioCodec.cpp
                 codecs/imageCodec.cpp
+                codecs/meshCodec.cpp
                 config/config.cpp
                 console/console.cpp
                 console/consolecommands.cpp

@@ -16,6 +16,8 @@ public:
 
     virtual void setImage(ImagePtr image) override;
 
+    virtual void reload() override;
+
 private:
 };
 ////////////////////////////////////////////////////////////////////////////////

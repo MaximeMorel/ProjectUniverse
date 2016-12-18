@@ -20,6 +20,7 @@ public:
     ~PluginImageCodecSDL() override;
 
     virtual bool load(ImagePtr image) override;
+    virtual bool load(Image* image) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECSDL_HPP__

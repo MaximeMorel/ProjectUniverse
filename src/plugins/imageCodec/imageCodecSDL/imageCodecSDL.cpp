@@ -68,6 +68,14 @@ PluginImageCodecSDL::~PluginImageCodecSDL()
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecSDL::load(ImagePtr image)
 {
+    return load(image.get());
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecSDL::load(Image* image)
+{
+    if (!image)
+        return false;
+
     SDL_Surface* surface = IMG_Load(image->getFileName().c_str());
     if (surface == nullptr)
     {

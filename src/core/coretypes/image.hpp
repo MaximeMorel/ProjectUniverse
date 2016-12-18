@@ -69,6 +69,8 @@ public:
     Vec3ui8 get3ui8(uint32_t x, uint32_t y);
     Vec4ui8 get4ui8(uint32_t x, uint32_t y);
 
+    virtual void reload() override;
+
 protected:
     std::vector<uint8_t> m_buffer;  ///< buffer containing image data
     Vec2ui m_resolution;            ///< image resolution
