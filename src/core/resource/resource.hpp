@@ -48,7 +48,7 @@ public:
     static const char* getSearchPath();
 
     /// reload filed base resource when modified on disk
-    virtual void reload();
+    virtual bool reload();
 
     static const ResourceType& getStaticType();
     virtual const ResourceType& getType() const;

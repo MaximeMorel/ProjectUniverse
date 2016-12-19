@@ -27,7 +27,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginMeshCodecASSIMP(*engine);
         if (lib)
         {
-            //engine->addCodec(lib);
+            engine->codecs().addMeshCodec(lib);
         }
     }
     return lib;
@@ -37,14 +37,14 @@ void closeLibInstance()
 {
     if (lib)
     {
-
+        lib->getEngine().codecs().removeMeshCodec(lib);
     }
     delete lib;
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginMeshCodecASSIMP::PluginMeshCodecASSIMP(Engine &engine)
-    : Library(engine)
+    : MeshCodec(engine)
 {
     log().log() << "PluginMeshCodecASSIMP start...\n";
 }
@@ -58,7 +58,7 @@ bool PluginMeshCodecASSIMP::load(Mesh* mesh)
 {
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile( "", aiProcessPreset_TargetRealtime_Fast);
+    const aiScene* scene = importer.ReadFile("", aiProcessPreset_TargetRealtime_Fast);
 
     // If the import failed, report it
     if (!scene)

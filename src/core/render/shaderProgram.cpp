@@ -4,6 +4,7 @@
 #include "renderPlugin.hpp"
 #include "core/resource/resourceManager.hpp"
 #include <fstream>
+#include <algorithm>
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType ShaderProgram::type("ShaderProgram");
 ////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +75,10 @@ void ShaderProgram::addShader(ShaderPtr shader)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ShaderProgram::removeShader(ShaderPtr shader)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
 bool ShaderProgram::link()
 {
     return false;
@@ -93,6 +98,64 @@ void ShaderProgram::setUniform1i(uint32_t id, int32_t v)
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgram::setUniform1i(const char* str, int32_t v)
 {
+}
+////////////////////////////////////////////////////////////////////////////////
+bool ShaderProgram::reload()
+{
+    // parse again .prog file, and add/remove shaders if needed
+    uint32_t oldmTime = m_mtime;
+    updateMtime();
+    if (m_mtime > oldmTime)
+    {
+        std::ifstream file(getFileName());
+        std::string line;
+        std::vector<std::string> lines;
+        while (file.good())
+        {
+            std::getline(file, line);
+            if (line[0] == '#' || line[0] == '\n' || line.length() < 4)
+                continue;
+
+            lines.push_back(line);
+        }
+        bool outDated = false;
+        // remove
+        for (ShaderPtr shader : m_shaders)
+        {
+            auto it = std::find(lines.begin(), lines.end(), shader->getName());
+            if (it == lines.end())
+            {
+                // shader not there anymore, remove
+                removeShader(shader);
+                outDated = true;
+            }
+            else
+            {
+                // was already there
+                lines.erase(it);
+            }
+        }
+
+        // add
+        for (const auto& str : lines)
+        {
+            bool missing = true;
+            for (ShaderPtr shader : m_shaders)
+            {
+                if (shader->getName() == str)
+                    missing = false;
+            }
+            if (missing)
+            {
+                outDated = true;
+                ShaderPtr s = res().createFromFile<Shader>(str);
+                if (s)
+                    addShader(s);
+            }
+        }
+        return outDated;
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgram::printOn(Logger& o) const

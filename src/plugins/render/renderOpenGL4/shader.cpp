@@ -25,9 +25,9 @@ uint32_t ShaderGL4::ShaderTypeMapping::get(Type t)
 ShaderGL4::ShaderGL4(const std::string& name, const std::string& fileName, Type t)
 : super(name, fileName, t)
 {
-    m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
-    loadSource();
-    compile();
+    //m_shaderId = glCreateShader(m_shaderTypeMapping.get(t));
+    //loadSource();
+    //compile();
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderGL4::~ShaderGL4()
@@ -58,6 +58,12 @@ bool ShaderGL4::compile()
 
     if (m_compileError)
         return false;
+
+    if (m_shaderId == 0)
+    {
+        m_shaderId = glCreateShader(m_shaderTypeMapping.get(m_type));
+        loadSource();
+    }
 
     glFlushErrors();
     glCompileShader(m_shaderId);
@@ -106,15 +112,22 @@ void ShaderGL4::loadSourceFromBuf(const std::string& source)
     glShaderSource(m_shaderId, 1, &src, &len);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderGL4::reload()
+bool ShaderGL4::reload()
 {
-    log().log() << "Reload: " << *this << "\n";
+    uint32_t oldmTime = m_mtime;
     updateMtime();
-    m_isCompiled = false;
-    m_compileError = false;
+    if (m_mtime > oldmTime)
+    {
+        log().log() << "Reload: " << *this << "\n";
 
-    loadSource();
-    compile();
+        m_isCompiled = false;
+        m_compileError = false;
+
+        loadSource();
+        compile();
+        return true;
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderGL4::printOn(Logger& o) const

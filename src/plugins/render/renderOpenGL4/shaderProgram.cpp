@@ -4,19 +4,15 @@
 #include "core/log/logManager.hpp"
 #include "opengltools.hpp"
 #include <GL/glew.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <algorithm>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::ShaderProgramGL4(const std::string& name, const std::string& fileName)
     : super(name, fileName)
 {
     m_shaderProgId = glCreateProgram();
-
-    /*GLenum binaryFormat = 0;
-    std::ifstream file(getFileName() + ".cache", std::ios_base::binary);
-    std::vector<uint8_t> binary((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-    GLsizei length=binary.size();
-    const void* s = reinterpret_cast<const void*>(&binary.front());
-    binaryFormat = *reinterpret_cast<GLenum*>(&binary.front());
-    glProgramBinary(m_shaderProgId, binaryFormat, s + sizeof(binaryFormat), length - sizeof(binaryFormat));*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL4::~ShaderProgramGL4()
@@ -52,13 +48,38 @@ void ShaderProgramGL4::unbind()
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::addShader(ShaderPtr shader)
 {
-    glFlushErrors();
+    /*glFlushErrors();
     glAttachShader(m_shaderProgId, shader->getShaderId());
     GLenum err = glGetError();
     if (err == GL_NO_ERROR)
         m_shaders.push_back(shader);
     else
-        log().log() << "addShader fail: " << err << "\n";
+        log().log() << "addShader fail: " << err << "\n";*/
+
+    m_shaders.push_back(shader);
+    if (shader->getShaderId() == 0)
+    {
+        m_attachDeferred.push_back(shader);
+        log().log() << "addShader deferred: " << shader << "\n";
+    }
+    else
+    {
+        glAttachShader(m_shaderProgId, shader->getShaderId());
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::removeShader(ShaderPtr shader)
+{
+    auto it = std::find(m_shaders.begin(), m_shaders.end(), shader);
+    if (it != m_shaders.end())
+    {
+        m_shaders.erase(it);
+        glDetachShader(m_shaderProgId, shader->getShaderId());
+    }
+    /*for (ShaderPtr shader :  m_shaders)
+    {
+
+    }*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool ShaderProgramGL4::link()
@@ -69,20 +90,64 @@ bool ShaderProgramGL4::link()
     if (m_linkError)
         return false;
 
-    // check shaders are compiled
-    bool allCompiled = true;
-    for (ShaderPtr shader : m_shaders)
+    // try binary cache
+    bool binaryCacheUsed = false;
+    std::string cacheFile = getFileName() + ".cache";
+    std::ifstream file(cacheFile, std::ios::in | std::ios::binary);
+    if (file)
     {
-        bool compiled = shader->compile();
-        if (!compiled)
-            allCompiled = false;
+        // invalidate cache if shader program or shader files are newer
+        struct stat st;
+        int err = stat(cacheFile.c_str(), &st);
+        if (err == 0 && st.st_mtime < m_mtime)
+        {
+            bool cacheOutdated = false;
+            for (ShaderPtr shader : m_shaders)
+            {
+                if (shader->getMtime() > st.st_mtime)
+                {
+                    cacheOutdated = true;
+                    break;
+                }
+            }
+
+            if (!cacheOutdated)
+            {
+                std::vector<uint8_t> binary((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+                GLsizei length = binary.size();
+                const uint8_t* s = reinterpret_cast<const uint8_t*>(&binary.front());
+                GLenum binaryFormat = *reinterpret_cast<GLenum*>(&binary.front());
+                const void* v = s + sizeof(binaryFormat);
+                glProgramBinary(m_shaderProgId, binaryFormat, v, length - sizeof(binaryFormat));
+                binaryCacheUsed = true;
+            }
+        }
     }
 
-    if (!allCompiled)
-        log().log() << *this << "some stages did not compile.\n";
+    if (!binaryCacheUsed)
+    {
+        // check shaders are compiled
+        bool allCompiled = true;
+        for (ShaderPtr shader : m_shaders)
+        {
+            bool compiled = shader->compile();
+            if (!compiled)
+                allCompiled = false;
+        }
 
-    glLinkProgram(m_shaderProgId);
+        for (ShaderPtr shader : m_attachDeferred)
+        {
+            glAttachShader(m_shaderProgId, shader->getShaderId());
+        }
+        m_attachDeferred.clear();
 
+        if (!allCompiled)
+            log().log() << *this << "some stages did not compile.\n";
+
+        glLinkProgram(m_shaderProgId);
+    }
+
+    // check linking status
     GLint status = GL_FALSE;
     glGetProgramiv(m_shaderProgId, GL_LINK_STATUS, &status);
     if (status == GL_FALSE)
@@ -108,24 +173,28 @@ bool ShaderProgramGL4::link()
         m_linkError = false;
         log().log() << *this << " link success." << std::endl;
 
-        GLint binLength = 0;
-        glGetProgramiv(m_shaderProgId, GL_PROGRAM_BINARY_LENGTH, &binLength);
-        if (binLength > 0)
+        // save binary in cache if successful
+        if (!binaryCacheUsed)
         {
-            std::vector<uint8_t> binary(binLength);
-            GLsizei lenWritten = 0;
-            GLenum binaryFormat = 0;
-            glGetProgramBinary(m_shaderProgId, binary.size(), &lenWritten, &binaryFormat, &binary.front());
-            if (lenWritten > 0)
+            GLint binLength = 0;
+            glGetProgramiv(m_shaderProgId, GL_PROGRAM_BINARY_LENGTH, &binLength);
+            if (binLength > 0)
             {
-                if (lenWritten < binLength)
-                    binary.resize(lenWritten);
-                log().log() << "Shader program " << m_shaderProgId << " binary: " << binary.size() << " bytes, format: " << binaryFormat << "\n";
-                std::ofstream file(getFileName() + ".cache", std::ios_base::binary);
-                const char* s = reinterpret_cast<const char*>(&binaryFormat);
-                file.write(s, sizeof(binaryFormat));
-                s = reinterpret_cast<const char*>(&binary.front());
-                file.write(s, binary.size());
+                std::vector<uint8_t> binary(binLength);
+                GLsizei lenWritten = 0;
+                GLenum binaryFormat = 0;
+                glGetProgramBinary(m_shaderProgId, binary.size(), &lenWritten, &binaryFormat, &binary.front());
+                if (lenWritten > 0)
+                {
+                    if (lenWritten < binLength)
+                        binary.resize(lenWritten);
+                    log().log() << "Shader program " << m_shaderProgId << " binary: " << binary.size() << " bytes, format: " << binaryFormat << "\n";
+                    std::ofstream file(getFileName() + ".cache", std::ios::out | std::ios::binary);
+                    const char* s = reinterpret_cast<const char*>(&binaryFormat);
+                    file.write(s, sizeof(binaryFormat));
+                    s = reinterpret_cast<const char*>(&binary.front());
+                    file.write(s, binary.size());
+                }
             }
         }
     }
@@ -155,17 +224,25 @@ void ShaderProgramGL4::setUniform1i(const char* str, int32_t v)
     setUniform1f(loc, v);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL4::reload()
+bool ShaderProgramGL4::reload()
 {
-    log().log() << "Reload: " << *this << "\n";
-    updateMtime();
-    m_isLinked = false;
-    m_linkError = false;
+    bool shaderProgOutdated = ShaderProgram::reload();
+
+    bool shadersOutDated = false;
     for (ShaderPtr shader : m_shaders)
     {
-        shader->reload();
+        if (shader->reload())
+            shadersOutDated = true;
     }
-    link();
+    if (shaderProgOutdated || shadersOutDated)
+    {
+        log().log() << "Reload: " << *this << "\n";
+        m_isLinked = false;
+        m_linkError = false;
+        link();
+        return true;
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL4::printOn(Logger& o) const

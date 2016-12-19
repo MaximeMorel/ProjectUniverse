@@ -89,12 +89,18 @@ void TextureGL4::setImage(ImagePtr image)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void TextureGL4::reload()
+bool TextureGL4::reload()
 {
     if (m_image)
     {
-        m_image->reload();
-        setImage(m_image);
+        uint32_t oldmTime = m_mtime;
+        updateMtime();
+        if (m_mtime > oldmTime)
+        {
+            m_image->reload();
+            setImage(m_image);
+        }
     }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

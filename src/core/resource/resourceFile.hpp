@@ -22,6 +22,9 @@ public:
     ////////////////////////////////////////////////////////////////////////////
     const std::string& getFileName() const;
 
+    /// Get last modification time
+    uint32_t getMtime() const;
+
 protected:
     virtual void printOn(Logger& o) const override;
 

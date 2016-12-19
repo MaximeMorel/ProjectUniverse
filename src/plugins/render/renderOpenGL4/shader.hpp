@@ -13,7 +13,7 @@ public:
 
     virtual bool compile() override;
 
-    virtual void reload() override;
+    virtual bool reload() override;
 
 private:
     /// Load shader source from resource filename

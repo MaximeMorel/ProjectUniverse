@@ -39,6 +39,9 @@ public:
     /// Add a shader to the shader program
     virtual void addShader(ShaderPtr shader);
 
+    /// Remove a shader to the shader program
+    virtual void removeShader(ShaderPtr shader);
+
     /// Link the program. Will try to compile attached shaders if not done already
     virtual bool link();
 
@@ -47,6 +50,8 @@ public:
 
     virtual void setUniform1i(uint32_t id, int32_t v);
     virtual void setUniform1i(const char* str, int32_t v);
+
+    virtual bool reload() override;
 
 protected:
     virtual void printOn(Logger& o) const override;

@@ -332,6 +332,15 @@ int main(int argc, char **argv)
     }
     //lib = nullptr;
 
+    PluginLibPtr libM1 = res().createFromFile<PluginLib>("libMeshCodecCustom.so");
+    if (libM1 && libM1->isValid())
+    {
+        engine.log().log() << libM1 << "\n";
+        libM1->getLibInstance(&engine);
+
+        MeshPtr im = res().createFromFile<Mesh>("data/mesh/untitled.stl");
+    }
+
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
         PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
@@ -467,8 +476,10 @@ int main(int argc, char **argv)
                     fps = 0;
                     timeSlept = 0.0;
                     timer.reset();
-                    prog->reload();
-                    tex->reload();
+                    if (prog)
+                        prog->reload();
+                    if (tex)
+                        tex->reload();
                 }
             }
             log().log() << res() << "\n";

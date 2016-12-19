@@ -170,16 +170,29 @@ Vec4ui8 Image::get4ui8(uint32_t x, uint32_t y)
     return Vec4ui8(&m_buffer.front());
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Image::reload()
+bool Image::reload()
 {
+    uint32_t oldmTime = m_mtime;
     updateMtime();
-    // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getImageCodecs())
+    if (m_mtime > oldmTime)
     {
-        bool success = codec->load(this);
-        if (success)
-            break;
+        // go through image codecs plugins
+        bool reloaded = false;
+        for (auto* codec : getEngine().codecs().getImageCodecs())
+        {
+            bool success = codec->load(this);
+            if (success)
+            {
+                reloaded = true;
+                break;
+            }
+        }
+        if (reloaded)
+        {
+            log().log() << "No suitable reader for " << getName() << "\n";
+            return true;
+        }
     }
-    log().log() << "No suitable reader for " << getName() << "\n";
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -2,11 +2,11 @@
 #define __IMAGE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resourceFile.hpp"
-#include "buffer.hpp"
 #include "core/math/vec2.hpp"
 #include "core/math/vec3.hpp"
 #include "core/math/vec4.hpp"
 #include "core/log/logger.hpp"
+#include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class Image;
 using ImagePtr = std::shared_ptr<Image>;
@@ -69,7 +69,7 @@ public:
     Vec3ui8 get3ui8(uint32_t x, uint32_t y);
     Vec4ui8 get4ui8(uint32_t x, uint32_t y);
 
-    virtual void reload() override;
+    virtual bool reload() override;
 
 protected:
     std::vector<uint8_t> m_buffer;  ///< buffer containing image data

@@ -2,7 +2,7 @@
 #include "imageCodecPNG.hpp"
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
-#include <functional>
+//#include <functional>
 #include <png.h>
 #include <zlib.h>
 ////////////////////////////////////////////////////////////////////////////////

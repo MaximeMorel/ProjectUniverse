@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
+#include "core/codecs/meshCodec.hpp"
 #include "core/geom/mesh/mesh.hpp"
 #include "meshcodecassimp_export.h"
 ////////////////////////////////////////////////////////////////////////////////
@@ -12,13 +13,13 @@ extern "C" MESHCODECASSIMP_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" MESHCODECASSIMP_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginMeshCodecASSIMP : public Library
+class PluginMeshCodecASSIMP : public MeshCodec
 {
 public:
     PluginMeshCodecASSIMP(Engine& engine);
     ~PluginMeshCodecASSIMP() override;
 
-    bool load(Mesh* mesh);
+    virtual bool load(Mesh* mesh) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MESHCODECASSIMP_HPP__

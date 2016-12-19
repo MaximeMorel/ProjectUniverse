@@ -10,7 +10,7 @@ MeshCodec::~MeshCodec()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-/*bool MeshCodec::load(MeshPtr mesh)
+bool MeshCodec::load(MeshPtr mesh)
 {
     return false;
 }
@@ -28,5 +28,5 @@ bool MeshCodec::save(MeshPtr mesh, const std::string& filePath)
 bool MeshCodec::save(Mesh* mesh, const std::string& filePath)
 {
     return false;
-}*/
+}
 ////////////////////////////////////////////////////////////////////////////////
