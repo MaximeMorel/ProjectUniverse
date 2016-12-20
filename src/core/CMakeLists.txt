@@ -71,6 +71,7 @@ set(CORE_SOURCE main.cpp
                 resource/resourceFile.cpp
                 resource/resourceManager.cpp
                 resource/resourceManager.inl
+                scene/scene.cpp
                 tools/timer.cpp
                 windowContext/windowPlugin.cpp
                 )

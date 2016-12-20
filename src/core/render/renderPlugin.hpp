@@ -7,6 +7,8 @@
 #include "shaderProgram.hpp"
 #include "texture.hpp"
 #include "vao.hpp"
+#include "bufferObject.hpp"
+#include "core/scene/scene.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class RenderPlugin : public Library
 {
@@ -22,8 +24,10 @@ public:
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName);
+    virtual BufferObjectPtr createBufferObject(const std::string& name);
 
     virtual void draw();
+    virtual void drawScene(Scene* scene);
 
     virtual size_t getMemSize() const;
 

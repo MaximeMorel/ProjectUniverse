@@ -5,6 +5,7 @@
 #include "core/engine.hpp"
 #include "core/windowContext/windowPlugin.hpp"
 #include "core/tools/timer.hpp"
+#include "core/scene/scene.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "example",
                           "example",
@@ -47,58 +48,41 @@ ApplicationExample::~ApplicationExample()
 ////////////////////////////////////////////////////////////////////////////////
 void ApplicationExample::run()
 {
-    ImagePtr image;
-    PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
-    if (libJPEG && libJPEG->isValid())
-    {
-        log().log() << libJPEG << "\n";
-        libJPEG->getLibInstance(&getEngine());
-
-        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
-        if (im)
-            im->save("im_copy.jpg");
-        image = im;
-    }
-
-    PluginLibPtr libPNG = res().createFromFile<PluginLib>("libImageCodecPNG.so");
-    if (libPNG && libPNG->isValid())
-    {
-        log().log() << libPNG << "\n";
-        libPNG->getLibInstance(&getEngine());
-
-        ImagePtr im = res().createFromFile<Image>("data/images/im2.png");
-        if (im)
-            im->save("im2_copy.png");
-        image = im;
-    }
-
-    PluginLibPtr lib = res().createFromFile<PluginLib>("libImageCodecSDL.so");
-    if (lib && lib->isValid())
-    {
-        log().log() << lib << "\n";
-        lib->getLibInstance(&getEngine());
-
-        ImagePtr im = res().createFromFile<Image>("data/images/im.jpg");
-        if (im)
-            im->save("a.png");
-        image = im;
-    }
-    //lib = nullptr;
-
-    PluginLibPtr libM1 = res().createFromFile<PluginLib>("libMeshCodecCustom.so");
-    if (libM1 && libM1->isValid())
-    {
-        log().log() << libM1 << "\n";
-        libM1->getLibInstance(&getEngine());
-
-        MeshPtr im = res().createFromFile<Mesh>("data/mesh/untitled.stl");
-    }
-
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
         PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
         PluginLibPtr libInput = res().createFromFile<PluginLib>("libInputSDL.so");
         PluginLibPtr libAudio = res().createFromFile<PluginLib>("libAudioOpenAL.so");
+        PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
+        PluginLibPtr libPNG = res().createFromFile<PluginLib>("libImageCodecPNG.so");
+        PluginLibPtr libSDLimage = res().createFromFile<PluginLib>("libImageCodecSDL.so");
+        PluginLibPtr libMeshCustom = res().createFromFile<PluginLib>("libMeshCodecCustom.so");
+        PluginLibPtr libASSIMP = res().createFromFile<PluginLib>("libMeshCodecASSIMP.so");
+        if (libJPEG && libJPEG->isValid())
+        {
+            log().log() << libJPEG << "\n";
+            libJPEG->getLibInstance(&getEngine());
+        }
+        if (libPNG && libPNG->isValid())
+        {
+            log().log() << libPNG << "\n";
+            libPNG->getLibInstance(&getEngine());
+        }
+        if (libSDLimage && libSDLimage->isValid())
+        {
+            log().log() << libSDLimage << "\n";
+            libSDLimage->getLibInstance(&getEngine());
+        }
+        if (libMeshCustom && libMeshCustom->isValid())
+        {
+            log().log() << libMeshCustom << "\n";
+            libMeshCustom->getLibInstance(&getEngine());
+        }
+        if (libASSIMP && libASSIMP->isValid())
+        {
+            log().log() << libASSIMP << "\n";
+            libASSIMP->getLibInstance(&getEngine());
+        }
         if (libAudio && libAudio->isValid())
         {
             log().log() << libAudio << "\n";
@@ -138,13 +122,22 @@ void ApplicationExample::run()
             if (prog)
                 prog->bind();
 
-            VAOPtr v = res().create<VAO>("vao");
-            if (v)
-                v->bind();
+            //VAOPtr v = res().create<VAO>("vao");
+            //if (v)
+            //    v->bind();
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
+            ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
 
             TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
+
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
+            BufferObjectPtr b = res().create<BufferObject>("vbo1");
+            b->bindVBO();
+            b->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
+
+            Scene scene;
+            scene.add(mesh.get());
 
             bool stop = false;
 
@@ -194,8 +187,8 @@ void ApplicationExample::run()
                     ;
                 }
 
-                if (v)
-                    v->bind();
+                //if (v)
+                //    v->bind();
 
                 if (prog)
                 {
@@ -205,6 +198,7 @@ void ApplicationExample::run()
                         prog2->setUniform1i("tex", tex->getTextureId());
                 }
                 render().impl()->draw();
+                render().impl()->drawScene(&scene);
                 w->swapBuffers();
 
                 double frameTime = frameTimer.getTime();

@@ -4,6 +4,7 @@
 #include "shaderProgram.hpp"
 #include "texture.hpp"
 #include "vao.hpp"
+#include "bufferObject.hpp"
 #include "opengltools.hpp"
 #include "core/log/logManager.hpp"
 #include <GL/glew.h>
@@ -89,6 +90,11 @@ TexturePtr PluginRenderOpenGL4::createTexture(const std::string& name, const std
     return TextureGL4::create(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
+BufferObjectPtr PluginRenderOpenGL4::createBufferObject(const std::string& name)
+{
+    return BufferObjectGL4::create(name);
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::draw()
 {
     //glFlushErrors();
@@ -96,7 +102,16 @@ void PluginRenderOpenGL4::draw()
     glEnable(GL_POINT_SPRITE);
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glDrawArrays(GL_POINTS, 0, 1);
+    glFlush();
     //glLogCurrentError();
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL4::drawScene(Scene* scene)
+{
+    for (auto* mesh : scene->m_meshes)
+    {
+        //glDraw
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::getInfo()
