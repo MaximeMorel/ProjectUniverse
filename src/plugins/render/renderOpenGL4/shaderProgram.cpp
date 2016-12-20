@@ -99,7 +99,7 @@ bool ShaderProgramGL4::link()
         // invalidate cache if shader program or shader files are newer
         struct stat st;
         int err = stat(cacheFile.c_str(), &st);
-        if (err == 0 && st.st_mtime < m_mtime)
+        if (err == 0 && st.st_mtime >= m_mtime)
         {
             bool cacheOutdated = false;
             for (ShaderPtr shader : m_shaders)
