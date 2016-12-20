@@ -7,7 +7,9 @@ class Application : public Library
 {
 public:
     Application(Engine& engine);
-    virtual ~Application();
+    virtual ~Application() override;
+
+    virtual void run();
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __APPLICATION_HPP__

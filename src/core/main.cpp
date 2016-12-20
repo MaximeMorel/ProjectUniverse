@@ -263,6 +263,16 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
+    PluginAppPtr app = res().createFromFile<PluginApp>("example/libexample.so");
+    if (app && app->isValid())
+    {
+        engine.log().log() << app << "\n";
+        Application* a = app->getLibInstance(&engine);
+        if (a)
+            a->run();
+    }
+    return 0;
+
     /*PluginAppPtr app = res().createFromFile<PluginApp>("AppNull/libAppNull.so");
     if (app && app->isValid())
     {

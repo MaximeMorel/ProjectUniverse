@@ -74,6 +74,7 @@ void setGlobalEngine(Engine& engine)
     setGlobalLogger(engine.log());
     setGlobalRender(engine.render());
     setGlobalResourceManager(engine.res());
+    setGlobalInput(engine.input());
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine& getEngine()
