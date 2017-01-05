@@ -224,6 +224,17 @@ void ShaderProgramGL4::setUniform1i(const char* str, int32_t v)
     setUniform1f(loc, v);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniformMat4f(uint32_t id, const Mat4f& m)
+{
+    glProgramUniformMatrix4fv(m_shaderProgId, id, 1, GL_FALSE, m.getArray());
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL4::setUniformMat4f(const char* str, const Mat4f& m)
+{
+    GLint loc = glGetUniformLocation(m_shaderProgId, str);
+    setUniformMat4f(loc, m);
+}
+////////////////////////////////////////////////////////////////////////////////
 bool ShaderProgramGL4::reload()
 {
     bool shaderProgOutdated = ShaderProgram::reload();

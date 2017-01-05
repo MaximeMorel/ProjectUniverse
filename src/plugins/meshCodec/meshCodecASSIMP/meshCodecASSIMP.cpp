@@ -58,7 +58,7 @@ bool PluginMeshCodecASSIMP::load(Mesh* mesh)
 {
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile("", aiProcessPreset_TargetRealtime_Fast);
+    const aiScene* scene = importer.ReadFile(mesh->getFileName(), aiProcessPreset_TargetRealtime_Fast);
 
     // If the import failed, report it
     if (!scene)

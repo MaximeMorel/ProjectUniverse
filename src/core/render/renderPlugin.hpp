@@ -7,6 +7,7 @@
 #include "shaderProgram.hpp"
 #include "texture.hpp"
 #include "vao.hpp"
+#include "gpuMesh.hpp"
 #include "bufferObject.hpp"
 #include "core/scene/scene.hpp"
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +26,7 @@ public:
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName);
     virtual BufferObjectPtr createBufferObject(const std::string& name);
+    virtual GPUMeshPtr createGPUMesh(const std::string& name);
 
     virtual void draw();
     virtual void drawScene(Scene* scene);

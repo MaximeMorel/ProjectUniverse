@@ -65,6 +65,7 @@ set(CORE_SOURCE main.cpp
                 render/shaderProgram.cpp
                 render/texture.cpp
                 render/vao.cpp
+                render/gpuMesh.cpp
                 render/renderManager.cpp
                 render/renderPlugin.cpp
                 resource/resource.cpp

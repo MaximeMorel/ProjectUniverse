@@ -124,9 +124,12 @@ bool PluginMeshCodecCustom::loadStlBinary(Mesh* mesh)
 
     for (uint32_t i = 0; i < numTris; ++i)
     {
-        file.read(s, sizeof(tri));
+        file.read(s, 50);
         if (!file)
             break;
+
+        for (uint8_t j = 0; j < 3; ++j)
+            mesh->m_normals.push_back(tri.n[j]);
 
         for (uint8_t j = 0; j < 3; ++j)
             mesh->m_vertices.push_back(tri.v1[j]);

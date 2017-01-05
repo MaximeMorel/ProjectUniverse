@@ -132,9 +132,22 @@ void ApplicationExample::run()
             TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
 
             MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
-            BufferObjectPtr b = res().create<BufferObject>("vbo1");
-            b->bindVBO();
-            b->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
+            /*BufferObjectPtr b = res().create<BufferObject>("vbo1");
+            if (b)
+            {
+                b->bindVBO();
+                b->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
+            }
+            BufferObjectPtr b2 = res().create<BufferObject>("vbo2");
+            if (b2)
+            {
+                b2->bindVBO();
+                b2->setData(&mesh->m_normals.front(), mesh->m_normals.size() * sizeof(float));
+            }
+            mesh->m_gpuMesh->vao = res().create<VAO>("vaomesh");
+            mesh->m_gpuMesh->v = b;
+            mesh->m_gpuMesh->n = b2;
+            mesh->m_gpuMesh->shaderProgram = prog3;*/
 
             Scene scene;
             scene.add(mesh.get());
@@ -197,7 +210,15 @@ void ApplicationExample::run()
                     if (tex)
                         prog2->setUniform1i("tex", tex->getTextureId());
                 }
-                render().impl()->draw();
+                //render().impl()->draw();
+                //if (b)
+                //    b->bindVBO();
+                if (prog3)
+                {
+                    prog3->bind();
+                    Mat4f mv = Mat4f::rotate(gameTimer.getTime()/10.0, Vec3f(0.0f, 1.0f, 0.0f));
+                    prog3->setUniformMat4f("mv", mv);
+                }
                 render().impl()->drawScene(&scene);
                 w->swapBuffers();
 
@@ -225,6 +246,8 @@ void ApplicationExample::run()
                     timer.reset();
                     if (prog)
                         prog->reload();
+                    if (prog3)
+                        prog3->reload();
                     if (tex)
                         tex->reload();
                 }

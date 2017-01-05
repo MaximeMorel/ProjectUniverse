@@ -44,6 +44,11 @@ BufferObjectPtr RenderPlugin::createBufferObject(const std::string& name)
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
+GPUMeshPtr RenderPlugin::createGPUMesh(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
 void RenderPlugin::draw()
 {
 }

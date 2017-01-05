@@ -2,6 +2,7 @@
 #define __MESH_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resourceFile.hpp"
+#include "core/render/gpuMesh.hpp"
 #include "core/math/vec3.hpp"
 #include "core/log/logger.hpp"
 #include <vector>
@@ -20,6 +21,8 @@ public:
     virtual size_t getMemSize() const override;
 
     std::vector<float> m_vertices;
+    std::vector<float> m_normals;
+    GPUMeshPtr m_gpuMesh;
 
 private:
 
