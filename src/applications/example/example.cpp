@@ -115,6 +115,7 @@ void ApplicationExample::run()
             render().setPlugin(libRender);
 
             w->setResolution(1280, 720);
+            w->setResolution(800, 800);
             w->setResolution(640, 480);
             w->setResolution(100, 100);
 

@@ -115,6 +115,7 @@ void PluginRenderOpenGL4::draw()
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::drawScene(Scene* scene)
 {
+    glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (Mesh* mesh : scene->m_meshes)
     {
@@ -136,7 +137,7 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
                 mesh->m_gpuMesh->n->bindVBO();
                 mesh->m_gpuMesh->n->setData(&mesh->m_normals.front(), mesh->m_normals.size() * sizeof(float));
                 glEnableVertexAttribArray(1);
-                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
             }
         }
         if (mesh->m_gpuMesh)

@@ -8,10 +8,9 @@ in vec3 pn;
 
 void main(void)
 {
-    const vec4 lightPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec4 col = lightPos;
-    vec3 lDir = normalize(p - lightPos.xyz);
-    float v = dot(lDir, normalize(pn));
-    gl_FragColor = vec4(1.0f, 0.5f, 0.5f + 0.5f * cos(fTime*2.0f), 1.0f);
-    gl_FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    vec4 lightPos = vec4(10.0f, 10.0f, 0.0f, 1.0f);
+    vec3 lDir = normalize(lightPos.xyz - p);
+    float v = clamp(dot(lDir, normalize(pn)), 0.0f, 0.75f) + 0.25f;
+    //gl_FragColor = vec4(1.0f, 0.5f, 0.5f + 0.5f * cos(fTime*2.0f), 1.0f);
+    gl_FragColor = v * vec4(1.0f, 0.0f, 0.0f, 1.0f);
 }
