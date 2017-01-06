@@ -18,6 +18,7 @@ public:
     static GPUMeshPtr create(const std::string& name);
 
     VAOPtr vao;
+    BufferObjectPtr i;
     BufferObjectPtr v;
     BufferObjectPtr n;
     ShaderProgramPtr shaderProgram;

@@ -127,6 +127,10 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
                 mesh->m_gpuMesh->vao = res().create<VAO>(mesh->getName());
                 mesh->m_gpuMesh->vao->bind();
 
+                mesh->m_gpuMesh->i = res().create<BufferObject>(mesh->getName() + "i");
+                mesh->m_gpuMesh->i->bindIBO();
+                mesh->m_gpuMesh->i->setData(&mesh->m_indices32.front(), mesh->m_indices32.size() * sizeof(uint8_t));
+
                 mesh->m_gpuMesh->v = res().create<BufferObject>(mesh->getName() + "v");
                 mesh->m_gpuMesh->v->bindVBO();
                 mesh->m_gpuMesh->v->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
@@ -143,7 +147,8 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
         if (mesh->m_gpuMesh)
         {
             mesh->m_gpuMesh->vao->bind();
-            glDrawArrays(GL_TRIANGLES, 0, mesh->m_vertices.size());
+            //glDrawArrays(GL_TRIANGLES, 0, mesh->m_vertices.size());
+            glDrawElements(GL_TRIANGLES, mesh->m_indices32.size(), GL_UNSIGNED_INT, nullptr);
         }
     }
 }

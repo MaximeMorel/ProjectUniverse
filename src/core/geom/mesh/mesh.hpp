@@ -20,6 +20,9 @@ public:
 
     virtual size_t getMemSize() const override;
 
+    std::vector<uint8_t> m_indices8;
+    std::vector<uint16_t> m_indices16;
+    std::vector<uint32_t> m_indices32;
     std::vector<float> m_vertices;
     std::vector<float> m_normals;
     GPUMeshPtr m_gpuMesh;
