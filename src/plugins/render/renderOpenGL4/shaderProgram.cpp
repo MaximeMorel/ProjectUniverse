@@ -166,6 +166,13 @@ bool ShaderProgramGL4::link()
                 infoLog.resize(charsWritten);
             log().log() << "Shader program log: " << infoLog.substr(0, charsWritten) << "\n";
         }
+
+        if (binaryCacheUsed)
+        {
+            unlink(cacheFile.c_str());
+            m_linkError = false;
+            link();
+        }
     }
     else
     {

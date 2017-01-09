@@ -129,7 +129,7 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
 
                 mesh->m_gpuMesh->i = res().create<BufferObject>(mesh->getName() + "i");
                 mesh->m_gpuMesh->i->bindIBO();
-                mesh->m_gpuMesh->i->setData(&mesh->m_indices32.front(), mesh->m_indices32.size() * sizeof(uint8_t));
+                mesh->m_gpuMesh->i->setData(&mesh->m_indices32.front(), mesh->m_indices32.size() * sizeof(uint32_t));
 
                 mesh->m_gpuMesh->v = res().create<BufferObject>(mesh->getName() + "v");
                 mesh->m_gpuMesh->v->bindVBO();
