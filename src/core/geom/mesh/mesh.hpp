@@ -2,7 +2,7 @@
 #define __MESH_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resourceFile.hpp"
-#include "core/render/gpuMesh.hpp"
+#include "core/render/renderMesh.hpp"
 #include "core/math/vec3.hpp"
 #include "core/log/logger.hpp"
 #include <vector>
@@ -25,7 +25,7 @@ public:
     std::vector<uint32_t> m_indices32;
     std::vector<float> m_vertices;
     std::vector<float> m_normals;
-    GPUMeshPtr m_gpuMesh;
+    RenderMeshPtr m_renderMesh;
 
 private:
 

@@ -14,7 +14,7 @@ set(PLUGIN_SOURCE renderOpenGL4.cpp
                   shaderProgram.cpp
                   texture.cpp
                   vao.cpp
-                  gpuMesh.cpp
+                  renderMesh.cpp
                   opengltools.cpp)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/lib)

@@ -25,9 +25,11 @@ public:
 
     void getInfo();
 
+    void update();
+
 private:
     ALCdevice* m_device;
-    ALCcontext *m_context;
+    ALCcontext* m_context;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __AUDIOOPENAL_HPP__

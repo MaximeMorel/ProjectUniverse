@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "audioCodecOggVorbis.hpp"
+#include "imageCodecCustom.hpp"
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo pluginInfo = { "audioCodecOggVorbis",
-                          "audioCodecOggVorbis",
-                          "audiocodec",
+PluginInfo pluginInfo = { "imageCodecCustom",
+                          "imageCodecCustom",
+                          "imagecodec",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis* lib = nullptr;
+PluginImageCodecCustom* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
@@ -20,10 +20,10 @@ Library* getLibInstance(Engine* engine)
 {
     if (lib == nullptr)
     {
-        lib = new PluginAudioCodecOggVorbis(*engine);
+        lib = new PluginImageCodecCustom(*engine);
         if (lib)
         {
-            engine->codecs().addAudioCodec(lib);
+            engine->codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -33,20 +33,33 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeAudioCodec(lib);
+        lib->getEngine().codecs().removeImageCodec(lib);
     }
     delete lib;
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis::PluginAudioCodecOggVorbis(Engine &engine)
-    : AudioCodec(engine)
+PluginImageCodecCustom::PluginImageCodecCustom(Engine &engine)
+    : ImageCodec(engine)
 {
-    log().log() << "PluginAudioCodecOggVorbis start...\n";
+    log().log() << "PluginImageCodecCustom start...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginAudioCodecOggVorbis::~PluginAudioCodecOggVorbis()
+PluginImageCodecCustom::~PluginImageCodecCustom()
 {
-    log().log() << "PluginAudioCodecOggVorbis stop...\n";
+    log().log() << "PluginImageCodecCustom stop...\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::load(ImagePtr image)
+{
+    return load(image.get());
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::load(Image* image)
+{
+    if (!image)
+        return false;
+
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

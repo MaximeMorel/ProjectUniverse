@@ -40,7 +40,9 @@ void BufferObjectGL4::bindIBO()
 ////////////////////////////////////////////////////////////////////////////////
 void BufferObjectGL4::setData(const void* data, size_t size)
 {
-    //glNamedBufferData(m_bufferId, size, data, GL_STATIC_DRAW);
-    glBufferData(m_targetType, size, data, GL_STATIC_DRAW);
+    if (glNamedBufferData)
+        glNamedBufferData(m_bufferId, size, data, GL_STATIC_DRAW);
+    else
+        glBufferData(m_targetType, size, data, GL_STATIC_DRAW);
 }
 ////////////////////////////////////////////////////////////////////////////////

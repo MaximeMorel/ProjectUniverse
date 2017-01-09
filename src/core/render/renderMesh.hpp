@@ -1,21 +1,24 @@
-#ifndef __GPUMESH_HPP__
-#define __GPUMESH_HPP__
+#ifndef __RENDERMESH_HPP__
+#define __RENDERMESH_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resource.hpp"
 #include "bufferObject.hpp"
 #include "vao.hpp"
 #include "shaderProgram.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class GPUMesh;
-using GPUMeshPtr = std::shared_ptr<GPUMesh>;
+class Mesh;
+class RenderMesh;
+using RenderMeshPtr = std::shared_ptr<RenderMesh>;
 ////////////////////////////////////////////////////////////////////////////////
-class GPUMesh : public Resource
+class RenderMesh : public Resource
 {
 public:
-    GPUMesh(const std::string& name);
-    virtual ~GPUMesh() override;
+    RenderMesh(const std::string& name);
+    virtual ~RenderMesh() override;
 
-    static GPUMeshPtr create(const std::string& name);
+    static RenderMeshPtr create(const std::string& name);
+
+    virtual void setup(Mesh* mesh);
 
     VAOPtr vao;
     BufferObjectPtr i;
@@ -26,11 +29,10 @@ public:
 protected:
     virtual void printOn(Logger& o) const override;
 
-
 public:
     virtual ResourceType& dyntype() override { return type; }
     virtual const ResourceType& dyntype() const override { return type; }
     static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __GPUMESH_HPP__
+#endif // __RENDERMESH_HPP__

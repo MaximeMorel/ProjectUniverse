@@ -1,18 +1,20 @@
-#ifndef __GPUMESHGL4_HPP__
-#define __GPUMESHGL4_HPP__
+#ifndef __RENDERMESHGL4_HPP__
+#define __RENDERMESHGL4_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/render/gpuMesh.hpp"
+#include "core/render/renderMesh.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class GPUMeshGL4;
-using GPUMeshGL4Ptr = std::shared_ptr<GPUMeshGL4>;
+class RenderMeshGL4;
+using RenderMeshGL4Ptr = std::shared_ptr<RenderMeshGL4>;
 ////////////////////////////////////////////////////////////////////////////////
-class GPUMeshGL4 : public GPUMesh
+class RenderMeshGL4 : public RenderMesh
 {
 public:
-    GPUMeshGL4(const std::string& name);
-    virtual ~GPUMeshGL4() override;
+    RenderMeshGL4(const std::string& name);
+    virtual ~RenderMeshGL4() override;
 
-    static GPUMeshPtr create(const std::string& name);
+    static RenderMeshPtr create(const std::string& name);
+
+    virtual void setup(Mesh* mesh) override;
 
 public:
     virtual ResourceType& dyntype() override { return type; }
@@ -20,4 +22,4 @@ public:
     static ResourceType type;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __GPUMESHGL4_HPP__
+#endif // __RENDERMESHGL4_HPP__

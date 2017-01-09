@@ -11,6 +11,7 @@ set(CORE_SOURCE main.cpp
                 application.cpp
                 engine.cpp
                 library.cpp
+                audio/audioBuffer.cpp
                 codecs/codecManager.cpp
                 codecs/audioCodec.cpp
                 codecs/imageCodec.cpp
@@ -65,7 +66,7 @@ set(CORE_SOURCE main.cpp
                 render/shaderProgram.cpp
                 render/texture.cpp
                 render/vao.cpp
-                render/gpuMesh.cpp
+                render/renderMesh.cpp
                 render/renderManager.cpp
                 render/renderPlugin.cpp
                 resource/resource.cpp

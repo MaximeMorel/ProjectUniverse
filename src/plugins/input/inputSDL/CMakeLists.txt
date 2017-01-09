@@ -20,7 +20,7 @@ add_library(${PROJECT_NAME} MODULE ${PLUGIN_SOURCE})
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+#set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package (SDL2)
 if (SDL2_FOUND)
     include_directories(${SDL2_INCLUDE_DIR})

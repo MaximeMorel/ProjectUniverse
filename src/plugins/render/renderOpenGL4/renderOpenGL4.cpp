@@ -4,7 +4,7 @@
 #include "shaderProgram.hpp"
 #include "texture.hpp"
 #include "vao.hpp"
-#include "gpuMesh.hpp"
+#include "renderMesh.hpp"
 #include "bufferObject.hpp"
 #include "opengltools.hpp"
 #include "core/log/logManager.hpp"
@@ -97,9 +97,9 @@ BufferObjectPtr PluginRenderOpenGL4::createBufferObject(const std::string& name)
     return BufferObjectGL4::create(name);
 }
 ////////////////////////////////////////////////////////////////////////////////
-GPUMeshPtr PluginRenderOpenGL4::createGPUMesh(const std::string& name)
+RenderMeshPtr PluginRenderOpenGL4::createRenderMesh(const std::string& name)
 {
-    return GPUMeshGL4::create(name);
+    return RenderMeshGL4::create(name);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL4::draw()
@@ -119,34 +119,17 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (Mesh* mesh : scene->m_meshes)
     {
-        if (!mesh->m_gpuMesh)
+        if (!mesh->m_renderMesh)
         {
-            mesh->m_gpuMesh = res().create<GPUMesh>(mesh->getName());
-            if (mesh->m_gpuMesh)
+            mesh->m_renderMesh = res().create<RenderMesh>(mesh->getName());
+            if (mesh->m_renderMesh)
             {
-                mesh->m_gpuMesh->vao = res().create<VAO>(mesh->getName());
-                mesh->m_gpuMesh->vao->bind();
-
-                mesh->m_gpuMesh->i = res().create<BufferObject>(mesh->getName() + "i");
-                mesh->m_gpuMesh->i->bindIBO();
-                mesh->m_gpuMesh->i->setData(&mesh->m_indices32.front(), mesh->m_indices32.size() * sizeof(uint32_t));
-
-                mesh->m_gpuMesh->v = res().create<BufferObject>(mesh->getName() + "v");
-                mesh->m_gpuMesh->v->bindVBO();
-                mesh->m_gpuMesh->v->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
-                glEnableVertexAttribArray(0);
-                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-                mesh->m_gpuMesh->n = res().create<BufferObject>(mesh->getName() + "n");
-                mesh->m_gpuMesh->n->bindVBO();
-                mesh->m_gpuMesh->n->setData(&mesh->m_normals.front(), mesh->m_normals.size() * sizeof(float));
-                glEnableVertexAttribArray(1);
-                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                mesh->m_renderMesh->setup(mesh);
             }
         }
-        if (mesh->m_gpuMesh)
+        if (mesh->m_renderMesh)
         {
-            mesh->m_gpuMesh->vao->bind();
+            mesh->m_renderMesh->vao->bind();
             //glDrawArrays(GL_TRIANGLES, 0, mesh->m_vertices.size());
             glDrawElements(GL_TRIANGLES, mesh->m_indices32.size(), GL_UNSIGNED_INT, nullptr);
         }

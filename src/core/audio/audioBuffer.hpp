@@ -1,0 +1,20 @@
+#ifndef __AUDIOBUFFER_HPP__
+#define __AUDIOBUFFER_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include "core/resource/resource.hpp"
+#include <vector>
+////////////////////////////////////////////////////////////////////////////////
+class AudioBuffer
+{
+public:
+    AudioBuffer(size_t size);
+    virtual ~AudioBuffer();
+
+    size_t getSize() const;
+    const std::vector<uint8_t>& getData() const;
+
+protected:
+    std::vector<uint8_t> m_buffer;
+};
+////////////////////////////////////////////////////////////////////////////////
+#endif // __AUDIOBUFFER_HPP__

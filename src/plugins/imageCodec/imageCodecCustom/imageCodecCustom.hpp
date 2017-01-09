@@ -1,17 +1,17 @@
-#ifndef __IMAGECODECSDL_HPP__
-#define __IMAGECODECSDL_HPP__
+#ifndef __IMAGECODECCUSTOM_HPP__
+#define __IMAGECODECCUSTOM_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
 #include "core/codecs/imageCodec.hpp"
 #include "core/coretypes/image.hpp"
-#include "imagecodecsdl_export.h"
+#include "imagecodeccustom_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" IMAGECODECSDL_EXPORT const PluginInfo* getPluginInfo();
+extern "C" IMAGECODECCUSTOM_EXPORT const PluginInfo* getPluginInfo();
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" IMAGECODECSDL_EXPORT Library* getLibInstance(Engine* engine);
+extern "C" IMAGECODECCUSTOM_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
-extern "C" IMAGECODECSDL_EXPORT void closeLibInstance();
+extern "C" IMAGECODECCUSTOM_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
 class PluginImageCodecCustom : public ImageCodec
 {
@@ -23,4 +23,4 @@ public:
     virtual bool load(Image* image) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __IMAGECODECSDL_HPP__
+#endif // __IMAGECODECCUSTOM_HPP__

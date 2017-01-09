@@ -27,12 +27,12 @@ public:
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName) override;
     virtual BufferObjectPtr createBufferObject(const std::string& name) override;
-    virtual GPUMeshPtr createGPUMesh(const std::string& name) override;
+    virtual RenderMeshPtr createRenderMesh(const std::string& name) override;
 
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
 
     void getInfo();
 };
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// /////////////////////////////////////
 #endif // __RENDEROPENGL4_HPP__

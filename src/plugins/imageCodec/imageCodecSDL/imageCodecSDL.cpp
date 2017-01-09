@@ -10,7 +10,7 @@ PluginInfo pluginInfo = { "imageCodecSDL",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecSDL* lib = nullptr;
+PluginImageCodecCustom* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
@@ -21,7 +21,7 @@ Library* getLibInstance(Engine* engine)
 {
     if (lib == nullptr)
     {
-        lib = new PluginImageCodecSDL(*engine);
+        lib = new PluginImageCodecCustom(*engine);
         if (lib)
         {
             engine->codecs().addImageCodec(lib);
@@ -40,7 +40,7 @@ void closeLibInstance()
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecSDL::PluginImageCodecSDL(Engine &engine)
+PluginImageCodecCustom::PluginImageCodecCustom(Engine &engine)
     : ImageCodec(engine)
 {
     log().log() << "PluginImageCodecSDL start...\n";
@@ -60,18 +60,18 @@ PluginImageCodecSDL::PluginImageCodecSDL(Engine &engine)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecSDL::~PluginImageCodecSDL()
+PluginImageCodecCustom::~PluginImageCodecCustom()
 {
     log().log() << "PluginImageCodecSDL stop...\n";
     IMG_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecSDL::load(ImagePtr image)
+bool PluginImageCodecCustom::load(ImagePtr image)
 {
     return load(image.get());
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecSDL::load(Image* image)
+bool PluginImageCodecCustom::load(Image* image)
 {
     if (!image)
         return false;
