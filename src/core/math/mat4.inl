@@ -125,7 +125,7 @@ TMat4<T>& TMat4<T>::operator*=(T f)
 template <typename T>
 TMat4<T>& TMat4<T>::operator/=(T f)
 {
-    return operator*=(1.0 / f);
+    return operator*=(1.0f / f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -156,28 +156,28 @@ TMat4<T> TMat4<T>::rotate(double angle, const TVec3<T>& axis)
 
     TVec3<T> axisn = axis.normalize();
 
-    const double s = sin(angle * (M_PI / 180.0));
-    const double c = cos(angle * (M_PI / 180.0));
+    const double s = sin(angle * (M_PI / 180.0f));
+    const double c = cos(angle * (M_PI / 180.0f));
 
-    res.m_data[0] = axisn.x * axisn.x + (1.0 - axisn.x * axisn.x) * c;
-    res.m_data[1] = axisn.x * axisn.y * (1.0 - c) - (axisn.z * s);
-    res.m_data[2] = axisn.x * axisn.z * (1.0 - c) + (axisn.y * s);
-    res.m_data[3] = 0.0;
+    res.m_data[0]  = axisn.x * axisn.x + (1.0f - axisn.x * axisn.x) * c;
+    res.m_data[1]  = axisn.x * axisn.y * (1.0f - c) - (axisn.z * s);
+    res.m_data[2]  = axisn.x * axisn.z * (1.0f - c) + (axisn.y * s);
+    res.m_data[3]  = 0.0f;
 
-    res.m_data[4] = axisn.x * axisn.y * (1.0 - c) + (axisn.z * s);
-    res.m_data[5] = axisn.y * axisn.y + (1.0 - axisn.y * axisn.y) * c;
-    res.m_data[6] = axisn.y * axisn.z * (1.0 - c) - (axisn.x * s);
-    res.m_data[7] = 0.0;
+    res.m_data[4]  = axisn.x * axisn.y * (1.0f - c) + (axisn.z * s);
+    res.m_data[5]  = axisn.y * axisn.y + (1.0f - axisn.y * axisn.y) * c;
+    res.m_data[6]  = axisn.y * axisn.z * (1.0f - c) - (axisn.x * s);
+    res.m_data[7]  = 0.0f;
 
-    res.m_data[8] = axisn.x * axisn.z * (1.0 - c) - (axisn.y * s);
-    res.m_data[9] = axisn.y * axisn.z * (1.0 - c) + (axisn.x * s);
-    res.m_data[10] = axisn.z * axisn.z + (1.0 - axisn.z * axisn.z) * c;
-    res.m_data[11] = 0.0;
+    res.m_data[8]  = axisn.x * axisn.z * (1.0f - c) - (axisn.y * s);
+    res.m_data[9]  = axisn.y * axisn.z * (1.0f - c) + (axisn.x * s);
+    res.m_data[10] = axisn.z * axisn.z + (1.0f - axisn.z * axisn.z) * c;
+    res.m_data[11] = 0.0f;
 
-    res.m_data[12] = 0.0;
-    res.m_data[13] = 0.0;
-    res.m_data[14] = 0.0;
-    res.m_data[15] = 1.0;
+    res.m_data[12] = 0.0f;
+    res.m_data[13] = 0.0f;
+    res.m_data[14] = 0.0f;
+    res.m_data[15] = 1.0f;
 
     return res;
 }
@@ -207,16 +207,16 @@ TMat4<T> TMat4<T>::ortho(T left, T right, T bottom, T top, T znear, T zfar)
     T ty = -(top + bottom) / (top - bottom);
     T tz = -(zfar + znear) / (zfar - znear);
 
-    return TMat4<T>(2.0 / (right - left), 0.0, 0.0, 0.0,
-                    0.0, 2.0 / (top - bottom), 0.0, 0.0,
-                    0.0, 0.0, -2.0 / (zfar - znear), 0.0,
-                    tx, ty, tz, 1.0);
+    return TMat4<T>(2.0f / (right - left), 0.0f, 0.0f, 0.0f,
+                    0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
+                    0.0f, 0.0f, -2.0f / (zfar - znear), 0.0f,
+                    tx, ty, tz, 1.0f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TMat4<T> TMat4<T>::perspective(T fovy, T aspect, T znear, T zfar)
 {
-    T ymax = znear * tan(fovy * M_PI / 360.0);
+    T ymax = znear * tan(fovy * M_PI / 360.0f);
     T ymin = -ymax;
     T xmin = ymin * aspect;
     T xmax = ymax * aspect;
@@ -227,17 +227,17 @@ TMat4<T> TMat4<T>::perspective(T fovy, T aspect, T znear, T zfar)
 template <typename T>
 TMat4<T> TMat4<T>::frustum(T left, T right, T bottom, T top, T znear, T zfar)
 {
-    T x = 2.0 * znear / (right - left);
-    T y = 2.0 * znear / (top - bottom);
+    T x = 2.0f * znear / (right - left);
+    T y = 2.0f * znear / (top - bottom);
     T a = (right + left) / (right - left);
     T b = (top + bottom) / (top - bottom);
     T c = -(zfar + znear) / (zfar - znear);
-    T d = -2.0 * zfar * znear / (zfar - znear);
+    T d = -2.0f * zfar * znear / (zfar - znear);
 
-    return TMat4<T>(  x, 0.0, 0.0, 0.0,
-                    0.0,   y, 0.0, 0.0,
-                      a,   b,   c,-1.0,
-                    0.0, 0.0,   d, 0.0);
+    return TMat4<T>(   x, 0.0f, 0.0f,  0.0f,
+                    0.0f,    y, 0.0f,  0.0f,
+                       a,    b,    c, -1.0f,
+                    0.0f, 0.0f,    d,  0.0f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

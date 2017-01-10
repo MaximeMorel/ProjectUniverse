@@ -123,32 +123,14 @@ void ApplicationExample::run()
             if (prog)
                 prog->bind();
 
-            //VAOPtr v = res().create<VAO>("vao");
-            //if (v)
-            //    v->bind();
-
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
 
             TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
 
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
-            /*BufferObjectPtr b = res().create<BufferObject>("vbo1");
-            if (b)
-            {
-                b->bindVBO();
-                b->setData(&mesh->m_vertices.front(), mesh->m_vertices.size() * sizeof(float));
-            }
-            BufferObjectPtr b2 = res().create<BufferObject>("vbo2");
-            if (b2)
-            {
-                b2->bindVBO();
-                b2->setData(&mesh->m_normals.front(), mesh->m_normals.size() * sizeof(float));
-            }
-            mesh->m_gpuMesh->vao = res().create<VAO>("vaomesh");
-            mesh->m_gpuMesh->v = b;
-            mesh->m_gpuMesh->n = b2;
-            mesh->m_gpuMesh->shaderProgram = prog3;*/
+            //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
+            //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.obj");
 
             Scene scene;
             scene.add(mesh.get());
@@ -167,10 +149,10 @@ void ApplicationExample::run()
             while (!stop)
             {
                 frameTimer.reset();
-                // process input events
-                input().update();
                 // process window events
                 w->update();
+                // process input events
+                input().update();
                 if (input().keyboard(0) &&
                     input().keyboard(0)->isPressed(Input::Keyboard::KEY_a))
                 {
@@ -200,9 +182,6 @@ void ApplicationExample::run()
                 {
                     ;
                 }
-
-                //if (v)
-                //    v->bind();
 
                 if (prog)
                 {

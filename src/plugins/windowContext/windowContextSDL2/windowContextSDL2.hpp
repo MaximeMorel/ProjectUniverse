@@ -36,6 +36,7 @@ private:
 private:
     SDL_Window* m_window;
     SDL_GLContext m_glcontext;
+    std::vector<SDL_Event> m_pushedEvents;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __WINDOWCONTEXTSDL2_HPP__

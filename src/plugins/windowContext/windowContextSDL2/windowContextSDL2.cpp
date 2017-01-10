@@ -92,7 +92,28 @@ PluginWindowContextSDL2::~PluginWindowContextSDL2()
 ////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextSDL2::update()
 {
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            break;
+        case SDL_WINDOWEVENT:
+            break;
+        case SDL_SYSWMEVENT:
+            break;
+        default:
+            m_pushedEvents.push_back(event);
+            break;
+        }
+    }
 
+    for (auto ev : m_pushedEvents)
+    {
+        SDL_PushEvent(&ev);
+    }
+    m_pushedEvents.clear();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginWindowContextSDL2::setResolution(uint32_t x, uint32_t y)
