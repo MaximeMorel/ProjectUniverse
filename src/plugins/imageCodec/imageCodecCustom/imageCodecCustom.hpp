@@ -21,6 +21,9 @@ public:
 
     virtual bool load(ImagePtr image) override;
     virtual bool load(Image* image) override;
+
+private:
+    bool loadDDS(Image* image);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECCUSTOM_HPP__

@@ -21,21 +21,19 @@ void InputSDLDeviceKeyboard::update()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceKeyboard::update(SDL_Event* event)
+bool InputSDLDeviceKeyboard::update(SDL_Event* event)
 {
     switch (event->type)
     {
     case SDL_KEYDOWN:
         set(m_keyMapping.get(event->key.keysym.scancode), Input::KeyMode::DOWN_ONCE);
-        break;
+        return true;
     case SDL_KEYUP:
         set(m_keyMapping.get(event->key.keysym.scancode), Input::KeyMode::UP);
-        break;
+        return true;
+    case SDL_KEYMAPCHANGED:
+        return true;
     }
-}
-////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceKeyboard::isPressed(Input::Keyboard key)
-{
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +44,7 @@ size_t InputSDLDeviceKeyboard::getMemSize() const
 ////////////////////////////////////////////////////////////////////////////////
 void InputSDLDeviceKeyboard::printOn(Logger& o) const
 {
-    o << "keyboard";
+    o << "sdl keyboard";
 }
 ////////////////////////////////////////////////////////////////////////////////
 InputSDLDeviceKeyboard::SDLKeyMapping::SDLKeyMapping()

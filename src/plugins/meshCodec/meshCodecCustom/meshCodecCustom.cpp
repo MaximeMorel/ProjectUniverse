@@ -69,8 +69,8 @@ bool PluginMeshCodecCustom::load(Mesh* mesh)
         }
         else if (fileName.substr(pos) == ".obj")
         {
-            //return loadObjIndex(mesh);
-            return loadObjArray(mesh);
+            return loadObjIndex(mesh);
+            //return loadObjArray(mesh);
         }
     }
 
@@ -278,14 +278,20 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
                 {
                     f.nid[i] = std::stoi(buf.substr(pos2 + 1));
                 }
+
+                // abort if ids are out of range
+                if (f.vid[i] > (vertices.size() / 3) + 1 ||
+                    f.tid[i] > (texcoords.size() / 2) + 1 ||
+                    f.nid[i] > (normals.size() / 3) + 1)
+                    return false;
             }
             faces.push_back(f);
         }
     }
 
     // map vid - list of nid
-    std::vector<std::vector<uint32_t>> map((vertices.size() + 3) / 3);
-    for (Face f : faces)
+    std::vector<std::vector<uint32_t>> map((vertices.size() / 3) + 1);
+    for (Face& f : faces)
     {
         for (uint8_t i = 0; i < 3; ++i)
         {
@@ -307,10 +313,10 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
             log().log() << m << ", ";
         log().log() << "\n";
     }
-    log().log() << "nb vertices: " << vertices.size() / 3 << std::endl;*/
+    log().log() << "nb vertices: " << vertices.size() / 3 << std::endl;//*/
 
     // duplicate needed vertices, and populate remap array storing id of duplicated vertices
-    std::vector<std::vector<uint32_t>> remap((vertices.size() + 3) / 3);
+    std::vector<std::vector<uint32_t>> remap((vertices.size() / 3) + 1);
     for (uint32_t i = 1; i < map.size(); ++i)
     {
         if (map[i].size() > 1)
@@ -320,7 +326,7 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
             {
                 remap[i].push_back((vertices.size() / 3) + 1);
                 for (uint8_t j = 0; j < 3; ++j)
-                    vertices.push_back(vertices[3 * (map[i][k] - 1) + j]);
+                    vertices.push_back(vertices[3 * (i - 1) + j]);
             }
         }
     }
@@ -332,10 +338,10 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
             log().log() << m << ", ";
         log().log() << "\n";
     }
-    log().log() << std::endl;*/
+    log().log() << std::endl;//*/
 
     // reorder data
-    for (Face f : faces)
+    for (Face& f : faces)
     {
         for (uint8_t i = 0; i < 3; ++i)
         {
@@ -360,7 +366,7 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
     mesh->m_vertices.resize(vertices.size());
     std::copy(vertices.begin(), vertices.end(), mesh->m_vertices.begin());
     mesh->m_normals.resize(vertices.size());
-    for (Face f : faces)
+    for (Face& f : faces)
     {
         for (uint8_t i = 0; i < 3; ++i)
         {
@@ -370,6 +376,8 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
                 mesh->m_normals[3 * (f.vid[i] - 1) + k] = normals[3 * (f.nid[i] - 1) + k];
         }
     }
+
+    log().log() << std::endl;
 
     return true;
 }
@@ -413,6 +421,9 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
         }
         else if (buf == "f")
         {
+            uint32_t vid = 0;
+            uint32_t tid = 0;
+            uint32_t nid = 0;
             for (uint8_t i = 0; i < 3; ++i)
             {
                 file >> buf;
@@ -420,22 +431,28 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 if (pos1 > 0 && pos1 != std::string::npos)
                 {
                     mesh->m_indices32.push_back(mesh->m_vertices.size() / 3);
-                    uint32_t vid = std::stoi(buf.substr(0, pos1));
+                    vid = std::stoi(buf.substr(0, pos1));
                     for (uint8_t j = 0; j < 3; ++j)
                         mesh->m_vertices.push_back(vertices[3 * (vid - 1) + j]);
                 }
                 size_t pos2 = buf.find('/', pos1 + 1);
                 if (pos2 - (pos1 + 1) > 0 && pos2 != std::string::npos)
                 {
-                    //uint32_t f.tid[i] = std::stoi(buf.substr(pos1 + 1, pos2 - (pos1 + 1)));
+                    tid = std::stoi(buf.substr(pos1 + 1, pos2 - (pos1 + 1)));
                 }
                 if (pos2 + 1 > 0)
                 {
-                    uint32_t nid = std::stoi(buf.substr(pos2 + 1));
+                    nid = std::stoi(buf.substr(pos2 + 1));
                     for (uint8_t j = 0; j < 3; ++j)
                         mesh->m_normals.push_back(normals[3 * (nid - 1) + j]);
                 }
             }
+
+            // abort if ids are out of range
+            if (vid > (vertices.size() / 3) + 1 ||
+                tid > (texcoords.size() / 2) + 1 ||
+                nid > (normals.size() / 3) + 1)
+                return false;
         }
     }
 

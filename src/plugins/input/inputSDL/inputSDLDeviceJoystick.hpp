@@ -12,10 +12,7 @@ public:
     virtual ~InputSDLDeviceJoystick();
 
     virtual void update() override;
-    void update(SDL_Event* event);
-
-    bool isPressed(Input::Joystick button);
-    float value(Input::Joystick axis);
+    bool update(SDL_Event* event);
 
     virtual size_t getMemSize() const override;
 

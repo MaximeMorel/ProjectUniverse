@@ -10,6 +10,7 @@ public:
     InputDeviceTouchscreen();
     virtual ~InputDeviceTouchscreen();
 
+    virtual void preUpdate() override;
     virtual void update() override;
 
     virtual size_t getMemSize() const override;

@@ -10,6 +10,7 @@ public:
     InputDevice();
     virtual ~InputDevice();
 
+    virtual void preUpdate();
     virtual void update();
 
     virtual size_t getMemSize() const;
@@ -30,13 +31,6 @@ enum class DeviceType
     MOUSE,
     JOYSTICK,
     TOUCHSCREEN
-};
-
-enum class KeyMode : std::int8_t
-{
-    UP = 0,
-    DOWN,
-    DOWN_ONCE
 };
 } // namespace Input
 ////////////////////////////////////////////////////////////////////////////////

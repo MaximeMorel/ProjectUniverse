@@ -19,6 +19,7 @@ public:
     InputDeviceJoystick();
     virtual ~InputDeviceJoystick();
 
+    virtual void preUpdate() override;
     virtual void update() override;
 
     bool isPressed(Input::Joystick button);

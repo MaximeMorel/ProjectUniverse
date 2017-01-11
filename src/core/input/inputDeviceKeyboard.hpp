@@ -98,6 +98,12 @@ enum Keyboard
 
     NB_KEYS
 };
+enum class KeyMode : std::int8_t
+{
+    UP = 0,
+    DOWN,
+    DOWN_ONCE
+};
 } // namespace Input
 ////////////////////////////////////////////////////////////////////////////////
 class InputDeviceKeyboard : public InputDevice
@@ -106,9 +112,11 @@ public:
     InputDeviceKeyboard();
     virtual ~InputDeviceKeyboard();
 
+    virtual void preUpdate() override;
     virtual void update() override;
 
     bool isPressed(Input::Keyboard key);
+    bool isPressedOnce(Input::Keyboard key);
 
     virtual size_t getMemSize() const override;
 

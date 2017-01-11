@@ -56,6 +56,7 @@ void ApplicationExample::run()
         PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
         PluginLibPtr libPNG = res().createFromFile<PluginLib>("libImageCodecPNG.so");
         PluginLibPtr libSDLimage = res().createFromFile<PluginLib>("libImageCodecSDL.so");
+        PluginLibPtr libImageCustom = res().createFromFile<PluginLib>("libImageCodecCustom.so");
         PluginLibPtr libMeshCustom = res().createFromFile<PluginLib>("libMeshCodecCustom.so");
         PluginLibPtr libASSIMP = res().createFromFile<PluginLib>("libMeshCodecASSIMP.so");
         if (libJPEG && libJPEG->isValid())
@@ -72,6 +73,11 @@ void ApplicationExample::run()
         {
             log().log() << libSDLimage << "\n";
             libSDLimage->getLibInstance(&getEngine());
+        }
+        if (libImageCustom && libImageCustom->isValid())
+        {
+            log().log() << libImageCustom << "\n";
+            libImageCustom->getLibInstance(&getEngine());
         }
         if (libMeshCustom && libMeshCustom->isValid())
         {
@@ -128,10 +134,12 @@ void ApplicationExample::run()
 
             TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
 
+            ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
+
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/car.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled3.obj");
 
             Scene scene;
             if (mesh)
@@ -148,6 +156,7 @@ void ApplicationExample::run()
 
             Timer gameTimer;
             gameTimer.start();
+            Vec2i mouseCoords;
             while (!stop)
             {
                 frameTimer.reset();
@@ -168,9 +177,17 @@ void ApplicationExample::run()
                 }
 
                 if (input().mouse(0) &&
-                    input().mouse(0)->isPressed(Input::Mouse::BT_1))
+                    (input().mouse(0)->isPressed(Input::Mouse::BT_1) ||
+                     input().mouse(0)->isPressed(Input::Mouse::BT_2) ||
+                     input().mouse(0)->isPressed(Input::Mouse::BT_3)))
                 {
-                    ;
+                    stop = true;
+                }
+
+                if (input().mouse(0) &&
+                    input().mouse(0)->isMotion(mouseCoords))
+                {
+                    log().log() << mouseCoords << std::endl;
                 }
 
                 if (input().joystick(0) &&
@@ -198,7 +215,9 @@ void ApplicationExample::run()
                 if (prog3)
                 {
                     prog3->bind();
-                    Mat4f mv = Mat4f::rotate(gameTimer.getTime()/10.0f, Vec3f(0.0f, 1.0f, 0.0f));
+                    Mat4f mv = Mat4f::identity();
+                    mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
+                    mv *= Mat4f::rotate(gameTimer.getTime()/10.0f, Vec3f(0.0f, 1.0f, 0.0f));
                     mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f, Vec3f(1.0f, 0.0f, 0.0f));
                     mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);

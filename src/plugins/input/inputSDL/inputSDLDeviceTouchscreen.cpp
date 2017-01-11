@@ -14,8 +14,18 @@ void InputSDLDeviceTouchscreen::update()
     super::update();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceTouchscreen::update(SDL_Event* event)
+bool InputSDLDeviceTouchscreen::update(SDL_Event* event)
 {
+    switch (event->type)
+    {
+    case SDL_FINGERDOWN:
+        return true;
+    case SDL_FINGERUP:
+        return true;
+    case SDL_FINGERMOTION:
+        return true;
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t InputSDLDeviceTouchscreen::getMemSize() const

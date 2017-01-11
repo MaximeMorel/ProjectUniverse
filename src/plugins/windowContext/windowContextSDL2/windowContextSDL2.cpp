@@ -111,7 +111,7 @@ void PluginWindowContextSDL2::update()
         }
     }
 
-    for (auto ev : m_pushedEvents)
+    for (auto& ev : m_pushedEvents)
     {
         SDL_PushEvent(&ev);
     }

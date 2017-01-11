@@ -12,9 +12,7 @@ public:
     virtual ~InputSDLDeviceMouse();
 
     virtual void update() override;
-    void update(SDL_Event* event);
-
-    bool isPressed(Input::Mouse button);
+    bool update(SDL_Event* event);
 
     virtual size_t getMemSize() const override;
 

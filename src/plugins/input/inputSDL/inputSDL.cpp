@@ -108,25 +108,45 @@ InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
 ////////////////////////////////////////////////////////////////////////////////
 void PluginInputSDL::update()
 {
-    SDL_Event event;
+    for (auto& device : m_keyboard)
+    {
+        device.preUpdate();
+    }
+    for (auto& device : m_mouse)
+    {
+        device.preUpdate();
+    }
+    for (auto& device : m_joystick)
+    {
+        device.preUpdate();
+    }
+    for (auto& device : m_touchscreen)
+    {
+        device.preUpdate();
+    }
 
+    SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+        bool eventConsumed = false;
         for (auto& device : m_keyboard)
         {
-            device.update(&event);
+            eventConsumed |= device.update(&event);
         }
-        for (auto device : m_mouse)
+        if (eventConsumed) break;
+        for (auto& device : m_mouse)
         {
-            device.update(&event);
+            eventConsumed |= device.update(&event);
         }
-        for (auto device : m_joystick)
+        if (eventConsumed) break;
+        for (auto& device : m_joystick)
         {
-            device.update(&event);
+            eventConsumed |= device.update(&event);
         }
-        for (auto device : m_touchscreen)
+        if (eventConsumed) break;
+        for (auto& device : m_touchscreen)
         {
-            device.update(&event);
+            eventConsumed |= device.update(&event);
         }
     }
 }

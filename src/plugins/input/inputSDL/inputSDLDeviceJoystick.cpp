@@ -9,24 +9,29 @@ InputSDLDeviceJoystick::~InputSDLDeviceJoystick()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceJoystick::isPressed(Input::Joystick button)
-{
-    return false;
-}
-////////////////////////////////////////////////////////////////////////////////
 void InputSDLDeviceJoystick::update()
 {
     super::update();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceJoystick::update(SDL_Event* event)
+bool InputSDLDeviceJoystick::update(SDL_Event* event)
 {
-
-}
-////////////////////////////////////////////////////////////////////////////////
-float InputSDLDeviceJoystick::value(Input::Joystick axis)
-{
-    return 0.0f;
+    switch (event->type)
+    {
+    case SDL_CONTROLLERAXISMOTION:
+        return true;
+    case SDL_CONTROLLERBUTTONDOWN:
+        return true;
+    case SDL_CONTROLLERBUTTONUP:
+        return true;
+    case SDL_CONTROLLERDEVICEADDED:
+        return true;
+    case SDL_CONTROLLERDEVICEREMOVED:
+        return true;
+    case SDL_CONTROLLERDEVICEREMAPPED:
+        return true;
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t InputSDLDeviceJoystick::getMemSize() const

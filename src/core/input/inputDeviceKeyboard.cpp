@@ -13,14 +13,28 @@ InputDeviceKeyboard::~InputDeviceKeyboard()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+void InputDeviceKeyboard::preUpdate()
+{
+}
+////////////////////////////////////////////////////////////////////////////////
 void InputDeviceKeyboard::update()
 {
-
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool InputDeviceKeyboard::isPressed(Input::Keyboard key)
 {
     return m_keys[key] == Input::KeyMode::DOWN || m_keys[key] == Input::KeyMode::DOWN_ONCE;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool InputDeviceKeyboard::isPressedOnce(Input::Keyboard key)
+{
+    bool ret = false;
+    if(m_keys[key] == Input::KeyMode::DOWN_ONCE)
+    {
+        m_keys[key] = Input::KeyMode::DOWN;
+        ret = true;
+    }
+    return ret;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void InputDeviceKeyboard::set(Input::Keyboard key, Input::KeyMode mode)

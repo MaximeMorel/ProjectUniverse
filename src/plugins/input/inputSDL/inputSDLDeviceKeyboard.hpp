@@ -12,9 +12,7 @@ public:
     virtual ~InputSDLDeviceKeyboard();
 
     virtual void update() override;
-    void update(SDL_Event* event);
-
-    bool isPressed(Input::Keyboard key);
+    bool update(SDL_Event* event);
 
     virtual size_t getMemSize() const override;
 
