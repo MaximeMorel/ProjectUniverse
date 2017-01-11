@@ -26,7 +26,8 @@ private:
     bool loadStl(Mesh* mesh);
     bool loadStlText(Mesh* mesh);
     bool loadStlBinary(Mesh* mesh);
-    bool loadObj(Mesh* mesh);
+    bool loadObjIndex(Mesh* mesh);
+    bool loadObjArray(Mesh* mesh);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MESHCODECCUSTOM_HPP__

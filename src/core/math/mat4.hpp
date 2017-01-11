@@ -38,6 +38,7 @@ public:
     static TMat4<T> identity();
     static TMat4<T> rotate(double angle, const TVec3<T>& axis);
     static TMat4<T> translate(const TVec3<T>& v);
+    static TMat4<T> scale(const TVec3<T>& v);
 
     static TMat4<T> ortho(T left, T right, T bottom, T top, T znear, T zfar);
     static TMat4<T> perspective(T fovy, T aspect, T znear, T zfar);

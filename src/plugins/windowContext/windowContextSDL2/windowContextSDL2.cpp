@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextSDL2.hpp"
 #include "core/log/logManager.hpp"
+#include "core/engine.hpp"
 #include <SDL.h>
 #include <GL/gl.h>
 #include <map>
@@ -98,6 +99,7 @@ void PluginWindowContextSDL2::update()
         switch (event.type)
         {
         case SDL_QUIT:
+            getEngine().setRequestQuit(true);
             break;
         case SDL_WINDOWEVENT:
             break;

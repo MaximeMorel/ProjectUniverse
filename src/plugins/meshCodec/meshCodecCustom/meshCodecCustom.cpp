@@ -69,7 +69,8 @@ bool PluginMeshCodecCustom::load(Mesh* mesh)
         }
         else if (fileName.substr(pos) == ".obj")
         {
-            return loadObj(mesh);
+            //return loadObjIndex(mesh);
+            return loadObjArray(mesh);
         }
     }
 
@@ -206,7 +207,7 @@ bool PluginMeshCodecCustom::loadStlBinary(Mesh* mesh)
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginMeshCodecCustom::loadObj(Mesh* mesh)
+bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
 {
     const std::string& fileName = mesh->getFileName();
     std::ifstream file(fileName);
@@ -367,6 +368,74 @@ bool PluginMeshCodecCustom::loadObj(Mesh* mesh)
 
             for (uint8_t k = 0; k < 3; ++k)
                 mesh->m_normals[3 * (f.vid[i] - 1) + k] = normals[3 * (f.nid[i] - 1) + k];
+        }
+    }
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
+{
+    const std::string& fileName = mesh->getFileName();
+    std::ifstream file(fileName);
+
+    std::vector<float> vertices;
+    std::vector<float> texcoords;
+    std::vector<float> normals;
+
+    float v[3];
+    std::string buf;
+    while (file >> buf)
+    {
+        if (buf == "v")
+        {
+            for (uint8_t i = 0; i < 3; ++i)
+            {
+                file >> v[i];
+                vertices.push_back(v[i]);
+            }
+        }
+        else if (buf == "vt")
+        {
+            for (uint8_t i = 0; i < 2; ++i)
+            {
+                file >> v[i];
+                texcoords.push_back(v[i]);
+            }
+        }
+        else if (buf == "vn")
+        {
+            for (uint8_t i = 0; i < 3; ++i)
+            {
+                file >> v[i];
+                normals.push_back(v[i]);
+            }
+        }
+        else if (buf == "f")
+        {
+            for (uint8_t i = 0; i < 3; ++i)
+            {
+                file >> buf;
+                size_t pos1 = buf.find('/');
+                if (pos1 > 0 && pos1 != std::string::npos)
+                {
+                    mesh->m_indices32.push_back(mesh->m_vertices.size() / 3);
+                    uint32_t vid = std::stoi(buf.substr(0, pos1));
+                    for (uint8_t j = 0; j < 3; ++j)
+                        mesh->m_vertices.push_back(vertices[3 * (vid - 1) + j]);
+                }
+                size_t pos2 = buf.find('/', pos1 + 1);
+                if (pos2 - (pos1 + 1) > 0 && pos2 != std::string::npos)
+                {
+                    //uint32_t f.tid[i] = std::stoi(buf.substr(pos1 + 1, pos2 - (pos1 + 1)));
+                }
+                if (pos2 + 1 > 0)
+                {
+                    uint32_t nid = std::stoi(buf.substr(pos2 + 1));
+                    for (uint8_t j = 0; j < 3; ++j)
+                        mesh->m_normals.push_back(normals[3 * (nid - 1) + j]);
+                }
+            }
         }
     }
 

@@ -130,10 +130,12 @@ void ApplicationExample::run()
 
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.obj");
+            //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/car.obj");
 
             Scene scene;
-            scene.add(mesh.get());
+            if (mesh)
+                scene.add(mesh.get());
 
             bool stop = false;
 
@@ -196,7 +198,9 @@ void ApplicationExample::run()
                 if (prog3)
                 {
                     prog3->bind();
-                    Mat4f mv = Mat4f::rotate(gameTimer.getTime()/10.0, Vec3f(0.0f, 1.0f, 0.0f));
+                    Mat4f mv = Mat4f::rotate(gameTimer.getTime()/10.0f, Vec3f(0.0f, 1.0f, 0.0f));
+                    mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f, Vec3f(1.0f, 0.0f, 0.0f));
+                    mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);
                 }
                 render().impl()->drawScene(&scene);
@@ -231,6 +235,9 @@ void ApplicationExample::run()
                     if (tex)
                         tex->reload();
                 }
+
+                if (getEngine().getRequestQuit())
+                    stop = true;
             }
             log().log() << res() << "\n";
         }

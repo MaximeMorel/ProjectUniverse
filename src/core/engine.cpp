@@ -24,6 +24,7 @@ Engine::Engine(const std::string& name)
     , m_resourceManager(m_logManager)
     , m_pluginManager()
     , m_name(name)
+    , m_requestQuit(false)
 {
     setGlobalEngine(*this);
     m_logManager.log() << FILEINFO << "Engine " << m_name << " init...\n";

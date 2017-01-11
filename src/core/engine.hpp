@@ -22,6 +22,16 @@ public:
     RenderManager& render();
     CodecManager& codecs();
 
+    void setRequestQuit(bool status)
+    {
+        m_requestQuit = status;
+    }
+
+    bool getRequestQuit() const
+    {
+        return m_requestQuit;
+    }
+
 private:
     //Config m_config;
     int m_config;
@@ -33,6 +43,7 @@ private:
     CodecManager m_codecManager;
 
     std::string m_name;     ///< engine string identifier
+    bool m_requestQuit;
 };
 ////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine);

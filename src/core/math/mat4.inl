@@ -201,6 +201,19 @@ TMat4<T> TMat4<T>::translate(const TVec3<T>& v)
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
+TMat4<T> TMat4<T>::scale(const TVec3<T>& v)
+{
+    TMat4<T> res;
+
+    res.m_data[0] = v.x;
+    res.m_data[5] = v.y;
+    res.m_data[10] = v.z;
+    res.m_data[15] = 1.0f;
+
+    return res;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
 TMat4<T> TMat4<T>::ortho(T left, T right, T bottom, T top, T znear, T zfar)
 {
     T tx = -(right + left) / (right - left);
