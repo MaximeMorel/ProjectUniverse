@@ -121,7 +121,6 @@ void PluginWindowContextSDL2::update()
 bool PluginWindowContextSDL2::setResolution(uint32_t x, uint32_t y)
 {
     WindowPlugin::setResolution(x, y);
-    WindowPlugin::setResolution(x, y);
     if (m_window)
     {
         SDL_SetWindowSize(m_window, x, y);

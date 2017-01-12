@@ -11,9 +11,7 @@ public:
     MeshCodec(Engine& engine);
     ~MeshCodec() override;
 
-    virtual bool load(MeshPtr mesh);
     virtual bool load(Mesh* mesh);
-    virtual bool save(MeshPtr mesh, const std::string& filePath);
     virtual bool save(Mesh* mesh, const std::string& filePath);
 };
 ////////////////////////////////////////////////////////////////////////////////

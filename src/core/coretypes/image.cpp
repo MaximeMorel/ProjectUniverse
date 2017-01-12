@@ -24,10 +24,13 @@ Image::~Image()
 ImagePtr Image::create(const std::string& name, const std::string& fileName)
 {
     ImagePtr image = std::make_shared<Image>(name, fileName);
+    if (!image)
+        return nullptr;
+
     // go through image codecs plugins
     for (auto* codec : getEngine().codecs().getImageCodecs())
     {
-        bool success = codec->load(image);
+        bool success = codec->load(image.get());
         if (success)
             return image;
     }

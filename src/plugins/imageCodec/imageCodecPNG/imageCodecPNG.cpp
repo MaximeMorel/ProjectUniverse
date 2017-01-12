@@ -56,11 +56,6 @@ PluginImageCodecPNG::~PluginImageCodecPNG()
     log().log() << "PluginImageCodecPNG stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::load(ImagePtr image)
-{
-    return load(image.get());
-}
-////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecPNG::load(Image* image)
 {
     class PNGreader
@@ -266,11 +261,6 @@ bool PluginImageCodecPNG::load(Image* image)
     }
 
     return true;
-}
-////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecPNG::save(ImagePtr image, const std::string& filePath)
-{
-   return save(image.get(), filePath);
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecPNG::save(Image* image, const std::string& filePath)

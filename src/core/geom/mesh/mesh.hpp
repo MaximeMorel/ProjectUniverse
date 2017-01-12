@@ -17,6 +17,7 @@ public:
     virtual ~Mesh() override;
 
     static MeshPtr create(const std::string& name, const std::string& fileName);
+    bool save(const std::string& filePath);
 
     virtual size_t getMemSize() const override;
 
@@ -24,6 +25,7 @@ public:
     std::vector<uint16_t> m_indices16;
     std::vector<uint32_t> m_indices32;
     std::vector<float> m_vertices;
+    std::vector<float> m_texCoords;
     std::vector<float> m_normals;
     RenderMeshPtr m_renderMesh;
 

@@ -31,7 +31,7 @@ public:
     static ImagePtr create(const std::string& name, const std::string& fileName);
 
     /// Save image to file
-    virtual bool save(const std::string& filePath);
+    bool save(const std::string& filePath);
 
     /// Get the sub search path for this resource
     static const char* getSearchPath();

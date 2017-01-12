@@ -9,6 +9,13 @@ InputSDLDeviceMouse::~InputSDLDeviceMouse()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+void InputSDLDeviceMouse::preUpdate()
+{
+    super::preUpdate();
+    set(Input::Mouse::BT_WHEEL_UP, Input::ButtonMode::UP);
+    set(Input::Mouse::BT_WHEEL_DOWN, Input::ButtonMode::UP);
+}
+////////////////////////////////////////////////////////////////////////////////
 void InputSDLDeviceMouse::update()
 {
     super::update();
@@ -39,6 +46,10 @@ bool InputSDLDeviceMouse::update(SDL_Event* event)
         m_hasMotion = true;
         return true;
     case SDL_MOUSEWHEEL:
+        if (event->wheel.y > 0)
+            set(Input::Mouse::BT_WHEEL_UP, Input::ButtonMode::DOWN_ONCE);
+        else if (event->wheel.y < 0)
+            set(Input::Mouse::BT_WHEEL_DOWN, Input::ButtonMode::DOWN_ONCE);
         return true;
     }
     return false;

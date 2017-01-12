@@ -4,6 +4,7 @@
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
 #include <assimp/Importer.hpp>
+#include <assimp/Exporter.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +57,9 @@ PluginMeshCodecASSIMP::~PluginMeshCodecASSIMP()
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginMeshCodecASSIMP::load(Mesh* mesh)
 {
+    if (!mesh)
+        return false;
+
     Assimp::Importer importer;
 
     const aiScene* scene = importer.ReadFile(mesh->getFileName(), aiProcessPreset_TargetRealtime_Fast);
@@ -75,13 +79,21 @@ bool PluginMeshCodecASSIMP::load(Mesh* mesh)
             aiFace& face = mesh->mFaces[j];
             for (uint32_t k = 0; k < face.mNumIndices; ++k)
             {
-
+                return false;
             }
         }
     }
 
-    //DoTheSceneProcessing( scene);
-
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecASSIMP::save(Mesh* mesh, const std::string& filePath)
+{
+    if (!mesh)
+        return false;
+
+    Assimp::Exporter exporter;
+
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

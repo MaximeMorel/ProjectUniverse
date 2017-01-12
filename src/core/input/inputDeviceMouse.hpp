@@ -20,6 +20,9 @@ enum Mouse
     BT_9,
     BT_10,
 
+    BT_WHEEL_UP,
+    BT_WHEEL_DOWN,
+
     BT_NONE,
 
     NB_BUTTONS

@@ -11,6 +11,7 @@ public:
     InputSDLDeviceMouse();
     virtual ~InputSDLDeviceMouse();
 
+    virtual void preUpdate() override;
     virtual void update() override;
     bool update(SDL_Event* event);
 

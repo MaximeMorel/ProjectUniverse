@@ -92,11 +92,6 @@ void JPEGerrorExit(j_common_ptr cinfo)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecJPEG::load(ImagePtr image)
-{
-    return load(image.get());
-}
-////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecJPEG::load(Image* image)
 {
     class JPEGreader
@@ -241,11 +236,6 @@ bool PluginImageCodecJPEG::load(Image* image)
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecJPEG::save(ImagePtr image, const std::string& filePath)
-{
-    return save(image.get(), filePath);
-}
-////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecJPEG::save(Image* image, const std::string& filePath)
 {
     class JPEGwriter
@@ -284,6 +274,9 @@ bool PluginImageCodecJPEG::save(Image* image, const std::string& filePath)
         bool compressCreated;
         bool compressStarted;
     };
+
+    if (!image)
+        return false;
 
     size_t pos = filePath.rfind('.');
     if (pos != std::string::npos)

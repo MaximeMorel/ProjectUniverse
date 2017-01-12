@@ -10,6 +10,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(PLUGIN_SOURCE renderOpenGL4.cpp
                   bufferObject.cpp
+                  fbo.cpp
                   shader.cpp
                   shaderProgram.cpp
                   texture.cpp

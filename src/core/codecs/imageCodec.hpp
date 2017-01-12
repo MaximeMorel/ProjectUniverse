@@ -11,9 +11,7 @@ public:
     ImageCodec(Engine& engine);
     ~ImageCodec() override;
 
-    virtual bool load(ImagePtr image);
     virtual bool load(Image* image);
-    virtual bool save(ImagePtr image, const std::string& filePath);
     virtual bool save(Image* image, const std::string& filePath);
 };
 ////////////////////////////////////////////////////////////////////////////////

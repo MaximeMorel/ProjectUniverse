@@ -20,14 +20,18 @@ public:
     ~PluginMeshCodecCustom() override;
 
     virtual bool load(Mesh* mesh) override;
-    virtual bool load(MeshPtr mesh) override;
+    virtual bool save(Mesh* mesh, const std::string& filePath) override;
 
 private:
     bool loadStl(Mesh* mesh);
-    bool loadStlText(Mesh* mesh);
+    bool loadStlAscii(Mesh* mesh);
     bool loadStlBinary(Mesh* mesh);
     bool loadObjIndex(Mesh* mesh);
     bool loadObjArray(Mesh* mesh);
+
+    bool saveStlAscii(Mesh* mesh, const std::string& filePath);
+    bool saveStlBinary(Mesh* mesh, const std::string& filePath);
+    bool saveObj(Mesh* mesh, const std::string& filePath);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MESHCODECCUSTOM_HPP__

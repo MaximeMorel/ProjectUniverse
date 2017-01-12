@@ -79,15 +79,15 @@ void ApplicationExample::run()
             log().log() << libImageCustom << "\n";
             libImageCustom->getLibInstance(&getEngine());
         }
-        if (libMeshCustom && libMeshCustom->isValid())
-        {
-            log().log() << libMeshCustom << "\n";
-            libMeshCustom->getLibInstance(&getEngine());
-        }
         if (libASSIMP && libASSIMP->isValid())
         {
             log().log() << libASSIMP << "\n";
             libASSIMP->getLibInstance(&getEngine());
+        }
+        if (libMeshCustom && libMeshCustom->isValid())
+        {
+            log().log() << libMeshCustom << "\n";
+            libMeshCustom->getLibInstance(&getEngine());
         }
         if (libAudio && libAudio->isValid())
         {
@@ -139,7 +139,9 @@ void ApplicationExample::run()
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled3.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.obj");
+            mesh->save("test2.stl");
+            mesh->save("test.obj");
 
             Scene scene;
             if (mesh)
@@ -188,6 +190,17 @@ void ApplicationExample::run()
                     input().mouse(0)->isMotion(mouseCoords))
                 {
                     log().log() << mouseCoords << std::endl;
+                }
+
+                if (input().mouse(0) &&
+                    input().mouse(0)->isPressed(Input::Mouse::BT_WHEEL_UP))
+                {
+                    log().log() << "wheel up" << std::endl;
+                }
+                if (input().mouse(0) &&
+                    input().mouse(0)->isPressed(Input::Mouse::BT_WHEEL_DOWN))
+                {
+                    log().log() << "wheel down" << std::endl;
                 }
 
                 if (input().joystick(0) &&

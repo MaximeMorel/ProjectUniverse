@@ -19,7 +19,6 @@ public:
     PluginImageCodecCustom(Engine& engine);
     ~PluginImageCodecCustom() override;
 
-    virtual bool load(ImagePtr image) override;
     virtual bool load(Image* image) override;
 };
 ////////////////////////////////////////////////////////////////////////////////

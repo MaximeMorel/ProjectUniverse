@@ -3,7 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
-#include "core/log/logger.hpp"
 #include "core/windowContext/windowPlugin.hpp"
 #include <SDL.h>
 #include "windowcontextsdl2_export.h"

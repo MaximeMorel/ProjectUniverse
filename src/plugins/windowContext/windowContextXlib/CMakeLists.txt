@@ -15,3 +15,9 @@ add_library(${PROJECT_NAME} MODULE ${PLUGIN_SOURCE})
 
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
+
+find_package (X11)
+if (X11_FOUND)
+    include_directories(${X11_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
+endif (X11_FOUND)

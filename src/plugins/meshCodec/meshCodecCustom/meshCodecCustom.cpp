@@ -52,13 +52,11 @@ PluginMeshCodecCustom::~PluginMeshCodecCustom()
     log().log() << "PluginMeshCodecCustom stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginMeshCodecCustom::load(MeshPtr mesh)
-{
-    return load(mesh.get());
-}
-////////////////////////////////////////////////////////////////////////////////
 bool PluginMeshCodecCustom::load(Mesh* mesh)
 {
+    if (!mesh)
+        return false;
+
     const std::string& fileName = mesh->getFileName();
     size_t pos = fileName.rfind('.');
     if (pos != std::string::npos && fileName.length() >= 5) // min 5 chars to have something like x.stl or x.obj
@@ -88,7 +86,7 @@ bool PluginMeshCodecCustom::loadStl(Mesh* mesh)
     size_t pos = line.find("solid ");
     if (pos == 0)
     {
-        return loadStlText(mesh);
+        return loadStlAscii(mesh);
     }
     else
     {
@@ -98,7 +96,7 @@ bool PluginMeshCodecCustom::loadStl(Mesh* mesh)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginMeshCodecCustom::loadStlText(Mesh* mesh)
+bool PluginMeshCodecCustom::loadStlAscii(Mesh* mesh)
 {
     const std::string& fileName = mesh->getFileName();
     std::ifstream file(fileName);
@@ -454,6 +452,176 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 nid > (normals.size() / 3) + 1)
                 return false;
         }
+    }
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecCustom::save(Mesh *mesh, const std::string& filePath)
+{
+    if (!mesh)
+        return false;
+
+    size_t pos = filePath.rfind('.');
+    if (pos != std::string::npos && filePath.length() >= 5) // min 5 chars to have something like x.stl or x.obj
+    {
+        if (filePath.substr(pos) == ".stl")
+        {
+            //return saveStlAscii(mesh, filePath);
+            return saveStlBinary(mesh, filePath);
+        }
+        else if (filePath.substr(pos) == ".obj")
+        {
+            return saveObj(mesh, filePath);
+        }
+    }
+
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecCustom::saveStlAscii(Mesh* mesh, const std::string& filePath)
+{
+    if (!mesh)
+        return false;
+
+    std::ofstream out(filePath);
+    if (!out)
+    {
+        log().log() << "Cannot open " << filePath << " for writing.\n";
+        return false;
+    }
+
+    out.precision(6);
+    out << std::fixed;
+
+    out << "solid exported from PluginMeshCodecCustom writer " << pluginInfo.major << "." << pluginInfo.minor << "\n";
+
+    uint32_t vid[3] = {0, 0, 0};
+    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    {
+        for (uint8_t i = 0; i < 3; ++i)
+            vid[i] = mesh->m_indices32[id + i];
+
+        out << "facet normal " << mesh->m_normals[3 * vid[0] + 0] << " " << mesh->m_normals[3 * vid[0] + 1] << " " << mesh->m_normals[3 * vid[0] + 2] << "\n";
+        out << "outer loop\n";
+        for (uint8_t i = 0; i < 3; ++i)
+            out << "vertex " << mesh->m_vertices[3 * vid[i] + 0] << " " << mesh->m_vertices[3 * vid[i] + 1] << " " << mesh->m_vertices[3 * vid[i] + 2] << "\n";
+        out << "endloop\n";
+        out << "endfacet\n";
+    }
+
+    out << "endsolid exported from PluginMeshCodecCustom writer " << pluginInfo.major << "." << pluginInfo.minor << "\n";
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecCustom::saveStlBinary(Mesh* mesh, const std::string& filePath)
+{
+    if (!mesh)
+        return false;
+
+    std::ofstream out(filePath, std::ios::out | std::ios::binary);
+    if (!out)
+    {
+        log().log() << "Cannot open " << filePath << " for writing.\n";
+        return false;
+    }
+
+    std::string header("exported from PluginMeshCodecCustom writer");
+    header += std::to_string(pluginInfo.major) + "." + std::to_string(pluginInfo.minor);
+    header.resize(80, ' ');
+    out.write(header.c_str(), 80);
+
+    uint32_t numTris = mesh->m_indices32.size() / 3;
+    char* s = reinterpret_cast<char*>(&numTris);
+    out.write(s, sizeof(numTris));
+
+    struct StlTriangle
+    {
+        float n[3];
+        float v[3][3];
+        uint16_t attrib;
+    } tri;
+    tri.attrib = 0;
+    s = reinterpret_cast<char*>(&tri);
+
+    uint32_t vid[3] = {0, 0, 0};
+    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    {
+        for (uint8_t i = 0; i < 3; ++i)
+            vid[i] = mesh->m_indices32[id + i];
+
+        for (uint8_t i = 0; i < 3; ++i)
+            tri.n[i] = mesh->m_normals[3 * vid[0] + i];
+
+        for (uint8_t j = 0; j < 3; ++j)
+            for (uint8_t i = 0; i < 3; ++i)
+                tri.v[j][i] = mesh->m_vertices[3 * vid[j] + i];
+
+        out.write(s, 50);
+    }
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginMeshCodecCustom::saveObj(Mesh* mesh, const std::string& filePath)
+{
+    if (!mesh)
+        return false;
+
+    std::ofstream out(filePath, std::ios::out);
+    if (!out)
+    {
+        log().log() << "Cannot open " << filePath << " for writing.\n";
+        return false;
+    }
+
+    out << "# exported from PluginMeshCodecCustom writer " << pluginInfo.major << "." << pluginInfo.minor << "\n";
+    out << "o mesh\n";
+
+    out.precision(6);
+    out << std::fixed;
+
+    bool hasTexCoords = mesh->m_texCoords.size() > 0;
+    bool hasNormals = mesh->m_normals.size() > 0;
+
+    for (uint32_t i = 0; i + 2 < mesh->m_vertices.size(); i += 3)
+    {
+        out << "v " << mesh->m_vertices[i + 0] << " " << mesh->m_vertices[i + 1] << " " << mesh->m_vertices[i + 2] << "\n";
+    }
+
+    for (uint32_t i = 0; i + 1 < mesh->m_texCoords.size(); i += 2)
+    {
+        out << "vt " << mesh->m_texCoords[i + 0] << " " << mesh->m_texCoords[i + 1] << "\n";
+    }
+
+    for (uint32_t i = 0; i + 2 < mesh->m_normals.size(); i += 3)
+    {
+        out << "vn " << mesh->m_normals[i + 0] << " " << mesh->m_normals[i + 1] << " " << mesh->m_normals[i + 2] << "\n";
+    }
+
+    uint32_t vid[3] = {0, 0, 0};
+    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    {
+        for (uint8_t i = 0; i < 3; ++i)
+            vid[i] = mesh->m_indices32[id + i];
+
+        out << "f ";
+        for (uint8_t i = 0; i < 3; ++i)
+        {
+            out << vid[i] + 1;
+            if (hasTexCoords)
+                out << "/" << vid[i] + 1;
+            if (hasNormals)
+            {
+                if (!hasTexCoords)
+                    out << "/";
+                out << "/" << vid[i] + 1;
+            }
+            if (i < 2)
+                out << " ";
+        }
+        out << "\n";
     }
 
     return true;

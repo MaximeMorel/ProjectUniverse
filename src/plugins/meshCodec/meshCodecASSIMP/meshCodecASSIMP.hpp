@@ -20,6 +20,7 @@ public:
     ~PluginMeshCodecASSIMP() override;
 
     virtual bool load(Mesh* mesh) override;
+    virtual bool save(Mesh *mesh, const std::string& filePath) override;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __MESHCODECASSIMP_HPP__

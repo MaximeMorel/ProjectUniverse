@@ -50,11 +50,6 @@ PluginImageCodecCustom::~PluginImageCodecCustom()
     log().log() << "PluginImageCodecCustom stop...\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecCustom::load(ImagePtr image)
-{
-    return load(image.get());
-}
-////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecCustom::load(Image* image)
 {
     if (!image)
