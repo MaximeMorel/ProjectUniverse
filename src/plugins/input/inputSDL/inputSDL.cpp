@@ -133,17 +133,17 @@ void PluginInputSDL::update()
         {
             eventConsumed |= device.update(&event);
         }
-        if (eventConsumed) break;
+        if (eventConsumed) continue;
         for (auto& device : m_mouse)
         {
             eventConsumed |= device.update(&event);
         }
-        if (eventConsumed) break;
+        if (eventConsumed) continue;
         for (auto& device : m_joystick)
         {
             eventConsumed |= device.update(&event);
         }
-        if (eventConsumed) break;
+        if (eventConsumed) continue;
         for (auto& device : m_touchscreen)
         {
             eventConsumed |= device.update(&event);
