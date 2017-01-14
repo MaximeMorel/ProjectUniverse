@@ -17,10 +17,7 @@ public:
 
     virtual bool setResolution(uint32_t x, uint32_t y);
 
-    virtual bool setPosition(Vec2i position)
-    {
-        return true;
-    }
+    virtual bool setPosition(uint32_t x, uint32_t y);
 
     virtual bool setFullscreenMode(bool mode)
     {
@@ -48,11 +45,12 @@ public:
     virtual void swapBuffers()
     {}
 
-private:
+protected:
     std::string m_title;        ///< window title
     bool m_borderless;          ///< borderless window flag
     bool m_fullscreen;          ///< fullscreen window flag
     Vec2i m_resolution;         ///< window resolution
+    Vec2i m_position;           ///< window position
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __WINDOWCONTEXT_HPP__

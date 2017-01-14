@@ -120,6 +120,7 @@ void ApplicationExample::run()
             libRender->getLibInstance(&getEngine());
             render().setPlugin(libRender);
 
+            w->setPosition(800, 900);
             w->setResolution(1280, 720);
             w->setResolution(800, 800);
             w->setResolution(640, 480);
@@ -140,8 +141,11 @@ void ApplicationExample::run()
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
             MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.obj");
-            mesh->save("test2.stl");
-            mesh->save("test.obj");
+            if (mesh)
+            {
+                mesh->save("test2.stl");
+                mesh->save("test.obj");
+            }
 
             Scene scene;
             if (mesh)
@@ -230,9 +234,9 @@ void ApplicationExample::run()
                     prog3->bind();
                     Mat4f mv = Mat4f::identity();
                     mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
-                    mv *= Mat4f::rotate(gameTimer.getTime()/10.0f, Vec3f(0.0f, 1.0f, 0.0f));
-                    mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f, Vec3f(1.0f, 0.0f, 0.0f));
-                    mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f, Vec3f(0.0f, 0.0f, 1.0f));
+                    mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
+                    mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
+                    mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);
                 }
                 render().impl()->drawScene(&scene);

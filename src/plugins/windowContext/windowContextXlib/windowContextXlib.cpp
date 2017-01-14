@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextXlib.hpp"
 #include "core/log/logManager.hpp"
-#include "X11/Xlib.h"
-#include "GL/glx.h"
+#include "core/engine.hpp"
+#include "GL/glxext.h"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "windowXlib",
                           "WindowXlib",
@@ -34,37 +34,191 @@ void closeLibInstance()
 ////////////////////////////////////////////////////////////////////////////////
 PluginWindowContextXlib::PluginWindowContextXlib(Engine &engine)
     : WindowPlugin(engine)
+    , m_display(nullptr)
+    , m_window(0)
+    , m_glxCtx(nullptr)
 {
     log().log() << "PluginWindowContextXlib start...\n";
 
-    XEvent e;
+    m_display = XOpenDisplay(nullptr);
+    if (!m_display)
+    {
+      log().log() << "Failed to open X display\n";
+      return;
+    }
 
-    Display *d = XOpenDisplay(NULL);
-    int s = DefaultScreen(d);
-    Window w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 100, 100, 1,
-                           BlackPixel(d, s), WhitePixel(d, s));
-    XSelectInput(d, w, ExposureMask | KeyPressMask);
+    int glxMajor = 0;
+    int glxMinor = 0;
+    if (!glXQueryVersion(m_display, &glxMajor, &glxMinor))
+    {
+        log().log() << "Failed to query GLX version\n";
+    }
+    log().log() << "GLX version: " << glxMajor << "." << glxMinor << "\n";
+
+    int visualAttribs[] =
+    {
+        GLX_X_RENDERABLE    , True,
+        GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
+        GLX_RENDER_TYPE     , GLX_RGBA_BIT,
+        GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
+        GLX_RED_SIZE        , 8,
+        GLX_GREEN_SIZE      , 8,
+        GLX_BLUE_SIZE       , 8,
+        GLX_ALPHA_SIZE      , 8,
+        GLX_DEPTH_SIZE      , 24,
+        GLX_STENCIL_SIZE    , 8,
+        GLX_DOUBLEBUFFER    , True,
+        //GLX_SAMPLE_BUFFERS  , 1,
+        //GLX_SAMPLES         , 4,
+        None
+    };
+
+    int fbcount;
+    GLXFBConfig* fbconfigs = glXChooseFBConfig(m_display, DefaultScreen(m_display), visualAttribs, &fbcount);
+    if (!fbconfigs)
+    {
+        log().log() << "Failed to retrieve a framebuffer config\n";
+        return;
+    }
+    log().log() << "Found " << fbcount << " matching FB configs.\n";
+
+    GLXFBConfig fbconfig = fbconfigs[0];
+    XFree(fbconfigs);
+
+    XVisualInfo* vi = glXGetVisualFromFBConfig(m_display, fbconfig);
+    if (!vi)
+    {
+        log().log() << "Cannot get visual from frame buffer configuration\n";
+        return;
+    }
+
+    XSetWindowAttributes windowAttribs;
+    m_colorMap = XCreateColormap(m_display, RootWindow(m_display, vi->screen), vi->visual, AllocNone);
+    windowAttribs.background_pixmap = None;
+    windowAttribs.border_pixel      = 0;
+    windowAttribs.event_mask        = StructureNotifyMask;
+    windowAttribs.colormap          = m_colorMap;
+
+    m_window = XCreateWindow(m_display, RootWindow(m_display, vi->screen),
+                             0, 0, 100, 100, 0, vi->depth, InputOutput,
+                             vi->visual,
+                             CWBorderPixel|CWColormap|CWEventMask, &windowAttribs);
+    if (!m_window)
+    {
+        log().log() << "Failed to create window.\n";
+        return;
+    }
+
+    XFree(vi);
+
+    XStoreName(m_display, m_window, "GL 3.0 Window");
+    XMapWindow(m_display, m_window);
+
+    const char* str = glXQueryServerString(m_display, DefaultScreen(m_display), GLX_VENDOR);
+    if (!str) str = "";
+    log().log() << "GLX_VENDOR server: " << str << "\n";
+
+    str = glXQueryServerString(m_display, DefaultScreen(m_display), GLX_VERSION);
+    if (!str) str = "";
+    log().log() << "GLX_VERSION server: " << str << "\n";
+
+    str = glXQueryServerString(m_display, DefaultScreen(m_display), GLX_EXTENSIONS);
+    if (!str) str = "";
+    log().log() << "GLX_EXTENSIONS server: " << str << "\n";
+
+    str = glXQueryExtensionsString(m_display, DefaultScreen(m_display));
+    if (!str) str = "";
+    log().log() << "GLX_EXTENSIONS: " << str << "\n";
+
+    str = glXGetClientString(m_display, GLX_VENDOR);
+    if (!str) str = "";
+    log().log() << "GLX_VENDOR client: " << str << "\n";
+
+    str = glXGetClientString(m_display, GLX_VERSION);
+    if (!str) str = "";
+    log().log() << "GLX_VERSION client: " << str << "\n";
+
+    str = glXGetClientString(m_display, GLX_EXTENSIONS);
+    if (!str) str = "";
+    log().log() << "GLX_EXTENSIONS client: " << str << "\n";
+
+    m_glxCtx = glXCreateNewContext(m_display, fbconfig, GLX_RGBA_TYPE, 0, True);
+    XSync(m_display, False);
+    if (!glXIsDirect(m_display, m_glxCtx))
+    {
+        log().log() << "Indirect GLX rendering context obtained\n";
+    }
+    else
+    {
+        log().log() << "Direct GLX rendering context obtained\n";
+    }
+    glXMakeCurrent(m_display, m_window, m_glxCtx);
+
+    XSelectInput(m_display, m_window, ExposureMask | KeyPressMask);
+
+    m_wmDeleteMessage = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(m_display, m_window, &m_wmDeleteMessage, 1);
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginWindowContextXlib::~PluginWindowContextXlib()
 {
     log().log() << "PluginWindowContextXlib stop...\n";
+
+    if (m_display)
+    {
+        if (m_glxCtx)
+        {
+            glXMakeCurrent(m_display, 0, nullptr);
+            glXDestroyContext(m_display, m_glxCtx);
+        }
+        if (m_window)
+            XDestroyWindow(m_display, m_window);
+        XFreeColormap(m_display, m_colorMap);
+        XCloseDisplay(m_display);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextXlib::update()
 {
+    XEvent e;
+    while (XPending(m_display) > 0)
+    {
+        XNextEvent(m_display, &e);
+        switch (e.type)
+        {
+        case DestroyNotify:
+            break;
+        case ClientMessage:
+            if (e.xclient.data.l[0] == m_wmDeleteMessage)
+                getEngine().setRequestQuit(true);
+            break;
+        default:
+            log().log() << e.type << std::endl;
+            break;
+        }
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginWindowContextXlib::setResolution(uint32_t x, uint32_t y)
 {
     WindowPlugin::setResolution(x, y);
+    if (m_display && m_window)
+    {
+        XMoveResizeWindow(m_display, m_window, m_position.x, m_position.y, x, y);
+        return true;
+    }
 
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextXlib::setPosition(Vec2i position)
+bool PluginWindowContextXlib::setPosition(uint32_t x, uint32_t y)
 {
-    WindowPlugin::setPosition(position);
+    WindowPlugin::setPosition(x, y);
+    if (m_display && m_window)
+    {
+        XMoveResizeWindow(m_display, m_window, x, y, m_resolution.x, m_resolution.y);
+        return true;
+    }
 
     return false;
 }
@@ -72,13 +226,17 @@ bool PluginWindowContextXlib::setPosition(Vec2i position)
 bool PluginWindowContextXlib::setTitle(const std::string& title)
 {
     WindowPlugin::setTitle(title);
+    if (m_display && m_window)
+    {
+        XStoreName(m_display, m_window, title.c_str());
+        return true;
+    }
 
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextXlib::swapBuffers()
 {
-    GLXDrawable drawable = 0;
-    glXSwapBuffers(0, drawable);
+    glXSwapBuffers(m_display, m_window);
 }
 ////////////////////////////////////////////////////////////////////////////////

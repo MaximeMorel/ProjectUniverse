@@ -129,12 +129,12 @@ bool PluginWindowContextSDL2::setResolution(uint32_t x, uint32_t y)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::setPosition(Vec2i position)
+bool PluginWindowContextSDL2::setPosition(uint32_t x, uint32_t y)
 {
-    WindowPlugin::setPosition(position);
+    WindowPlugin::setPosition(x, y);
     if (m_window)
     {
-        SDL_SetWindowPosition(m_window, position.x, position.y);
+        SDL_SetWindowPosition(m_window, x, y);
         return true;
     }
     return false;

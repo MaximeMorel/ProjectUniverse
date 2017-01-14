@@ -17,10 +17,15 @@ RenderMesh::~RenderMesh()
 RenderMeshPtr RenderMesh::create(const std::string& name)
 {
     /// virtual constructor idiom, use create facility from render plugin
-    return render().impl()->createRenderMesh(name);
+    return ::render().impl()->createRenderMesh(name);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void RenderMesh::setup(Mesh* mesh)
+{
+
+}
+////////////////////////////////////////////////////////////////////////////////
+void RenderMesh::draw()
 {
 
 }

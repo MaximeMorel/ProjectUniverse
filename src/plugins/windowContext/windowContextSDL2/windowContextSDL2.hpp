@@ -23,7 +23,7 @@ public:
 
     virtual bool setResolution(uint32_t x, uint32_t y) override;
 
-    virtual bool setPosition(Vec2i position) override;
+    virtual bool setPosition(uint32_t x, uint32_t y) override;
 
     virtual bool setTitle(const std::string& title) override;
 

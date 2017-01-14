@@ -20,6 +20,8 @@ public:
 
     virtual void setup(Mesh* mesh);
 
+    virtual void draw();
+
     VAOPtr vao;
     BufferObjectPtr i;
     BufferObjectPtr v;

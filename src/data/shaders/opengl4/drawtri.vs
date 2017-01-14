@@ -15,6 +15,6 @@ void main(void)
     gl_Position.xyz *= 0.4f;
     gl_Position.z += 0.0f;
     p = gl_Position.xyz;
-    vec4 t = mv * vec4(n, 0.0f);
+    vec4 t = mv * vec4(n, 0.0f);;
     pn = t.xyz;
 }

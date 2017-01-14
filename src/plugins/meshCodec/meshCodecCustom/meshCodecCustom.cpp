@@ -143,7 +143,7 @@ bool PluginMeshCodecCustom::loadStlAscii(Mesh* mesh)
                 if (buf == "endloop" && buf2 == "endfacet")
                 {
                     for (uint8_t j = 0; j < 3; ++j)
-                        mesh->m_indices32.push_back(i * 3 + j);
+                        mesh->m_indices.push_back(i * 3 + j);
 
                     for (uint8_t k = 0; k < 3; ++k)
                         for (uint8_t j = 0; j < 3; ++j)
@@ -191,7 +191,7 @@ bool PluginMeshCodecCustom::loadStlBinary(Mesh* mesh)
             break;
 
         for (uint8_t j = 0; j < 3; ++j)
-            mesh->m_indices32.push_back(i * 3 + j);
+            mesh->m_indices.push_back(i * 3 + j);
 
         for (uint8_t k = 0; k < 3; ++k)
             for (uint8_t j = 0; j < 3; ++j)
@@ -360,7 +360,7 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
         //log().log() << std::endl;
     }
 
-    mesh->m_indices32.reserve(faces.size() * 3);
+    mesh->m_indices.reserve(faces.size() * 3);
     mesh->m_vertices.resize(vertices.size());
     std::copy(vertices.begin(), vertices.end(), mesh->m_vertices.begin());
     mesh->m_normals.resize(vertices.size());
@@ -368,7 +368,7 @@ bool PluginMeshCodecCustom::loadObjIndex(Mesh* mesh)
     {
         for (uint8_t i = 0; i < 3; ++i)
         {
-            mesh->m_indices32.push_back(f.vid[i] - 1);
+            mesh->m_indices.push_back(f.vid[i] - 1);
 
             for (uint8_t k = 0; k < 3; ++k)
                 mesh->m_normals[3 * (f.vid[i] - 1) + k] = normals[3 * (f.nid[i] - 1) + k];
@@ -428,7 +428,7 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 size_t pos1 = buf.find('/');
                 if (pos1 > 0 && pos1 != std::string::npos)
                 {
-                    mesh->m_indices32.push_back(mesh->m_vertices.size() / 3);
+                    mesh->m_indices.push_back(mesh->m_vertices.size() / 3);
                     vid = std::stoi(buf.substr(0, pos1));
                     for (uint8_t j = 0; j < 3; ++j)
                         mesh->m_vertices.push_back(vertices[3 * (vid - 1) + j]);
@@ -497,10 +497,10 @@ bool PluginMeshCodecCustom::saveStlAscii(Mesh* mesh, const std::string& filePath
     out << "solid exported from PluginMeshCodecCustom writer " << pluginInfo.major << "." << pluginInfo.minor << "\n";
 
     uint32_t vid[3] = {0, 0, 0};
-    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    for (uint32_t id = 0; id + 2 < mesh->m_indices.size(); id += 3)
     {
         for (uint8_t i = 0; i < 3; ++i)
-            vid[i] = mesh->m_indices32[id + i];
+            vid[i] = mesh->m_indices[id + i];
 
         out << "facet normal " << mesh->m_normals[3 * vid[0] + 0] << " " << mesh->m_normals[3 * vid[0] + 1] << " " << mesh->m_normals[3 * vid[0] + 2] << "\n";
         out << "outer loop\n";
@@ -532,7 +532,7 @@ bool PluginMeshCodecCustom::saveStlBinary(Mesh* mesh, const std::string& filePat
     header.resize(80, ' ');
     out.write(header.c_str(), 80);
 
-    uint32_t numTris = mesh->m_indices32.size() / 3;
+    uint32_t numTris = mesh->m_indices.size() / 3;
     char* s = reinterpret_cast<char*>(&numTris);
     out.write(s, sizeof(numTris));
 
@@ -546,10 +546,10 @@ bool PluginMeshCodecCustom::saveStlBinary(Mesh* mesh, const std::string& filePat
     s = reinterpret_cast<char*>(&tri);
 
     uint32_t vid[3] = {0, 0, 0};
-    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    for (uint32_t id = 0; id + 2 < mesh->m_indices.size(); id += 3)
     {
         for (uint8_t i = 0; i < 3; ++i)
-            vid[i] = mesh->m_indices32[id + i];
+            vid[i] = mesh->m_indices[id + i];
 
         for (uint8_t i = 0; i < 3; ++i)
             tri.n[i] = mesh->m_normals[3 * vid[0] + i];
@@ -601,10 +601,10 @@ bool PluginMeshCodecCustom::saveObj(Mesh* mesh, const std::string& filePath)
     }
 
     uint32_t vid[3] = {0, 0, 0};
-    for (uint32_t id = 0; id + 2 < mesh->m_indices32.size(); id += 3)
+    for (uint32_t id = 0; id + 2 < mesh->m_indices.size(); id += 3)
     {
         for (uint8_t i = 0; i < 3; ++i)
-            vid[i] = mesh->m_indices32[id + i];
+            vid[i] = mesh->m_indices[id + i];
 
         out << "f ";
         for (uint8_t i = 0; i < 3; ++i)

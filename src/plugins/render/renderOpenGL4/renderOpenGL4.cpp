@@ -129,9 +129,7 @@ void PluginRenderOpenGL4::drawScene(Scene* scene)
         }
         if (mesh->m_renderMesh)
         {
-            mesh->m_renderMesh->vao->bind();
-            //glDrawArrays(GL_TRIANGLES, 0, mesh->m_vertices.size());
-            glDrawElements(GL_TRIANGLES, mesh->m_indices32.size(), GL_UNSIGNED_INT, nullptr);
+            mesh->m_renderMesh->draw();
         }
     }
 }
@@ -158,7 +156,14 @@ void PluginRenderOpenGL4::getInfo()
     str = glGetString(GL_SHADING_LANGUAGE_VERSION);
     log().log() << "GL_SHADING_LANGUAGE_VERSION: " << reinterpret_cast<const char*>(str) << "\n";
 
-    str = glGetString(GL_EXTENSIONS);
-    log().log() << "GL_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
+    glGetIntegerv(GL_NUM_EXTENSIONS, &v);
+    for (GLint i = 0; i < v; ++i)
+    {
+        str = glGetStringi(GL_EXTENSIONS, i);
+        log().log() << "GL_EXTENSION " << i << ": " << reinterpret_cast<const char*>(str) << "\n";
+    }
+
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &v);
+    log().log() << "GL_MAX_TEXTURE_SIZE: " << v << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
