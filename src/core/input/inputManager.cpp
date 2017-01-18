@@ -153,6 +153,11 @@ size_t InputManager::getNumDevices(Input::DeviceType dt) const
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
+void InputManager::setWindowInputFocus(uint32_t windowId)
+{
+    m_plugin->setWindowInputFocus(windowId);
+}
+////////////////////////////////////////////////////////////////////////////////
 size_t InputManager::getMemSize() const
 {
     return m_keyboard.size() * sizeof(InputDeviceKeyboard*) +

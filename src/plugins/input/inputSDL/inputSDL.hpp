@@ -27,6 +27,8 @@ public:
     virtual size_t getNumDevices(Input::DeviceType dt) override;
     virtual InputDevice *getDevice(Input::DeviceType dt, size_t deviceId) override;
 
+    virtual void setWindowInputFocus(uint32_t windowId) override;
+
     virtual void update() override;
 
     virtual size_t getMemSize() const override;

@@ -1,9 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextSDL2.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
 #include <SDL.h>
-#include <GL/gl.h>
+#include <SDL_syswm.h>
 #include <map>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "windowSDL",
@@ -37,6 +36,7 @@ void closeLibInstance()
 PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     : WindowPlugin(engine)
     , m_window(nullptr)
+    , m_glcontext(nullptr)
 {
     log().log() << "PluginWindowContextSDL2 start...\n";
 
@@ -48,33 +48,6 @@ PluginWindowContextSDL2::PluginWindowContextSDL2(Engine& engine)
     else if (ret == 0)
     {
         log().log() << "SDL_INIT_VIDEO success.\n";
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-
-    m_window = SDL_CreateWindow("SDL2 window",
-                                SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED,
-                                100, 100,
-                                SDL_WINDOW_OPENGL);
-
-    if (m_window == nullptr)
-    {
-        log().log() << SDL_GetError();
-    }
-    else
-    {
-        setTitle("title");
-        //setResolution(Vec2i(640, 360));
-        //setPosition(Vec2i(100, 100));
-
-        // Create an OpenGL context associated with the window.
-        m_glcontext = SDL_GL_CreateContext(m_window);
-
-        checkAttributes();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,6 +64,24 @@ PluginWindowContextSDL2::~PluginWindowContextSDL2()
     log().log() << SDL_GetError();
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContext(GfxContextType type)
+{
+    switch (type)
+    {
+    case GfxContextType::OPENGL_2_0:
+        return createContextOpenGL21();
+    case GfxContextType::OPENGL_3_3:
+        return createContextOpenGL33();
+    case GfxContextType::OPENGL_4_5:
+        return createContextOpenGL45();
+    case GfxContextType::VULKAN:
+        return createContextVulkan();
+    default:
+        break;
+    }
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextSDL2::update()
 {
     SDL_Event event;
@@ -99,7 +90,8 @@ void PluginWindowContextSDL2::update()
         switch (event.type)
         {
         case SDL_QUIT:
-            getEngine().setRequestQuit(true);
+            if (m_closeCallback)
+                m_closeCallback();
             break;
         case SDL_WINDOWEVENT:
             break;
@@ -156,6 +148,41 @@ void PluginWindowContextSDL2::swapBuffers()
     SDL_GL_SwapWindow(m_window);
 }
 ////////////////////////////////////////////////////////////////////////////////
+uint32_t PluginWindowContextSDL2::getWindowId() const
+{
+    if (m_window)
+    {
+        SDL_SysWMinfo info;
+        SDL_VERSION(&info.version);
+        SDL_GetWindowWMInfo(m_window, &info);
+        switch (info.subsystem)
+        {
+        #ifdef SDL_VIDEO_DRIVER_X11
+        case SDL_SYSWM_X11:
+            return info.info.x11.window;
+        #endif // SDL_VIDEO_DRIVER_X11
+        #ifdef SDL_VIDEO_DRIVER_WAYLAND
+        case SDL_SYSWM_WAYLAND:
+            //return info.info.wl.surface;
+        #endif // SDL_VIDEO_DRIVER_WAYLAND
+        #ifdef SDL_VIDEO_DRIVER_WINDOWS
+        case SDL_SYSWM_WINDOWS:
+            return info.info.win.window;
+        #endif // SDL_VIDEO_DRIVER_WINDOWS
+        case SDL_SYSWM_ANDROID:
+        case SDL_SYSWM_DIRECTFB:
+        case SDL_SYSWM_COCOA:
+        case SDL_SYSWM_UIKIT:
+        case SDL_SYSWM_MIR:
+        case SDL_SYSWM_WINRT:
+        case SDL_SYSWM_UNKNOWN:
+        default:
+            break;
+        }
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextSDL2::checkAttributes()
 {
     std::map<SDL_GLattr, std::string> attributes = {{SDL_GL_RED_SIZE, "SDL_GL_RED_SIZE"},
@@ -200,5 +227,69 @@ void PluginWindowContextSDL2::checkAttributes()
         SDL_GetCurrentDisplayMode(0, &mode);
         log().log() << "SDL display mode: " << mode.w << "x" << mode.h << " " << mode.refresh_rate << " Hz" << std::endl;
     }
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContextOpenGL21()
+{
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+    return createWindow(SDL_WINDOW_OPENGL);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContextOpenGL33()
+{
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    return createWindow(SDL_WINDOW_OPENGL);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContextOpenGL45()
+{
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+
+    return createWindow(SDL_WINDOW_OPENGL);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContextVulkan()
+{
+    return createWindow(SDL_WINDOW_SHOWN);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createWindow(SDL_WindowFlags flags)
+{
+    m_window = SDL_CreateWindow("SDL2 window",
+                                SDL_WINDOWPOS_UNDEFINED,
+                                SDL_WINDOWPOS_UNDEFINED,
+                                100, 100,
+                                flags);
+
+    if (m_window == nullptr)
+    {
+        log().log() << SDL_GetError();
+        return false;
+    }
+
+    if (flags & SDL_WINDOW_OPENGL)
+    {
+        // Create an OpenGL context associated with the window.
+        m_glcontext = SDL_GL_CreateContext(m_window);
+        if (m_glcontext == nullptr)
+        {
+            log().log() << SDL_GetError();
+            return false;
+        }
+    }
+
+    checkAttributes();
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

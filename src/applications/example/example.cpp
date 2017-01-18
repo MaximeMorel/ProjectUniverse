@@ -6,6 +6,8 @@
 #include "core/windowContext/windowPlugin.hpp"
 #include "core/tools/timer.hpp"
 #include "core/scene/scene.hpp"
+#include "core/render/renderPlugin.hpp"
+#include <functional>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "example",
                           "example",
@@ -50,7 +52,7 @@ void ApplicationExample::run()
 {
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
-        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL4.so");
+        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL33.so");
         PluginLibPtr libInput = res().createFromFile<PluginLib>("libInputSDL.so");
         PluginLibPtr libAudio = res().createFromFile<PluginLib>("libAudioOpenAL.so");
         PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
@@ -111,14 +113,24 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
+            w->createContext(GfxContextType::OPENGL_3_3);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
             input().discoverDevices();
             input().listDevices(log().log());
 
+            //input().setWindowInputFocus(w->getWindowId());
+
             libRender->getLibInstance(&getEngine());
-            render().setPlugin(libRender);
+            if (render().setPlugin(libRender) == false)
+            {
+                log().log() << "Cannot set render plugin. Abort.\n";
+                return;
+            }
+
+            auto func = std::bind(&RenderPlugin::resize, render().impl(), std::placeholders::_1, std::placeholders::_2);
+            w->setEventResizeCallback(func);
 
             w->setPosition(800, 900);
             w->setResolution(1280, 720);
@@ -152,6 +164,7 @@ void ApplicationExample::run()
                 scene.add(mesh.get());
 
             bool stop = false;
+            w->setEventCloseCallback([&stop](){ stop = true; });
 
             double targetFrameTime = 1000.0 / 60.0;
             double timeSlept = 0.0;

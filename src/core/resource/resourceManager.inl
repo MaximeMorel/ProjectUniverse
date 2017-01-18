@@ -19,9 +19,13 @@ std::shared_ptr<T> ResourceManager::create(const std::string& name, Params... p)
     if (it == m_resourceNames.end())
     {
         std::shared_ptr<T> res = T::create(name, p...);
-        res->m_flags |= Resource::Flags::ENGINE_MANAGED;
-        addResourceNoCheck(res);
-        return res;
+        if (res)
+        {
+            res->m_flags |= Resource::Flags::ENGINE_MANAGED;
+            addResourceNoCheck(res);
+            return res;
+        }
+        return nullptr;
     }
     return std::static_pointer_cast<T>(m_resources[it->second].lock());
 }

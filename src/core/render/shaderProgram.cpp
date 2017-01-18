@@ -21,7 +21,7 @@ ShaderProgram::~ShaderProgram()
 ////////////////////////////////////////////////////////////////////////////////
 const char* ShaderProgram::getSearchPath()
 {
-    return render().impl()->getSearchPath();
+    return render().impl()->getShaderSearchPath();
 }
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr ShaderProgram::create(const std::string& name, const std::string& fileName)

@@ -17,11 +17,12 @@ public:
     RenderPlugin(Engine& engine);
     virtual ~RenderPlugin() override;
 
-    virtual const char* getSearchPath() const;
+    virtual bool init();
+
+    virtual const char* getShaderSearchPath() const;
 
     virtual void resize(uint32_t x, uint32_t y);
 
-    virtual VAOPtr createVao(const std::string& name);
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName);

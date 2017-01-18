@@ -12,7 +12,7 @@ public:
     RenderManager();
     ~RenderManager();
 
-    void setPlugin(PluginLibPtr renderPlugin);
+    bool setPlugin(PluginLibPtr renderPlugin);
 
     RenderPlugin* impl()
     {

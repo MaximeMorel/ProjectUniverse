@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 namespace Input
 {
-enum Mouse
+enum Mouse : uint8_t
 {
     BT_1 = 0,
     BT_2,
@@ -27,7 +27,7 @@ enum Mouse
 
     NB_BUTTONS
 };
-enum class ButtonMode : std::int8_t
+enum class ButtonMode : uint8_t
 {
     UP = 0,
     DOWN,

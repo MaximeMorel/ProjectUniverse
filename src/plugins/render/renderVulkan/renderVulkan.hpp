@@ -18,6 +18,10 @@ public:
     PluginRenderVulkan(Engine& engine);
     virtual ~PluginRenderVulkan() override;
 
+    virtual bool init();
+
+    virtual const char* getShaderSearchPath() const;
+
 private:
     VkApplicationInfo m_applicationInfo;
     VkInstanceCreateInfo m_instanceInfo;

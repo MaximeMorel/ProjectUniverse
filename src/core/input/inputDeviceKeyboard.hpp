@@ -98,7 +98,7 @@ enum Keyboard
 
     NB_KEYS
 };
-enum class KeyMode : std::int8_t
+enum class KeyMode : uint8_t
 {
     UP = 0,
     DOWN,

@@ -12,8 +12,6 @@ public:
     VAO(const std::string& name);
     virtual ~VAO() override;
 
-    static VAOPtr create(const std::string& name);
-
      uint32_t getVaoId() const;
 
     virtual void bind();

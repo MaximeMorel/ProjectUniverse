@@ -9,7 +9,7 @@ using ShaderPtr = std::shared_ptr<Shader>;
 class Shader : public ResourceFile
 {
 public:
-    enum Type
+    enum Type : uint8_t
     {
         VERTEX_SHADER = 0,
         TESS_CONTROL_SHADER,

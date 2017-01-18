@@ -49,7 +49,7 @@ ShaderPtr Shader::create(const std::string& name, const std::string& fileName)
 ////////////////////////////////////////////////////////////////////////////////
 const char* Shader::getSearchPath()
 {
-    return render().impl()->getSearchPath();
+    return render().impl()->getShaderSearchPath();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Shader::compile()

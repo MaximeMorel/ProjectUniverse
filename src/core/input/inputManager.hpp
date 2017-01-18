@@ -33,6 +33,8 @@ public:
     InputDevice& getDevice(Input::DeviceType dt, size_t id);
     size_t getNumDevices(Input::DeviceType dt) const;
 
+    void setWindowInputFocus(uint32_t windowId);
+
     virtual size_t getMemSize() const;
 
     virtual void printOn(Logger& o) const;

@@ -1,0 +1,18 @@
+#ifndef __OPENGL_OBJECT_HPP__
+#define __OPENGL_OBJECT_HPP__
+////////////////////////////////////////////////////////////////////////////////
+#include "core/log/logger.hpp"
+////////////////////////////////////////////////////////////////////////////////
+class OpenGLObject
+{
+public:
+    OpenGLObject();
+    virtual ~OpenGLObject();
+
+    friend Logger& operator<<(Logger& o, const OpenGLObject& object);
+
+protected:
+    virtual void printOn(Logger& o) const;
+};
+////////////////////////////////////////////////////////////////////////////////
+#endif // __OPENGL_OBJECT_HPP__

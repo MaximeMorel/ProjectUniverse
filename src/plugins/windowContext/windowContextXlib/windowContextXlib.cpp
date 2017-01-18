@@ -158,6 +158,8 @@ PluginWindowContextXlib::PluginWindowContextXlib(Engine &engine)
 
     m_wmDeleteMessage = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(m_display, m_window, &m_wmDeleteMessage, 1);
+
+    //XGrabKeyboard(m_display, m_window, True, GrabModeAsync, GrabModeAsync, CurrentTime);
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginWindowContextXlib::~PluginWindowContextXlib()
@@ -166,16 +168,24 @@ PluginWindowContextXlib::~PluginWindowContextXlib()
 
     if (m_display)
     {
+        //XUngrabKeyboard(m_display, CurrentTime);
         if (m_glxCtx)
         {
             glXMakeCurrent(m_display, 0, nullptr);
             glXDestroyContext(m_display, m_glxCtx);
         }
         if (m_window)
+        {
             XDestroyWindow(m_display, m_window);
+        }
         XFreeColormap(m_display, m_colorMap);
         XCloseDisplay(m_display);
     }
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextXlib::createContext(GfxContextType type)
+{
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginWindowContextXlib::update()
@@ -204,7 +214,7 @@ bool PluginWindowContextXlib::setResolution(uint32_t x, uint32_t y)
     WindowPlugin::setResolution(x, y);
     if (m_display && m_window)
     {
-        XMoveResizeWindow(m_display, m_window, m_position.x, m_position.y, x, y);
+        XResizeWindow(m_display, m_window, x, y);
         return true;
     }
 
@@ -216,7 +226,7 @@ bool PluginWindowContextXlib::setPosition(uint32_t x, uint32_t y)
     WindowPlugin::setPosition(x, y);
     if (m_display && m_window)
     {
-        XMoveResizeWindow(m_display, m_window, x, y, m_resolution.x, m_resolution.y);
+        XMoveWindow(m_display, m_window, x, y);
         return true;
     }
 
@@ -238,5 +248,10 @@ bool PluginWindowContextXlib::setTitle(const std::string& title)
 void PluginWindowContextXlib::swapBuffers()
 {
     glXSwapBuffers(m_display, m_window);
+}
+////////////////////////////////////////////////////////////////////////////////
+uint32_t PluginWindowContextXlib::getWindowId() const
+{
+    return m_window;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -61,6 +61,7 @@ PluginInputSDL::~PluginInputSDL()
     log().log() << "PluginInputSDL stop...\n";
 
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
+    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     SDL_Quit();
 }
@@ -104,6 +105,16 @@ InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
             return &m_touchscreen[deviceId];
     }
     return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+void PluginInputSDL::setWindowInputFocus(uint32_t windowId)
+{
+    SDL_Window* window = SDL_CreateWindowFrom(reinterpret_cast<const void*>(windowId));
+    //SDL_Window* window = SDL_GetWindowFromID(windowId);
+    if (window)
+    {
+        SDL_RaiseWindow(window);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginInputSDL::update()

@@ -20,6 +20,8 @@ public:
     PluginWindowContextXlib(Engine &engine);
     virtual ~PluginWindowContextXlib() override;
 
+    virtual bool createContext(GfxContextType type) override;
+
     virtual void update() override;
 
     virtual bool setResolution(uint32_t x, uint32_t y) override;
@@ -29,6 +31,8 @@ public:
     virtual bool setTitle(const std::string& title) override;
 
     virtual void swapBuffers() override;
+
+    virtual uint32_t getWindowId() const override;
 
 private:
     Display* m_display;

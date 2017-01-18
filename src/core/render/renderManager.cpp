@@ -15,25 +15,29 @@ RenderManager::~RenderManager()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void RenderManager::setPlugin(PluginLibPtr inputPlugin)
+bool RenderManager::setPlugin(PluginLibPtr renderPlugin)
 {
     if (m_plugin)
     {
         // clean current plugin
         log().log() << "Removing current Render Plugin\n";
     }
-    const PluginInfo& pluginInfo = inputPlugin->getInfo();
+    const PluginInfo& pluginInfo = renderPlugin->getInfo();
     if (pluginInfo.type == std::string("render"))
     {
-        RenderPlugin* plugin = static_cast<RenderPlugin*>(inputPlugin->getLibInstance(&getEngine()));
-        m_plugin = plugin;
-
-        log().log() << "Render Plugin set\n";
+        RenderPlugin* plugin = static_cast<RenderPlugin*>(renderPlugin->getLibInstance(&getEngine()));
+        if (plugin->init() == true)
+        {
+            m_plugin = plugin;
+            log().log() << "Render Plugin set\n";
+            return true;
+        }
     }
     else
     {
         log().log() << "Wrong Render Plugin\n";
     }
+    return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

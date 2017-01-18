@@ -2,9 +2,6 @@
 #define __RENDERMESH_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resource.hpp"
-#include "bufferObject.hpp"
-#include "vao.hpp"
-#include "shaderProgram.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Mesh;
 class RenderMesh;
@@ -21,12 +18,6 @@ public:
     virtual void setup(Mesh* mesh);
 
     virtual void draw();
-
-    VAOPtr vao;
-    BufferObjectPtr i;
-    BufferObjectPtr v;
-    BufferObjectPtr n;
-    ShaderProgramPtr shaderProgram;
 
 protected:
     virtual void printOn(Logger& o) const override;

@@ -15,6 +15,9 @@ public:
     virtual size_t getNumDevices(Input::DeviceType dt);
     virtual InputDevice* getDevice(Input::DeviceType dt, size_t deviceId);
 
+    virtual void setWindowInputFocus(uint32_t windowId)
+    {}
+
     virtual void update();
 
     virtual size_t getMemSize() const;
