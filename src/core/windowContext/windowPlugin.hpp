@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 enum class GfxContextType : int8_t
 {
-    OPENGL_2_0,
+    OPENGL_2_1,
     OPENGL_3_3,
     OPENGL_4_5,
     VULKAN,

@@ -52,7 +52,7 @@ void ApplicationExample::run()
 {
     {
         PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
-        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL33.so");
+        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL21.so");
         PluginLibPtr libInput = res().createFromFile<PluginLib>("libInputSDL.so");
         PluginLibPtr libAudio = res().createFromFile<PluginLib>("libAudioOpenAL.so");
         PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
@@ -113,7 +113,7 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_3_3);
+            w->createContext(GfxContextType::OPENGL_2_1);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
@@ -152,7 +152,7 @@ void ApplicationExample::run()
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/car.obj");
             if (mesh)
             {
                 mesh->save("test2.stl");
@@ -288,13 +288,13 @@ void ApplicationExample::run()
                 if (getEngine().getRequestQuit())
                     stop = true;
             }
-            log().log() << res() << "\n";
+            //log().log() << res() << "\n";
         }
     }
 
-    log().log() << res() << "\n";
+    //log().log() << res() << "\n";
 
-    log().log() << "sizeof(Resource): " << sizeof(Resource) << "\n";
+    /*log().log() << "sizeof(Resource): " << sizeof(Resource) << "\n";
     log().log() << "sizeof(ResourceFile): " << sizeof(ResourceFile) << "\n";
     log().log() << "sizeof(ResourcePtr): " << sizeof(ResourcePtr) << "\n";
     log().log() << "sizeof(std::string): " << sizeof(std::string) << "\n";
@@ -305,7 +305,7 @@ void ApplicationExample::run()
     log().log() << "sizeof(double): " << sizeof(double) << "\n";
     log().log() << "sizeof(Vec2ui): " << sizeof(Vec2ui) << "\n";
     log().log() << "sizeof(Vec4f): " << sizeof(Vec4f) << "\n";
-    log().log() << "sizeof(bool): " << sizeof(bool) << "\n";
+    log().log() << "sizeof(bool): " << sizeof(bool) << "\n";*/
 
     log().log() << "main exit..." << std::endl;
 }

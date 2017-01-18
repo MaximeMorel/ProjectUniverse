@@ -68,7 +68,7 @@ bool PluginWindowContextSDL2::createContext(GfxContextType type)
 {
     switch (type)
     {
-    case GfxContextType::OPENGL_2_0:
+    case GfxContextType::OPENGL_2_1:
         return createContextOpenGL21();
     case GfxContextType::OPENGL_3_3:
         return createContextOpenGL33();
@@ -183,7 +183,7 @@ uint32_t PluginWindowContextSDL2::getWindowId() const
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginWindowContextSDL2::checkAttributes()
+void PluginWindowContextSDL2::logAttributes()
 {
     std::map<SDL_GLattr, std::string> attributes = {{SDL_GL_RED_SIZE, "SDL_GL_RED_SIZE"},
                                                     {SDL_GL_GREEN_SIZE, "SDL_GL_GREEN_SIZE"},
@@ -233,7 +233,7 @@ bool PluginWindowContextSDL2::createContextOpenGL21()
 {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
     return createWindow(SDL_WINDOW_OPENGL);
 }
@@ -288,7 +288,7 @@ bool PluginWindowContextSDL2::createWindow(SDL_WindowFlags flags)
         }
     }
 
-    checkAttributes();
+    logAttributes();
 
     return true;
 }

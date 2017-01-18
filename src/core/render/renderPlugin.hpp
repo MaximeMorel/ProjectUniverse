@@ -37,7 +37,7 @@ public:
     virtual void printOn(Logger& o) const;
 
 private:
-
+    friend Logger& operator<<(Logger& o, const RenderPlugin& plugin);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RENDERPLUGIN_HPP__

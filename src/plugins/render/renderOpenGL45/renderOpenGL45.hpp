@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
-#include "core/render/renderPlugin.hpp"
+#include "renderOpenGL.hpp"
 #include "renderopengl45_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDEROPENGL45_EXPORT const PluginInfo* getPluginInfo();
@@ -12,7 +12,7 @@ extern "C" RENDEROPENGL45_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDEROPENGL45_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginRenderOpenGL45 : public RenderPlugin
+class PluginRenderOpenGL45 : public PluginRenderOpenGL
 {
 public:
     PluginRenderOpenGL45(Engine& engine);

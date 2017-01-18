@@ -1,11 +1,10 @@
-#version 130
-#extension GL_ARB_vertex_type_2_10_10_10_rev : enable
+#version 330 core
 
 uniform float fTime;
 uniform mat4 mv;
 
 in vec3 v;
-in ivec3 n;
+in vec3 n;
 
 out vec3 p;
 out vec3 pn;

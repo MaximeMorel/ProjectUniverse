@@ -35,7 +35,7 @@ public:
     virtual uint32_t getWindowId() const override;
 
 private:
-    void checkAttributes();
+    void logAttributes();
 
     bool createContextOpenGL21();
     bool createContextOpenGL33();

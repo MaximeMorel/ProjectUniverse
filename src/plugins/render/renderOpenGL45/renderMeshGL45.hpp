@@ -1,13 +1,24 @@
-#ifndef __RenderMeshGL45_HPP__
-#define __RenderMeshGL45_HPP__
+#ifndef __RENDERMESHGL45_HPP__
+#define __RENDERMESHGL45_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "renderMeshGL.hpp"
-////////////////////////////////////////////////////////////////////////////////
-class RenderMeshGL45;
-using RenderMeshGL45Ptr = std::shared_ptr<RenderMeshGL45>;
+#include "vaoGL.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class RenderMeshGL45 : public RenderMeshGL
 {
+public:
+    RenderMeshGL45(const std::string& name);
+    virtual ~RenderMeshGL45() override;
+
+    static RenderMeshPtr create(const std::string& name);
+
+    virtual void setup(Mesh* mesh) override;
+    virtual void draw() override;
+
+    VAOGL vao;
+
+protected:
+    virtual void printOn(Logger& o) const override;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __RenderMeshGL45_HPP__
+#endif // __RENDERMESHGL45_HPP__

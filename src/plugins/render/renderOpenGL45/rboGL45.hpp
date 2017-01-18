@@ -1,16 +1,16 @@
-#ifndef __RBO_OPENGL4_HPP__
-#define __RBO_OPENGL4_HPP__
+#ifndef __RBO_OPENGL45_HPP__
+#define __RBO_OPENGL45_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/render/rbo.hpp"
+#include "rboGL.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class RBOGL4 : public RBO
+class RBOGL45 : public RBOGL
 {
 public:
-    RBOGL4(const std::string& name);
-    virtual ~RBOGL4() override;
+    RBOGL45();
+    virtual ~RBOGL45() override;
 
-private:
-    unsigned int m_rboId;
+protected:
+    void printOn(Logger& o) const override;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __RBO_OPENGL4_HPP__
+#endif // __RBO_OPENGL45_HPP__

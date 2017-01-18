@@ -9,7 +9,8 @@ include_directories(../../../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(../renderOpenGL/)
 
-set(PLUGIN_SOURCE renderOpenGL33.cpp
+set(PLUGIN_SOURCE ../renderOpenGL/renderOpenGL.cpp
+                  renderOpenGL33.cpp
                   ../renderOpenGL/glObject.cpp
                   ../renderOpenGL/bufferObjectGL.cpp
                   bufferObjectGL33.cpp

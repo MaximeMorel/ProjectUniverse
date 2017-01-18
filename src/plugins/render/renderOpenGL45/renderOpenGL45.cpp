@@ -40,22 +40,8 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderOpenGL45::PluginRenderOpenGL45(Engine &engine)
-    : RenderPlugin(engine)
+    : PluginRenderOpenGL(engine)
 {
-    log().log() << "PluginRenderOpenGL45 start...\n";
-
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-    {
-        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
-    }
-    else
-    {
-        log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
-        //log().log() << "GLEW_ARB_vertex_type_2_10_10_10_rev: " << GLEW_ARB_vertex_type_2_10_10_10_rev << "\n";
-    }
-
-    getInfo();
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderOpenGL45::~PluginRenderOpenGL45()
@@ -65,7 +51,23 @@ PluginRenderOpenGL45::~PluginRenderOpenGL45()
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL45::init()
 {
-    return false;
+    log().log() << "PluginRenderOpenGL45 start...\n";
+
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+        return false;
+    }
+
+    log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
+
+    if (checkVersion(4, 5) == false)
+        return false;
+
+    log().log() << *this << "\n";
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 const char* PluginRenderOpenGL45::getShaderSearchPath() const
@@ -100,69 +102,11 @@ RenderMeshPtr PluginRenderOpenGL45::createRenderMesh(const std::string& name)
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL45::draw()
 {
-    //glFlushErrors();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_POINT_SPRITE);
-    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-    glDrawArrays(GL_POINTS, 0, 1);
-    glFlush();
-    //glLogCurrentError();
+    PluginRenderOpenGL::draw();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL45::drawScene(Scene* scene)
 {
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    for (Mesh* mesh : scene->m_meshes)
-    {
-        if (!mesh->m_renderMesh)
-        {
-            mesh->m_renderMesh = res().create<RenderMesh>(mesh->getName());
-            if (mesh->m_renderMesh)
-            {
-                mesh->m_renderMesh->setup(mesh);
-            }
-        }
-        if (mesh->m_renderMesh)
-        {
-            mesh->m_renderMesh->draw();
-        }
-    }
-}
-////////////////////////////////////////////////////////////////////////////////
-void PluginRenderOpenGL45::getInfo()
-{
-    const GLubyte* str = nullptr;
-
-    str = glGetString(GL_VENDOR);
-    log().log() << "GL_VENDOR: " << reinterpret_cast<const char*>(str) << "\n";
-
-    str = glGetString(GL_RENDERER);
-    log().log() << "GL_RENDERER: " << reinterpret_cast<const char*>(str) << "\n";
-
-    str = glGetString(GL_VERSION);
-    log().log() << "GL_VERSION: " << reinterpret_cast<const char*>(str);
-
-    GLint v = 0;
-    glGetIntegerv(GL_MAJOR_VERSION, &v);
-    log().log() <<  " (" << v;
-    glGetIntegerv(GL_MINOR_VERSION, &v);
-    log().log() <<  "." << v << ")\n";
-
-    str = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    log().log() << "GL_SHADING_LANGUAGE_VERSION: " << reinterpret_cast<const char*>(str) << "\n";
-
-    glGetIntegerv(GL_NUM_EXTENSIONS, &v);
-    for (GLint i = 0; i < v; ++i)
-    {
-        str = glGetStringi(GL_EXTENSIONS, i);
-        log().log() << "GL_EXTENSION " << i << ": " << reinterpret_cast<const char*>(str) << "\n";
-    }
-
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &v);
-    log().log() << "GL_MAX_TEXTURE_SIZE: " << v << "\n";
-
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v);
-    log().log() << "GL_MAX_VERTEX_ATTRIBS: " << v << "\n";
+    PluginRenderOpenGL::drawScene(scene);
 }
 ////////////////////////////////////////////////////////////////////////////////

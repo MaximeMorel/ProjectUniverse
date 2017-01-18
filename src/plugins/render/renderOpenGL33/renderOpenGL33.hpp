@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
-#include "core/render/renderPlugin.hpp"
+#include "renderOpenGL.hpp"
 #include "renderopengl33_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDEROPENGL33_EXPORT const PluginInfo* getPluginInfo();
@@ -12,7 +12,7 @@ extern "C" RENDEROPENGL33_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDEROPENGL33_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginRenderOpenGL33 : public RenderPlugin
+class PluginRenderOpenGL33 : public PluginRenderOpenGL
 {
 public:
     PluginRenderOpenGL33(Engine& engine);
@@ -30,8 +30,6 @@ public:
 
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
-
-    void getInfo();
 };
 /////////////////////////////////////////// /////////////////////////////////////
 #endif // __RENDEROPENGL33_HPP__

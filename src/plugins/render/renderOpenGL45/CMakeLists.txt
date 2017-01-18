@@ -9,13 +9,24 @@ include_directories(../../../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(../renderOpenGL/)
 
-set(PLUGIN_SOURCE renderOpenGL45.cpp
+set(PLUGIN_SOURCE ../renderOpenGL/renderOpenGL.cpp
+                  renderOpenGL45.cpp
+                  ../renderOpenGL/glObject.cpp
+                  ../renderOpenGL/bufferObjectGL.cpp
                   bufferObjectGL45.cpp
+                  ../renderOpenGL/fboGL.cpp
                   fboGL45.cpp
+                  ../renderOpenGL/rboGL.cpp
+                  rboGL45.cpp
+                  ../renderOpenGL/shaderGL.cpp
                   shaderGL45.cpp
+                  ../renderOpenGL/shaderProgramGL.cpp
                   shaderProgramGL45.cpp
+                  ../renderOpenGL/textureGL.cpp
                   textureGL45.cpp
+                  ../renderOpenGL/vaoGL.cpp
                   vaoGL45.cpp
+                  ../renderOpenGL/renderMeshGL.cpp
                   renderMeshGL45.cpp
                   ../renderOpenGL/opengltools.cpp)
 

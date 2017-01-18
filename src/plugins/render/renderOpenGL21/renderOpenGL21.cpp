@@ -64,6 +64,8 @@ bool PluginRenderOpenGL21::init()
     if (checkVersion(2, 1) == false)
         return false;
 
+    log().log() << *this << "\n";
+
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +112,8 @@ void PluginRenderOpenGL21::drawScene(Scene* scene)
 void PluginRenderOpenGL21::logInfoExtensions(Logger& o) const
 {
     const GLubyte* str = glGetString(GL_EXTENSIONS);
-    uint32_t i = 0;
+    o << "GL_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
+    /*uint32_t i = 0;
     std::string strExt;
     while (str)
     {
@@ -119,6 +122,6 @@ void PluginRenderOpenGL21::logInfoExtensions(Logger& o) const
             ++str;
         strExt = std::string(strStart, str);
         o << "GL_EXTENSION " << i << ": " << strExt << "\n";
-    }
+    }*/
 }
 ////////////////////////////////////////////////////////////////////////////////

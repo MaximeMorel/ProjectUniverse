@@ -147,7 +147,7 @@ bool PluginRenderOpenGL::checkVersion(int major, int minor)
     GLint vminor = 0;
     glGetIntegerv(GL_MINOR_VERSION, &vminor);
 
-    return (vmajor == major && vminor == minor);
+    return (vmajor >= major && vminor >= minor);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::printOn(Logger& o) const
