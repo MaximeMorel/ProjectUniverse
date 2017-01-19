@@ -10,7 +10,7 @@ class LoggerGroup : public Logger
 {
 public:
     LoggerGroup(const std::string& name);
-    virtual ~LoggerGroup();
+    virtual ~LoggerGroup() override;
 
     void addLogger(Logger* logger);
 

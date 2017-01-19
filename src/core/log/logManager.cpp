@@ -6,7 +6,16 @@ LogManager* gLog = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 LogManager::LogManager()
 {
-    m_loggers.push_back(new LoggerStream("stdout", std::cout));
+    LoggerGroup* logAll = new LoggerGroup("all");
+    LoggerStream* logStdout =  new LoggerStream("stdout", std::cout);
+    LoggerFile* logFile = new LoggerFile("log", "engine.log");
+
+    logAll->addLogger(logStdout);
+    logAll->addLogger(logFile);
+
+    m_loggers.push_back(logAll);
+    m_loggers.push_back(logStdout);
+    m_loggers.push_back(logFile);
 }
 ////////////////////////////////////////////////////////////////////////////////
 LogManager::~LogManager()

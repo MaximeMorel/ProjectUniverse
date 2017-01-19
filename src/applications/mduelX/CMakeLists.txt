@@ -1,4 +1,4 @@
-project(mduelX)
+project(MDuelX)
 
 message(STATUS "Configuring ${PROJECT_NAME}...")
 

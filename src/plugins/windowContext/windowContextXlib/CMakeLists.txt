@@ -1,4 +1,4 @@
-project(windowContextXlib)
+project(WindowContextXlib)
 
 message(STATUS "Configuring ${PROJECT_NAME} plugin...")
 

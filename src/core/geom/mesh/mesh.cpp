@@ -8,7 +8,6 @@ ResourceType Mesh::type("Mesh");
 Mesh::Mesh(const std::string& name, const std::string& fileName)
     : ResourceFile(name, fileName)
 {
-    //m_gpuMesh = res().create<GPUMesh>(name);
 }
 ////////////////////////////////////////////////////////////////////////////////
 Mesh::~Mesh()

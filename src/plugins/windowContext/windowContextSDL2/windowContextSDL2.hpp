@@ -37,9 +37,7 @@ public:
 private:
     void logAttributes();
 
-    bool createContextOpenGL21();
-    bool createContextOpenGL33();
-    bool createContextOpenGL45();
+    bool createContextOpenGL(int major, int minor);
     bool createContextVulkan();
 
     bool createWindow(SDL_WindowFlags flags);

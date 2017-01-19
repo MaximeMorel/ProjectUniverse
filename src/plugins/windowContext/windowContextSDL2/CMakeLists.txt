@@ -1,4 +1,4 @@
-project(windowContextSDL2)
+project(WindowContextSDL2)
 
 message(STATUS "Configuring ${PROJECT_NAME} plugin...")
 

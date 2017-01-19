@@ -69,11 +69,11 @@ bool PluginWindowContextSDL2::createContext(GfxContextType type)
     switch (type)
     {
     case GfxContextType::OPENGL_2_1:
-        return createContextOpenGL21();
+        return createContextOpenGL(2, 1);
     case GfxContextType::OPENGL_3_3:
-        return createContextOpenGL33();
+        return createContextOpenGL(3, 3);
     case GfxContextType::OPENGL_4_5:
-        return createContextOpenGL45();
+        return createContextOpenGL(4, 5);
     case GfxContextType::VULKAN:
         return createContextVulkan();
     default:
@@ -229,31 +229,13 @@ void PluginWindowContextSDL2::logAttributes()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::createContextOpenGL21()
+bool PluginWindowContextSDL2::createContextOpenGL(int major, int minor)
 {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-    return createWindow(SDL_WINDOW_OPENGL);
-}
-////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::createContextOpenGL33()
-{
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-    return createWindow(SDL_WINDOW_OPENGL);
-}
-////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::createContextOpenGL45()
-{
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+    if (major >= 3)
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor);
 
     return createWindow(SDL_WINDOW_OPENGL);
 }

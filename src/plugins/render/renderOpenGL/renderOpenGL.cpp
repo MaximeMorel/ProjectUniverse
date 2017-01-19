@@ -23,7 +23,27 @@ PluginRenderOpenGL::~PluginRenderOpenGL()
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL::init()
 {
-    return false;
+    if (initGlew(false) == false)
+        return false;
+
+    if (checkExtensions() == false)
+    {
+        log().log() << "Could not load OpenGL extensions.\n";
+        if (initGlew(true) == false)
+            return false;
+
+        if (checkExtensions() == false)
+        {
+            log().log() << "Could not load OpenGL extensions with GLEW expermiental.\n";
+            return false;
+        }
+        else
+        {
+            log().log() << "OpenGL extensions loaded with GLEW expermiental.\n";
+        }
+    }
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 const char* PluginRenderOpenGL::getShaderSearchPath() const
@@ -93,6 +113,26 @@ void PluginRenderOpenGL::drawScene(Scene* scene)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool PluginRenderOpenGL::initGlew(bool experimental)
+{
+    glewExperimental = experimental;
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+        return false;
+    }
+
+    log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginRenderOpenGL::checkExtensions()
+{
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::logInfoVersion(Logger& o) const
 {
     const GLubyte* str = nullptr;
@@ -147,7 +187,11 @@ bool PluginRenderOpenGL::checkVersion(int major, int minor)
     GLint vminor = 0;
     glGetIntegerv(GL_MINOR_VERSION, &vminor);
 
-    return (vmajor >= major && vminor >= minor);
+    if (vmajor > major)
+        return true;
+    if (vmajor == major && vminor >= minor)
+        return true;
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::printOn(Logger& o) const

@@ -31,7 +31,13 @@ public:
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
 
+protected:
+    virtual bool checkExtensions() override;
+
+    virtual void logInfoVersion(Logger& o) const override;
     virtual void logInfoExtensions(Logger& o) const override;
+
+    virtual bool checkVersion(int major, int minor) override;
 };
 /////////////////////////////////////////// /////////////////////////////////////
 #endif // __RENDEROPENGL21_HPP__

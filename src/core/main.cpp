@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
-    PluginAppPtr app = res().createFromFile<PluginApp>("example/libexample.so");
+    PluginAppPtr app = engine.plugins().loadApp("Example");
     if (app && app->isValid())
     {
         engine.log().log() << app << "\n";
@@ -24,6 +24,7 @@ int main(int argc, char **argv)
         if (a)
             a->run();
     }
+    engine.log().log() << "main exit..." << std::endl;
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////

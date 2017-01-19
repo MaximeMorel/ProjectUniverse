@@ -30,6 +30,9 @@ public:
 
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
+
+protected:
+    virtual bool checkExtensions() override;
 };
 /////////////////////////////////////////// /////////////////////////////////////
 #endif // __RENDEROPENGL33_HPP__

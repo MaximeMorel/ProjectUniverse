@@ -53,16 +53,11 @@ bool PluginRenderOpenGL45::init()
 {
     log().log() << "PluginRenderOpenGL45 start...\n";
 
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-    {
-        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+    bool res = PluginRenderOpenGL::init();
+    if (res == false)
         return false;
-    }
 
-    log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
-
-    if (checkVersion(4, 5) == false)
+    if (checkVersion(3, 3) == false)
         return false;
 
     log().log() << *this << "\n";

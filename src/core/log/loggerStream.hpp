@@ -8,7 +8,7 @@ class LoggerStream : public Logger
 {
 public:
     LoggerStream(const std::string& name, std::ostream& stream);
-    virtual ~LoggerStream();
+    virtual ~LoggerStream() override;
 
     virtual Logger& operator<<(const LogLine& line) override;
 

@@ -1,14 +1,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "pluginManager.hpp"
+#include "core/resource/resourceManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginManager::PluginManager()
+    : m_prefix(nullptr)
+    , m_suffix(nullptr)
+    , m_separator(nullptr)
 {
-
+    m_prefix = "lib";
+    m_suffix = ".so";
+    m_separator = "/";
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginManager::~PluginManager()
 {
-
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginAppPtr PluginManager::loadApp(const std::string& appName)
+{
+    PluginAppPtr app = res().createFromFile<PluginApp>(appName + m_separator + m_prefix + appName + m_suffix);
+    return app;
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginLibPtr PluginManager::loadLib(const std::string& libName)
+{
+    PluginLibPtr lib = res().createFromFile<PluginLib>(m_prefix + libName + m_suffix);
+    return lib;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void discoverPlugins()

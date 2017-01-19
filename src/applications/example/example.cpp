@@ -8,6 +8,7 @@
 #include "core/scene/scene.hpp"
 #include "core/render/renderPlugin.hpp"
 #include <functional>
+#include "core/script/lua/engineLua.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "example",
                           "example",
@@ -51,16 +52,16 @@ ApplicationExample::~ApplicationExample()
 void ApplicationExample::run()
 {
     {
-        PluginLibPtr libWindow = res().createFromFile<PluginLib>("libwindowContextSDL2.so");
-        PluginLibPtr libRender = res().createFromFile<PluginLib>("libRenderOpenGL21.so");
-        PluginLibPtr libInput = res().createFromFile<PluginLib>("libInputSDL.so");
-        PluginLibPtr libAudio = res().createFromFile<PluginLib>("libAudioOpenAL.so");
-        PluginLibPtr libJPEG = res().createFromFile<PluginLib>("libImageCodecJPEG.so");
-        PluginLibPtr libPNG = res().createFromFile<PluginLib>("libImageCodecPNG.so");
-        PluginLibPtr libSDLimage = res().createFromFile<PluginLib>("libImageCodecSDL.so");
-        PluginLibPtr libImageCustom = res().createFromFile<PluginLib>("libImageCodecCustom.so");
-        PluginLibPtr libMeshCustom = res().createFromFile<PluginLib>("libMeshCodecCustom.so");
-        PluginLibPtr libASSIMP = res().createFromFile<PluginLib>("libMeshCodecASSIMP.so");
+        PluginLibPtr libWindow = getEngine().plugins().loadLib("WindowContextSDL2");
+        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL33");
+        PluginLibPtr libInput = getEngine().plugins().loadLib("InputSDL");
+        PluginLibPtr libAudio = getEngine().plugins().loadLib("AudioOpenAL");
+        PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
+        PluginLibPtr libPNG = getEngine().plugins().loadLib("ImageCodecPNG");
+        PluginLibPtr libSDLimage = getEngine().plugins().loadLib("ImageCodecSDL");
+        PluginLibPtr libImageCustom = getEngine().plugins().loadLib("ImageCodecCustom");
+        PluginLibPtr libMeshCustom = getEngine().plugins().loadLib("MeshCodecCustom");
+        PluginLibPtr libASSIMP = getEngine().plugins().loadLib("MeshCodecASSIMP");
         if (libJPEG && libJPEG->isValid())
         {
             log().log() << libJPEG << "\n";
@@ -113,7 +114,7 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_2_1);
+            w->createContext(GfxContextType::OPENGL_3_3);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
@@ -152,7 +153,7 @@ void ApplicationExample::run()
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/car.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
             if (mesh)
             {
                 mesh->save("test2.stl");
@@ -307,6 +308,6 @@ void ApplicationExample::run()
     log().log() << "sizeof(Vec4f): " << sizeof(Vec4f) << "\n";
     log().log() << "sizeof(bool): " << sizeof(bool) << "\n";*/
 
-    log().log() << "main exit..." << std::endl;
+    luaTest();
 }
 ////////////////////////////////////////////////////////////////////////////////

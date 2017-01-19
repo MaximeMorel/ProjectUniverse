@@ -53,14 +53,9 @@ bool PluginRenderOpenGL33::init()
 {
     log().log() << "PluginRenderOpenGL33 start...\n";
 
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-    {
-        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+    bool res = PluginRenderOpenGL::init();
+    if (res == false)
         return false;
-    }
-
-    log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
 
     if (checkVersion(3, 3) == false)
         return false;
@@ -68,6 +63,11 @@ bool PluginRenderOpenGL33::init()
     log().log() << *this << "\n";
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginRenderOpenGL33::checkExtensions()
+{
+    return GLEW_ARB_vertex_array_object;
 }
 ////////////////////////////////////////////////////////////////////////////////
 const char* PluginRenderOpenGL33::getShaderSearchPath() const

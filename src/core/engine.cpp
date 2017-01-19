@@ -31,7 +31,7 @@ Engine::Engine(const std::string& name)
     m_logManager.log() << (LogLine() << FILEINFO << "Engine " << m_name << " init...\n");
 
     char buf[256];
-    m_logManager.log() << getcwd(buf, 256) << "\n";
+    m_logManager.log() << "cwd: " << getcwd(buf, 256) << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()

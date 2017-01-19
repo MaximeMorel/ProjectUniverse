@@ -1,4 +1,4 @@
-project(windowContextNull)
+project(WindowContextNull)
 
 message(STATUS "Configuring ${PROJECT_NAME} plugin...")
 

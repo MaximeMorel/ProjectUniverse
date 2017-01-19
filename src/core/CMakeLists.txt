@@ -74,6 +74,7 @@ set(CORE_SOURCE main.cpp
                 resource/resourceManager.cpp
                 resource/resourceManager.inl
                 scene/scene.cpp
+                script/lua/engineLua.cpp
                 tools/timer.cpp
                 windowContext/windowPlugin.cpp
                 )
@@ -82,8 +83,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/
 add_executable(${PROJECT_NAME} ${CORE_SOURCE})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
-find_package (Bullet)
-if (BULLET_FOUND)
-    include_directories(${BULLET_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})
-endif (BULLET_FOUND)
+find_package (Lua)
+if (LUA_FOUND)
+    include_directories(${LUA_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${LUA_LIBRARIES})
+endif (LUA_FOUND)

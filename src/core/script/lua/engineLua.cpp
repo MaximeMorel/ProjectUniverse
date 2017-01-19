@@ -1,17 +1,61 @@
-#include "testlua.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+#include "engineLua.hpp"
+#include "core/engine.hpp"
+#include <lua.hpp>
+////////////////////////////////////////////////////////////////////////////////
+int getEngineLua(lua_State* l)
+{
+    Engine& engine = getEngine();
+    lua_pushlightuserdata(l, reinterpret_cast<void*>(&engine));
+    return 1;
+}
+////////////////////////////////////////////////////////////////////////////////
+int logLua(lua_State* l)
+{
+    Engine& engine = getEngine();
+    if (lua_isstring(l, 1))
+    {
+        engine.log().log() << lua_tostring(l, 1);
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+void registerLua(lua_State* l)
+{
+    lua_register(l, "getEngine", getEngineLua);
+    lua_register(l, "log", logLua);
+}
+////////////////////////////////////////////////////////////////////////////////
+int luaTest()
+{
+    lua_State * l = luaL_newstate();
+    luaL_openlibs(l);
+    registerLua(l);
+
+    int erred = luaL_dofile(l, "fun.lua");
+    if(erred)
+    {
+        getEngine().log().log() << "Lua error.\n";
+    }
+
+    lua_close(l);
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+/*
 // The general pattern to binding C++ class to Lua is to write a Lua
 // thunk for every method for the class, so here we go:
 
 int l_Foo_constructor(lua_State * l)
 {
-	const char * name = luaL_checkstring(l, 1);
+    const char * name = luaL_checkstring(l, 1);
 
 // We could actually allocate Foo itself as a user data but
 // since user data can be GC'ed and we gain unity by using CRT's heap
 // all along.
-	Foo ** udata = (Foo **)lua_newuserdata(l, sizeof(Foo *));
-	*udata = new Foo(name);
+    Foo ** udata = (Foo **)lua_newuserdata(l, sizeof(Foo *));
+    *udata = new Foo(name);
 
 // Usually, we'll just use "Foo" as the second parameter, but I
 // say luaL_Foo here to distinguish the difference:
@@ -20,7 +64,7 @@ int l_Foo_constructor(lua_State * l)
 // _not_ exposed to Lua by default.
 //
 // Effectively, this metatable is not accessible by Lua by default.
-	luaL_getmetatable(l, "luaL_Foo");
+    luaL_getmetatable(l, "luaL_Foo");
 
 // The Lua stack at this point looks like this:
 //
@@ -34,7 +78,7 @@ int l_Foo_constructor(lua_State * l)
 // We must set the metatable here because Lua prohibits setting
 // the metatable of a userdata in Lua. The only way to set a metatable
 // of a userdata is to do it in C.
-	lua_setmetatable(l, -2);
+    lua_setmetatable(l, -2);
 
 // The Lua stack at this point looks like this:
 //
@@ -44,24 +88,24 @@ int l_Foo_constructor(lua_State * l)
 // We return 1 so Lua callsite will get the user data and
 // Lua will clean the stack after that.
 
-	return 1;
+    return 1;
 }
 
 Foo * l_CheckFoo(lua_State * l, int n)
 {
 // This checks that the argument is a userdata
 // with the metatable "luaL_Foo"
-	return *(Foo **)luaL_checkudata(l, n, "luaL_Foo");
+    return *(Foo **)luaL_checkudata(l, n, "luaL_Foo");
 }
 
 int l_Foo_add(lua_State * l)
 {
-	Foo * foo = l_CheckFoo(l, 1);
-	int a = luaL_checknumber(l, 2);
-	int b = luaL_checknumber(l, 3);
+    Foo * foo = l_CheckFoo(l, 1);
+    int a = luaL_checknumber(l, 2);
+    int b = luaL_checknumber(l, 3);
 
-	std::string s = foo->Add(a, b);
-	lua_pushstring(l, s.c_str());
+    std::string s = foo->Add(a, b);
+    lua_pushstring(l, s.c_str());
 
 // The Lua stack at this point looks like this:
 //
@@ -72,39 +116,39 @@ int l_Foo_add(lua_State * l)
 //
 // Return 1 to return the result string to Lua callsite.
 
-	return 1;
+    return 1;
 }
 
 int l_Foo_destructor(lua_State * l)
 {
-	Foo * foo = l_CheckFoo(l, 1);
-	delete foo;
+    Foo * foo = l_CheckFoo(l, 1);
+    delete foo;
 
-	return 0;
+    return 0;
 }
 
 void RegisterFoo(lua_State * l)
 {
-	luaL_Reg sFooRegs[] =
-	{
-		{ "new", l_Foo_constructor },
-		{ "add", l_Foo_add },
-		{ "__gc", l_Foo_destructor },
-		{ NULL, NULL }
-	};
+    luaL_Reg sFooRegs[] =
+    {
+        { "new", l_Foo_constructor },
+        { "add", l_Foo_add },
+        { "__gc", l_Foo_destructor },
+        { NULL, NULL }
+    };
 
 // Create a luaL metatable. This metatable is not
 // exposed to Lua. The "luaL_Foo" label is used by luaL
 // internally to identity things.
-	luaL_newmetatable(l, "luaL_Foo");
+    luaL_newmetatable(l, "luaL_Foo");
 
 // Register the C functions _into_ the metatable we just created.
-	luaL_register(l, NULL, sFooRegs);
+    luaL_register(l, NULL, sFooRegs);
 
 // The Lua stack at this point looks like this:
 //
 // 1| metatable "luaL_Foo" |-1
-	lua_pushvalue(l, -1);
+    lua_pushvalue(l, -1);
 
 // The Lua stack at this point looks like this:
 //
@@ -113,7 +157,7 @@ void RegisterFoo(lua_State * l)
 
 // Set the "__index" field of the metatable to point to itself
 // This pops the stack
-	lua_setfield(l, -1, "__index");
+    lua_setfield(l, -1, "__index");
 
 // The Lua stack at this point looks like this:
 //
@@ -131,20 +175,21 @@ void RegisterFoo(lua_State * l)
 // This allows Lua scripts to _override_ the metatable of Foo.
 // For high security code this may not be called for but
 // we'll do this to get greater flexibility.
-	lua_setglobal(l, "Foo");
+    lua_setglobal(l, "Foo");
 }
 
 int luaTest()
 {
-	lua_State * l = luaL_newstate();
-	luaL_openlibs(l);
-	RegisterFoo(l);
+    lua_State * l = luaL_newstate();
+    luaL_openlibs(l);
+    RegisterFoo(l);
 
-	int erred = luaL_dofile(l, "fun.lua");
-	if(erred)
-		std::cout << "Lua error: " << luaL_checkstring(l, -1) << std::endl;
+    int erred = luaL_dofile(l, "fun.lua");
+    if(erred)
+        std::cout << "Lua error: " << luaL_checkstring(l, -1) << std::endl;
 
-	lua_close(l);
+    lua_close(l);
 
-	return 0;
+    return 0;
 }
+//*/

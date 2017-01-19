@@ -58,7 +58,7 @@ void RenderMeshGL::setup(Mesh *mesh)
 
     n = res().create<BufferObject>(getName() + "/n");
     n->bindVBO();
-    if (1 && GLEW_ARB_vertex_type_2_10_10_10_rev) // GL_INT_2_10_10_10_REV test
+    if (0 && GLEW_ARB_vertex_type_2_10_10_10_rev) // GL_INT_2_10_10_10_REV test
     {
         std::vector<GLint> normals;
         normals.reserve(mesh->m_normals.size() / 3);

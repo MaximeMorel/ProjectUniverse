@@ -26,14 +26,18 @@ public:
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
 
+protected:
+    bool initGlew(bool experimental);
+    virtual bool checkExtensions();
+
     virtual void logInfoVersion(Logger& o) const;
     virtual void logInfoExtensions(Logger& o) const;
     virtual void logInfoMisc(Logger& o) const;
 
-protected:
-    bool checkVersion(int major, int minor);
+    virtual bool checkVersion(int major, int minor);
 
 protected:
+
     virtual void printOn(Logger& o) const override;
 };
 ////////////////////////////////////////////////////////////////////////////////

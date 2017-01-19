@@ -43,7 +43,7 @@ private:
     CodecManager m_codecManager;
 
     std::string m_name;     ///< engine string identifier
-    bool m_requestQuit;
+    bool m_requestQuit;     ///< flag indicating a request to exit the program
 };
 ////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine);

@@ -1,4 +1,4 @@
-project(example)
+project(Example)
 
 message(STATUS "Configuring ${PROJECT_NAME}...")
 

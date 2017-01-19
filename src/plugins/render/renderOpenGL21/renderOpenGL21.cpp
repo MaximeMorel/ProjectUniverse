@@ -9,6 +9,7 @@
 #include "core/log/logManager.hpp"
 #include "core/resource/resourceManager.hpp"
 #include <GL/glew.h>
+#include <cstring>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "renderOpenGL21",
                           "renderOpenGL21",
@@ -52,14 +53,9 @@ bool PluginRenderOpenGL21::init()
 {
     log().log() << "PluginRenderOpenGL21 start...\n";
 
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-    {
-        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+    bool res = PluginRenderOpenGL::init();
+    if (res == false)
         return false;
-    }
-
-    log().log() << "GLEW_VERSION: " << reinterpret_cast<const char*>(glewGetString(GLEW_VERSION)) << "\n";
 
     if (checkVersion(2, 1) == false)
         return false;
@@ -67,6 +63,11 @@ bool PluginRenderOpenGL21::init()
     log().log() << *this << "\n";
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginRenderOpenGL21::checkExtensions()
+{
+    return GLEW_ARB_framebuffer_object;
 }
 ////////////////////////////////////////////////////////////////////////////////
 const char* PluginRenderOpenGL21::getShaderSearchPath() const
@@ -109,19 +110,63 @@ void PluginRenderOpenGL21::drawScene(Scene* scene)
     PluginRenderOpenGL::drawScene(scene);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL21::logInfoVersion(Logger& o) const
+{
+    const GLubyte* str = nullptr;
+
+    str = glGetString(GL_VENDOR);
+    o << "GL_VENDOR: " << reinterpret_cast<const char*>(str) << "\n";
+
+    str = glGetString(GL_RENDERER);
+    o << "GL_RENDERER: " << reinterpret_cast<const char*>(str) << "\n";
+
+    str = glGetString(GL_VERSION);
+    o << "GL_VERSION: " << reinterpret_cast<const char*>(str) << "\n";
+
+    str = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    o << "GL_SHADING_LANGUAGE_VERSION: " << reinterpret_cast<const char*>(str) << "\n";
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL21::logInfoExtensions(Logger& o) const
 {
     const GLubyte* str = glGetString(GL_EXTENSIONS);
-    o << "GL_EXTENSIONS: " << reinterpret_cast<const char*>(str) << "\n";
-    /*uint32_t i = 0;
+    uint32_t i = 0;
     std::string strExt;
-    while (str)
+    while (str && *str)
     {
         const GLubyte* strStart = str;
-        while (*str != ' ' || *str)
+        while (*str && *str != ' ')
             ++str;
         strExt = std::string(strStart, str);
         o << "GL_EXTENSION " << i << ": " << strExt << "\n";
-    }*/
+        ++i;
+        ++str;
+
+        if (i > 1000)
+            break;
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginRenderOpenGL21::checkVersion(int major, int minor)
+{
+    const GLubyte* str = glGetString(GL_VERSION);
+    if (str)
+    {
+        GLint vmajor = 0;
+        GLint vminor = 0;
+        if (strlen(reinterpret_cast<const char*>(str)) >= 3)
+        {
+            if (str[0] >= '0' && str[0] <= '9' && str[2] >= '0' && str[2] <= '9')
+            {
+                vmajor = str[0] - '0';
+                vminor = str[2] - '0';
+                if (vmajor > major)
+                    return true;
+                if (vmajor == major && vminor >= minor)
+                    return true;
+            }
+        }
+    }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

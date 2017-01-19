@@ -1,10 +1,10 @@
 #version 330 core
 
-uniform float fTime;
+//uniform float fTime;
 uniform mat4 mv;
 
-in vec3 v;
-in vec3 n;
+layout(location = 0) in vec3 v;
+layout(location = 1) in vec3 n;
 
 out vec3 p;
 out vec3 pn;
