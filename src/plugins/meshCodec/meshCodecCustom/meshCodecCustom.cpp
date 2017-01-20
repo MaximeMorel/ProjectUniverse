@@ -408,6 +408,7 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 file >> v[i];
                 texcoords.push_back(v[i]);
             }
+            file >> v[2];
         }
         else if (buf == "vn")
         {
@@ -438,7 +439,7 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 {
                     tid = std::stoi(buf.substr(pos1 + 1, pos2 - (pos1 + 1)));
                     for (uint8_t j = 0; j < 2; ++j)
-                        mesh->m_texCoords.push_back(vertices[2 * (tid - 1) + j]);
+                        mesh->m_texCoords.push_back(texcoords[2 * (tid - 1) + j]);
                 }
                 if (pos2 + 1 > 0)
                 {

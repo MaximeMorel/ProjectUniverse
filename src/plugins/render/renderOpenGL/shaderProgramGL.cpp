@@ -178,7 +178,10 @@ bool ShaderProgramGL::link()
     {
         m_isLinked = true;
         m_linkError = false;
-        log().log() << *this << " link success." << std::endl;
+        log().log() << *this << " link success.";
+        if (binaryCacheUsed)
+            log().log() << "(using binary cache)";
+        log().log() << std::endl;
 
         // save binary in cache if successful
         if (!binaryCacheUsed)
@@ -223,6 +226,7 @@ void ShaderProgramGL::setUniform1f(const char* str, float v)
 void ShaderProgramGL::setUniform1i(uint32_t id, int32_t v)
 {
     glProgramUniform1i(m_shaderProgId, id, v);
+    glUniform1i(id, v);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL::setUniform1i(const char* str, int32_t v)

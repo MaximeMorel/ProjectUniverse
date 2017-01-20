@@ -27,8 +27,10 @@ TexturePtr TextureGL::create(const std::string& name, const std::string& fileNam
     return std::make_shared<TextureGL>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void TextureGL::bind()
+void TextureGL::bind(uint32_t unit)
 {
+    Texture::bind(unit);
+    glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, m_textureId);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +45,7 @@ void TextureGL::setImage(ImagePtr image)
         return;
 
     Texture::setImage(image);
-    bind();
+    bind(m_textureUnit);
     Vec2ui r = image->resolution();
     GLint internalformat = GL_RGBA8;
     GLenum format = GL_RGBA;

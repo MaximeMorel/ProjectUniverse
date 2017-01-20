@@ -10,6 +10,7 @@ ResourceType Texture::type("Texture");
 Texture::Texture(const std::string& name, const std::string& fileName)
     : ResourceFile(name, fileName)
     , m_textureId(0)
+    , m_textureUnit(0)
 {
 
 }
@@ -38,17 +39,24 @@ uint32_t Texture::getTextureId() const
     return m_textureId;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Texture::bind()
+void Texture::bind(uint32_t unit)
 {
+    m_textureUnit = unit;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::unbind()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
+uint32_t Texture::getUnit() const
+{
+    return m_textureUnit;
+}
+////////////////////////////////////////////////////////////////////////////////
 void Texture::setImage(ImagePtr image)
 {
     m_image = image;
+    m_image->save("i.png");
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::printOn(Logger& o) const

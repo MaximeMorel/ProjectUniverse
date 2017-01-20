@@ -7,16 +7,26 @@ int getEngineLua(lua_State* l)
 {
     Engine& engine = getEngine();
     lua_pushlightuserdata(l, reinterpret_cast<void*>(&engine));
+    luaL_getmetatable(l, "lEngineLua");
+    lua_setmetatable(l, 1);
+
     return 1;
+}
+////////////////////////////////////////////////////////////////////////////////
+int engineLuaTest(lua_State* l)
+{
+    Engine* engine = reinterpret_cast<Engine*>(lua_touserdata(l, 1));
+    //engine->test();
+
+    return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
 int logLua(lua_State* l)
 {
     Engine& engine = getEngine();
-    if (lua_isstring(l, 1))
-    {
-        engine.log().log() << lua_tostring(l, 1);
-    }
+    const char* str = lua_tostring(l, 1);
+    if (str)
+        engine.log().log() << str;
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +34,18 @@ void registerLua(lua_State* l)
 {
     lua_register(l, "getEngine", getEngineLua);
     lua_register(l, "log", logLua);
+
+    luaL_Reg engineLuaRegs[] =
+    {
+        { "test", engineLuaTest },
+        { nullptr, nullptr }
+    };
+
+    luaL_newmetatable(l, "lEngineLua");
+    luaL_setfuncs(l, engineLuaRegs, 0);
+    lua_pushvalue(l, -1);
+    lua_setfield(l, -1, "__index");
+    lua_setglobal(l, "EngineLua");
 }
 ////////////////////////////////////////////////////////////////////////////////
 int luaTest()
@@ -66,7 +88,7 @@ int l_Foo_constructor(lua_State * l)
 // Effectively, this metatable is not accessible by Lua by default.
     luaL_getmetatable(l, "luaL_Foo");
 
-// The Lua stack at this point looks like this:
+// The Lua stack at luaL_newmetatablethis point looks like this:
 //
 // 3| metatable "luaL_foo" |-1
 // 2| userdata |-2

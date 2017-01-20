@@ -12,7 +12,7 @@ public:
 
     static TexturePtr create(const std::string& name, const std::string& fileName);
 
-    virtual void bind() override;
+    virtual void bind(uint32_t unit) override;
     virtual void unbind() override;
 
     virtual void setImage(ImagePtr image) override;

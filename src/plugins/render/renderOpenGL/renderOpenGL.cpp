@@ -111,6 +111,7 @@ void PluginRenderOpenGL::drawScene(Scene* scene)
             mesh->m_renderMesh->draw();
         }
     }
+    glLogCurrentError();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL::initGlew(bool experimental)
@@ -178,6 +179,9 @@ void PluginRenderOpenGL::logInfoMisc(Logger& o) const
 
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v);
     o << "GL_MAX_VERTEX_ATTRIBS: " << v << "\n";
+
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &v);
+    o << "GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: " << v << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL::checkVersion(int major, int minor)

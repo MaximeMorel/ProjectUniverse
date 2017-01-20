@@ -19,10 +19,12 @@ public:
     uint32_t getTextureId() const;
 
     /// Bind / activate the texture
-    virtual void bind();
+    virtual void bind(uint32_t unit);
 
     /// Unbind / deactivate the texture
     virtual void unbind();
+
+    virtual uint32_t getUnit() const;
 
     virtual void setImage(ImagePtr image);
 
@@ -31,6 +33,7 @@ protected:
 
 protected:
     uint32_t m_textureId;
+    uint32_t m_textureUnit;
     ImagePtr m_image;
 
 public:

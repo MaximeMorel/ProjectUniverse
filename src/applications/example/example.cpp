@@ -53,7 +53,7 @@ void ApplicationExample::run()
 {
     {
         PluginLibPtr libWindow = getEngine().plugins().loadLib("WindowContextSDL2");
-        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL33");
+        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL21");
         PluginLibPtr libInput = getEngine().plugins().loadLib("InputSDL");
         PluginLibPtr libAudio = getEngine().plugins().loadLib("AudioOpenAL");
         PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
@@ -114,7 +114,7 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_3_3);
+            w->createContext(GfxContextType::OPENGL_2_1);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
@@ -146,7 +146,8 @@ void ApplicationExample::run()
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im.png");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.jpg");
+            //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.jpg");
 
             //ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
 
@@ -239,7 +240,7 @@ void ApplicationExample::run()
                     prog->bind();
                     prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
                     if (tex)
-                        prog2->setUniform1i("tex", tex->getTextureId());
+                        prog2->setUniform1i("tex", 0);
                 }
                 render().impl()->draw();//*/
                 if (prog3)
@@ -251,7 +252,9 @@ void ApplicationExample::run()
                     mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
                     mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);
-                    prog3->setUniform1i("tex", tex->getTextureId());
+                    if (tex)
+                        tex->bind(0);
+                    prog3->setUniform1i("tex", 0);
                 }
                 render().impl()->drawScene(&scene);
                 w->swapBuffers();
