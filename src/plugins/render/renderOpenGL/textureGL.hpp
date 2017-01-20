@@ -20,7 +20,7 @@ public:
     virtual bool reload() override;
 
 private:
-    GLuint m_textureId;
+    //GLuint m_textureId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TEXTURE_OPENGL_HPP__

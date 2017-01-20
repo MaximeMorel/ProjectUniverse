@@ -228,7 +228,7 @@ void ShaderProgramGL::setUniform1i(uint32_t id, int32_t v)
 void ShaderProgramGL::setUniform1i(const char* str, int32_t v)
 {
     GLint loc = glGetUniformLocation(m_shaderProgId, str);
-    setUniform1f(loc, v);
+    setUniform1i(loc, v);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL::setUniformMat4f(uint32_t id, const Mat4f& m)

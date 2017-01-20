@@ -82,6 +82,12 @@ void RenderMeshGL::setup(Mesh *mesh)
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
     }
+
+    t = res().create<BufferObject>(getName() + "/t");
+    t->bindVBO();
+    t->setData(&mesh->m_texCoords.front(), mesh->m_texCoords.size() * sizeof(float));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void RenderMeshGL::draw()

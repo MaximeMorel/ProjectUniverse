@@ -146,14 +146,14 @@ void ApplicationExample::run()
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/im4.png");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im.png");
 
-            ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
+            //ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
 
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled2.stl");
             //MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
-            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/untitled.obj");
+            MeshPtr mesh = res().createFromFile<Mesh>("data/mesh/car.obj");
             if (mesh)
             {
                 mesh->save("test2.stl");
@@ -233,6 +233,7 @@ void ApplicationExample::run()
                     ;
                 }
 
+                /*/
                 if (prog)
                 {
                     prog->bind();
@@ -240,9 +241,7 @@ void ApplicationExample::run()
                     if (tex)
                         prog2->setUniform1i("tex", tex->getTextureId());
                 }
-                //render().impl()->draw();
-                //if (b)
-                //    b->bindVBO();
+                render().impl()->draw();//*/
                 if (prog3)
                 {
                     prog3->bind();
@@ -252,18 +251,19 @@ void ApplicationExample::run()
                     mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
                     mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);
+                    prog3->setUniform1i("tex", tex->getTextureId());
                 }
                 render().impl()->drawScene(&scene);
                 w->swapBuffers();
 
                 double frameTime = frameTimer.getTime();
-                //engine.log().log() << "frame time: " << frameTime << std::endl;
-                //engine.log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
+                //log().log() << "frame time: " << frameTime << std::endl;
+                //log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
                 ++fps;
                 if (frameTime < targetFrameTime)
                 {
-                    //engine.log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
+                    //log().log() << "wait: " << targetFrameTime - frameTime << std::endl;
                     Timer::wait(targetFrameTime - frameTime);
                     timeSlept += targetFrameTime - frameTime;
                 }

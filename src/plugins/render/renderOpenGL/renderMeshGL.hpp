@@ -23,6 +23,7 @@ public:
     BufferObjectPtr i;
     BufferObjectPtr v;
     BufferObjectPtr n;
+    BufferObjectPtr t;
     ShaderProgramPtr shaderProgram;
 
 protected:

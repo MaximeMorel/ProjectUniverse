@@ -67,8 +67,8 @@ bool PluginMeshCodecCustom::load(Mesh* mesh)
         }
         else if (fileName.substr(pos) == ".obj")
         {
-            return loadObjIndex(mesh);
-            //return loadObjArray(mesh);
+            //return loadObjIndex(mesh);
+            return loadObjArray(mesh);
         }
     }
 
@@ -437,6 +437,8 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
                 if (pos2 - (pos1 + 1) > 0 && pos2 != std::string::npos)
                 {
                     tid = std::stoi(buf.substr(pos1 + 1, pos2 - (pos1 + 1)));
+                    for (uint8_t j = 0; j < 2; ++j)
+                        mesh->m_texCoords.push_back(vertices[2 * (tid - 1) + j]);
                 }
                 if (pos2 + 1 > 0)
                 {

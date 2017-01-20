@@ -5,9 +5,11 @@ uniform mat4 mv;
 
 layout(location = 0) in vec3 v;
 layout(location = 1) in vec3 n;
+layout(location = 2) in vec2 tc;
 
 out vec3 p;
 out vec3 pn;
+out vec2 uv;
 
 void main(void)
 {
@@ -17,4 +19,5 @@ void main(void)
     p = gl_Position.xyz;
     vec4 t = mv * vec4(n, 0.0f);
     pn = t.xyz;
+    uv = tc;
 }
