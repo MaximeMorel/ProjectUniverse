@@ -29,6 +29,7 @@ public:
     virtual BufferObjectPtr createBufferObject(const std::string& name);
     virtual RenderMeshPtr createRenderMesh(const std::string& name);
 
+    virtual void clear();
     virtual void draw();
     virtual void drawScene(Scene* scene);
 

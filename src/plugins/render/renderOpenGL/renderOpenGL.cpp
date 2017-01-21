@@ -81,21 +81,22 @@ RenderMeshPtr PluginRenderOpenGL::createRenderMesh(const std::string& name)
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
+void PluginRenderOpenGL::clear()
+{
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::draw()
 {
-    //glFlushErrors();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_POINT_SPRITE);
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glDrawArrays(GL_POINTS, 0, 1);
     glFlush();
-    //glLogCurrentError();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::drawScene(Scene* scene)
 {
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (Mesh* mesh : scene->m_meshes)
     {
         if (!mesh->m_renderMesh)
@@ -111,7 +112,6 @@ void PluginRenderOpenGL::drawScene(Scene* scene)
             mesh->m_renderMesh->draw();
         }
     }
-    glLogCurrentError();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL::initGlew(bool experimental)

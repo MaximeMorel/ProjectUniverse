@@ -53,7 +53,7 @@ void ApplicationExample::run()
 {
     {
         PluginLibPtr libWindow = getEngine().plugins().loadLib("WindowContextSDL2");
-        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL21");
+        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL33");
         PluginLibPtr libInput = getEngine().plugins().loadLib("InputSDL");
         PluginLibPtr libAudio = getEngine().plugins().loadLib("AudioOpenAL");
         PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
@@ -114,7 +114,7 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_2_1);
+            w->createContext(GfxContextType::OPENGL_3_3);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
@@ -136,8 +136,8 @@ void ApplicationExample::run()
             w->setPosition(800, 900);
             w->setResolution(1280, 720);
             w->setResolution(800, 800);
-            w->setResolution(640, 480);
-            w->setResolution(100, 100);
+            //w->setResolution(640, 480);
+            //w->setResolution(100, 100);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -145,6 +145,7 @@ void ApplicationExample::run()
 
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
+            ShaderProgramPtr prog4 = res().createFromFile<ShaderProgram>("normal.prog");
 
             TexturePtr tex = res().createFromFile<Texture>("data/images/car1.jpg");
             //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.jpg");
@@ -234,6 +235,13 @@ void ApplicationExample::run()
                     ;
                 }
 
+                Mat4f mv = Mat4f::identity();
+                mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
+                mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
+                mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
+                mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));//*/
+
+                render().impl()->clear();
                 /*/
                 if (prog)
                 {
@@ -246,17 +254,19 @@ void ApplicationExample::run()
                 if (prog3)
                 {
                     prog3->bind();
-                    Mat4f mv = Mat4f::identity();
-                    mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
-                    mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
-                    mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
-                    mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));
                     prog3->setUniformMat4f("mv", mv);
                     if (tex)
                         tex->bind(0);
                     prog3->setUniform1i("tex", 0);
                 }
                 render().impl()->drawScene(&scene);
+                if (prog4)
+                {
+                    prog4->bind();
+                    prog4->setUniformMat4f(0u, mv);
+                    render().impl()->drawScene(&scene);
+                }
+
                 w->swapBuffers();
 
                 double frameTime = frameTimer.getTime();
@@ -285,6 +295,8 @@ void ApplicationExample::run()
                         prog->reload();
                     if (prog3)
                         prog3->reload();
+                    if (prog4)
+                        prog4->reload();
                     if (tex)
                         tex->reload();
                 }

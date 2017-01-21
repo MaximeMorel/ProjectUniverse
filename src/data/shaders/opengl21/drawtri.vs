@@ -14,7 +14,6 @@ varying vec2 uv;
 void main(void)
 {
     gl_Position = mv * vec4(v, 1.0f);
-    gl_Position.xyz *= 0.4f;
     gl_Position.z += 0.0f;
     p = gl_Position.xyz;
     vec4 t = mv * vec4(n, 0.0f);

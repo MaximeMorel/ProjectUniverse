@@ -23,6 +23,7 @@ public:
     virtual BufferObjectPtr createBufferObject(const std::string& name) override;
     virtual RenderMeshPtr createRenderMesh(const std::string& name) override;
 
+    virtual void clear() override;
     virtual void draw() override;
     virtual void drawScene(Scene* scene) override;
 
