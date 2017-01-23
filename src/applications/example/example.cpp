@@ -53,7 +53,7 @@ void ApplicationExample::run()
 {
     {
         PluginLibPtr libWindow = getEngine().plugins().loadLib("WindowContextSDL2");
-        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL33");
+        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL21");
         PluginLibPtr libInput = getEngine().plugins().loadLib("InputSDL");
         PluginLibPtr libAudio = getEngine().plugins().loadLib("AudioOpenAL");
         PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
@@ -114,7 +114,7 @@ void ApplicationExample::run()
             //s->play();
 
             WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_3_3);
+            w->createContext(GfxContextType::OPENGL_2_1);
 
             libInput->getLibInstance(&getEngine());
             input().setPlugin(libInput);
@@ -136,8 +136,8 @@ void ApplicationExample::run()
             w->setPosition(800, 900);
             w->setResolution(1280, 720);
             w->setResolution(800, 800);
-            //w->setResolution(640, 480);
-            //w->setResolution(100, 100);
+            w->setResolution(640, 480);
+            w->setResolution(100, 100);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -236,6 +236,7 @@ void ApplicationExample::run()
                 }
 
                 Mat4f mv = Mat4f::identity();
+                mv *= Mat4f::scale(Vec3f(0.4f, 0.4f, 0.4f));
                 mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
                 mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
                 mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));

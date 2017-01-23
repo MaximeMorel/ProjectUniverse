@@ -36,6 +36,8 @@ protected:
     uint32_t m_textureUnit;
     ImagePtr m_image;
 
+    bool m_setImagePending;
+
 public:
     virtual ResourceType& dyntype() override { return type; }
     virtual const ResourceType& dyntype() const override { return type; }

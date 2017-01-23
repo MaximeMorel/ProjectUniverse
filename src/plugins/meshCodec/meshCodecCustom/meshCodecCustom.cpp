@@ -460,7 +460,7 @@ bool PluginMeshCodecCustom::loadObjArray(Mesh* mesh)
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginMeshCodecCustom::save(Mesh *mesh, const std::string& filePath)
+bool PluginMeshCodecCustom::save(Mesh* mesh, const std::string& filePath)
 {
     if (!mesh)
         return false;

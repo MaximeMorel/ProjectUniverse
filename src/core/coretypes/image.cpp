@@ -9,6 +9,7 @@ Image::Image(const std::string& name, const std::string& fileName)
     , m_resolution(0u, 0u)
     , m_channels(3u)
     , m_bpc(8u)
+    , m_asyncLoadStatus(-1)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,21 +22,39 @@ Image::~Image()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+void loadImage(ImagePtr image)
+{
+    // go through image codecs plugins
+    for (auto* codec : getEngine().codecs().getImageCodecs())
+    {
+        bool success = codec->load(image.get());
+        if (success)
+        {
+            image->m_asyncLoadStatus = 0;
+            return;
+            //return image;
+        }
+    }
+    log().log() << "No suitable reader for " << image->getName() << "\n";
+}
+////////////////////////////////////////////////////////////////////////////////
 ImagePtr Image::create(const std::string& name, const std::string& fileName)
 {
     ImagePtr image = std::make_shared<Image>(name, fileName);
     if (!image)
         return nullptr;
 
-    // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getImageCodecs())
+    bool async = true;
+    if (async)
     {
-        bool success = codec->load(image.get());
-        if (success)
-            return image;
+        image->m_asyncLoadStatus = 1;
+        getEngine().thread().getThread(0) = std::thread(loadImage, image);
     }
-    log().log() << "No suitable reader for " << name << "\n";
-    return nullptr;
+    else
+    {
+        loadImage(image);
+    }
+    return image;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Image::save(const std::string& filePath)

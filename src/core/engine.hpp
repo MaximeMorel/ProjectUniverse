@@ -7,6 +7,7 @@
 #include "input/inputManager.hpp"
 #include "render/renderManager.hpp"
 #include "codecs/codecManager.hpp"
+#include "thread/threadManager.hpp"
 //#include "config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
@@ -21,6 +22,7 @@ public:
     InputManager& input();
     RenderManager& render();
     CodecManager& codecs();
+    ThreadManager& thread();
 
     void setRequestQuit(bool status)
     {
@@ -41,6 +43,7 @@ private:
     InputManager m_inputManager;
     RenderManager m_renderManager;
     CodecManager m_codecManager;
+    ThreadManager m_threadManager;
 
     std::string m_name;     ///< engine string identifier
     bool m_requestQuit;     ///< flag indicating a request to exit the program

@@ -4,6 +4,7 @@
 #include "renderManager.hpp"
 #include "renderPlugin.hpp"
 #include "core/resource/resourceManager.hpp"
+#include "core/engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Texture::type("Texture");
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,6 +12,7 @@ Texture::Texture(const std::string& name, const std::string& fileName)
     : ResourceFile(name, fileName)
     , m_textureId(0)
     , m_textureUnit(0)
+    , m_setImagePending(false)
 {
 
 }
@@ -29,7 +31,15 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
     }
 
     ImagePtr im = res().createFromFile<Image>(name);
-    tex->setImage(im);
+    if (im->asyncLoadStatus() == 1)
+    {
+        tex->m_setImagePending = true;
+        //getEngine().thread().getThread(1) = std::thread(&Texture::setImage, tex, im);
+    }
+    else
+    {
+        tex->setImage(im);
+    }
 
     return tex;
 }
@@ -41,6 +51,9 @@ uint32_t Texture::getTextureId() const
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::bind(uint32_t unit)
 {
+    if (m_setImagePending)
+        setImage(m_image);
+
     m_textureUnit = unit;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,8 +68,8 @@ uint32_t Texture::getUnit() const
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::setImage(ImagePtr image)
 {
+    m_setImagePending = false;
     m_image = image;
-    m_image->save("i.png");
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::printOn(Logger& o) const

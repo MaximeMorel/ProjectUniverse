@@ -58,12 +58,39 @@ bool PluginImageCodecCustom::load(Image* image)
     size_t pos = image->getFileName().rfind('.');
     if (pos != std::string::npos)
     {
-        if (image->getFileName().substr(pos) == ".dds")
+        if (image->getFileName().substr(pos) == ".pbm")
+        {
+            return loadPBM(image);
+        }
+        else if (image->getFileName().substr(pos) == ".pgm")
+        {
+            return loadPGM(image);
+        }
+        else if (image->getFileName().substr(pos) == ".ppm")
+        {
+            return loadPPM(image);
+        }
+        else if (image->getFileName().substr(pos) == ".dds")
         {
             return loadDDS(image);
         }
     }
 
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::loadPBM(Image* image)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::loadPGM(Image* image)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::loadPPM(Image* image)
+{
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +289,55 @@ bool PluginImageCodecCustom::loadDDS(Image* image)
         file.read(s, sizeof(ddsHeader));
     }
 
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::save(Image* image, const std::string& filePath)
+{
+    if (!image)
+        return false;
+
+    size_t pos = filePath.rfind('.');
+    if (pos != std::string::npos && filePath.length() >= 5) // min 5 chars to have something like x.ppm
+    {
+        if (filePath.substr(pos) == ".pbm")
+        {
+            return savePBM(image, filePath);
+        }
+        else if (filePath.substr(pos) == ".pgm")
+        {
+            return savePGM(image, filePath);
+        }
+        else if (filePath.substr(pos) == ".ppm")
+        {
+            return savePPM(image, filePath);
+        }
+        else if (filePath.substr(pos) == ".dds")
+        {
+            return saveDDS(image, filePath);
+        }
+    }
+
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::savePBM(Image* image, const std::string& filePath)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::savePGM(Image* image, const std::string& filePath)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::savePPM(Image* image, const std::string& filePath)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::saveDDS(Image* image, const std::string& filePath)
+{
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

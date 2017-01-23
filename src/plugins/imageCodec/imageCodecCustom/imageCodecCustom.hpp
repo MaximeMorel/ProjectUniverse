@@ -20,9 +20,18 @@ public:
     ~PluginImageCodecCustom() override;
 
     virtual bool load(Image* image) override;
+    virtual bool save(Image* image, const std::string& filePath) override;
 
 private:
+    bool loadPBM(Image* image);
+    bool loadPGM(Image* image);
+    bool loadPPM(Image* image);
     bool loadDDS(Image* image);
+
+    bool savePBM(Image* image, const std::string& filePath);
+    bool savePGM(Image* image, const std::string& filePath);
+    bool savePPM(Image* image, const std::string& filePath);
+    bool saveDDS(Image* image, const std::string& filePath);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __IMAGECODECCUSTOM_HPP__

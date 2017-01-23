@@ -75,6 +75,7 @@ set(CORE_SOURCE main.cpp
                 resource/resourceManager.inl
                 scene/scene.cpp
                 script/lua/engineLua.cpp
+                thread/threadManager.cpp
                 tools/timer.cpp
                 windowContext/windowPlugin.cpp
                 )
@@ -88,3 +89,8 @@ if (LUA_FOUND)
     include_directories(${LUA_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${LUA_LIBRARIES})
 endif (LUA_FOUND)
+
+find_package (Threads)
+if (Threads_FOUND)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+endif (Threads_FOUND)

@@ -71,11 +71,19 @@ public:
 
     virtual bool reload() override;
 
+    int asyncLoadStatus()
+    {
+        return m_asyncLoadStatus;
+    }
+
 protected:
     std::vector<uint8_t> m_buffer;  ///< buffer containing image data
     Vec2ui m_resolution;            ///< image resolution
     uint8_t m_channels;             ///< number of channels
     uint8_t m_bpc;                  ///< bits per channel component
+
+public:
+    int m_asyncLoadStatus;
 
 private:
     using super = ResourceFile;
