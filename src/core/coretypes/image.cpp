@@ -48,7 +48,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
     if (async)
     {
         image->m_asyncLoadStatus = 1;
-        getEngine().thread().getThread(0) = std::thread(loadImage, image);
+        getEngine().thread().getNextThread() = std::thread(loadImage, image);
     }
     else
     {

@@ -10,9 +10,11 @@ public:
     ~ThreadManager();
 
     std::thread& getThread(int i);
+    std::thread& getNextThread();
 
 private:
-    std::thread m_thread[2];
+    std::thread m_thread[8];
+    size_t m_threadUseId;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __THREADMANAGER_HPP__

@@ -2,7 +2,7 @@
 #include "imageCodecTIFF.hpp"
 #include "core/log/logManager.hpp"
 #include "core/engine.hpp"
-#include <tiff.h>
+#include <tiffio.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "imageCodecTIFF",
                           "imageCodecTIFF",
@@ -55,6 +55,13 @@ bool PluginImageCodecTIFF::load(Image* image)
 {
     if (!image)
         return false;
+
+    TIFF* file = nullptr;
+    file = TIFFOpen(image->getFileName().c_str(), "r");
+    if (file == nullptr)
+        return false;
+
+    TIFFClose(file);
 
     return true;
 }

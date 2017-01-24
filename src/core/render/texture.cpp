@@ -34,6 +34,7 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
     if (im->asyncLoadStatus() == 1)
     {
         tex->m_setImagePending = true;
+        tex->m_image = im;
         //getEngine().thread().getThread(1) = std::thread(&Texture::setImage, tex, im);
     }
     else

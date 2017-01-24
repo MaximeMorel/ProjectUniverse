@@ -41,7 +41,10 @@ void TextureGL::unbind()
 ////////////////////////////////////////////////////////////////////////////////
 void TextureGL::setImage(ImagePtr image)
 {
-    if (!image || m_setImagePending)
+    if (!image)
+        return;
+
+    if (image->asyncLoadStatus() == 1)
         return;
 
     Texture::setImage(image);
