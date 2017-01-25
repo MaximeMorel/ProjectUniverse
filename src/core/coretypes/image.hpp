@@ -7,6 +7,7 @@
 #include "core/math/vec4.hpp"
 #include "core/log/logger.hpp"
 #include <vector>
+#include <atomic>
 ////////////////////////////////////////////////////////////////////////////////
 class Image;
 using ImagePtr = std::shared_ptr<Image>;
@@ -71,7 +72,7 @@ public:
 
     virtual bool reload() override;
 
-    int asyncLoadStatus()
+    bool asyncLoadStatus()
     {
         return m_asyncLoadStatus;
     }
@@ -83,7 +84,7 @@ protected:
     uint8_t m_bpc;                  ///< bits per channel component
 
 public:
-    int m_asyncLoadStatus;
+    std::atomic<bool> m_asyncLoadStatus;
 
 private:
     using super = ResourceFile;

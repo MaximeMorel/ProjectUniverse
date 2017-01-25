@@ -8,7 +8,7 @@
 #include "render/renderManager.hpp"
 #include "codecs/codecManager.hpp"
 #include "thread/threadManager.hpp"
-//#include "config.hpp"
+#include "config/config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
 {
@@ -24,19 +24,14 @@ public:
     CodecManager& codecs();
     ThreadManager& thread();
 
-    void setRequestQuit(bool status)
-    {
-        m_requestQuit = status;
-    }
+    void parseArgs(int argc, char** argv);
 
-    bool getRequestQuit() const
-    {
-        return m_requestQuit;
-    }
+    void setRequestQuit(bool status);
+
+    bool getRequestQuit() const;
 
 private:
-    //Config m_config;
-    int m_config;
+    Config m_config;
     LogManager m_logManager;
     ResourceManager m_resourceManager;
     PluginManager m_pluginManager;

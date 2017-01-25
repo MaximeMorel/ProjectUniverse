@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "imageCodecPNG.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 //#include <functional>
 #include <png.h>
 #include <zlib.h>
@@ -26,7 +26,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecPNG(*engine);
         if (lib)
         {
-            engine->codecs().addImageCodec(lib);
+            codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -36,7 +36,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeImageCodec(lib);
+        codecs().removeImageCodec(lib);
     }
     delete lib;
     lib = nullptr;

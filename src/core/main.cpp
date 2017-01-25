@@ -16,6 +16,8 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
+    engine.parseArgs(argc, argv);
+
     PluginAppPtr app = engine.plugins().loadApp("Example");
     if (app && app->isValid())
     {

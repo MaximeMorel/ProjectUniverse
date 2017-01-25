@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "audioCodecOggVorbis.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "audioCodecOggVorbis",
                           "audioCodecOggVorbis",
@@ -23,7 +23,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginAudioCodecOggVorbis(*engine);
         if (lib)
         {
-            engine->codecs().addAudioCodec(lib);
+            codecs().addAudioCodec(lib);
         }
     }
     return lib;
@@ -33,7 +33,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeAudioCodec(lib);
+        codecs().removeAudioCodec(lib);
     }
     delete lib;
     lib = nullptr;

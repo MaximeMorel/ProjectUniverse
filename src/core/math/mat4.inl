@@ -1,6 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "mat4.hpp"
 #include <cmath>
+#ifndef M_PI
+# define M_PI		3.14159265358979323846	/* pi */
+#endif // M_PI
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TMat4<T>::TMat4()
@@ -125,7 +128,7 @@ TMat4<T>& TMat4<T>::operator*=(T f)
 template <typename T>
 TMat4<T>& TMat4<T>::operator/=(T f)
 {
-    return operator*=(1.0f / f);
+    return operator*=(static_cast<T>(1) / f);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -156,28 +159,32 @@ TMat4<T> TMat4<T>::rotate(double angle, const TVec3<T>& axis)
 
     TVec3<T> axisn = axis.normalize();
 
-    const double s = sin(angle * (M_PI / 180.0f));
-    const double c = cos(angle * (M_PI / 180.0f));
+    constexpr T c0 = static_cast<T>(0);
+    constexpr T c1 = static_cast<T>(1);
+    constexpr T cpi180 = static_cast<T>(M_PI) / static_cast<T>(180);
 
-    res.m_data[0]  = axisn.x * axisn.x + (1.0f - axisn.x * axisn.x) * c;
-    res.m_data[1]  = axisn.x * axisn.y * (1.0f - c) - (axisn.z * s);
-    res.m_data[2]  = axisn.x * axisn.z * (1.0f - c) + (axisn.y * s);
-    res.m_data[3]  = 0.0f;
+    const T s = sin(angle * cpi180);
+    const T c = cos(angle * cpi180);
 
-    res.m_data[4]  = axisn.x * axisn.y * (1.0f - c) + (axisn.z * s);
-    res.m_data[5]  = axisn.y * axisn.y + (1.0f - axisn.y * axisn.y) * c;
-    res.m_data[6]  = axisn.y * axisn.z * (1.0f - c) - (axisn.x * s);
-    res.m_data[7]  = 0.0f;
+    res.m_data[0]  = axisn.x * axisn.x + (c1 - axisn.x * axisn.x) * c;
+    res.m_data[1]  = axisn.x * axisn.y * (c1 - c) - (axisn.z * s);
+    res.m_data[2]  = axisn.x * axisn.z * (c1 - c) + (axisn.y * s);
+    res.m_data[3]  = c0;
 
-    res.m_data[8]  = axisn.x * axisn.z * (1.0f - c) - (axisn.y * s);
-    res.m_data[9]  = axisn.y * axisn.z * (1.0f - c) + (axisn.x * s);
-    res.m_data[10] = axisn.z * axisn.z + (1.0f - axisn.z * axisn.z) * c;
-    res.m_data[11] = 0.0f;
+    res.m_data[4]  = axisn.x * axisn.y * (c1 - c) + (axisn.z * s);
+    res.m_data[5]  = axisn.y * axisn.y + (c1 - axisn.y * axisn.y) * c;
+    res.m_data[6]  = axisn.y * axisn.z * (c1 - c) - (axisn.x * s);
+    res.m_data[7]  = c0;
 
-    res.m_data[12] = 0.0f;
-    res.m_data[13] = 0.0f;
-    res.m_data[14] = 0.0f;
-    res.m_data[15] = 1.0f;
+    res.m_data[8]  = axisn.x * axisn.z * (c1 - c) - (axisn.y * s);
+    res.m_data[9]  = axisn.y * axisn.z * (c1 - c) + (axisn.x * s);
+    res.m_data[10] = axisn.z * axisn.z + (c1 - axisn.z * axisn.z) * c;
+    res.m_data[11] = c0;
+
+    res.m_data[12] = c0;
+    res.m_data[13] = c0;
+    res.m_data[14] = c0;
+    res.m_data[15] = c1;
 
     return res;
 }
@@ -185,7 +192,7 @@ TMat4<T> TMat4<T>::rotate(double angle, const TVec3<T>& axis)
 template <typename T>
 TMat4<T> TMat4<T>::identity()
 {
-    return TMat4<T>(1);
+    return TMat4<T>(static_cast<T>(1));
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -208,7 +215,7 @@ TMat4<T> TMat4<T>::scale(const TVec3<T>& v)
     res.m_data[0] = v.x;
     res.m_data[5] = v.y;
     res.m_data[10] = v.z;
-    res.m_data[15] = 1.0f;
+    res.m_data[15] = static_cast<T>(1);
 
     return res;
 }
@@ -220,16 +227,20 @@ TMat4<T> TMat4<T>::ortho(T left, T right, T bottom, T top, T znear, T zfar)
     T ty = -(top + bottom) / (top - bottom);
     T tz = -(zfar + znear) / (zfar - znear);
 
-    return TMat4<T>(2.0f / (right - left), 0.0f, 0.0f, 0.0f,
-                    0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
-                    0.0f, 0.0f, -2.0f / (zfar - znear), 0.0f,
-                    tx, ty, tz, 1.0f);
+    constexpr T c0 = static_cast<T>(0);
+    constexpr T c1 = static_cast<T>(1);
+    constexpr T c2 = static_cast<T>(2);
+
+    return TMat4<T>(c2 / (right - left), c0, c0, c0,
+                    c0, c2 / (top - bottom), c0, c0,
+                    c0, c0, -c2 / (zfar - znear), c0,
+                    tx, ty, tz, c1);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TMat4<T> TMat4<T>::perspective(T fovy, T aspect, T znear, T zfar)
 {
-    T ymax = znear * tan(fovy * M_PI / 360.0f);
+    T ymax = znear * tan(fovy * T(M_PI) / T(360));
     T ymin = -ymax;
     T xmin = ymin * aspect;
     T xmax = ymax * aspect;
@@ -240,17 +251,21 @@ TMat4<T> TMat4<T>::perspective(T fovy, T aspect, T znear, T zfar)
 template <typename T>
 TMat4<T> TMat4<T>::frustum(T left, T right, T bottom, T top, T znear, T zfar)
 {
-    T x = 2.0f * znear / (right - left);
-    T y = 2.0f * znear / (top - bottom);
+    constexpr T c0 = static_cast<T>(0);
+    constexpr T c1 = static_cast<T>(1);
+    constexpr T c2 = static_cast<T>(2);
+
+    T x = c2 * znear / (right - left);
+    T y = c2 * znear / (top - bottom);
     T a = (right + left) / (right - left);
     T b = (top + bottom) / (top - bottom);
     T c = -(zfar + znear) / (zfar - znear);
-    T d = -2.0f * zfar * znear / (zfar - znear);
+    T d = -c2 * zfar * znear / (zfar - znear);
 
-    return TMat4<T>(   x, 0.0f, 0.0f,  0.0f,
-                    0.0f,    y, 0.0f,  0.0f,
-                       a,    b,    c, -1.0f,
-                    0.0f, 0.0f,    d,  0.0f);
+    return TMat4<T>(   x, c0, c0,  c0,
+                    c0,    y, c0,  c0,
+                       a,    b,    c, -c1,
+                    c0, c0,    d,  c0);
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>

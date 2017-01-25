@@ -57,8 +57,6 @@ Foo * l_CheckFoo(lua_State * l, int n)
 int l_Foo_add(lua_State * l)
 {
 	Foo * foo = l_CheckFoo(l, 1);
-	int a = luaL_checknumber(l, 2);
-	int b = luaL_checknumber(l, 3);
 
 	std::string s = foo->Add(a, b);
 	lua_pushstring(l, s.c_str());

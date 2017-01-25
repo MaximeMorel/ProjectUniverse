@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resourceFile.hpp"
 #include "core/coretypes/image.hpp"
+#include <atomic>
 ////////////////////////////////////////////////////////////////////////////////
 class Texture;
 using TexturePtr = std::shared_ptr<Texture>;
@@ -36,7 +37,7 @@ protected:
     uint32_t m_textureUnit;
     ImagePtr m_image;
 
-    bool m_setImagePending;
+    std::atomic<bool> m_setImagePending;
 
 public:
     virtual ResourceType& dyntype() override { return type; }

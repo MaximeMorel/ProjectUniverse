@@ -1,5 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "engine.hpp"
+#include <map>
+#include <cstring>
 #include <unistd.h>
 ////////////////////////////////////////////////////////////////////////////////
 // Run main
@@ -74,9 +76,53 @@ ThreadManager& Engine::thread()
     return m_threadManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
+void Engine::parseArgs(int argc, char** argv)
+{
+    // bin/engine --set resolution=1280x720 --set app=Example
+    std::map<std::string, std::string> args;
+    std::string arg;
+    for (int i = 0; i < argc; ++i)
+    {
+        if (strncmp(argv[i], "--set", 5) == 0)
+        {
+            ++i;
+            if (i < argc)
+            {
+                arg = argv[i];
+                size_t pos = arg.find('=');
+                if (pos != std::string::npos)
+                {
+                    args[arg.substr(0, pos)] = arg.substr(pos + 1);
+                }
+            }
+        }
+    }
+
+    for (auto arg : args)
+    {
+        m_logManager.log() << arg.first << " = " << arg.second << "\n";
+        ConfigEntry* ce = m_config.getC(arg.first);
+        if (ce)
+        {
+            //ce->set(arg.second);
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void Engine::setRequestQuit(bool status)
+{
+    m_requestQuit = status;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool Engine::getRequestQuit() const
+{
+    return m_requestQuit;
+}
+////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine)
 {
     gEngine = &engine;
+    setGlobalCodecs(engine.codecs());
     setGlobalLogger(engine.log());
     setGlobalRender(engine.render());
     setGlobalResourceManager(engine.res());

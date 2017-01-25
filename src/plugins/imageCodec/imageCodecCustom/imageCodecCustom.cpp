@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "imageCodecCustom.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "imageCodecCustom",
                           "imageCodecCustom",
@@ -23,7 +23,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecCustom(*engine);
         if (lib)
         {
-            engine->codecs().addImageCodec(lib);
+            codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -33,7 +33,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeImageCodec(lib);
+        codecs().removeImageCodec(lib);
     }
     delete lib;
     lib = nullptr;

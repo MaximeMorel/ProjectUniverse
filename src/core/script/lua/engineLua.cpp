@@ -15,8 +15,12 @@ int getEngineLua(lua_State* l)
 ////////////////////////////////////////////////////////////////////////////////
 int engineLuaTest(lua_State* l)
 {
+    //Engine* engine = reinterpret_cast<Engine*>(luaL_checkudata(l, 1, "lEngineLua"));
     Engine* engine = reinterpret_cast<Engine*>(lua_touserdata(l, 1));
-    //engine->test();
+    if (engine)
+    {
+        //engine->test();
+    }
 
     return 0;
 }

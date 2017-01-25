@@ -59,9 +59,15 @@ void ApplicationExample::run()
         PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
         PluginLibPtr libPNG = getEngine().plugins().loadLib("ImageCodecPNG");
         PluginLibPtr libSDLimage = getEngine().plugins().loadLib("ImageCodecSDL");
+        PluginLibPtr libTIFF = getEngine().plugins().loadLib("ImageCodecTIFF");
         PluginLibPtr libImageCustom = getEngine().plugins().loadLib("ImageCodecCustom");
         PluginLibPtr libMeshCustom = getEngine().plugins().loadLib("MeshCodecCustom");
         PluginLibPtr libASSIMP = getEngine().plugins().loadLib("MeshCodecASSIMP");
+        if (libTIFF && libTIFF->isValid())
+        {
+            log().log() << libTIFF << "\n";
+            libTIFF->getLibInstance(&getEngine());
+        }
         if (libJPEG && libJPEG->isValid())
         {
             log().log() << libJPEG << "\n";
@@ -147,8 +153,8 @@ void ApplicationExample::run()
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
             ShaderProgramPtr prog4 = res().createFromFile<ShaderProgram>("normal.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.jpg");
-            //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.jpg");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.tiff");
+            TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.tif");
 
             //ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
 
@@ -237,7 +243,7 @@ void ApplicationExample::run()
 
                 Mat4f mv = Mat4f::identity();
                 mv *= Mat4f::scale(Vec3f(0.4f, 0.4f, 0.4f));
-                mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
+                //mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
                 mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
                 mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
                 mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));//*/

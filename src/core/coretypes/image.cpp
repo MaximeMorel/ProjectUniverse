@@ -9,7 +9,7 @@ Image::Image(const std::string& name, const std::string& fileName)
     , m_resolution(0u, 0u)
     , m_channels(3u)
     , m_bpc(8u)
-    , m_asyncLoadStatus(-1)
+    , m_asyncLoadStatus(false)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ void loadImage(ImagePtr image)
         bool success = codec->load(image.get());
         if (success)
         {
-            image->m_asyncLoadStatus = 0;
+            image->m_asyncLoadStatus = false;
             return;
             //return image;
         }
@@ -47,7 +47,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
     bool async = true;
     if (async)
     {
-        image->m_asyncLoadStatus = 1;
+        image->m_asyncLoadStatus = true;
         getEngine().thread().getNextThread() = std::thread(loadImage, image);
     }
     else

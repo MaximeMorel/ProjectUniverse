@@ -1,5 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "timer.hpp"
+#include <ctime>
+#include <chrono>
+#include <thread>
 ////////////////////////////////////////////////////////////////////////////////
 Timer::Timer()
     : m_start(0)
@@ -28,12 +31,14 @@ double Timer::getTime() const
 ////////////////////////////////////////////////////////////////////////////////
 void Timer::wait(double milliseconds)
 {
-    struct timespec t;
+    //std::chrono::duration
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(milliseconds)));
+    /*struct timespec t;
     t.tv_sec = milliseconds / 1000;
     long milli = static_cast<long>(milliseconds) % 1000;
     long nano = 1000000 * (milliseconds - milli);
     t.tv_nsec = 1000000 * milli + nano;
-    nanosleep(&t, nullptr);
+    nanosleep(&t, nullptr);*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 double Timer::now()

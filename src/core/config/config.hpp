@@ -14,35 +14,20 @@ template <typename T>
 Type getType();
 
 template <>
-Type getType<bool>()
-{
-    return Type::BOOL;
-}
+Type getType<bool>();
 
 template <>
-Type getType<int>()
-{
-    return Type::INT;
-}
+Type getType<int>();
 
 class ConfigEntry
 {
 public:
-    Type getType() const
-    {
-        return m_type;
-    }
+    Type getType() const;
 
-    const std::string& getName() const
-    {
-        return m_name;
-    }
+    const std::string& getName() const;
 
 protected:
-    ConfigEntry(const std::string& name, Type t)
-    : m_type(t)
-    , m_name(name)
-    {}
+    ConfigEntry(const std::string& name, Type t);
 
     Type m_type;
     std::string m_name;
@@ -52,20 +37,11 @@ template <typename T>
 class TConfigEntry : public ConfigEntry
 {
 public:
-    TConfigEntry(const std::string& name, const T& data = T())
-        : ConfigEntry(name, Type::INT)
-        , m_data(data)
-    {}
+    TConfigEntry(const std::string& name, const T& data = T());
 
-    void set(const T& data)
-    {
-        m_data = data;
-    }
+    void set(const T& data);
 
-    T get() const
-    {
-        return m_data;
-    }
+    T get() const;
 
 private:
     T m_data;
@@ -75,58 +51,18 @@ private:
 class Config
 {
 public:
-    Config()
-        : app(nullptr)
-        , resolution(nullptr)
-    {
-        ConfigEntry* c1 = new TConfigEntry<bool>("b1", true);
-        m_config[c1->getName()] = c1;
+    Config();
 
-        ConfigEntry* c = getC("c1");
-        //c->
-        std::string str("a");
-        bool a = get<bool>(str);
+    ~Config();
 
-        resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
-        m_config["resolution"] = resolution;
-    }
+    void initDefaultConfig();
 
-    ~Config()
-    {
+    const ConfigEntry* getC(const std::string& name) const;
 
-    }
-
-    void initDefaultConfig()
-    {
-        if (!resolution)
-            resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
-        m_config["resolution"] = resolution;
-    }
-
-    const ConfigEntry* getC(const std::string& name) const
-    {
-        auto it = m_config.find(name);
-        if (it != m_config.end())
-        {
-            return it->second;
-        }
-        return nullptr;
-    }
-
-    ConfigEntry* getC(const std::string& name)
-    {
-        return const_cast<ConfigEntry*>(static_cast<const Config &>(*this).getC(name));
-    }
+    ConfigEntry* getC(const std::string& name);
 
     template <typename T>
-    T get(const std::string& name) const
-    {
-        const ConfigEntry* c = getC(name);
-        if (c && c->getType() == getType<T>())
-        {
-            return (static_cast<const TConfigEntry<T>*>(c))->get();
-        }
-    }
+    T get(const std::string& name) const;
 
     /*template <typename T>
     void set(const std::string& name, const T& data)

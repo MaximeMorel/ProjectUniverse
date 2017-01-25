@@ -6,3 +6,105 @@
 
 }*/
 ////////////////////////////////////////////////////////////////////////////////
+template <>
+Type getType<bool>()
+{
+    return Type::BOOL;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+Type getType<int>()
+{
+    return Type::INT;
+}
+////////////////////////////////////////////////////////////////////////////////
+ConfigEntry::ConfigEntry(const std::string& name, Type t)
+: m_type(t)
+, m_name(name)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+Type ConfigEntry::getType() const
+{
+    return m_type;
+}
+////////////////////////////////////////////////////////////////////////////////
+const std::string& ConfigEntry::getName() const
+{
+    return m_name;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+TConfigEntry<T>::TConfigEntry(const std::string& name, const T& data)
+    : ConfigEntry(name, Type::INT)
+    , m_data(data)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+void TConfigEntry<T>::set(const T& data)
+{
+    m_data = data;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+T TConfigEntry<T>::get() const
+{
+    return m_data;
+}
+////////////////////////////////////////////////////////////////////////////////
+Config::Config()
+    : app(nullptr)
+    , resolution(nullptr)
+{
+    ConfigEntry* c1 = new TConfigEntry<bool>("b1", true);
+    m_config[c1->getName()] = c1;
+
+    ConfigEntry* c = getC("c1");
+    //c->
+    std::string str("a");
+    bool a = get<bool>(str);
+
+    resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
+    m_config["resolution"] = resolution;
+}
+////////////////////////////////////////////////////////////////////////////////
+Config::~Config()
+{
+
+}
+////////////////////////////////////////////////////////////////////////////////
+void Config::initDefaultConfig()
+{
+    if (!resolution)
+        resolution = new TConfigEntry<std::string>("resolution", "1920x1080");
+    m_config["resolution"] = resolution;
+}
+////////////////////////////////////////////////////////////////////////////////
+const ConfigEntry* Config::getC(const std::string& name) const
+{
+    auto it = m_config.find(name);
+    if (it != m_config.end())
+    {
+        return it->second;
+    }
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+ConfigEntry* Config::getC(const std::string& name)
+{
+    return const_cast<ConfigEntry*>(static_cast<const Config &>(*this).getC(name));
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+T Config::get(const std::string& name) const
+{
+    const ConfigEntry* c = getC(name);
+    if (c && c->getType() == getType<T>())
+    {
+        return (static_cast<const TConfigEntry<T>*>(c))->get();
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////

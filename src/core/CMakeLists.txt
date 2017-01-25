@@ -56,6 +56,8 @@ set(CORE_SOURCE main.cpp
                 math/vec3.inl
                 math/vec4.cpp
                 math/vec4.inl
+                math/quaternion.cpp
+                math/quaternion.inl
                 plugin/pluginManager.cpp
                 plugin/iplugin.cpp
                 plugin/plugin.cpp

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "imageCodecSDL.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 #include <SDL_image.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "imageCodecSDL",
@@ -24,7 +24,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginImageCodecCustom(*engine);
         if (lib)
         {
-            engine->codecs().addImageCodec(lib);
+            codecs().addImageCodec(lib);
         }
     }
     return lib;
@@ -34,7 +34,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeImageCodec(lib);
+        codecs().removeImageCodec(lib);
     }
     delete lib;
     lib = nullptr;

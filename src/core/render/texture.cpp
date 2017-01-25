@@ -31,7 +31,7 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
     }
 
     ImagePtr im = res().createFromFile<Image>(name);
-    if (im->asyncLoadStatus() == 1)
+    if (im->asyncLoadStatus() == true)
     {
         tex->m_setImagePending = true;
         tex->m_image = im;
