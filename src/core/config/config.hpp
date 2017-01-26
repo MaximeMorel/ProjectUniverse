@@ -26,6 +26,11 @@ public:
 
     const std::string& getName() const;
 
+    virtual void setString(const std::string& value);
+    virtual void setInt(int value);
+    virtual void setBool(bool value);
+    virtual void setFloat(float value);
+
 protected:
     ConfigEntry(const std::string& name, Type t);
 
@@ -39,7 +44,11 @@ class TConfigEntry : public ConfigEntry
 public:
     TConfigEntry(const std::string& name, const T& data = T());
 
-    void set(const T& data);
+    virtual void setString(const std::string& value);
+    virtual void setInt(int value);
+    virtual void setBool(bool value);
+    virtual void setFloat(float value);
+    void setT(const T& data);
 
     T get() const;
 

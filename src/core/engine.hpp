@@ -23,6 +23,7 @@ public:
     RenderManager& render();
     CodecManager& codecs();
     ThreadManager& thread();
+    Config& config();
 
     void parseArgs(int argc, char** argv);
 

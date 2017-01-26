@@ -34,10 +34,45 @@ int logLua(lua_State* l)
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
+int setConfigLua(lua_State* l)
+{
+    Engine& engine = getEngine();
+    const char* param = lua_tostring(l, 1);
+    if (param)
+    {
+        engine.log().log() << param << "\n";
+        int luaType = lua_type(l, 2);
+        switch (luaType)
+        {
+        case LUA_TNUMBER:
+            break;
+        case LUA_TBOOLEAN:
+            break;
+        case LUA_TSTRING:
+            break;
+        default:
+            break;
+        }
+
+        const char* value = lua_tostring(l, 2);
+        if (value)
+        {
+            engine.log().log() << value << "\n";
+            ConfigEntry* ce = engine.config().getC(param);
+            //if (ce)
+            //    ce
+        }
+
+    }
+    //engine.log().log() << lua_gettop(l) << "\n";
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
 void registerLua(lua_State* l)
 {
     lua_register(l, "getEngine", getEngineLua);
     lua_register(l, "log", logLua);
+    lua_register(l, "setConfig", setConfigLua);
 
     luaL_Reg engineLuaRegs[] =
     {

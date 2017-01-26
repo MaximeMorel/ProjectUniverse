@@ -76,6 +76,11 @@ ThreadManager& Engine::thread()
     return m_threadManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Config& Engine::config()
+{
+    return m_config;
+}
+////////////////////////////////////////////////////////////////////////////////
 void Engine::parseArgs(int argc, char** argv)
 {
     // bin/engine --set resolution=1280x720 --set app=Example

@@ -1,7 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextXlib.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
 #include "GL/glxext.h"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "windowXlib",
@@ -199,8 +198,9 @@ void PluginWindowContextXlib::update()
         case DestroyNotify:
             break;
         case ClientMessage:
-            if (e.xclient.data.l[0] == m_wmDeleteMessage)
-                getEngine().setRequestQuit(true);
+            if (e.xclient.data.l[0] == static_cast<long>(m_wmDeleteMessage))
+                if (m_closeCallback)
+                    m_closeCallback();
             break;
         default:
             log().log() << e.type << std::endl;
