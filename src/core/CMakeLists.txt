@@ -79,6 +79,7 @@ set(CORE_SOURCE main.cpp
                 script/lua/engineLua.cpp
                 thread/threadManager.cpp
                 tools/timer.cpp
+                windowContext/windowManager.cpp
                 windowContext/windowPlugin.cpp
                 )
 

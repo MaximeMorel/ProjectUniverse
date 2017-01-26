@@ -18,7 +18,7 @@ public:
     InputManager();
     ~InputManager();
 
-    void setPlugin(PluginLibPtr inputPlugin);
+    bool setPlugin(PluginLibPtr inputPlugin);
 
     void discoverDevices();
     void listDevices(Logger& o) const;

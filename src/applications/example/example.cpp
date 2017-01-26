@@ -52,64 +52,7 @@ ApplicationExample::~ApplicationExample()
 void ApplicationExample::run()
 {
     {
-        PluginLibPtr libWindow = getEngine().plugins().loadLib("WindowContextSDL2");
-        PluginLibPtr libRender = getEngine().plugins().loadLib("RenderOpenGL21");
-        PluginLibPtr libInput = getEngine().plugins().loadLib("InputSDL");
-        PluginLibPtr libAudio = getEngine().plugins().loadLib("AudioOpenAL");
-        PluginLibPtr libJPEG = getEngine().plugins().loadLib("ImageCodecJPEG");
-        PluginLibPtr libPNG = getEngine().plugins().loadLib("ImageCodecPNG");
-        PluginLibPtr libSDLimage = getEngine().plugins().loadLib("ImageCodecSDL");
-        PluginLibPtr libTIFF = getEngine().plugins().loadLib("ImageCodecTIFF");
-        PluginLibPtr libImageCustom = getEngine().plugins().loadLib("ImageCodecCustom");
-        PluginLibPtr libMeshCustom = getEngine().plugins().loadLib("MeshCodecCustom");
-        PluginLibPtr libASSIMP = getEngine().plugins().loadLib("MeshCodecASSIMP");
-        if (libTIFF && libTIFF->isValid())
         {
-            log().log() << libTIFF << "\n";
-            libTIFF->getLibInstance(&getEngine());
-        }
-        if (libJPEG && libJPEG->isValid())
-        {
-            log().log() << libJPEG << "\n";
-            libJPEG->getLibInstance(&getEngine());
-        }
-        if (libPNG && libPNG->isValid())
-        {
-            log().log() << libPNG << "\n";
-            libPNG->getLibInstance(&getEngine());
-        }
-        if (libSDLimage && libSDLimage->isValid())
-        {
-            log().log() << libSDLimage << "\n";
-            libSDLimage->getLibInstance(&getEngine());
-        }
-        if (libImageCustom && libImageCustom->isValid())
-        {
-            log().log() << libImageCustom << "\n";
-            libImageCustom->getLibInstance(&getEngine());
-        }
-        if (libASSIMP && libASSIMP->isValid())
-        {
-            log().log() << libASSIMP << "\n";
-            libASSIMP->getLibInstance(&getEngine());
-        }
-        if (libMeshCustom && libMeshCustom->isValid())
-        {
-            log().log() << libMeshCustom << "\n";
-            libMeshCustom->getLibInstance(&getEngine());
-        }
-        if (libAudio && libAudio->isValid())
-        {
-            log().log() << libAudio << "\n";
-            libAudio->getLibInstance(&getEngine());
-        }
-        if (libWindow && libRender && libInput &&
-            libWindow->isValid() && libRender->isValid() && libInput->isValid())
-        {
-            log().log() << libWindow << "\n";
-            log().log() << libRender << "\n";
-            log().log() << libInput << "\n";
-
             //SoundPtr sound = res().createFromFile<Sound>("data/sound/test.ogg");
             //SoundSourcePtr s = res().createFromFile<SoundSource>("data/sound/test.ogg");
             //sound->play();
@@ -119,31 +62,13 @@ void ApplicationExample::run()
             //s->volume(0.75);
             //s->play();
 
-            WindowPlugin* w = static_cast<WindowPlugin*>(libWindow->getLibInstance(&getEngine()));
-            w->createContext(GfxContextType::OPENGL_2_1);
-
-            libInput->getLibInstance(&getEngine());
-            input().setPlugin(libInput);
             input().discoverDevices();
             input().listDevices(log().log());
 
             //input().setWindowInputFocus(w->getWindowId());
 
-            libRender->getLibInstance(&getEngine());
-            if (render().setPlugin(libRender) == false)
-            {
-                log().log() << "Cannot set render plugin. Abort.\n";
-                return;
-            }
-
             auto func = std::bind(&RenderPlugin::resize, render().impl(), std::placeholders::_1, std::placeholders::_2);
-            w->setEventResizeCallback(func);
-
-            w->setPosition(800, 900);
-            w->setResolution(1280, 720);
-            w->setResolution(800, 800);
-            w->setResolution(640, 480);
-            w->setResolution(100, 100);
+            window().getWindow()->setEventResizeCallback(func);
 
             ShaderProgramPtr prog = res().createFromFile<ShaderProgram>("effect1.prog");
             if (prog)
@@ -173,7 +98,7 @@ void ApplicationExample::run()
                 scene.add(mesh.get());
 
             bool stop = false;
-            w->setEventCloseCallback([&stop](){ stop = true; });
+            window().getWindow()->setEventCloseCallback([&stop](){ stop = true; });
 
             double targetFrameTime = 1000.0 / 60.0;
             double timeSlept = 0.0;
@@ -189,7 +114,7 @@ void ApplicationExample::run()
             {
                 frameTimer.reset();
                 // process window events
-                w->update();
+                window().getWindow()->update();
                 // process input events
                 input().update();
                 if (input().keyboard(0) &&
@@ -274,7 +199,7 @@ void ApplicationExample::run()
                     render().impl()->drawScene(&scene);
                 }
 
-                w->swapBuffers();
+                window().getWindow()->swapBuffers();
 
                 double frameTime = frameTimer.getTime();
                 //log().log() << "frame time: " << frameTime << std::endl;
@@ -313,6 +238,7 @@ void ApplicationExample::run()
             }
             //log().log() << res() << "\n";
         }
+        threads().joinAll();
     }
 
     //log().log() << res() << "\n";
@@ -331,5 +257,7 @@ void ApplicationExample::run()
     log().log() << "sizeof(bool): " << sizeof(bool) << "\n";*/
 
     luaTest();
+
+    log().log() << getEngine().config();
 }
 ////////////////////////////////////////////////////////////////////////////////

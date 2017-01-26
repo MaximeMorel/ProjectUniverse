@@ -6,6 +6,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+#include "core/log/logManager.hpp"
 #include "../engine.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 Plugin::Plugin(const std::string& name, const std::string& fileName)
@@ -19,8 +20,8 @@ Plugin::Plugin(const std::string& name, const std::string& fileName)
     m_handle = dlopen(fileName.c_str(), RTLD_LAZY);
     if (m_handle == nullptr)
     {
-        getEngine().log().log() << "dlopen(" << fileName << ") failed\n";
-        getEngine().log().log() << dlerror() << std::endl;
+        log().log() << "dlopen(" << fileName << ") failed\n";
+        log().log() << dlerror() << std::endl;
     }
 #endif
 #ifdef _WIN32
@@ -57,14 +58,14 @@ Plugin::~Plugin()
         int ret = dlclose(m_handle);
         if (ret != 0)
         {
-            getEngine().log().log() << "dlclose(" << getName() << ") failed\n";
+            log().log() << "dlclose(" << getName() << ") failed\n";
         }
 #endif
 #ifdef _WIN32
         BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
         if (ret != 0)
         {
-            getEngine().log().log() << "FreeLibrary(" << getName() << ") failed\n";
+            log().log() << "FreeLibrary(" << getName() << ") failed\n";
         }
 #endif
     }
@@ -79,8 +80,8 @@ void* Plugin::getSymbol(const std::string& symbolname) const
     const char* error = dlerror();
     if (error)
     {
-        getEngine().log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
-        getEngine().log().log() << error << "\n";
+        log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
+        log().log() << error << "\n";
     }
 #endif
 #ifdef _WIN32
@@ -88,7 +89,7 @@ void* Plugin::getSymbol(const std::string& symbolname) const
     symbol = reinterpret_cast<void*>(proc);
     if (symbol == nullptr)
     {
-        getEngine().log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed\n";
+        log().log() << "GetProcAddress(" << getName() << ", " << symbolname << ") failed\n";
     }
 #endif
 

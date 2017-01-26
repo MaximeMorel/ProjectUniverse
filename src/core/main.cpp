@@ -3,14 +3,6 @@
 #include "application.hpp"
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////////////
-void processArgs(int argc, char **argv)
-{
-    for (int i = 0; i < argc; ++i)
-    {
-
-    }
-}
-////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
     std::cout << "Start...\n";
@@ -18,8 +10,8 @@ int main(int argc, char **argv)
 
     engine.parseArgs(argc, argv);
 
-    PluginAppPtr app = engine.plugins().loadApp("Example");
-    if (app && app->isValid())
+    PluginAppPtr app = engine.plugins().loadApp();
+    if (app && app->isValid() && engine.init())
     {
         engine.log().log() << app << "\n";
         Application* a = app->getLibInstance(&engine);
@@ -27,6 +19,7 @@ int main(int argc, char **argv)
             a->run();
     }
     engine.log().log() << "main exit..." << std::endl;
+    engine.plugins().flushPlugins();
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////

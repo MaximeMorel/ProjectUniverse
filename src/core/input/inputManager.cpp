@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "inputManager.hpp"
 #include "inputPlugin.hpp"
-#include "core/engine.hpp"
+#include "core/log/logManager.hpp"
+#include "core/engineFwd.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 InputManager* gInput = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,12 +15,12 @@ InputManager::~InputManager()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputManager::setPlugin(PluginLibPtr inputPlugin)
+bool InputManager::setPlugin(PluginLibPtr inputPlugin)
 {
     if (m_plugin)
     {
         // clean current plugin
-        getEngine().log().log() << "Removing current Input Plugin\n";
+        log().log() << "Removing current Input Plugin\n";
     }
     const PluginInfo& pluginInfo = inputPlugin->getInfo();
     if (pluginInfo.type == std::string("input"))
@@ -27,12 +28,14 @@ void InputManager::setPlugin(PluginLibPtr inputPlugin)
         InputPlugin* plugin = static_cast<InputPlugin*>(inputPlugin->getLibInstance(&getEngine()));
         m_plugin = plugin;
 
-        getEngine().log().log() << "Input Plugin set\n";
+        log().log() << "Input Plugin set\n";
+        return true;
     }
     else
     {
-        getEngine().log().log() << "Wrong Input Plugin\n";
+        log().log() << "Wrong Input Plugin\n";
     }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void InputManager::discoverDevices()

@@ -40,31 +40,12 @@ int setConfigLua(lua_State* l)
     const char* param = lua_tostring(l, 1);
     if (param)
     {
-        engine.log().log() << param << "\n";
-        int luaType = lua_type(l, 2);
-        switch (luaType)
-        {
-        case LUA_TNUMBER:
-            break;
-        case LUA_TBOOLEAN:
-            break;
-        case LUA_TSTRING:
-            break;
-        default:
-            break;
-        }
-
         const char* value = lua_tostring(l, 2);
         if (value)
         {
-            engine.log().log() << value << "\n";
-            ConfigEntry* ce = engine.config().getC(param);
-            //if (ce)
-            //    ce
+            engine.config().set(param, value);
         }
-
     }
-    //engine.log().log() << lua_gettop(l) << "\n";
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +77,7 @@ int luaTest()
     int erred = luaL_dofile(l, "fun.lua");
     if(erred)
     {
-        getEngine().log().log() << "Lua error.\n";
+        log().log() << "Lua error.\n";
     }
 
     lua_close(l);

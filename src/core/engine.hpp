@@ -8,6 +8,7 @@
 #include "render/renderManager.hpp"
 #include "codecs/codecManager.hpp"
 #include "thread/threadManager.hpp"
+#include "windowContext/windowManager.hpp"
 #include "config/config.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
@@ -16,13 +17,16 @@ public:
     Engine(const std::string& name = "");
     virtual ~Engine();
 
+    bool init();
+
     LogManager& log();
     ResourceManager& res();
     PluginManager& plugins();
     InputManager& input();
     RenderManager& render();
     CodecManager& codecs();
-    ThreadManager& thread();
+    ThreadManager& threads();
+    WindowManager& window();
     Config& config();
 
     void parseArgs(int argc, char** argv);
@@ -30,6 +34,8 @@ public:
     void setRequestQuit(bool status);
 
     bool getRequestQuit() const;
+
+    bool loadPlugins();
 
 private:
     Config m_config;
@@ -40,6 +46,7 @@ private:
     RenderManager m_renderManager;
     CodecManager m_codecManager;
     ThreadManager m_threadManager;
+    WindowManager m_windowManager;
 
     std::string m_name;     ///< engine string identifier
     bool m_requestQuit;     ///< flag indicating a request to exit the program

@@ -1,6 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "image.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
+#include "core/log/logManager.hpp"
+#include "core/resource/resourceManager.hpp"
+#include "core/thread/threadManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Image::type("Image");
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +28,7 @@ Image::~Image()
 void loadImage(ImagePtr image)
 {
     // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getImageCodecs())
+    for (auto* codec : codecs().getImageCodecs())
     {
         bool success = codec->load(image.get());
         if (success)
@@ -48,7 +51,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
     if (async)
     {
         image->m_asyncLoadStatus = true;
-        getEngine().thread().getNextThread() = std::thread(loadImage, image);
+        threads().getNextThread() = std::thread(loadImage, image);
     }
     else
     {
@@ -60,7 +63,7 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
 bool Image::save(const std::string& filePath)
 {
     // go through image codecs plugins
-    for (auto* codec : getEngine().codecs().getImageCodecs())
+    for (auto* codec : codecs().getImageCodecs())
     {
         bool success = codec->save(this, filePath);
         if (success)
@@ -200,7 +203,7 @@ bool Image::reload()
     {
         // go through image codecs plugins
         bool reloaded = false;
-        for (auto* codec : getEngine().codecs().getImageCodecs())
+        for (auto* codec : codecs().getImageCodecs())
         {
             bool success = codec->load(this);
             if (success)

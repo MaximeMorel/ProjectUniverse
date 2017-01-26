@@ -12,9 +12,15 @@ public:
     std::thread& getThread(int i);
     std::thread& getNextThread();
 
+    void joinAll();
+
 private:
     std::thread m_thread[8];
     size_t m_threadUseId;
 };
+////////////////////////////////////////////////////////////////////////////////
+/// Global threads access
+void setGlobalThreads(ThreadManager& threads);
+ThreadManager& threads();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __THREADMANAGER_HPP__

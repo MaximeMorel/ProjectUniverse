@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "mesh.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 #include "core/resource/resourceManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Mesh::type("Mesh");
@@ -21,7 +21,7 @@ MeshPtr Mesh::create(const std::string& name, const std::string& fileName)
         return nullptr;
 
     // go through mesh codecs plugins
-    for (auto* codec : getEngine().codecs().getMeshCodecs())
+    for (auto* codec : codecs().getMeshCodecs())
     {
         bool success = codec->load(mesh.get());
         if (success)
@@ -34,7 +34,7 @@ MeshPtr Mesh::create(const std::string& name, const std::string& fileName)
 bool Mesh::save(const std::string& filePath)
 {
     // go through mesh codecs plugins
-    for (auto* codec : getEngine().codecs().getMeshCodecs())
+    for (auto* codec : codecs().getMeshCodecs())
     {
         bool success = codec->save(this, filePath);
         if (success)

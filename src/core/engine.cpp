@@ -34,11 +34,26 @@ Engine::Engine(const std::string& name)
 
     char buf[256];
     m_logManager.log() << "cwd: " << getcwd(buf, 256) << "\n";
+
+    m_config.initDefaultConfig();
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
     m_logManager.log() << "Engine " << m_name << " close...\n";
+
+    m_pluginManager.flushPlugins();
+}
+////////////////////////////////////////////////////////////////////////////////
+bool Engine::init()
+{
+    if (!loadPlugins())
+    {
+        m_logManager.log() << "Error loading plugins.\n";
+        return false;
+    }
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 LogManager& Engine::log()
@@ -71,9 +86,14 @@ CodecManager& Engine::codecs()
     return m_codecManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ThreadManager& Engine::thread()
+ThreadManager& Engine::threads()
 {
     return m_threadManager;
+}
+////////////////////////////////////////////////////////////////////////////////
+WindowManager& Engine::window()
+{
+    return m_windowManager;
 }
 ////////////////////////////////////////////////////////////////////////////////
 Config& Engine::config()
@@ -106,11 +126,7 @@ void Engine::parseArgs(int argc, char** argv)
     for (auto arg : args)
     {
         m_logManager.log() << arg.first << " = " << arg.second << "\n";
-        ConfigEntry* ce = m_config.getC(arg.first);
-        if (ce)
-        {
-            //ce->set(arg.second);
-        }
+        m_config.set(arg.first, arg.second);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -124,14 +140,45 @@ bool Engine::getRequestQuit() const
     return m_requestQuit;
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool Engine::loadPlugins()
+{
+    plugins().loadCodecPlugins();
+
+    PluginLibPtr windowPlugin = plugins().loadWindowContextPlugin();
+    if (!windowPlugin)
+        return false;
+    if (!m_windowManager.setPlugin(windowPlugin))
+        return false;
+    if (!m_windowManager.createContext(m_config.get<std::string>("renderplugin")))
+        return false;
+
+    PluginLibPtr inputPlugin = plugins().loadInputPlugin();
+    if (!inputPlugin)
+        return false;
+    if (!m_inputManager.setPlugin(inputPlugin))
+        return false;
+
+    PluginLibPtr renderPlugin = plugins().loadRenderPlugin();
+    if (!renderPlugin)
+        return false;
+    if (!m_renderManager.setPlugin(renderPlugin))
+        return false;
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
 void setGlobalEngine(Engine& engine)
 {
     gEngine = &engine;
+    setGlobalConfig(engine.config());
     setGlobalCodecs(engine.codecs());
     setGlobalLogger(engine.log());
     setGlobalRender(engine.render());
     setGlobalResourceManager(engine.res());
     setGlobalInput(engine.input());
+    setGlobalThreads(engine.threads());
+    setGlobalPlugins(engine.plugins());
+    setGlobalWindow(engine.window());
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine& getEngine()

@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "windowContextSDL2.hpp"
 #include "core/log/logManager.hpp"
+#include "core/config/config.hpp"
 #include <SDL.h>
 #include <SDL_syswm.h>
 #include <map>
@@ -247,10 +248,28 @@ bool PluginWindowContextSDL2::createContextVulkan()
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginWindowContextSDL2::createWindow(SDL_WindowFlags flags)
 {
+    std::string str = config().get<std::string>("resolution");
+    Vec2ui resolution(100, 100);
+    if (str.length() > 0)
+    {
+        size_t pos = str.find('x');
+        resolution.x = std::stoi(str.substr(0, pos));
+        resolution.y = std::stoi(str.substr(pos + 1));
+    }
+
+    str = config().get<std::string>("position");
+    Vec2ui position(100, 900);
+    if (str.length() > 0)
+    {
+        size_t pos = str.find('x');
+        position.x = std::stoi(str.substr(0, pos));
+        position.y = std::stoi(str.substr(pos + 1));
+    }
+
     m_window = SDL_CreateWindow("SDL2 window",
-                                SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED,
-                                100, 100,
+                                position.x, //SDL_WINDOWPOS_UNDEFINED,
+                                position.y, //SDL_WINDOWPOS_UNDEFINED,
+                                resolution.x, resolution.y,
                                 flags);
 
     if (m_window == nullptr)
@@ -265,7 +284,7 @@ bool PluginWindowContextSDL2::createWindow(SDL_WindowFlags flags)
         m_glcontext = SDL_GL_CreateContext(m_window);
         if (m_glcontext == nullptr)
         {
-            log().log() << SDL_GetError();
+            log().log() << SDL_GetError() << std::endl;
             return false;
         }
     }

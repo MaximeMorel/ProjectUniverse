@@ -2,7 +2,7 @@
 #include "meshCodecCustom.hpp"
 #include "core/geom/mesh/mesh.hpp"
 #include "core/log/logManager.hpp"
-#include "core/engine.hpp"
+#include "core/codecs/codecManager.hpp"
 #include <algorithm>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "meshCodecCustom",
@@ -25,7 +25,7 @@ Library* getLibInstance(Engine* engine)
         lib = new PluginMeshCodecCustom(*engine);
         if (lib)
         {
-            engine->codecs().addMeshCodec(lib);
+            codecs().addMeshCodec(lib);
         }
     }
     return lib;
@@ -35,7 +35,7 @@ void closeLibInstance()
 {
     if (lib)
     {
-        lib->getEngine().codecs().removeMeshCodec(lib);
+        codecs().removeMeshCodec(lib);
     }
     delete lib;
     lib = nullptr;

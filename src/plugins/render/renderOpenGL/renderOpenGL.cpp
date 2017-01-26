@@ -121,7 +121,7 @@ bool PluginRenderOpenGL::initGlew(bool experimental)
     GLenum err = glewInit();
     if (err != GLEW_OK)
     {
-        log().log() << "GLEW Error: " << glewGetErrorString(err) << "\n";
+        log().log() << "GLEW Error: " << reinterpret_cast<const char*>(glewGetErrorString(err)) << std::endl;
         return false;
     }
 
