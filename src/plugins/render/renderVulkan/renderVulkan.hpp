@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/plugin/iplugin.hpp"
 #include "core/library.hpp"
+#include "core/render/renderPlugin.hpp"
 #include "vulkan/vulkan.h"
 #include "rendervulkan_export.h"
 ////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +13,7 @@ extern "C" RENDERVULKAN_EXPORT Library* getLibInstance(Engine* engine);
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" RENDERVULKAN_EXPORT void closeLibInstance();
 ////////////////////////////////////////////////////////////////////////////////
-class PluginRenderVulkan : public Library
+class PluginRenderVulkan : public RenderPlugin
 {
 public:
     PluginRenderVulkan(Engine& engine);
@@ -21,6 +22,7 @@ public:
     virtual bool init();
 
     virtual const char* getShaderSearchPath() const;
+    virtual GfxContextType getRequiredContextType() const override;
 
 private:
     VkApplicationInfo m_applicationInfo;

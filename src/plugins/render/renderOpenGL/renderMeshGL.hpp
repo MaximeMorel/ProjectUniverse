@@ -16,6 +16,7 @@ public:
 
     virtual void setup(Mesh* mesh) override;
     virtual void draw() override;
+    virtual uint32_t getNumTriangles() const override;
 
     GLsizei m_count;
     GLenum m_indicesType;

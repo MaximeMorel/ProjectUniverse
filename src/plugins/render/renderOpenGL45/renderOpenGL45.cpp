@@ -70,6 +70,11 @@ const char* PluginRenderOpenGL45::getShaderSearchPath() const
     return "shaders/opengl45/";
 }
 ////////////////////////////////////////////////////////////////////////////////
+GfxContextType PluginRenderOpenGL45::getRequiredContextType() const
+{
+    return GfxContextType::OPENGL_4_5;
+}
+////////////////////////////////////////////////////////////////////////////////
 ShaderPtr PluginRenderOpenGL45::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
     return ShaderGL45::create(name, fileName, t);

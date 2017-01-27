@@ -75,6 +75,11 @@ const char* PluginRenderOpenGL21::getShaderSearchPath() const
     return "shaders/opengl21/";
 }
 ////////////////////////////////////////////////////////////////////////////////
+GfxContextType PluginRenderOpenGL21::getRequiredContextType() const
+{
+    return GfxContextType::OPENGL_2_1;
+}
+////////////////////////////////////////////////////////////////////////////////
 ShaderPtr PluginRenderOpenGL21::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
     return ShaderGL21::create(name, fileName, t);

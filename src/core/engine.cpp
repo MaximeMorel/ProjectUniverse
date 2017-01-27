@@ -149,19 +149,22 @@ bool Engine::loadPlugins()
         return false;
     if (!m_windowManager.setPlugin(windowPlugin))
         return false;
-    if (!m_windowManager.createContext(m_config.get<std::string>("renderplugin")))
-        return false;
+
+    {
+        if (!m_windowManager.createContext(m_config.renderplugin->get()))
+            return false;
+
+        PluginLibPtr renderPlugin = plugins().loadRenderPlugin();
+        if (!renderPlugin)
+            return false;
+        if (!m_renderManager.setPlugin(renderPlugin))
+            return false;
+    }
 
     PluginLibPtr inputPlugin = plugins().loadInputPlugin();
     if (!inputPlugin)
         return false;
     if (!m_inputManager.setPlugin(inputPlugin))
-        return false;
-
-    PluginLibPtr renderPlugin = plugins().loadRenderPlugin();
-    if (!renderPlugin)
-        return false;
-    if (!m_renderManager.setPlugin(renderPlugin))
         return false;
 
     return true;

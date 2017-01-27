@@ -21,6 +21,7 @@ public:
     virtual bool init() override;
 
     virtual const char* getShaderSearchPath() const override;
+    virtual GfxContextType getRequiredContextType() const override;
 
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t) override;
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;

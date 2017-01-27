@@ -43,7 +43,7 @@ int setConfigLua(lua_State* l)
         const char* value = lua_tostring(l, 2);
         if (value)
         {
-            engine.config().set(param, value);
+            engine.config().set<std::string>(param, value);
         }
     }
     return 0;

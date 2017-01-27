@@ -84,6 +84,15 @@ void ShaderProgramGL::removeShader(ShaderPtr shader)
 ////////////////////////////////////////////////////////////////////////////////
 bool ShaderProgramGL::link()
 {
+    // this will try to link the shader porgram if not already done
+    // binary cache will be tried first
+    // if the binary cache cannot be loaded, it will be invalidated
+    // and we will compile and link the normal way
+    // shaders are not necessarily compiled when added to the program
+    // so at that point, they will be compiled
+    // then we try to link
+    // if successful, save the binary cache
+
     if (m_isLinked)
         return true;
 
@@ -167,6 +176,8 @@ bool ShaderProgramGL::link()
             log().log() << "Shader program log: " << infoLog.substr(0, charsWritten) << "\n";
         }
 
+        // if binary cache is loaded but linking failed
+        // invalidate the cache and relink
         if (binaryCacheUsed)
         {
             unlink(cacheFile.c_str());

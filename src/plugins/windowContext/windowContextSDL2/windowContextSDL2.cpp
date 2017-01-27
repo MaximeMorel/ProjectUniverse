@@ -246,25 +246,16 @@ bool PluginWindowContextSDL2::createContextVulkan()
     return createWindow(SDL_WINDOW_SHOWN);
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginWindowContextSDL2::createWindow(SDL_WindowFlags flags)
+bool PluginWindowContextSDL2::createWindow(Uint32 flags)
 {
-    std::string str = config().get<std::string>("resolution");
-    Vec2ui resolution(100, 100);
-    if (str.length() > 0)
-    {
-        size_t pos = str.find('x');
-        resolution.x = std::stoi(str.substr(0, pos));
-        resolution.y = std::stoi(str.substr(pos + 1));
-    }
+    Vec2i resolution = config().resolution->get();
+    Vec2i position = config().position->get();
 
-    str = config().get<std::string>("position");
-    Vec2ui position(100, 900);
-    if (str.length() > 0)
-    {
-        size_t pos = str.find('x');
-        position.x = std::stoi(str.substr(0, pos));
-        position.y = std::stoi(str.substr(pos + 1));
-    }
+    bool fullscreen = config().fullscreen->get();
+    bool borderless = config().borderless->get();
+
+    if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+    if (borderless) flags |= SDL_WINDOW_BORDERLESS;
 
     m_window = SDL_CreateWindow("SDL2 window",
                                 position.x, //SDL_WINDOWPOS_UNDEFINED,

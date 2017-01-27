@@ -92,8 +92,13 @@ void RenderMeshGL::setup(Mesh *mesh)
 ////////////////////////////////////////////////////////////////////////////////
 void RenderMeshGL::draw()
 {
-    //glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
+    //glDRenderMeshGL::rawArrays(GL_TRIANGLES, 0, m_vertices.size());
     glDrawElements(GL_TRIANGLES, m_count, m_indicesType, nullptr);
+}
+////////////////////////////////////////////////////////////////////////////////
+uint32_t RenderMeshGL::getNumTriangles() const
+{
+    return m_count / 3;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void RenderMeshGL::printOn(Logger& o) const

@@ -40,7 +40,7 @@ private:
     bool createContextOpenGL(int major, int minor);
     bool createContextVulkan();
 
-    bool createWindow(SDL_WindowFlags flags);
+    bool createWindow(Uint32 flags);
 
 private:
     SDL_Window* m_window;

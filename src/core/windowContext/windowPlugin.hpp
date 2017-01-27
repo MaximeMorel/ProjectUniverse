@@ -4,16 +4,8 @@
 #include "core/library.hpp"
 #include "core/log/logger.hpp"
 #include "core/math/vec2.hpp"
+#include "windowContextTypes.hpp"
 #include <functional>
-////////////////////////////////////////////////////////////////////////////////
-enum class GfxContextType : int8_t
-{
-    OPENGL_2_1,
-    OPENGL_3_3,
-    OPENGL_4_5,
-    VULKAN,
-    NONE
-};
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The WindowPlugin class
 /// Window and graphic context creation

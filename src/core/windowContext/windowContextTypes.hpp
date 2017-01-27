@@ -1,0 +1,13 @@
+#ifndef __WINDOWCONTEXTTYPES_HPP__
+#define __WINDOWCONTEXTTYPES_HPP__
+////////////////////////////////////////////////////////////////////////////////
+enum class GfxContextType : int8_t
+{
+    OPENGL_2_1,
+    OPENGL_3_3,
+    OPENGL_4_5,
+    VULKAN,
+    NONE
+};
+////////////////////////////////////////////////////////////////////////////////
+#endif // __WINDOWCONTEXTTYPES_HPP__

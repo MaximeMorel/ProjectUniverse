@@ -10,6 +10,7 @@
 #include "renderMesh.hpp"
 #include "bufferObject.hpp"
 #include "core/scene/scene.hpp"
+#include "core/windowContext/windowContextTypes.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class RenderPlugin : public Library
 {
@@ -20,6 +21,7 @@ public:
     virtual bool init();
 
     virtual const char* getShaderSearchPath() const;
+    virtual GfxContextType getRequiredContextType() const;
 
     virtual void resize(uint32_t x, uint32_t y);
 
@@ -36,6 +38,10 @@ public:
     virtual size_t getMemSize() const;
 
     virtual void printOn(Logger& o) const;
+
+protected:
+    uint32_t m_statNumMesh;     ///< stats: number of mesh rendered during the last frame
+    uint32_t m_statNumTriangles; ///< stats: number of triangles rendered during the last frame
 
 private:
     friend Logger& operator<<(Logger& o, const RenderPlugin& plugin);

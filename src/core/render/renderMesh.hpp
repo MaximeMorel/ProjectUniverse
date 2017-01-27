@@ -19,6 +19,8 @@ public:
 
     virtual void draw();
 
+    virtual uint32_t getNumTriangles() const;
+
 protected:
     virtual void printOn(Logger& o) const override;
 

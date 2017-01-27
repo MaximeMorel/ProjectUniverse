@@ -46,6 +46,10 @@ bool Mesh::save(const std::string& filePath)
 ////////////////////////////////////////////////////////////////////////////////
 size_t Mesh::getMemSize() const
 {
-
+    return sizeof(*this) +
+           m_indices.size() * sizeof(decltype(m_indices)::value_type) +
+           m_vertices.size() * sizeof(decltype(m_vertices)::value_type) +
+           m_texCoords.size() * sizeof(decltype(m_texCoords)::value_type) +
+           m_normals.size() * sizeof(decltype(m_normals)::value_type);
 }
 ////////////////////////////////////////////////////////////////////////////////

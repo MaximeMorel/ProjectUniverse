@@ -31,7 +31,7 @@ void closeLibInstance()
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginRenderVulkan::PluginRenderVulkan(Engine &engine)
-    : Library(engine)
+    : RenderPlugin(engine)
     , m_instanceIsValid(0)
 {
     log().log() << "PluginRenderVulkan start...\n";
@@ -95,5 +95,10 @@ bool PluginRenderVulkan::init()
 const char* PluginRenderVulkan::getShaderSearchPath() const
 {
     return "shaders/vulkan/";
+}
+////////////////////////////////////////////////////////////////////////////////
+GfxContextType PluginRenderVulkan::getRequiredContextType() const
+{
+    return GfxContextType::VULKAN;
 }
 ////////////////////////////////////////////////////////////////////////////////

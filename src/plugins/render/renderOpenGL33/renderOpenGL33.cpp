@@ -75,6 +75,11 @@ const char* PluginRenderOpenGL33::getShaderSearchPath() const
     return "shaders/opengl33/";
 }
 ////////////////////////////////////////////////////////////////////////////////
+GfxContextType PluginRenderOpenGL33::getRequiredContextType() const
+{
+    return GfxContextType::OPENGL_3_3;
+}
+////////////////////////////////////////////////////////////////////////////////
 ShaderPtr PluginRenderOpenGL33::createShader(const std::string& name, const std::string& fileName, Shader::Type t)
 {
     return ShaderGL33::create(name, fileName, t);

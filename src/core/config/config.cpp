@@ -3,52 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 Config* gConfig = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
-class ConfigEntry
-{
-protected:
-    ConfigEntry(const std::string& name, Type t);
-
-public:
-    virtual ~ConfigEntry();
-
-    Type getType() const;
-
-    const std::string& getName() const;
-
-    virtual void set(const std::string& value);
-    virtual void setString(const std::string& value);
-    virtual void setInt(int value);
-    virtual void setBool(bool value);
-    virtual void setFloat(float value);
-
-    virtual std::string getAsString() const;
-
-protected:
-    Type m_type;
-    std::string m_name;
-};
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-class TConfigEntry : public ConfigEntry
-{
-public:
-    TConfigEntry(const std::string& name, const T& data = T());
-    virtual ~TConfigEntry() override;
-
-    virtual void set(const std::string& value) override;
-    virtual void setString(const std::string& value) override;
-    virtual void setInt(int value) override;
-    virtual void setBool(bool value) override;
-    virtual void setFloat(float value) override;
-    void setT(const T& data);
-
-    T get() const;
-    virtual std::string getAsString() const override;
-
-private:
-    T m_data;
-};
-////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Type getType();
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +22,12 @@ template <>
 Type getType<std::string>()
 {
     return Type::STRING;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+Type getType<Vec2i>()
+{
+    return Type::VEC2I;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ConfigEntry::ConfigEntry(const std::string& name, Type t)
@@ -159,19 +119,19 @@ void TConfigEntry<T>::setString(const std::string& value)
 template <typename T>
 void TConfigEntry<T>::setInt(int value)
 {
-    m_data = value;
+    //m_data = value;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void TConfigEntry<T>::setBool(bool value)
 {
-    m_data = value;
+    //m_data = value;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void TConfigEntry<T>::setFloat(float value)
 {
-    m_data = value;
+    //m_data = value;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -213,7 +173,8 @@ Config::Config()
     , codecplugins(nullptr)
     , resolution(nullptr)
     , position(nullptr)
-    , windowmode(nullptr)
+    , fullscreen(nullptr)
+    , borderless(nullptr)
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,12 +193,20 @@ void Config::initDefaultConfig()
     m_config["app"] = app;
 
     if (!resolution)
-        resolution = new TConfigEntry<std::string>("resolution", "75x75");
+        resolution = new TConfigEntry<Vec2i>("resolution", Vec2i(100, 100));
     m_config["resolution"] = resolution;
 
     if (!position)
-        position = new TConfigEntry<std::string>("position", "100x900");
+        position = new TConfigEntry<Vec2i>("position", Vec2i(0, 0));
     m_config["position"] = position;
+
+    if (!fullscreen)
+        fullscreen = new TConfigEntry<bool>("fullscreen", false);
+    m_config["fullscreen"] = fullscreen;
+
+    if (!borderless)
+        borderless = new TConfigEntry<bool>("borderless", false);
+    m_config["borderless"] = borderless;
 
     if (!renderplugin)
         renderplugin = new TConfigEntry<std::string>("renderplugin", "RenderOpenGL21");
@@ -260,9 +229,14 @@ void Config::initDefaultConfig()
     m_config["codecplugins"] = codecplugins;
 }
 ////////////////////////////////////////////////////////////////////////////////
-const ConfigEntry* Config::getC(const std::string& name) const
+void Config::checkConfig()
 {
-    auto it = m_config.find(name);
+
+}
+////////////////////////////////////////////////////////////////////////////////
+const ConfigEntry* Config::getEntry(const std::string& paramName) const
+{
+    auto it = m_config.find(paramName);
     if (it != m_config.end())
     {
         return it->second;
@@ -270,21 +244,31 @@ const ConfigEntry* Config::getC(const std::string& name) const
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-ConfigEntry* Config::getC(const std::string& name)
+ConfigEntry* Config::getEntry(const std::string& paramName)
 {
-    return const_cast<ConfigEntry*>(static_cast<const Config &>(*this).getC(name));
+    return const_cast<ConfigEntry*>(static_cast<const Config &>(*this).getEntry(paramName));
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T Config::get(const std::string& name) const
+T Config::get(const std::string& paramName) const
 {
-    const ConfigEntry* c = getC(name);
-    if (c && c->getType() == getType<T>())
+    const ConfigEntry* entry = getEntry(paramName);
+    if (entry && entry->getType() == getType<T>())
     {
-        return (static_cast<const TConfigEntry<T>*>(c))->get();
+        return (static_cast<const TConfigEntry<T>*>(entry))->get();
     }
 
     return T();
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+void Config::set(const std::string& paramName, const T& value)
+{
+    ConfigEntry* entry = getEntry(paramName);
+    if (entry && entry->getType() == getType<T>())
+    {
+        static_cast<TConfigEntry<T>*>(entry)->setT(value);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Config::set(const std::string& paramName, const std::string& value)
@@ -292,7 +276,7 @@ void Config::set(const std::string& paramName, const std::string& value)
     if (paramName.length() == 0)
         return;
 
-    ConfigEntry* entry = getC(paramName);
+    ConfigEntry* entry = getEntry(paramName);
     if (entry)
     {
         entry->set(value);
@@ -320,5 +304,12 @@ Config& config()
     return *gConfig;
 }
 ////////////////////////////////////////////////////////////////////////////////
+template class TConfigEntry<int>;
+template class TConfigEntry<bool>;
 template class TConfigEntry<std::string>;
+template class TConfigEntry<Vec2i>;
+
 template std::string Config::get<std::string>(const std::string& name) const;
+
+template void Config::set<std::string>(const std::string& paramName, const std::string& value);
+////////////////////////////////////////////////////////////////////////////////
