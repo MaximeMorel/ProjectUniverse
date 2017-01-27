@@ -12,6 +12,15 @@
 #include "core/scene/scene.hpp"
 #include "core/windowContext/windowContextTypes.hpp"
 ////////////////////////////////////////////////////////////////////////////////
+struct RenderStats
+{
+    RenderStats();
+    friend Logger& operator<<(Logger& o, const RenderStats& plugin);
+
+    uint32_t statNumMesh;     ///< stats: number of mesh rendered during the last frame
+    uint32_t statNumTriangles; ///< stats: number of triangles rendered during the last frame
+};
+////////////////////////////////////////////////////////////////////////////////
 class RenderPlugin : public Library
 {
 public:
@@ -35,13 +44,14 @@ public:
     virtual void draw();
     virtual void drawScene(Scene* scene);
 
+    const RenderStats& getStats() const;
+
     virtual size_t getMemSize() const;
 
     virtual void printOn(Logger& o) const;
 
 protected:
-    uint32_t m_statNumMesh;     ///< stats: number of mesh rendered during the last frame
-    uint32_t m_statNumTriangles; ///< stats: number of triangles rendered during the last frame
+    RenderStats m_renderStats;      ///< rendering stats container
 
 private:
     friend Logger& operator<<(Logger& o, const RenderPlugin& plugin);

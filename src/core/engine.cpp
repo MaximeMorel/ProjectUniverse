@@ -36,13 +36,21 @@ Engine::Engine(const std::string& name)
     m_logManager.log() << "cwd: " << getcwd(buf, 256) << "\n";
 
     m_config.initDefaultConfig();
+
+    m_engineLua.registerEngineLua();
+    m_engineLua.executeFile("config.lua");
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
 {
     m_logManager.log() << "Engine " << m_name << " close...\n";
 
-    m_pluginManager.flushPlugins();
+    // correct deallocation order should be handled here
+    // to prevent render resources being deallocatted after render plugin
+    // it will cause a crash, because code related to these resource is unloaded
+
+    // release resources allocated by plugins
+    //m_pluginManager.flushPlugins();
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Engine::init()
@@ -103,7 +111,10 @@ Config& Engine::config()
 ////////////////////////////////////////////////////////////////////////////////
 void Engine::parseArgs(int argc, char** argv)
 {
-    // bin/engine --set resolution=1280x720 --set app=Example
+    // parse command line arguments
+    // then add them to the engine config
+    // should be done after loading main config file, so command line paramters have higher priority
+    // ex: bin/engine --set resolution=1280x720 --set app=Example
     std::map<std::string, std::string> args;
     std::string arg;
     for (int i = 0; i < argc; ++i)
@@ -126,7 +137,7 @@ void Engine::parseArgs(int argc, char** argv)
     for (auto arg : args)
     {
         m_logManager.log() << arg.first << " = " << arg.second << "\n";
-        m_config.set(arg.first, arg.second);
+        m_config.setFromString(arg.first, arg.second);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -142,29 +153,36 @@ bool Engine::getRequestQuit() const
 ////////////////////////////////////////////////////////////////////////////////
 bool Engine::loadPlugins()
 {
+    // load all requested plugins
+    // graphic context must be ready before loading render plugin
+    // context version is chosen from the render plugin name
+    // once loaded, the plugins are managed by the plugin manager
+    // engine resource manager also hold a weak pointer to them
+
     plugins().loadCodecPlugins();
 
-    PluginLibPtr windowPlugin = plugins().loadWindowContextPlugin();
+    PluginLibPtr windowPlugin = plugins().addPluginFromConfig("windowplugin");
     if (!windowPlugin)
         return false;
     if (!m_windowManager.setPlugin(windowPlugin))
         return false;
+    if (!m_windowManager.createContext(m_config.renderplugin->get()))
+        return false;
 
-    {
-        if (!m_windowManager.createContext(m_config.renderplugin->get()))
-            return false;
+    PluginLibPtr renderPlugin = plugins().addPluginFromConfig("renderplugin");
+    if (!renderPlugin)
+        return false;
+    if (!m_renderManager.setPlugin(renderPlugin))
+        return false;
 
-        PluginLibPtr renderPlugin = plugins().loadRenderPlugin();
-        if (!renderPlugin)
-            return false;
-        if (!m_renderManager.setPlugin(renderPlugin))
-            return false;
-    }
-
-    PluginLibPtr inputPlugin = plugins().loadInputPlugin();
+    PluginLibPtr inputPlugin = plugins().addPluginFromConfig("inputplugin");
     if (!inputPlugin)
         return false;
     if (!m_inputManager.setPlugin(inputPlugin))
+        return false;
+
+    PluginLibPtr audioPlugin = plugins().addPluginFromConfig("audioplugin");
+    if (!audioPlugin)
         return false;
 
     return true;

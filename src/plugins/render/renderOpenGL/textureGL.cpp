@@ -2,6 +2,8 @@
 #include "textureGL.hpp"
 #include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
+#include "core/math/vec2.hpp"
+#include "core/coretypes/image.hpp"
 #include "opengltools.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,10 +87,22 @@ void TextureGL::setImage(ImagePtr image)
         format = GL_RGBA;
         type = GL_FLOAT;
         break;
+    case Image::Type::RGBADXT1:
+        internalformat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        break;
     default:
         break;
     }
-    glTexImage2D(GL_TEXTURE_2D, 0, internalformat, r.x, r.y, 0, format, type, image->getui8(0, 0));
+
+    if (image->imageType() == Image::Type::RGBADXT1)
+    {
+        GLsizei size = ((r.x+3)/4)*((r.y+3)/4)*8;
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalformat, r.x, r.y, 0, size, image->getui8(0, 0));
+    }
+    else
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, internalformat, r.x, r.y, 0, format, type, image->getui8(0, 0));
+    }
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);

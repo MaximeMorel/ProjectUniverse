@@ -2,8 +2,6 @@
 #include "windowManager.hpp"
 #include "windowPlugin.hpp"
 #include "core/log/logManager.hpp"
-#include "core/resource/resourceManager.hpp"
-#include "core/config/config.hpp"
 #include "core/engineFwd.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 WindowManager* gWindow = nullptr;

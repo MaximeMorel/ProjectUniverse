@@ -11,7 +11,8 @@ enum class Type : uint8_t
     BOOL,
     INT,
     STRING,
-    VEC2I
+    VEC2I,
+    NONE
 };
 ////////////////////////////////////////////////////////////////////////////////
 class ConfigEntry
@@ -22,21 +23,21 @@ protected:
 public:
     virtual ~ConfigEntry();
 
+    /// get template type of the underlying instance
     Type getType() const;
 
+    /// get config entry nae
     const std::string& getName() const;
 
-    virtual void set(const std::string& value);
-    virtual void setString(const std::string& value);
-    virtual void setInt(int value);
-    virtual void setBool(bool value);
-    virtual void setFloat(float value);
+    /// set value from string, will be converted to the correct type
+    virtual bool setFromString(const std::string& value)=0;
 
-    virtual std::string getAsString() const;
+    /// get the value as a string
+    virtual std::string getAsString() const=0;
 
 protected:
-    Type m_type;
-    std::string m_name;
+    Type m_type;        /// stores the template type of the underlying instance
+    std::string m_name; /// config entry name
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -46,12 +47,9 @@ public:
     TConfigEntry(const std::string& name, const T& data = T());
     virtual ~TConfigEntry() override;
 
-    virtual void set(const std::string& value) override;
-    virtual void setString(const std::string& value) override;
-    virtual void setInt(int value) override;
-    virtual void setBool(bool value) override;
-    virtual void setFloat(float value) override;
-    void setT(const T& data);
+    bool set(const T& data);
+
+    virtual bool setFromString(const std::string& value) override;
 
     T get() const;
     virtual std::string getAsString() const override;
@@ -70,20 +68,24 @@ public:
     void initDefaultConfig();
     void checkConfig();
 
+    /// get
     const ConfigEntry* getEntry(const std::string& paramName) const;
-
     ConfigEntry* getEntry(const std::string& paramName);
 
+    /// get value of paramName entry, underlying type must match
     template <typename T>
     T get(const std::string& paramName) const;
 
+    /// set value of paramName entry, underlying type must match
     template <typename T>
-    void set(const std::string& paramName, const T& value);
+    bool set(const std::string& paramName, const T& value);
 
-    void set(const std::string& paramName, const std::string& value);
+    /// set value of paramName without knowing the underlying type, value string will be converted to the correct type
+    bool setFromString(const std::string& paramName, const std::string& value);
 
     friend Logger& operator<<(Logger& o, const Config& config);
 
+public:
     TConfigEntry<std::string>* app;
     TConfigEntry<std::string>* renderplugin;
     TConfigEntry<std::string>* inputplugin;
@@ -96,7 +98,7 @@ public:
     TConfigEntry<bool>* borderless;
 
 private:
-    std::map<std::string, ConfigEntry*> m_config;
+    std::map<std::string, ConfigEntry*> m_config;   ///< mapping name <-> config entries
 };
 ////////////////////////////////////////////////////////////////////////////////
 /// Global config access

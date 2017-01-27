@@ -4,31 +4,32 @@
 Config* gConfig = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-Type getType();
+Type getConfigEntryType();
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getType<bool>()
+Type getConfigEntryType<bool>()
 {
     return Type::BOOL;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getType<int>()
+Type getConfigEntryType<int>()
 {
     return Type::INT;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getType<std::string>()
+Type getConfigEntryType<std::string>()
 {
     return Type::STRING;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getType<Vec2i>()
+Type getConfigEntryType<Vec2i>()
 {
     return Type::VEC2I;
 }
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ConfigEntry::ConfigEntry(const std::string& name, Type t)
     : m_type(t)
@@ -50,34 +51,10 @@ const std::string& ConfigEntry::getName() const
     return m_name;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ConfigEntry::set(const std::string& value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-void ConfigEntry::setString(const std::string& value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-void ConfigEntry::setInt(int value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-void ConfigEntry::setBool(bool value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-void ConfigEntry::setFloat(float value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-std::string ConfigEntry::getAsString() const
-{
-    return "";
-}
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 TConfigEntry<T>::TConfigEntry(const std::string& name, const T& data)
-    : ConfigEntry(name, ::getType<T>())
+    : ConfigEntry(name, getConfigEntryType<T>())
     , m_data(data)
 {
 }
@@ -88,56 +65,48 @@ TConfigEntry<T>::~TConfigEntry()
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-void TConfigEntry<T>::set(const std::string& value)
-{
-}
-////////////////////////////////////////////////////////////////////////////////
-template <>
-void TConfigEntry<int>::set(const std::string& value)
-{
-    m_data = std::stoi(value);
-}
-////////////////////////////////////////////////////////////////////////////////
-template <>
-void TConfigEntry<bool>::set(const std::string& value)
-{
-    m_data = std::stoi(value);
-}
-////////////////////////////////////////////////////////////////////////////////
-template <>
-void TConfigEntry<std::string>::set(const std::string& value)
-{
-    m_data = value;
-}
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-void TConfigEntry<T>::setString(const std::string& value)
-{
-    //m_data = value;
-}
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-void TConfigEntry<T>::setInt(int value)
-{
-    //m_data = value;
-}
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-void TConfigEntry<T>::setBool(bool value)
-{
-    //m_data = value;
-}
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-void TConfigEntry<T>::setFloat(float value)
-{
-    //m_data = value;
-}
-////////////////////////////////////////////////////////////////////////////////
-template <typename T>
-void TConfigEntry<T>::setT(const T& data)
+bool TConfigEntry<T>::set(const T& data)
 {
     m_data = data;
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+bool TConfigEntry<T>::setFromString(const std::string& value)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+bool TConfigEntry<bool>::setFromString(const std::string& value)
+{
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+bool TConfigEntry<int>::setFromString(const std::string& value)
+{
+    int v = std::stoi(value);
+    m_data = v;
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+bool TConfigEntry<std::string>::setFromString(const std::string& value)
+{
+    m_data = value;
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+bool TConfigEntry<Vec2i>::setFromString(const std::string& value)
+{
+    size_t pos = value.find(',');
+    if (pos == std::string::npos)
+        return false;
+    m_data.x = std::stoi(value.substr(0, pos));
+    m_data.y = std::stoi(value.substr(pos + 1));
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -159,9 +128,21 @@ std::string TConfigEntry<int>::getAsString() const
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
+std::string TConfigEntry<bool>::getAsString() const
+{
+    return std::to_string(m_data);
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
 std::string TConfigEntry<std::string>::getAsString() const
 {
     return m_data;
+}
+////////////////////////////////////////////////////////////////////////////////
+template <>
+std::string TConfigEntry<Vec2i>::getAsString() const
+{
+    return std::to_string(m_data.x) + "," + std::to_string(m_data.y);
 }
 ////////////////////////////////////////////////////////////////////////////////
 Config::Config()
@@ -253,7 +234,7 @@ template <typename T>
 T Config::get(const std::string& paramName) const
 {
     const ConfigEntry* entry = getEntry(paramName);
-    if (entry && entry->getType() == getType<T>())
+    if (entry && entry->getType() == getConfigEntryType<T>())
     {
         return (static_cast<const TConfigEntry<T>*>(entry))->get();
     }
@@ -262,25 +243,27 @@ T Config::get(const std::string& paramName) const
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-void Config::set(const std::string& paramName, const T& value)
+bool Config::set(const std::string& paramName, const T& value)
 {
     ConfigEntry* entry = getEntry(paramName);
-    if (entry && entry->getType() == getType<T>())
+    if (entry && entry->getType() == getConfigEntryType<T>())
     {
-        static_cast<TConfigEntry<T>*>(entry)->setT(value);
+        return static_cast<TConfigEntry<T>*>(entry)->set(value);
     }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Config::set(const std::string& paramName, const std::string& value)
+bool Config::setFromString(const std::string& paramName, const std::string& value)
 {
     if (paramName.length() == 0)
-        return;
+        return false;
 
     ConfigEntry* entry = getEntry(paramName);
     if (entry)
     {
-        entry->set(value);
+        return entry->setFromString(value);
     }
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Config& config)
@@ -309,7 +292,13 @@ template class TConfigEntry<bool>;
 template class TConfigEntry<std::string>;
 template class TConfigEntry<Vec2i>;
 
-template std::string Config::get<std::string>(const std::string& name) const;
+template int Config::get<int>(const std::string& paramName) const;
+template bool Config::get<bool>(const std::string& paramName) const;
+template std::string Config::get<std::string>(const std::string& paramName) const;
+template Vec2i Config::get<Vec2i>(const std::string& paramName) const;
 
-template void Config::set<std::string>(const std::string& paramName, const std::string& value);
+template bool Config::set<int>(const std::string& paramName, const int& value);
+template bool Config::set<bool>(const std::string& paramName, const bool& value);
+template bool Config::set<std::string>(const std::string& paramName, const std::string& value);
+template bool Config::set<Vec2i>(const std::string& paramName, const Vec2i& value);
 ////////////////////////////////////////////////////////////////////////////////

@@ -19,9 +19,9 @@ public:
     PluginRenderVulkan(Engine& engine);
     virtual ~PluginRenderVulkan() override;
 
-    virtual bool init();
+    virtual bool init() override;
 
-    virtual const char* getShaderSearchPath() const;
+    virtual const char* getShaderSearchPath() const override;
     virtual GfxContextType getRequiredContextType() const override;
 
 private:

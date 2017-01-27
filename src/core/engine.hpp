@@ -10,6 +10,7 @@
 #include "thread/threadManager.hpp"
 #include "windowContext/windowManager.hpp"
 #include "config/config.hpp"
+#include "script/lua/engineLua.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 class Engine
 {
@@ -47,6 +48,7 @@ private:
     CodecManager m_codecManager;
     ThreadManager m_threadManager;
     WindowManager m_windowManager;
+    EngineLua m_engineLua;
 
     std::string m_name;     ///< engine string identifier
     bool m_requestQuit;     ///< flag indicating a request to exit the program

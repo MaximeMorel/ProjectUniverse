@@ -78,8 +78,9 @@ void ApplicationExample::run()
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
             ShaderProgramPtr prog4 = res().createFromFile<ShaderProgram>("normal.prog");
 
-            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.tiff");
-            TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.tif");
+            //TexturePtr tex2 = res().createFromFile<Texture>("data/images/car1.tiff");
+            //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.tif");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.dds");
 
             //ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
 
@@ -219,7 +220,7 @@ void ApplicationExample::run()
 
                 if (timer.getTime() >= 1000)
                 {
-                    log().log() << "fps: " << fps << " (" << timeSlept * 0.1 << "% idle)" << std::endl;
+                    log().log() << render().impl()->getStats();
                     fps = 0;
                     timeSlept = 0.0;
                     timer.reset();
@@ -255,8 +256,6 @@ void ApplicationExample::run()
     log().log() << "sizeof(Vec2ui): " << sizeof(Vec2ui) << "\n";
     log().log() << "sizeof(Vec4f): " << sizeof(Vec4f) << "\n";
     log().log() << "sizeof(bool): " << sizeof(bool) << "\n";*/
-
-    luaTest();
 
     log().log() << getEngine().config();
 }

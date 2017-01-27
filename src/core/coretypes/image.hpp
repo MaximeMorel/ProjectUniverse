@@ -15,7 +15,7 @@ using ImagePtr = std::shared_ptr<Image>;
 class Image : public ResourceFile
 {
 public:
-    enum Type
+    enum Type : uint8_t
     {
         GRAY8,
         GRAYFP32,
@@ -23,7 +23,19 @@ public:
         RGBA8,
         RGBFP32,
         RGBAFP32,
+        RGBADXT1,
         UNKNOWN
+    };
+
+    struct Info
+    {
+        Info();
+
+        Vec2ui resolution;            ///< image resolution
+        uint8_t channels;             ///< number of channels
+        uint8_t bpc;                  ///< bits per channel component
+        uint8_t nummipmaps;           ///< number of mipmaps levels, at least 1, all the levels are stored in the same contiguous buffer
+        Type type;                    ///< image type
     };
 
     Image(const std::string& name, const std::string& fileName);
@@ -58,6 +70,9 @@ public:
     /// Get type of image (GRAY, RGB, RGBA, ...)
     Type imageType() const;
 
+    /// Get image info structure
+    const Info imageInfo() const;
+
      /// Get type of image (GRAY, RGB, RGBA, ...)
     void setImageType(Type type);
 
@@ -79,9 +94,7 @@ public:
 
 protected:
     std::vector<uint8_t> m_buffer;  ///< buffer containing image data
-    Vec2ui m_resolution;            ///< image resolution
-    uint8_t m_channels;             ///< number of channels
-    uint8_t m_bpc;                  ///< bits per channel component
+    Info m_info;                    ///< struct holding resolution, channels, bpp, type, compression
 
 public:
     std::atomic<bool> m_asyncLoadStatus;

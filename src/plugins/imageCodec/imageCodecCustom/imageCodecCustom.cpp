@@ -58,7 +58,11 @@ bool PluginImageCodecCustom::load(Image* image)
     size_t pos = image->getFileName().rfind('.');
     if (pos != std::string::npos)
     {
-        if (image->getFileName().substr(pos) == ".pbm")
+        if (image->getFileName().substr(pos) == ".bmp")
+        {
+            return loadBMP(image);
+        }
+        else if (image->getFileName().substr(pos) == ".pbm")
         {
             return loadPBM(image);
         }
@@ -76,6 +80,11 @@ bool PluginImageCodecCustom::load(Image* image)
         }
     }
 
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::loadBMP(Image* image)
+{
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +283,7 @@ bool PluginImageCodecCustom::loadDDS(Image* image)
     uint32_t dwMagic;
     char* s = reinterpret_cast<char*>(&dwMagic);
     file.read(s, sizeof(dwMagic));
-    if (dwMagic != 0x20534444)
+    if (dwMagic != 0x20534444) // 0x20534444 = "DDS "
     {
         log().log() << image->getFileName() << ": not a DDS file\n";
         return false;
@@ -282,14 +291,44 @@ bool PluginImageCodecCustom::loadDDS(Image* image)
     DDS_HEADER ddsHeader;
     s = reinterpret_cast<char*>(&ddsHeader);
     file.read(s, sizeof(ddsHeader));
-    DDS_HEADER_DXT10 ddsHeaderDXT10;
-    if (ddsHeader.ddspf.dwFlags == DDPF_FOURCC && ddsHeader.ddspf.dwFourCC == 0x30315844)
+    if (ddsHeader.ddspf.dwFlags == DDPF_FOURCC && ddsHeader.ddspf.dwFourCC == 0x30315844) // 0x30315844 = DX10
     {
+        DDS_HEADER_DXT10 ddsHeaderDXT10;
         s = reinterpret_cast<char*>(&ddsHeaderDXT10);
         file.read(s, sizeof(ddsHeader));
+
+        log().log() << image->getFileName() << ": DX10 not supported\n";
+        return false;
     }
 
-    return false;
+    if (ddsHeader.ddspf.dwFlags != DDPF_FOURCC)
+    {
+        log().log() << image->getFileName() << ": only compressed dds is supported (DDPF_FOURCC)\n";
+        return false;
+    }
+
+    // 0x31545844 = "DXT1"
+    // 0x32545844 = "DXT2"
+    // 0x33545844 = "DXT3"
+    // 0x34545844 = "DXT4"
+    // 0x35545844 = "DXT5"
+
+    int blocksize = 16;
+    Image::Type imageType = Image::Type::RGBA8;
+    if (ddsHeader.ddspf.dwFourCC == 0x31545844)
+    {
+        imageType = Image::Type::RGBADXT1;
+        blocksize = 8;
+    }
+    image->setImageType(imageType);
+
+    image->resize(ddsHeader.dwWidth, ddsHeader.dwHeight);
+
+    unsigned int size = ((ddsHeader.dwWidth+3)/4)*((ddsHeader.dwHeight+3)/4) * blocksize;
+    s = reinterpret_cast<char*>(image->getui8(0, 0));
+    file.read(s, size);
+
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginImageCodecCustom::save(Image* image, const std::string& filePath)
@@ -300,7 +339,11 @@ bool PluginImageCodecCustom::save(Image* image, const std::string& filePath)
     size_t pos = filePath.rfind('.');
     if (pos != std::string::npos && filePath.length() >= 5) // min 5 chars to have something like x.ppm
     {
-        if (filePath.substr(pos) == ".pbm")
+        if (filePath.substr(pos) == ".bmp")
+        {
+            return saveBMP(image, filePath);
+        }
+        else if (filePath.substr(pos) == ".pbm")
         {
             return savePBM(image, filePath);
         }
@@ -318,6 +361,11 @@ bool PluginImageCodecCustom::save(Image* image, const std::string& filePath)
         }
     }
 
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecCustom::saveBMP(Image* image, const std::string& filePath)
+{
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

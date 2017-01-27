@@ -23,11 +23,13 @@ public:
     virtual bool save(Image* image, const std::string& filePath) override;
 
 private:
+    bool loadBMP(Image* image);
     bool loadPBM(Image* image);
     bool loadPGM(Image* image);
     bool loadPPM(Image* image);
     bool loadDDS(Image* image);
 
+    bool saveBMP(Image* image, const std::string& filePath);
     bool savePBM(Image* image, const std::string& filePath);
     bool savePGM(Image* image, const std::string& filePath);
     bool savePPM(Image* image, const std::string& filePath);

@@ -23,6 +23,8 @@ PluginManager::~PluginManager()
 ////////////////////////////////////////////////////////////////////////////////
 PluginAppPtr PluginManager::loadApp(const std::string& appName)
 {
+    // load main app
+    // if no argument is provided, get the app name from engine config "app" entry
     std::string name = appName;
     if (name.length() == 0)
         name = config().get<std::string>("app");
@@ -38,69 +40,22 @@ PluginLibPtr PluginManager::loadLib(const std::string& libName)
     return lib;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginManager::loadPlugins()
-{
-    loadCodecPlugins();
-    loadWindowContextPlugin();
-    loadRenderPlugin();
-    loadAudioPlugin();
-}
-////////////////////////////////////////////////////////////////////////////////
 void PluginManager::loadCodecPlugins()
 {
-    //std::string plugins = config().codecplugins->get();
-    std::string plugins = config().get<std::string>("codecplugins");
+    // load codecs from engine config
+    // codecplugins config entry can hold a list a strings, separated by ','
+    // the code below will split and aload each plugin
+
+    std::string plugins = config().codecplugins->get();
     size_t pos = 0;
     size_t offset = 0;
     do
     {
         pos = plugins.find(',', offset);
         std::string pluginName = plugins.substr(offset, pos - offset);
-        //log().log() << plugins.substr(offset, pos - offset) << "\n";
-        bool isDuplicate = false;
-        addPlugin(pluginName, isDuplicate);
+        addPlugin(pluginName);
         offset = pos + 1;
     } while (pos != std::string::npos);
-}
-////////////////////////////////////////////////////////////////////////////////
-PluginLibPtr PluginManager::loadRenderPlugin()
-{
-    std::string param = "renderplugin";
-    std::string pluginName = config().get<std::string>(param);
-    bool isDuplicate = false;
-    PluginLibPtr plugin = addPlugin(pluginName, isDuplicate);
-
-    return plugin;
-}
-////////////////////////////////////////////////////////////////////////////////
-PluginLibPtr PluginManager::loadInputPlugin()
-{
-    std::string param = "inputplugin";
-    std::string pluginName = config().get<std::string>(param);
-    bool isDuplicate = false;
-    PluginLibPtr plugin = addPlugin(pluginName, isDuplicate);
-
-    return plugin;
-}
-////////////////////////////////////////////////////////////////////////////////
-PluginLibPtr PluginManager::loadAudioPlugin()
-{
-    std::string param = "audioplugin";
-    std::string pluginName = config().get<std::string>(param);
-    bool isDuplicate = false;
-    PluginLibPtr plugin = addPlugin(pluginName, isDuplicate);
-
-    return plugin;
-}
-////////////////////////////////////////////////////////////////////////////////
-PluginLibPtr PluginManager::loadWindowContextPlugin()
-{
-    std::string param = "windowplugin";
-    std::string pluginName = config().get<std::string>(param);
-    bool isDuplicate = false;
-    PluginLibPtr plugin = addPlugin(pluginName, isDuplicate);
-
-    return plugin;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginManager::flushPlugins()
@@ -114,11 +69,18 @@ void PluginManager::discoverPlugins()
     // scan folders non recursively
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginLibPtr PluginManager::addPlugin(const std::string& pluginName, bool& isDuplicate)
+PluginLibPtr PluginManager::addPlugin(const std::string& pluginName)
 {
-    isDuplicate = false;
-    if (m_plugins.find(pluginName) != m_plugins.end())
-        isDuplicate = true;
+    // try to load a plugin by name
+    // if the plugin is already in the manager, return it
+    // is the plugin is not valid, it won't be added to the manager
+
+    if (pluginName.length() == 0)
+        return nullptr;
+
+    auto it = m_plugins.find(pluginName);
+    if (it != m_plugins.end())
+        return it->second;
 
     PluginLibPtr pluginLib = loadLib(pluginName);
     if (pluginLib && pluginLib->isValid())
@@ -133,6 +95,15 @@ PluginLibPtr PluginManager::addPlugin(const std::string& pluginName, bool& isDup
         }
     }
     return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+PluginLibPtr PluginManager::addPluginFromConfig(const std::string& paramName)
+{
+    // try to load a plugin from engine config
+    // plugin name is retrieved from paramName config entry
+
+    std::string pluginName = config().get<std::string>(paramName);
+    return addPlugin(pluginName);
 }
 ////////////////////////////////////////////////////////////////////////////////
 

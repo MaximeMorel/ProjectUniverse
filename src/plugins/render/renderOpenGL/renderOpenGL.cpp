@@ -98,8 +98,8 @@ void PluginRenderOpenGL::draw()
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL::drawScene(Scene* scene)
 {
-    m_statNumMesh = 0;
-    m_statNumTriangles = 0;
+    m_renderStats.statNumMesh = 0;
+    m_renderStats.statNumTriangles = 0;
     for (Mesh* mesh : scene->m_meshes)
     {
         if (!mesh->m_renderMesh)
@@ -113,11 +113,10 @@ void PluginRenderOpenGL::drawScene(Scene* scene)
         if (mesh->m_renderMesh)
         {
             mesh->m_renderMesh->draw();
-            ++m_statNumMesh;
-            m_statNumTriangles += mesh->m_renderMesh->getNumTriangles();
+            ++m_renderStats.statNumMesh;
+            m_renderStats.statNumTriangles += mesh->m_renderMesh->getNumTriangles();
         }
     }
-    log().log() << "meshes: " << m_statNumMesh << " triangles: " << m_statNumTriangles << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginRenderOpenGL::initGlew(bool experimental)

@@ -1,16 +1,21 @@
 #ifndef __ENGINE_LUA_HPP__
 #define __ENGINE_LUA_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-
+#include <string>
+struct lua_State;
 ////////////////////////////////////////////////////////////////////////////////
 class EngineLua
 {
 public:
     EngineLua();
-    virtual ~EngineLua();
+    ~EngineLua();
+
+    bool registerEngineLua();
+
+    bool executeFile(const std::string& file);
+
+private:
+    lua_State* m_luaState;
 };
-
-int luaTest();
-
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __ENGINE_LUA_HPP__

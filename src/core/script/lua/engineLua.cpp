@@ -3,6 +3,79 @@
 #include "core/engine.hpp"
 #include <lua.hpp>
 ////////////////////////////////////////////////////////////////////////////////
+EngineLua::EngineLua()
+    : m_luaState(nullptr)
+{
+    m_luaState = luaL_newstate();
+    if (m_luaState)
+        luaL_openlibs(m_luaState);
+}
+////////////////////////////////////////////////////////////////////////////////
+EngineLua::~EngineLua()
+{
+    if (m_luaState)
+        lua_close(m_luaState);
+}
+////////////////////////////////////////////////////////////////////////////////
+int getEngineLua(lua_State* l);
+int engineLuaTest(lua_State* l);
+int logLua(lua_State* l);
+int setConfigLua(lua_State* l);
+////////////////////////////////////////////////////////////////////////////////
+bool EngineLua::registerEngineLua()
+{
+    lua_register(m_luaState, "getEngine", getEngineLua);
+    lua_register(m_luaState, "log", logLua);
+    lua_register(m_luaState, "setConfig", setConfigLua);
+
+    luaL_Reg engineLuaRegs[] =
+    {
+        { "test", engineLuaTest },
+        { nullptr, nullptr }
+    };
+
+    luaL_newmetatable(m_luaState, "lEngineLua");
+    luaL_setfuncs(m_luaState, engineLuaRegs, 0);
+    lua_pushvalue(m_luaState, -1);
+    lua_setfield(m_luaState, -1, "__index");
+    lua_setglobal(m_luaState, "EngineLua");
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool EngineLua::executeFile(const std::string& file)
+{
+    int res = luaL_dofile(m_luaState, file.c_str());
+    switch (res)
+    {
+    case LUA_OK:
+        return true;
+    case LUA_YIELD:
+        log().log() << "Lua error (" << file << "): LUA_YIELD\n";
+        return false;
+    case LUA_ERRRUN:
+        log().log() << "Lua error (" << file << "): LUA_ERRRUN\n";
+        return false;
+    case LUA_ERRSYNTAX:
+        log().log() << "Lua error (" << file << "): LUA_ERRSYNTAX\n";
+        return false;
+    case LUA_ERRMEM:
+        log().log() << "Lua error (" << file << "): LUA_ERRMEM\n";
+        return false;
+    case LUA_ERRGCMM:
+        log().log() << "Lua error (" << file << "): LUA_ERRGCMM\n";
+        return false;
+    case LUA_ERRERR:
+        log().log() << "Lua error (" << file << "): LUA_ERRERR\n";
+        return false;
+    default:
+        break;
+    }
+    return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
 int getEngineLua(lua_State* l)
 {
     Engine& engine = getEngine();
@@ -40,10 +113,39 @@ int setConfigLua(lua_State* l)
     const char* param = lua_tostring(l, 1);
     if (param)
     {
-        const char* value = lua_tostring(l, 2);
-        if (value)
+        if (lua_gettop(l) == 3)
         {
-            engine.config().set<std::string>(param, value);
+            if (lua_type(l, 2) == LUA_TNUMBER && lua_type(l, 3) == LUA_TNUMBER)
+            {
+                Vec2i value(lua_tonumber(l, 2), lua_tonumber(l, 3));
+                engine.config().set<Vec2i>(param, value);
+            }
+        }
+        else
+        {
+            int type = lua_type(l, 2);
+            if (type == LUA_TBOOLEAN)
+            {
+                bool value = lua_toboolean(l, 2);
+                engine.config().set<bool>(param, value);
+            }
+            else if (type == LUA_TNUMBER)
+            {
+                int isnum = 0;
+                double value = lua_tonumberx(l, 2, &isnum);
+                if (isnum)
+                {
+                    engine.config().set<int>(param, value);
+                }
+            }
+            else if (type == LUA_TSTRING)
+            {
+                const char* value = lua_tostring(l, 2);
+                if (value)
+                {
+                    engine.config().set<std::string>(param, value);
+                }
+            }
         }
     }
     return 0;

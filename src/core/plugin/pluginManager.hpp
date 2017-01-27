@@ -13,21 +13,19 @@ public:
     PluginAppPtr loadApp(const std::string& appName = "");
     PluginLibPtr loadLib(const std::string& libName);
 
-    /// Load plugins from engine config
-    void loadPlugins();
-
     /// Load codec plugins from engine config
     void loadCodecPlugins();
-    PluginLibPtr loadRenderPlugin();
-    PluginLibPtr loadInputPlugin();
-    PluginLibPtr loadAudioPlugin();
-    PluginLibPtr loadWindowContextPlugin();
+
+    /// load and add a plugin to the manager
+    /// \param pluginName plugin name (ex: "RenderOpenGL33")
+    PluginLibPtr addPlugin(const std::string& pluginName);
+
+    /// load and add a plugin to the manager
+    /// \param paramName config parameter name storing the name of the plugin (ex: "renderplugin")
+    PluginLibPtr addPluginFromConfig(const std::string& paramName);
 
     void flushPlugins();
     void discoverPlugins();
-
-private:
-    PluginLibPtr addPlugin(const std::string& name, bool& isDuplicate);
 
 private:
     const char* m_prefix;
