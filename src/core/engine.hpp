@@ -18,7 +18,7 @@ public:
     Engine(const std::string& name = "");
     virtual ~Engine();
 
-    bool init();
+    bool init(int argc, char **argv);
 
     LogManager& log();
     ResourceManager& res();

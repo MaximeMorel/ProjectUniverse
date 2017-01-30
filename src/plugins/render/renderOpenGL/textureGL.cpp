@@ -88,7 +88,7 @@ void TextureGL::setImage(ImagePtr image)
         type = GL_FLOAT;
         break;
     case Image::Type::RGBADXT1:
-        internalformat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        internalformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
         break;
     default:
         break;

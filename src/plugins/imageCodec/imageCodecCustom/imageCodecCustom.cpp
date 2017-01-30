@@ -324,6 +324,8 @@ bool PluginImageCodecCustom::loadDDS(Image* image)
 
     image->resize(ddsHeader.dwWidth, ddsHeader.dwHeight);
 
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/bb205578(v=vs.85).aspx
+    // max(1, ( (width + 3) / 4 ) ) x max(1, ( (height + 3) / 4 ) ) x 8(DXT1) or 16(DXT2-5)
     unsigned int size = ((ddsHeader.dwWidth+3)/4)*((ddsHeader.dwHeight+3)/4) * blocksize;
     s = reinterpret_cast<char*>(image->getui8(0, 0));
     file.read(s, size);

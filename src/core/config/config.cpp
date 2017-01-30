@@ -80,7 +80,19 @@ bool TConfigEntry<T>::setFromString(const std::string& value)
 template <>
 bool TConfigEntry<bool>::setFromString(const std::string& value)
 {
-    return false;
+    if (value == "true")
+    {
+        m_data = true;
+        return true;
+    }
+    if (value == "false")
+    {
+        m_data = false;
+        return true;
+    }
+    int v = std::stoi(value);
+    m_data = v;
+    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>

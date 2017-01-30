@@ -8,10 +8,11 @@ int main(int argc, char **argv)
     std::cout << "Start...\n";
     Engine engine("main");
 
+    // get command line parameters first as they have highest priority
     engine.parseArgs(argc, argv);
 
     PluginAppPtr app = engine.plugins().loadApp();
-    if (app && app->isValid() && engine.init())
+    if (app && app->isValid() && engine.init(argc, argv))
     {
         engine.log().log() << app << "\n";
         Application* a = app->getLibInstance(&engine);

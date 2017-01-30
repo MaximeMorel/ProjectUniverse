@@ -62,8 +62,8 @@ void ApplicationExample::run()
             //s->volume(0.75);
             //s->play();
 
-            input().discoverDevices();
-            input().listDevices(log().log());
+            //input().discoverDevices(); // done in engine
+            //input().listDevices(log().log());
 
             //input().setWindowInputFocus(w->getWindowId());
 

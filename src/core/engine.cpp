@@ -53,13 +53,23 @@ Engine::~Engine()
     //m_pluginManager.flushPlugins();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool Engine::init()
+bool Engine::init(int argc, char **argv)
 {
+    // load current app config
+    std::string appConfigPath = "app/" + m_config.app->get() + "/config.lua";
+    m_engineLua.executeFile(appConfigPath);
+
+    // reapply command line arguments as they have highest priority
+    parseArgs(argc, argv);
+
     if (!loadPlugins())
     {
         m_logManager.log() << "Error loading plugins.\n";
         return false;
     }
+
+    m_inputManager.discoverDevices();
+    m_inputManager.listDevices(m_logManager.log());
 
     return true;
 }
