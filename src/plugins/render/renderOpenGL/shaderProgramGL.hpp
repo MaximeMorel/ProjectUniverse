@@ -36,6 +36,8 @@ protected:
 private:
     bool checkLinkError();
 
+    bool m_skipBinaryCache;
+
 private:
     std::vector<ShaderPtr> m_attachDeferred;    ///< shader pending for creation, attach them when we have their id
 

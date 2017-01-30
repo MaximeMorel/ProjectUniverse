@@ -8,7 +8,8 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 include_directories(../../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(APP_SOURCE OpenDD.cpp)
+set(APP_SOURCE OpenDD.cpp
+               car.cpp)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/app/${PROJECT_NAME})
 add_library(${PROJECT_NAME} MODULE ${APP_SOURCE})

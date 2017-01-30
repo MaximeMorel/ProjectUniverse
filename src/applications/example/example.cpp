@@ -10,8 +10,8 @@
 #include <functional>
 #include "core/script/lua/engineLua.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo pluginInfo = { "example",
-                          "example",
+PluginInfo pluginInfo = { "Example",
+                          "Example",
                           "app",
                           0,
                           1};

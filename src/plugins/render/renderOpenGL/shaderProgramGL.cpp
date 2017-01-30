@@ -6,11 +6,11 @@
 #include <GL/glew.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <algorithm>
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramGL::ShaderProgramGL(const std::string& name, const std::string& fileName)
     : super(name, fileName)
+    , m_skipBinaryCache(false)
 {
     m_shaderProgId = glCreateProgram();
 }
@@ -101,37 +101,41 @@ bool ShaderProgramGL::link()
 
     // try binary cache
     bool binaryCacheUsed = false;
-    std::string cacheFile = getFileName() + ".cache";
-    std::ifstream file(cacheFile, std::ios::in | std::ios::binary);
-    if (file)
+    if (!m_skipBinaryCache)
     {
-        // invalidate cache if shader program or shader files are newer
-        struct stat st;
-        int err = stat(cacheFile.c_str(), &st);
-        if (err == 0 && st.st_mtime >= m_mtime)
+        std::string cacheFile = getFileName() + ".cache";
+        std::ifstream file(cacheFile, std::ios::in | std::ios::binary);
+        if (file)
         {
-            bool cacheOutdated = false;
-            for (ShaderPtr shader : m_shaders)
+            // invalidate cache if shader program or shader files are newer
+            struct stat st;
+            int err = stat(cacheFile.c_str(), &st);
+            if (err == 0 && st.st_mtime >= m_mtime)
             {
-                if (shader->getMtime() > st.st_mtime)
+                bool cacheOutdated = false;
+                for (ShaderPtr shader : m_shaders)
                 {
-                    cacheOutdated = true;
-                    break;
+                    if (shader->getMtime() > st.st_mtime)
+                    {
+                        cacheOutdated = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!cacheOutdated)
-            {
-                std::vector<uint8_t> binary((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-                GLsizei length = binary.size();
-                const uint8_t* s = reinterpret_cast<const uint8_t*>(&binary.front());
-                GLenum binaryFormat = *reinterpret_cast<GLenum*>(&binary.front());
-                const void* v = s + sizeof(binaryFormat);
-                glProgramBinary(m_shaderProgId, binaryFormat, v, length - sizeof(binaryFormat));
-                binaryCacheUsed = true;
+                if (!cacheOutdated)
+                {
+                    std::vector<uint8_t> binary((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+                    GLsizei length = binary.size();
+                    const uint8_t* s = reinterpret_cast<const uint8_t*>(&binary.front());
+                    GLenum binaryFormat = *reinterpret_cast<GLenum*>(&binary.front());
+                    const void* v = s + sizeof(binaryFormat);
+                    glProgramBinary(m_shaderProgId, binaryFormat, v, length - sizeof(binaryFormat));
+                    binaryCacheUsed = true;
+                }
             }
         }
     }
+    m_skipBinaryCache = false;
 
     if (!binaryCacheUsed)
     {
@@ -180,8 +184,8 @@ bool ShaderProgramGL::link()
         // invalidate the cache and relink
         if (binaryCacheUsed)
         {
-            unlink(cacheFile.c_str());
             m_linkError = false;
+            m_skipBinaryCache = true;
             link();
         }
     }
