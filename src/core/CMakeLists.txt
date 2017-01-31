@@ -21,6 +21,7 @@ set(CORE_SOURCE main.cpp
                 console/consolecommands.cpp
                 coretypes/buffer.cpp
                 coretypes/image.cpp
+                entity/entity.cpp
                 geom/frustum.cpp
                 geom/octree.cpp
                 geom/boundingVolume/aabb.cpp

@@ -2,6 +2,7 @@
 #define __TIMER_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/log/logger.hpp"
+#include <chrono>
 ////////////////////////////////////////////////////////////////////////////////
 class Timer
 {
@@ -13,15 +14,15 @@ public:
     void stop();
     void reset();
 
-    double getTime() const;
+    std::chrono::microseconds getTime() const;
 
-    static void wait(double milliseconds);
-    static double now();
+    static void wait(std::chrono::microseconds microseconds);
+    static std::chrono::steady_clock::time_point now();
 
     friend Logger& operator<<(Logger& o, const Timer& timer);
 
 private:
-    double m_start;
+    std::chrono::steady_clock::time_point m_start;
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __TIMER_HPP__

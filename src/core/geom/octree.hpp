@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/geom/frustum.hpp"
 #include "core/geom/boundingVolume/aabb.hpp"
+#include "core/entity/entity.hpp"
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class Octree
@@ -29,7 +30,7 @@ public:
 private:
     Octree* m_parent;
     Octree* m_children[8];
-    //std::vector<Vec3> m_elements;
+    std::vector<Entity> m_elements;
     int m_numElements;
 
     AABB m_bbox;

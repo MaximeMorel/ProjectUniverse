@@ -1,11 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "timer.hpp"
-#include <ctime>
-#include <chrono>
+//#include <ctime>
 #include <thread>
 ////////////////////////////////////////////////////////////////////////////////
 Timer::Timer()
-    : m_start(0)
+    : m_start(std::chrono::nanoseconds::zero())
 {}
 ////////////////////////////////////////////////////////////////////////////////
 void Timer::start()
@@ -24,15 +23,15 @@ void Timer::reset()
     start();
 }
 ////////////////////////////////////////////////////////////////////////////////
-double Timer::getTime() const
+std::chrono::microseconds Timer::getTime() const
 {
-    return now() - m_start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(now() - m_start);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Timer::wait(double milliseconds)
+void Timer::wait(std::chrono::microseconds microseconds)
 {
     //std::chrono::duration
-    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(milliseconds)));
+    std::this_thread::sleep_for(microseconds);
     /*struct timespec t;
     t.tv_sec = milliseconds / 1000;
     long milli = static_cast<long>(milliseconds) % 1000;
@@ -41,20 +40,21 @@ void Timer::wait(double milliseconds)
     nanosleep(&t, nullptr);*/
 }
 ////////////////////////////////////////////////////////////////////////////////
-double Timer::now()
+std::chrono::steady_clock::time_point Timer::now()
 {
-    struct timespec t;
+    return std::chrono::steady_clock::now();
+    /*struct timespec t;
     int ret = clock_gettime(CLOCK_MONOTONIC, &t);
     if (ret < 0)
     {
         return 0;
     }
 
-    return (1000.0 * t.tv_sec) + (t.tv_nsec / 1000000.0);
+    return (1000.0 * t.tv_sec) + (t.tv_nsec / 1000000.0);*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Timer& timer)
 {
-    return o << timer.m_start;
+    return o << timer.m_start.time_since_epoch().count();
 }
 ////////////////////////////////////////////////////////////////////////////////

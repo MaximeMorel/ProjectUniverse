@@ -77,6 +77,7 @@ void ApplicationExample::run()
             ShaderProgramPtr prog2 = res().createFromFile<ShaderProgram>("effect1.prog");
             ShaderProgramPtr prog3 = res().createFromFile<ShaderProgram>("drawtri.prog");
             ShaderProgramPtr prog4 = res().createFromFile<ShaderProgram>("normal.prog");
+            ShaderProgramPtr prog5 = res().createFromFile<ShaderProgram>("blob.prog");
 
             //TexturePtr tex2 = res().createFromFile<Texture>("data/images/car1.tiff");
             //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.tif");
@@ -101,8 +102,8 @@ void ApplicationExample::run()
             bool stop = false;
             window().getWindow()->setEventCloseCallback([&stop](){ stop = true; });
 
-            double targetFrameTime = 1000.0 / 60.0;
-            double timeSlept = 0.0;
+            std::chrono::microseconds targetFrameTime(1000000 / 60);
+            std::chrono::microseconds timeSlept = std::chrono::microseconds::zero();
             Timer timer;
             timer.start();
             int fps = 0;
@@ -111,6 +112,8 @@ void ApplicationExample::run()
             Timer gameTimer;
             gameTimer.start();
             Vec2i mouseCoords;
+            Mat4f proj = Mat4f::perspective(50, 1, 1, 100);
+            //Mat4f proj = Mat4f::ortho(-2, 2, -2, 2, -1, 1);
             while (!stop)
             {
                 frameTimer.reset();
@@ -170,16 +173,19 @@ void ApplicationExample::run()
                 Mat4f mv = Mat4f::identity();
                 mv *= Mat4f::scale(Vec3f(0.4f, 0.4f, 0.4f));
                 //mv *= Mat4f::translate(Vec3f(mouseCoords.x/50.0f, -mouseCoords.y/50.0f, 0.0f));
-                mv *= Mat4f::rotate(gameTimer.getTime()/10.0f/5, Vec3f(0.0f, 1.0f, 0.0f));
-                mv *= Mat4f::rotate(1 + gameTimer.getTime()/8.0f/5, Vec3f(1.0f, 0.0f, 0.0f));
-                mv *= Mat4f::rotate(2 + gameTimer.getTime()/6.0f/5, Vec3f(0.0f, 0.0f, 1.0f));//*/
+                mv *= Mat4f::translate(Vec3f(0, 0, -5.0f));
+                mv *= Mat4f::rotate(gameTimer.getTime().count()*0.00001, Vec3f(0.0f, 1.0f, 0.0f));
+                mv *= Mat4f::rotate(1 + gameTimer.getTime().count()*0.00002, Vec3f(1.0f, 0.0f, 0.0f));
+                mv *= Mat4f::rotate(2 + gameTimer.getTime().count()*0.00004, Vec3f(0.0f, 0.0f, 1.0f));//*/
+
+                Mat4f mvp = proj * mv;
 
                 render().impl()->clear();
                 /*/
                 if (prog)
                 {
                     prog->bind();
-                    prog2->setUniform1f(0u, gameTimer.getTime()/1000.0);
+                    prog2->setUniform1f(0u, gameTimer.getTime().count()*0.00001);
                     if (tex)
                         prog2->setUniform1i("tex", 0);
                 }
@@ -188,6 +194,7 @@ void ApplicationExample::run()
                 {
                     prog3->bind();
                     prog3->setUniformMat4f("mv", mv);
+                    prog3->setUniformMat4f("mvp", mvp);
                     if (tex)
                         tex->bind(0);
                     prog3->setUniform1i("tex", 0);
@@ -197,12 +204,19 @@ void ApplicationExample::run()
                 {
                     prog4->bind();
                     prog4->setUniformMat4f(0u, mv);
+                    prog4->setUniformMat4f(1u, mvp);
                     render().impl()->drawScene(&scene);
                 }
+                /*if (prog5)
+                {
+                    render().impl()->clear();
+                    prog5->bind();
+                    render().impl()->draw();
+                }*/
 
                 window().getWindow()->swapBuffers();
 
-                double frameTime = frameTimer.getTime();
+                std::chrono::microseconds frameTime = frameTimer.getTime();
                 //log().log() << "frame time: " << frameTime << std::endl;
                 //log().log() << "potential fps: " << 1000.0/frameTime << std::endl;
 
@@ -215,14 +229,15 @@ void ApplicationExample::run()
                 }
                 else
                 {
-                    log().log() << "frame time over " << targetFrameTime << " ms : " << frameTime << std::endl;
+                    log().log() << "frame time over " << targetFrameTime.count() * 0.001 << " ms : " << frameTime.count() * 0.001 << std::endl;
                 }
 
-                if (timer.getTime() >= 1000)
+                if (timer.getTime().count() >= 1000000)
                 {
+                    log().log() << "fps: " << fps << " (" << timeSlept.count() * 0.0001 << "% idle)" << std::endl;
                     log().log() << render().impl()->getStats();
                     fps = 0;
-                    timeSlept = 0.0;
+                    timeSlept = std::chrono::microseconds::zero();
                     timer.reset();
                     if (prog)
                         prog->reload();

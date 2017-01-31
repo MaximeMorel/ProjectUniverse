@@ -2,6 +2,7 @@
 
 uniform float fTime;
 uniform mat4 mv;
+uniform mat4 mvp;
 
 attribute vec3 v;
 attribute vec3 n;
@@ -13,7 +14,7 @@ varying vec2 uv;
 
 void main(void)
 {
-    gl_Position = mv * vec4(v, 1.0f);
+    gl_Position = mvp * vec4(v, 1.0f);
     gl_Position.z += 0.0f;
     p = gl_Position.xyz;
     vec4 t = mv * vec4(n, 0.0f);

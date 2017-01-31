@@ -4,30 +4,30 @@
 Config* gConfig = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-Type getConfigEntryType();
+ConfigEntry::Type getConfigEntryType();
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getConfigEntryType<bool>()
+ConfigEntry::Type getConfigEntryType<bool>()
 {
-    return Type::BOOL;
+    return ConfigEntry::Type::BOOL;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getConfigEntryType<int>()
+ConfigEntry::Type getConfigEntryType<int>()
 {
-    return Type::INT;
+    return ConfigEntry::Type::INT;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getConfigEntryType<std::string>()
+ConfigEntry::Type getConfigEntryType<std::string>()
 {
-    return Type::STRING;
+    return ConfigEntry::Type::STRING;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template <>
-Type getConfigEntryType<Vec2i>()
+ConfigEntry::Type getConfigEntryType<Vec2i>()
 {
-    return Type::VEC2I;
+    return ConfigEntry::Type::VEC2I;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ ConfigEntry::~ConfigEntry()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-Type ConfigEntry::getType() const
+ConfigEntry::Type ConfigEntry::getType() const
 {
     return m_type;
 }

@@ -6,17 +6,12 @@
 #include <string>
 #include <map>
 ////////////////////////////////////////////////////////////////////////////////
-enum class Type : uint8_t
-{
-    BOOL,
-    INT,
-    STRING,
-    VEC2I,
-    NONE
-};
-////////////////////////////////////////////////////////////////////////////////
+/// Class to hold a config entry (name and value and type)
 class ConfigEntry
 {
+public:
+    enum class Type : uint8_t;
+
 protected:
     ConfigEntry(const std::string& name, Type t);
 
@@ -38,8 +33,20 @@ public:
 protected:
     Type m_type;        /// stores the template type of the underlying instance
     std::string m_name; /// config entry name
+
+public:
+    /// config entry available types
+    enum class Type : uint8_t
+    {
+        BOOL,
+        INT,
+        STRING,
+        VEC2I,
+        NONE
+    };
 };
 ////////////////////////////////////////////////////////////////////////////////
+/// templated config entry
 template <typename T>
 class TConfigEntry : public ConfigEntry
 {
@@ -58,6 +65,7 @@ private:
     T m_data;
 };
 ////////////////////////////////////////////////////////////////////////////////
+/// Config class holding all the config entries
 class Config
 {
 public:
