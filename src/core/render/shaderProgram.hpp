@@ -8,13 +8,14 @@
 #include "core/math/vec2.hpp"
 #include "core/math/vec3.hpp"
 #include "core/math/vec4.hpp"
+#include "core/engine_export.h"
 #include <string>
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class ShaderProgram;
 using ShaderProgramPtr = std::shared_ptr<ShaderProgram>;
 ////////////////////////////////////////////////////////////////////////////////
-class ShaderProgram : public ResourceFile
+class ENGINE_EXPORT ShaderProgram : public ResourceFile
 {
 protected:
     ShaderProgram(const std::string& name, const std::string& fileName);

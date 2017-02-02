@@ -278,7 +278,7 @@ bool Config::setFromString(const std::string& paramName, const std::string& valu
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const Config& config)
+Logger ENGINE_EXPORT & operator<<(Logger& o, const Config& config)
 {
     for (auto configEntry : config.m_config)
     {
@@ -299,10 +299,10 @@ Config& config()
     return *gConfig;
 }
 ////////////////////////////////////////////////////////////////////////////////
-template class TConfigEntry<int>;
-template class TConfigEntry<bool>;
-template class TConfigEntry<std::string>;
-template class TConfigEntry<Vec2i>;
+template class ENGINE_EXPORT TConfigEntry<int>;
+template class ENGINE_EXPORT TConfigEntry<bool>;
+template class ENGINE_EXPORT TConfigEntry<std::string>;
+template class ENGINE_EXPORT TConfigEntry<Vec2i>;
 
 template int Config::get<int>(const std::string& paramName) const;
 template bool Config::get<bool>(const std::string& paramName) const;

@@ -59,6 +59,18 @@ Logger& LoggerFile::operator<<(unsigned int rhs)
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerFile::operator<<(long long rhs)
+{
+    m_outFile << rhs;
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerFile::operator<<(unsigned long long rhs)
+{
+    m_outFile << rhs;
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerFile::operator<<(double rhs)
 {
     m_outFile << rhs;

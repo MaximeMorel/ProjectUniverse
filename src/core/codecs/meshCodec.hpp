@@ -4,8 +4,9 @@
 #include "core/library.hpp"
 #include "core/codecs/codec.hpp"
 #include "core/geom/mesh/mesh.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class MeshCodec : public Codec
+class ENGINE_EXPORT MeshCodec : public Codec
 {
 public:
     MeshCodec(Engine& engine);

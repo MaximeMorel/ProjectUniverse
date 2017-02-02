@@ -15,3 +15,7 @@ add_library(${PROJECT_NAME} MODULE ${APP_SOURCE})
 
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/src/core/${CMAKE_STATIC_LIBRARY_PREFIX}engine${CMAKE_STATIC_LIBRARY_SUFFIX})
+endif (WIN32)

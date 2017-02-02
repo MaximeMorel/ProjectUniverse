@@ -3,11 +3,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/log/logger.hpp"
 #include "core/math/vec2.hpp"
+#include "core/engine_export.h"
 #include <string>
 #include <map>
 ////////////////////////////////////////////////////////////////////////////////
 /// Class to hold a config entry (name and value and type)
-class ConfigEntry
+class ENGINE_EXPORT ConfigEntry
 {
 public:
     enum class Type : uint8_t;
@@ -66,7 +67,7 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 /// Config class holding all the config entries
-class Config
+class ENGINE_EXPORT Config
 {
 public:
     Config();
@@ -111,6 +112,6 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 /// Global config access
 void setGlobalConfig(Config& config);
-Config& config();
+Config ENGINE_EXPORT& config();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __CONFIG_HPP__

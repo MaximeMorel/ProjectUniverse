@@ -4,8 +4,9 @@
 #include "core/library.hpp"
 #include "core/input/inputDevice.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class InputPlugin : public Library
+class ENGINE_EXPORT InputPlugin : public Library
 {
 public:
     InputPlugin(Engine& engine);
@@ -15,8 +16,7 @@ public:
     virtual size_t getNumDevices(Input::DeviceType dt);
     virtual InputDevice* getDevice(Input::DeviceType dt, size_t deviceId);
 
-    virtual void setWindowInputFocus(uint32_t windowId)
-    {}
+    virtual void setWindowInputFocus(uint32_t windowId);
 
     virtual void update();
 

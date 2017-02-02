@@ -3,8 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "inputDevice.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class InputDeviceTouchscreen : public InputDevice
+class ENGINE_EXPORT InputDeviceTouchscreen : public InputDevice
 {
 public:
     InputDeviceTouchscreen();

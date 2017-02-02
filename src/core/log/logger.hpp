@@ -1,6 +1,7 @@
 #ifndef __LOGGER_HPP__
 #define __LOGGER_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/engine_export.h"
 #include <ostream>
 #include <sstream>
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief Logger top class, intended to be used like an ostream
 ////////////////////////////////////////////////////////////////////////////////
-class Logger
+class ENGINE_EXPORT Logger
 {
 public:
     Logger(const std::string& name);
@@ -54,6 +55,8 @@ public:
     virtual Logger& operator<<(unsigned short rhs)=0;
     virtual Logger& operator<<(int rhs)=0;
     virtual Logger& operator<<(unsigned int rhs)=0;
+    virtual Logger& operator<<(long long rhs)=0;
+    virtual Logger& operator<<(unsigned long long rhs)=0;
     virtual Logger& operator<<(double rhs)=0;
     virtual Logger& operator<<(float rhs)=0;
     virtual Logger& operator<<(long double rhs)=0;

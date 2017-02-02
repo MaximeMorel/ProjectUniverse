@@ -2,14 +2,15 @@
 #define __RESOURCEMANAGER_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "resource.hpp"
+#include "core/log/logManager.hpp"
+#include "core/engine_export.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <ostream>
 #include <cstdint>
-#include "core/log/logManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class ResourceManager
+class ENGINE_EXPORT ResourceManager
 {
 public:
     ResourceManager(LogManager &logManager);
@@ -108,7 +109,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 /// Global resource manager access
 void setGlobalResourceManager(ResourceManager& res);
-ResourceManager& res();
+ResourceManager ENGINE_EXPORT & res();
 ////////////////////////////////////////////////////////////////////////////////
 #include "resourceManager.inl"
 ////////////////////////////////////////////////////////////////////////////////

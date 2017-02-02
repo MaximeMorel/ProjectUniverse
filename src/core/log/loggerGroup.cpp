@@ -87,6 +87,24 @@ Logger& LoggerGroup::operator<<(unsigned int rhs)
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerGroup::operator<<(long long rhs)
+{
+    for (Logger* logger : m_loggers)
+    {
+        *logger << rhs;
+    }
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerGroup::operator<<(unsigned long long rhs)
+{
+    for (Logger* logger : m_loggers)
+    {
+        *logger << rhs;
+    }
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerGroup::operator<<(double rhs)
 {
     for (Logger* logger : m_loggers)

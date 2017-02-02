@@ -1,13 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "vec2.hpp"
 #include "vec2.inl"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-template class TVec2<int32_t>;
-template class TVec2<uint32_t>;
-template class TVec2<float>;
-template class TVec2<double>;
+template class ENGINE_EXPORT TVec2<int32_t>;
+template class ENGINE_EXPORT TVec2<uint32_t>;
+template class ENGINE_EXPORT TVec2<float>;
+template class ENGINE_EXPORT TVec2<double>;
 
-template Logger& operator<<(Logger& o, const Vec2i& v);
+template Logger ENGINE_EXPORT & operator<<(Logger& o, const Vec2i& v);
 
 template bool operator==(const TVec2<double>& lhs, const TVec2<double>& rhs);
 template bool operator!=(const TVec2<double>& lhs, const TVec2<double>& rhs);

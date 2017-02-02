@@ -2,6 +2,7 @@
 #define __TEXTURE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/resource/resourceFile.hpp"
+#include "core/engine_export.h"
 #include <atomic>
 ////////////////////////////////////////////////////////////////////////////////
 class Texture;
@@ -10,7 +11,7 @@ using TexturePtr = std::shared_ptr<Texture>;
 class Image;
 using ImagePtr = std::shared_ptr<Image>;
 ////////////////////////////////////////////////////////////////////////////////
-class Texture : public ResourceFile
+class ENGINE_EXPORT Texture : public ResourceFile
 {
 public:
     Texture(const std::string& name, const std::string& fileName);

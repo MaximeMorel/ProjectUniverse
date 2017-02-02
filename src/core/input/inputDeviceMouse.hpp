@@ -4,6 +4,7 @@
 #include "inputDevice.hpp"
 #include "core/log/logger.hpp"
 #include "core/math/vec2.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 namespace Input
 {
@@ -35,7 +36,7 @@ enum class ButtonMode : uint8_t
 };
 } // namespace Input
 ////////////////////////////////////////////////////////////////////////////////
-class InputDeviceMouse : public InputDevice
+class ENGINE_EXPORT InputDeviceMouse : public InputDevice
 {
 public:
     InputDeviceMouse();

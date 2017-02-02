@@ -4,8 +4,9 @@
 #include "audioCodec.hpp"
 #include "imageCodec.hpp"
 #include "meshCodec.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class CodecManager
+class ENGINE_EXPORT CodecManager
 {
 public:
     CodecManager();
@@ -34,6 +35,6 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 /// Global codecs access
 void setGlobalCodecs(CodecManager& codecs);
-CodecManager& codecs();
+CodecManager ENGINE_EXPORT & codecs();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __CODECMANAGER_HPP__

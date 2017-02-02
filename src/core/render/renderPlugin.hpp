@@ -11,6 +11,7 @@
 #include "bufferObject.hpp"
 #include "core/scene/scene.hpp"
 #include "core/windowContext/windowContextTypes.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
 struct RenderStats
 {
@@ -21,7 +22,7 @@ struct RenderStats
     uint32_t statNumTriangles; ///< stats: number of triangles rendered during the last frame
 };
 ////////////////////////////////////////////////////////////////////////////////
-class RenderPlugin : public Library
+class ENGINE_EXPORT RenderPlugin : public Library
 {
 public:
     RenderPlugin(Engine& engine);

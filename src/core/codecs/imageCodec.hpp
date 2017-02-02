@@ -4,8 +4,9 @@
 #include "core/library.hpp"
 #include "core/codecs/codec.hpp"
 #include "core/coretypes/image.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class ImageCodec : public Codec
+class ENGINE_EXPORT ImageCodec : public Codec
 {
 public:
     ImageCodec(Engine& engine);

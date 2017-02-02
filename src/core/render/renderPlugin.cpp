@@ -82,7 +82,7 @@ void RenderPlugin::printOn(Logger& o) const
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const RenderPlugin& plugin)
+Logger ENGINE_EXPORT & operator<<(Logger& o, const RenderPlugin& plugin)
 {
     plugin.printOn(o);
     return o;
@@ -94,7 +94,7 @@ RenderStats::RenderStats()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const RenderStats& stats)
+Logger ENGINE_EXPORT & operator<<(Logger& o, const RenderStats& stats)
 {
     o << "meshes: " << stats.statNumMesh << " triangles: " << stats.statNumTriangles << "\n";
     return o;

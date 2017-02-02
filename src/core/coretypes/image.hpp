@@ -6,13 +6,14 @@
 #include "core/math/vec3.hpp"
 #include "core/math/vec4.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 #include <vector>
 #include <atomic>
 ////////////////////////////////////////////////////////////////////////////////
 class Image;
 using ImagePtr = std::shared_ptr<Image>;
 ////////////////////////////////////////////////////////////////////////////////
-class Image : public ResourceFile
+class ENGINE_EXPORT Image : public ResourceFile
 {
 public:
     enum Type : uint8_t

@@ -1,12 +1,13 @@
 #ifndef __RESOURCE_HPP__
 #define __RESOURCE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
+#include "core/log/logger.hpp"
+#include "core/engine_export.h"
 #include <string>
 #include <memory>
 #include <ostream>
-#include "core/log/logger.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-class ResourceType
+class ENGINE_EXPORT ResourceType
 {
 public:
     ResourceType(const std::string& typeName);
@@ -25,7 +26,7 @@ using ResourcePtr = std::shared_ptr<Resource>;
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief Resource base class
 ////////////////////////////////////////////////////////////////////////////////
-class Resource
+class ENGINE_EXPORT Resource
 {
 protected:
     Resource(const std::string& name);

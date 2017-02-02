@@ -21,6 +21,8 @@ public:
     virtual Logger& operator<<(unsigned short rhs) override;
     virtual Logger& operator<<(int rhs) override;
     virtual Logger& operator<<(unsigned int rhs) override;
+    virtual Logger& operator<<(long long rhs) override;
+    virtual Logger& operator<<(unsigned long long rhs) override;
     virtual Logger& operator<<(double rhs) override;
     virtual Logger& operator<<(float rhs) override;
     virtual Logger& operator<<(long double rhs) override;

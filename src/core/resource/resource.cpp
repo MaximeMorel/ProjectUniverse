@@ -89,13 +89,13 @@ void Resource::printOn(Logger& o) const
     o << "Resource (" << dyntype().getTypeName() << ") " << getId() << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, const Resource& res)
+Logger ENGINE_EXPORT & operator<<(Logger& o, const Resource& res)
 {
     res.printOn(o);
     return o;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger& operator<<(Logger& o, ResourcePtr res)
+Logger ENGINE_EXPORT & operator<<(Logger& o, ResourcePtr res)
 {
     if (res)
         res->printOn(o);

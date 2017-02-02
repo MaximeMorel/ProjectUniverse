@@ -60,6 +60,18 @@ Logger& LoggerStream::operator<<(unsigned int rhs)
     return *this;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerStream::operator<<(long long rhs)
+{
+    m_outStream << rhs;
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
+Logger& LoggerStream::operator<<(unsigned long long rhs)
+{
+    m_outStream << rhs;
+    return *this;
+}
+////////////////////////////////////////////////////////////////////////////////
 Logger& LoggerStream::operator<<(double rhs)
 {
     m_outStream << rhs;

@@ -5,11 +5,12 @@
 #include "core/log/logger.hpp"
 #include "core/math/vec2.hpp"
 #include "windowContextTypes.hpp"
+#include "core/engine_export.h"
 #include <functional>
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The WindowPlugin class
 /// Window and graphic context creation
-class WindowPlugin : public Library
+class ENGINE_EXPORT WindowPlugin : public Library
 {
 public:
     WindowPlugin(Engine& engine);

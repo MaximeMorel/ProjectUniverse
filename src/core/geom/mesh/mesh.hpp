@@ -5,12 +5,13 @@
 #include "core/render/renderMesh.hpp"
 #include "core/math/vec3.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 #include <vector>
 ////////////////////////////////////////////////////////////////////////////////
 class Mesh;
 using MeshPtr = std::shared_ptr<Mesh>;
 ////////////////////////////////////////////////////////////////////////////////
-class Mesh : public ResourceFile
+class ENGINE_EXPORT Mesh : public ResourceFile
 {
 public:
     Mesh(const std::string& name, const std::string& fileName);

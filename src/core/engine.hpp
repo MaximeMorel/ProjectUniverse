@@ -11,8 +11,9 @@
 #include "windowContext/windowManager.hpp"
 #include "config/config.hpp"
 #include "script/lua/engineLua.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class Engine
+class ENGINE_EXPORT Engine
 {
 public:
     Engine(const std::string& name = "");
