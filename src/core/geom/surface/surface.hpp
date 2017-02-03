@@ -4,8 +4,9 @@
 #include "core/math/vec2.hpp"
 #include "core/math/vec3.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class Surface
+class ENGINE_EXPORT Surface
 {
 public:
     Surface();

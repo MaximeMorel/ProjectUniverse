@@ -1,4 +1,4 @@
 message(STATUS "Configuring input plugins...")
 
 add_subdirectory(inputNull)
-add_subdirectory(inputSDL)
+add_subdirectory(inputSDL2)

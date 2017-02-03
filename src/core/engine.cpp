@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "engine.hpp"
+#include "core/tools/filetools.hpp"
 #include <map>
 #include <cstring>
-#include <unistd.h>
 ////////////////////////////////////////////////////////////////////////////////
 // Run main
 // Start engine
@@ -33,7 +33,7 @@ Engine::Engine(const std::string& name)
     m_logManager.log() << (LogLine() << FILEINFO << "Engine " << m_name << " init...\n");
 
     char buf[256];
-    m_logManager.log() << "cwd: " << getcwd(buf, 256) << "\n";
+    m_logManager.log() << "cwd: " << FileTools::getcwd(buf, sizeof(buf)) << "\n";
 
     m_config.initDefaultConfig();
 

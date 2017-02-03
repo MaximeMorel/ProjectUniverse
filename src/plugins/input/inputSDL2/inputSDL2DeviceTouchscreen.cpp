@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "inputSDLDeviceTouchscreen.hpp"
+#include "inputSDL2DeviceTouchscreen.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceTouchscreen::InputSDLDeviceTouchscreen()
+InputSDL2DeviceTouchscreen::InputSDL2DeviceTouchscreen()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceTouchscreen::~InputSDLDeviceTouchscreen()
+InputSDL2DeviceTouchscreen::~InputSDL2DeviceTouchscreen()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceTouchscreen::update()
+void InputSDL2DeviceTouchscreen::update()
 {
     super::update();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceTouchscreen::update(SDL_Event* event)
+bool InputSDL2DeviceTouchscreen::update(SDL_Event* event)
 {
     switch (event->type)
     {
@@ -28,12 +28,12 @@ bool InputSDLDeviceTouchscreen::update(SDL_Event* event)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t InputSDLDeviceTouchscreen::getMemSize() const
+size_t InputSDL2DeviceTouchscreen::getMemSize() const
 {
     return super::getMemSize();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceTouchscreen::printOn(Logger& o) const
+void InputSDL2DeviceTouchscreen::printOn(Logger& o) const
 {
 
 }

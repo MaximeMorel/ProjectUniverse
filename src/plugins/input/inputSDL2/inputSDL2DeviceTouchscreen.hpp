@@ -1,15 +1,15 @@
-#ifndef __INPUTSDLDEVICEJOYSTICK_HPP__
-#define __INPUTSDLDEVICEJOYSTICK_HPP__
+#ifndef __INPUTSDL2DEVICETOUCHSCREEN_HPP__
+#define __INPUTSDL2DEVICETOUCHSCREEN_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/input/inputDeviceJoystick.hpp"
+#include "core/input/inputDeviceTouchscreen.hpp"
 #include "core/log/logger.hpp"
 #include <SDL.h>
 ////////////////////////////////////////////////////////////////////////////////
-class InputSDLDeviceJoystick : public InputDeviceJoystick
+class InputSDL2DeviceTouchscreen : public InputDeviceTouchscreen
 {
 public:
-    InputSDLDeviceJoystick();
-    virtual ~InputSDLDeviceJoystick();
+    InputSDL2DeviceTouchscreen();
+    virtual ~InputSDL2DeviceTouchscreen();
 
     virtual void update() override;
     bool update(SDL_Event* event);
@@ -19,7 +19,7 @@ public:
     virtual void printOn(Logger& o) const override;
 
 private:
-    using super = InputDeviceJoystick;
+    using super = InputDeviceTouchscreen;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __INPUTSDLDEVICEJOYSTICK_HPP__
+#endif // __INPUTSDL2DEVICETOUCHSCREEN_HPP__

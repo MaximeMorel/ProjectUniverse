@@ -13,10 +13,10 @@
 #include "core/windowContext/windowContextTypes.hpp"
 #include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-struct RenderStats
+struct ENGINE_EXPORT RenderStats
 {
     RenderStats();
-    friend Logger& operator<<(Logger& o, const RenderStats& plugin);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, const RenderStats& plugin);
 
     uint32_t statNumMesh;     ///< stats: number of mesh rendered during the last frame
     uint32_t statNumTriangles; ///< stats: number of triangles rendered during the last frame
@@ -55,7 +55,7 @@ protected:
     RenderStats m_renderStats;      ///< rendering stats container
 
 private:
-    friend Logger& operator<<(Logger& o, const RenderPlugin& plugin);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, const RenderPlugin& plugin);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __RENDERPLUGIN_HPP__

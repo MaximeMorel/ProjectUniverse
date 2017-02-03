@@ -22,3 +22,9 @@ if (PNG_FOUND)
     include_directories(${PNG_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} ${PNG_LIBRARIES})
 endif (PNG_FOUND)
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/src/core/${CMAKE_STATIC_LIBRARY_PREFIX}engine${CMAKE_STATIC_LIBRARY_SUFFIX})
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<CONFIG>/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}" "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+endif (WIN32)

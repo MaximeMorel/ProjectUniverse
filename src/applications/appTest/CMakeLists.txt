@@ -33,3 +33,16 @@ include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} cppunit)
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
+find_package (CppUnit)
+if (CPPUNIT_FOUND)
+    include_directories(${CPPUNIT_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${CPPUNIT_LIBRARY})
+endif (CPPUNIT_FOUND)
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/src/core/${CMAKE_STATIC_LIBRARY_PREFIX}engine${CMAKE_STATIC_LIBRARY_SUFFIX})
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<CONFIG>/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}" "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+endif (WIN32)

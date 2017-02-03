@@ -55,7 +55,7 @@ private:
     bool m_requestQuit;     ///< flag indicating a request to exit the program
 };
 ////////////////////////////////////////////////////////////////////////////////
-void setGlobalEngine(Engine& engine);
-Engine& getEngine();
+void ENGINE_EXPORT setGlobalEngine(Engine& engine);
+Engine ENGINE_EXPORT & getEngine();
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __ENGINE_HPP__

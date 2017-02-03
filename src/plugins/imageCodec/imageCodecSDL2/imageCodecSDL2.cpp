@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "imageCodecSDL.hpp"
+#include "imageCodecSDL2.hpp"
 #include "core/log/logManager.hpp"
 #include "core/codecs/codecManager.hpp"
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 ////////////////////////////////////////////////////////////////////////////////
-PluginInfo pluginInfo = { "imageCodecSDL",
-                          "imageCodecSDL",
+PluginInfo pluginInfo = { "imageCodecSDL2",
+                          "imageCodecSDL2",
                           "imagecodec",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecCustom* lib = nullptr;
+PluginImageCodecSDL2* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
@@ -21,7 +21,7 @@ Library* getLibInstance(Engine* engine)
 {
     if (lib == nullptr)
     {
-        lib = new PluginImageCodecCustom(*engine);
+        lib = new PluginImageCodecSDL2(*engine);
         if (lib)
         {
             codecs().addImageCodec(lib);
@@ -40,10 +40,10 @@ void closeLibInstance()
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecCustom::PluginImageCodecCustom(Engine &engine)
+PluginImageCodecSDL2::PluginImageCodecSDL2(Engine &engine)
     : ImageCodec(engine)
 {
-    log().log() << "PluginImageCodecSDL start...\n";
+    log().log() << "PluginImageCodecSDL2 start...\n";
 
     const SDL_version* v = IMG_Linked_Version();
     if (v)
@@ -60,13 +60,13 @@ PluginImageCodecCustom::PluginImageCodecCustom(Engine &engine)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginImageCodecCustom::~PluginImageCodecCustom()
+PluginImageCodecSDL2::~PluginImageCodecSDL2()
 {
-    log().log() << "PluginImageCodecSDL stop...\n";
+    log().log() << "PluginImageCodecSDL2 stop...\n";
     IMG_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PluginImageCodecCustom::load(Image* image)
+bool PluginImageCodecSDL2::load(Image* image)
 {
     if (!image)
         return false;
@@ -80,7 +80,6 @@ bool PluginImageCodecCustom::load(Image* image)
 
     log().log() << "flags " << surface->flags << "\n";
     log().log() << "pitch " << surface->pitch << "\n";
-    log().log() << "offset " << surface->offset << "\n";
     log().log() << "resolution: " << surface->w << "x" << surface->h << "\n";
 
     log().log() << "BitsPerPixel: " << surface->format->BitsPerPixel << "\n";
@@ -176,5 +175,10 @@ bool PluginImageCodecCustom::load(Image* image)
     SDL_FreeSurface(surface);
 
     return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginImageCodecSDL2::save(Image* image, const std::string& filePath)
+{
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

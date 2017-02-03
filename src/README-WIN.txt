@@ -46,6 +46,7 @@ http://glew.sourceforge.net/
 use include folder and lib folder.
 
 Bullet:
+https://github.com/bulletphysics/bullet3/releases
 Use visual studio solution provided to build.
 
 Assimp:
@@ -54,7 +55,12 @@ Use NuGet package manager.
 OpenAL:
 http://kcat.strangesoft.net/openal.html#download
 
+OggVorbis:
+https://xiph.org/downloads/
+http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.zip
+http://downloads.xiph.org/releases/ogg/libogg-1.3.2.zip
+Extract both in the same parent folder, and rename libogg-1.3.2 to libogg
+Build both using VS2010 solution, libogg first
 
 Generate VS solution with cmake:
-
 Use gen-vc14-solution.bat

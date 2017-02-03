@@ -1,16 +1,17 @@
-#ifndef __INPUTSDLDEVICETOUCHSCREEN_HPP__
-#define __INPUTSDLDEVICETOUCHSCREEN_HPP__
+#ifndef __INPUTSDL2DEVICEMOUSE_HPP__
+#define __INPUTSDL2DEVICEMOUSE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/input/inputDeviceTouchscreen.hpp"
+#include "core/input/inputDeviceMouse.hpp"
 #include "core/log/logger.hpp"
 #include <SDL.h>
 ////////////////////////////////////////////////////////////////////////////////
-class InputSDLDeviceTouchscreen : public InputDeviceTouchscreen
+class InputSDL2DeviceMouse : public InputDeviceMouse
 {
 public:
-    InputSDLDeviceTouchscreen();
-    virtual ~InputSDLDeviceTouchscreen();
+    InputSDL2DeviceMouse();
+    virtual ~InputSDL2DeviceMouse();
 
+    virtual void preUpdate() override;
     virtual void update() override;
     bool update(SDL_Event* event);
 
@@ -19,7 +20,7 @@ public:
     virtual void printOn(Logger& o) const override;
 
 private:
-    using super = InputDeviceTouchscreen;
+    using super = InputDeviceMouse;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __INPUTSDLDEVICETOUCHSCREEN_HPP__
+#endif // __INPUTSDL2DEVICEMOUSE_HPP__

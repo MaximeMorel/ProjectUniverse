@@ -2,10 +2,10 @@
 #define __BOUNDINGSPHERE_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/math/vec3.hpp"
-#include <ostream>
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class BoundingSphere
+class ENGINE_EXPORT BoundingSphere
 {
 public:
     BoundingSphere(const Vec3& center, double radius);

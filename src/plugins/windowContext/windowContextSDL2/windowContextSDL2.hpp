@@ -39,6 +39,7 @@ private:
 
     bool createContextOpenGL(int major, int minor);
     bool createContextVulkan();
+    bool createContextDirect3D();
 
     bool createWindow(Uint32 flags);
 

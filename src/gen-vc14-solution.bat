@@ -18,8 +18,8 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D TIFF_INCLUDE_DIR=%PREFIX%\build-vs14\packages\libtiff.4.0.6.2\build\native\include ^
 -D TIFF_LIBRARY=%PREFIX%\build-vs14\packages\libtiff.4.0.6.2\build\native\lib\Release\x64\v140\libtiff.lib ^
  ^
--D GLEW_INCLUDE_DIR=%PREFIX%\win\glew-2.0.0\include ^
--D GLEW_LIBRARY=%PREFIX%\win\glew-2.0.0\lib\Release\x64\glew32.lib ^
+-D GLEW_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages\glew-2.0.0\include ^
+-D GLEW_LIBRARY=%PREFIX%\build-vs14\mypackages\glew-2.0.0\lib\Release\x64\glew32.lib ^
  ^
 -D BULLET_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages\bullet3-2.86\src ^
 -D BULLET_DYNAMICS_LIBRARY=%PREFIX%\build-vs14\mypackages\bullet3-2.86\bin\BulletDynamics_vs2010_x64_release.lib ^
@@ -36,8 +36,11 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D SDL2_INCLUDE_DIR=%PREFIX%\build-vs14\packages\sdl2.2.0.5\build\native\include ^
 -D SDL2_LIBRARY=%PREFIX%\build-vs14\packages\sdl2.2.0.5\build\native\lib\x64\dynamic\SDL2.lib ^
  ^
--D SDL_IMAGE_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\include ^
--D SDL_IMAGE_LIBRARIES=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\lib\Release\x64\v140\SDL_image.lib ^
+-D SDL_IMAGE_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\include ^
+-D SDL_IMAGE_LIBRARIES=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\lib\Release\x64\v140\SDL_image.lib ^
+ ^
+-D SDL2_IMAGE_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\include ^
+-D SDL2_IMAGE_LIBRARIES=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\lib\Release\x64\v140\SDL2_image.lib ^
  ^
 -D VORBIS_LIBRARY=%PREFIX%\build-vs14\mypackages ^
 -D OGG_LIBRARY=%PREFIX%\build-vs14\mypackages ^

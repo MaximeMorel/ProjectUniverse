@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "inputSDLDeviceJoystick.hpp"
+#include "inputSDL2DeviceJoystick.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceJoystick::InputSDLDeviceJoystick()
+InputSDL2DeviceJoystick::InputSDL2DeviceJoystick()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceJoystick::~InputSDLDeviceJoystick()
+InputSDL2DeviceJoystick::~InputSDL2DeviceJoystick()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceJoystick::update()
+void InputSDL2DeviceJoystick::update()
 {
     super::update();
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceJoystick::update(SDL_Event* event)
+bool InputSDL2DeviceJoystick::update(SDL_Event* event)
 {
     switch (event->type)
     {
@@ -34,12 +34,12 @@ bool InputSDLDeviceJoystick::update(SDL_Event* event)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t InputSDLDeviceJoystick::getMemSize() const
+size_t InputSDL2DeviceJoystick::getMemSize() const
 {
     return super::getMemSize();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceJoystick::printOn(Logger& o) const
+void InputSDL2DeviceJoystick::printOn(Logger& o) const
 {
 
 }

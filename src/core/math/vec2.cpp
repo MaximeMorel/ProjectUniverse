@@ -10,6 +10,6 @@ template class ENGINE_EXPORT TVec2<double>;
 
 template Logger ENGINE_EXPORT & operator<<(Logger& o, const Vec2i& v);
 
-template bool operator==(const TVec2<double>& lhs, const TVec2<double>& rhs);
-template bool operator!=(const TVec2<double>& lhs, const TVec2<double>& rhs);
+template bool ENGINE_EXPORT operator==(const TVec2<double>& lhs, const TVec2<double>& rhs);
+template bool ENGINE_EXPORT operator!=(const TVec2<double>& lhs, const TVec2<double>& rhs);
 ////////////////////////////////////////////////////////////////////////////////

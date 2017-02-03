@@ -278,7 +278,7 @@ bool Config::setFromString(const std::string& paramName, const std::string& valu
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-Logger ENGINE_EXPORT & operator<<(Logger& o, const Config& config)
+Logger& operator<<(Logger& o, const Config& config)
 {
     for (auto configEntry : config.m_config)
     {

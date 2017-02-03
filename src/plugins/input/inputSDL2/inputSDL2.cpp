@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "inputSDL.hpp"
+#include "inputSDL2.hpp"
 #include "core/log/logManager.hpp"
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "inputSDL",
@@ -8,7 +8,7 @@ PluginInfo pluginInfo = { "inputSDL",
                           0,
                           1};
 ////////////////////////////////////////////////////////////////////////////////
-PluginInputSDL* lib = nullptr;
+PluginInputSDL2* lib = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 const PluginInfo* getPluginInfo()
 {
@@ -19,7 +19,7 @@ Library* getLibInstance(Engine* engine)
 {
     if (lib == nullptr)
     {
-        lib = new PluginInputSDL(*engine);
+        lib = new PluginInputSDL2(*engine);
     }
     return lib;
 }
@@ -30,7 +30,7 @@ void closeLibInstance()
     lib = nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginInputSDL::PluginInputSDL(Engine &engine)
+PluginInputSDL2::PluginInputSDL2(Engine &engine)
     : InputPlugin(engine)
 {
     log().log() << "PluginInputSDL start...\n";
@@ -56,7 +56,7 @@ PluginInputSDL::PluginInputSDL(Engine &engine)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-PluginInputSDL::~PluginInputSDL()
+PluginInputSDL2::~PluginInputSDL2()
 {
     log().log() << "PluginInputSDL stop...\n";
 
@@ -66,13 +66,13 @@ PluginInputSDL::~PluginInputSDL()
     SDL_Quit();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginInputSDL::discoverDevices()
+void PluginInputSDL2::discoverDevices()
 {
-    m_keyboard.emplace_back(InputSDLDeviceKeyboard());
-    m_mouse.emplace_back(InputSDLDeviceMouse());
+    m_keyboard.emplace_back(InputSDL2DeviceKeyboard());
+    m_mouse.emplace_back(InputSDL2DeviceMouse());
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
+size_t PluginInputSDL2::getNumDevices(Input::DeviceType dt)
 {
     switch (dt)
     {
@@ -88,7 +88,7 @@ size_t PluginInputSDL::getNumDevices(Input::DeviceType dt)
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
+InputDevice* PluginInputSDL2::getDevice(Input::DeviceType dt, size_t deviceId)
 {
     if (deviceId >= getNumDevices(dt))
         return nullptr;
@@ -107,7 +107,7 @@ InputDevice* PluginInputSDL::getDevice(Input::DeviceType dt, size_t deviceId)
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginInputSDL::setWindowInputFocus(uint32_t windowId)
+void PluginInputSDL2::setWindowInputFocus(uint32_t windowId)
 {
     SDL_Window* window = SDL_CreateWindowFrom(reinterpret_cast<const void*>(windowId));
     //SDL_Window* window = SDL_GetWindowFromID(windowId);
@@ -117,7 +117,7 @@ void PluginInputSDL::setWindowInputFocus(uint32_t windowId)
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginInputSDL::update()
+void PluginInputSDL2::update()
 {
     for (auto& device : m_keyboard)
     {
@@ -162,15 +162,15 @@ void PluginInputSDL::update()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t PluginInputSDL::getMemSize() const
+size_t PluginInputSDL2::getMemSize() const
 {
-    return m_keyboard.size() * sizeof(InputSDLDeviceKeyboard) +
-           m_mouse.size() * sizeof(InputSDLDeviceMouse) +
-           m_joystick.size() * sizeof(InputSDLDeviceJoystick) +
-           m_touchscreen.size() * sizeof(InputSDLDeviceTouchscreen);
+    return m_keyboard.size() * sizeof(InputSDL2DeviceKeyboard) +
+           m_mouse.size() * sizeof(InputSDL2DeviceMouse) +
+           m_joystick.size() * sizeof(InputSDL2DeviceJoystick) +
+           m_touchscreen.size() * sizeof(InputSDL2DeviceTouchscreen);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PluginInputSDL::printOn(Logger& o) const
+void PluginInputSDL2::printOn(Logger& o) const
 {
 
 }

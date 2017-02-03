@@ -1,15 +1,15 @@
-#ifndef __INPUTSDLDEVICEKEYBOARD_HPP__
-#define __INPUTSDLDEVICEKEYBOARD_HPP__
+#ifndef __INPUTSDL2DEVICEKEYBOARD_HPP__
+#define __INPUTSDL2DEVICEKEYBOARD_HPP__
 ////////////////////////////////////////////////////////////////////////////////
 #include "core/input/inputDeviceKeyboard.hpp"
 #include "core/log/logger.hpp"
 #include <SDL.h>
 ////////////////////////////////////////////////////////////////////////////////
-class InputSDLDeviceKeyboard : public InputDeviceKeyboard
+class InputSDL2DeviceKeyboard : public InputDeviceKeyboard
 {
 public:
-    InputSDLDeviceKeyboard();
-    virtual ~InputSDLDeviceKeyboard();
+    InputSDL2DeviceKeyboard();
+    virtual ~InputSDL2DeviceKeyboard();
 
     virtual void update() override;
     bool update(SDL_Event* event);
@@ -34,4 +34,4 @@ private:
     SDLKeyMapping m_keyMapping;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __INPUTSDLDEVICEKEYBOARD_HPP__
+#endif // __INPUTSDL2DEVICEKEYBOARD_HPP__

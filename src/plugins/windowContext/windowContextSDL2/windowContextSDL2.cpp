@@ -77,6 +77,8 @@ bool PluginWindowContextSDL2::createContext(GfxContextType type)
         return createContextOpenGL(4, 5);
     case GfxContextType::VULKAN:
         return createContextVulkan();
+    case GfxContextType::DIRECT3D11:
+        return createContextDirect3D();
     default:
         break;
     }
@@ -244,6 +246,11 @@ bool PluginWindowContextSDL2::createContextOpenGL(int major, int minor)
 bool PluginWindowContextSDL2::createContextVulkan()
 {
     return createWindow(SDL_WINDOW_SHOWN);
+}
+////////////////////////////////////////////////////////////////////////////////
+bool PluginWindowContextSDL2::createContextDirect3D()
+{
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool PluginWindowContextSDL2::createWindow(Uint32 flags)

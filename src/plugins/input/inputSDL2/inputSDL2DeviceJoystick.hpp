@@ -1,17 +1,16 @@
-#ifndef __INPUTSDLDEVICEMOUSE_HPP__
-#define __INPUTSDLDEVICEMOUSE_HPP__
+#ifndef __INPUTSDL2DEVICEJOYSTICK_HPP__
+#define __INPUTSDL2DEVICEJOYSTICK_HPP__
 ////////////////////////////////////////////////////////////////////////////////
-#include "core/input/inputDeviceMouse.hpp"
+#include "core/input/inputDeviceJoystick.hpp"
 #include "core/log/logger.hpp"
 #include <SDL.h>
 ////////////////////////////////////////////////////////////////////////////////
-class InputSDLDeviceMouse : public InputDeviceMouse
+class InputSDL2DeviceJoystick : public InputDeviceJoystick
 {
 public:
-    InputSDLDeviceMouse();
-    virtual ~InputSDLDeviceMouse();
+    InputSDL2DeviceJoystick();
+    virtual ~InputSDL2DeviceJoystick();
 
-    virtual void preUpdate() override;
     virtual void update() override;
     bool update(SDL_Event* event);
 
@@ -20,7 +19,7 @@ public:
     virtual void printOn(Logger& o) const override;
 
 private:
-    using super = InputDeviceMouse;
+    using super = InputDeviceJoystick;
 };
 ////////////////////////////////////////////////////////////////////////////////
-#endif // __INPUTSDLDEVICEMOUSE_HPP__
+#endif // __INPUTSDL2DEVICEJOYSTICK_HPP__

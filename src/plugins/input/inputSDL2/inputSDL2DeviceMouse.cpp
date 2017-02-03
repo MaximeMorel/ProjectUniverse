@@ -1,22 +1,22 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "inputSDLDeviceMouse.hpp"
+#include "inputSDL2DeviceMouse.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceMouse::InputSDLDeviceMouse()
+InputSDL2DeviceMouse::InputSDL2DeviceMouse()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceMouse::~InputSDLDeviceMouse()
+InputSDL2DeviceMouse::~InputSDL2DeviceMouse()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceMouse::preUpdate()
+void InputSDL2DeviceMouse::preUpdate()
 {
     super::preUpdate();
     set(Input::Mouse::BT_WHEEL_UP, Input::ButtonMode::UP);
     set(Input::Mouse::BT_WHEEL_DOWN, Input::ButtonMode::UP);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceMouse::update()
+void InputSDL2DeviceMouse::update()
 {
     super::update();
 
@@ -28,7 +28,7 @@ void InputSDLDeviceMouse::update()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceMouse::update(SDL_Event* event)
+bool InputSDL2DeviceMouse::update(SDL_Event* event)
 {
     switch (event->type)
     {
@@ -55,12 +55,12 @@ bool InputSDLDeviceMouse::update(SDL_Event* event)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t InputSDLDeviceMouse::getMemSize() const
+size_t InputSDL2DeviceMouse::getMemSize() const
 {
     return super::getMemSize();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceMouse::printOn(Logger& o) const
+void InputSDL2DeviceMouse::printOn(Logger& o) const
 {
     o << "sdl mouse";
 }

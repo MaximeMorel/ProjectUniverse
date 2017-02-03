@@ -56,8 +56,8 @@ public:
 
     virtual size_t getMemSize() const;
 
-    friend Logger& operator<<(Logger& o, const Resource& res);
-    friend Logger& operator<<(Logger& o, ResourcePtr res);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, const Resource& res);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, ResourcePtr res);
 
 protected:
     virtual void printOn(Logger& o) const;

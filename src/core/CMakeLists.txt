@@ -79,6 +79,7 @@ set(CORE_SOURCE main.cpp
                 scene/scene.cpp
                 script/lua/engineLua.cpp
                 thread/threadManager.cpp
+                tools/filetools.cpp
                 tools/timer.cpp
                 windowContext/windowManager.cpp
                 windowContext/windowPlugin.cpp
@@ -88,7 +89,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/
 add_executable(${PROJECT_NAME} ${CORE_SOURCE})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 set_property(TARGET ${PROJECT_NAME} PROPERTY ENABLE_EXPORTS on)
-#add_definitions(-Dengine_EXPORTS)
 target_compile_definitions(${PROJECT_NAME} PRIVATE engine_EXPORTS)
 
 find_package (Lua)
@@ -103,6 +103,8 @@ if (Threads_FOUND)
 endif (Threads_FOUND)
 
 if (WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${CMAKE_BINARY_DIR}/src/core/$<CONFIG>/${CMAKE_STATIC_LIBRARY_PREFIX}engine${CMAKE_STATIC_LIBRARY_SUFFIX}" "${CMAKE_BINARY_DIR}/src/core/")
 endif (WIN32)

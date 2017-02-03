@@ -1,6 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "timer.hpp"
-//#include <ctime>
 #include <thread>
 ////////////////////////////////////////////////////////////////////////////////
 Timer::Timer()
@@ -30,27 +29,12 @@ std::chrono::microseconds Timer::getTime() const
 ////////////////////////////////////////////////////////////////////////////////
 void Timer::wait(std::chrono::microseconds microseconds)
 {
-    //std::chrono::duration
     std::this_thread::sleep_for(microseconds);
-    /*struct timespec t;
-    t.tv_sec = milliseconds / 1000;
-    long milli = static_cast<long>(milliseconds) % 1000;
-    long nano = 1000000 * (milliseconds - milli);
-    t.tv_nsec = 1000000 * milli + nano;
-    nanosleep(&t, nullptr);*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 std::chrono::steady_clock::time_point Timer::now()
 {
     return std::chrono::steady_clock::now();
-    /*struct timespec t;
-    int ret = clock_gettime(CLOCK_MONOTONIC, &t);
-    if (ret < 0)
-    {
-        return 0;
-    }
-
-    return (1000.0 * t.tv_sec) + (t.tv_nsec / 1000000.0);*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 Logger& operator<<(Logger& o, const Timer& timer)

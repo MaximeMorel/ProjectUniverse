@@ -7,6 +7,7 @@ enum class GfxContextType : int8_t
     OPENGL_3_3,
     OPENGL_4_5,
     VULKAN,
+    DIRECT3D11,
     NONE
 };
 ////////////////////////////////////////////////////////////////////////////////

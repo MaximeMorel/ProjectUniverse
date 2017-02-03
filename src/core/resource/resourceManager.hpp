@@ -55,7 +55,7 @@ public:
     // Sum all resources memory usage
     size_t getMemSizeFull() const;
 
-    friend Logger& operator<<(Logger& o, const ResourceManager& res);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, const ResourceManager& res);
 
 private:
     /// Add a resource without checking if it's already managed

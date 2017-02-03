@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////
-#include "inputSDLDeviceKeyboard.hpp"
+#include "inputSDL2DeviceKeyboard.hpp"
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceKeyboard::InputSDLDeviceKeyboard()
+InputSDL2DeviceKeyboard::InputSDL2DeviceKeyboard()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceKeyboard::~InputSDLDeviceKeyboard()
+InputSDL2DeviceKeyboard::~InputSDL2DeviceKeyboard()
 {
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceKeyboard::update()
+void InputSDL2DeviceKeyboard::update()
 {
     super::update();
 
@@ -21,7 +21,7 @@ void InputSDLDeviceKeyboard::update()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool InputSDLDeviceKeyboard::update(SDL_Event* event)
+bool InputSDL2DeviceKeyboard::update(SDL_Event* event)
 {
     switch (event->type)
     {
@@ -37,17 +37,17 @@ bool InputSDLDeviceKeyboard::update(SDL_Event* event)
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
-size_t InputSDLDeviceKeyboard::getMemSize() const
+size_t InputSDL2DeviceKeyboard::getMemSize() const
 {
     return super::getMemSize();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void InputSDLDeviceKeyboard::printOn(Logger& o) const
+void InputSDL2DeviceKeyboard::printOn(Logger& o) const
 {
     o << "sdl keyboard";
 }
 ////////////////////////////////////////////////////////////////////////////////
-InputSDLDeviceKeyboard::SDLKeyMapping::SDLKeyMapping()
+InputSDL2DeviceKeyboard::SDLKeyMapping::SDLKeyMapping()
 {
     for (size_t i = 0; i < SDL_NUM_SCANCODES; ++i)
     {
@@ -85,12 +85,12 @@ InputSDLDeviceKeyboard::SDLKeyMapping::SDLKeyMapping()
 
 }
 ////////////////////////////////////////////////////////////////////////////////
-Input::Keyboard InputSDLDeviceKeyboard::SDLKeyMapping::get(SDL_Scancode key)
+Input::Keyboard InputSDL2DeviceKeyboard::SDLKeyMapping::get(SDL_Scancode key)
 {
     return m_mapping[key];
 }
 ////////////////////////////////////////////////////////////////////////////////
-Input::Keyboard InputSDLDeviceKeyboard::SDLKeyMapping::get(SDL_Keycode key)
+Input::Keyboard InputSDL2DeviceKeyboard::SDLKeyMapping::get(SDL_Keycode key)
 {
     return Input::KEY_NONE;
 }

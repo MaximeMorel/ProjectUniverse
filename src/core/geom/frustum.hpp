@@ -6,8 +6,9 @@
 #include "core/geom/surface/surfacePlane.hpp"
 #include "core/geom/boundingVolume/aabb.hpp"
 #include "core/log/logger.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class Frustum
+class ENGINE_EXPORT Frustum
 {
 public:
     Frustum(const Mat4& proj);

@@ -92,7 +92,7 @@ public:
     /// set value of paramName without knowing the underlying type, value string will be converted to the correct type
     bool setFromString(const std::string& paramName, const std::string& value);
 
-    friend Logger& operator<<(Logger& o, const Config& config);
+    friend Logger ENGINE_EXPORT & operator<<(Logger& o, const Config& config);
 
 public:
     TConfigEntry<std::string>* app;
