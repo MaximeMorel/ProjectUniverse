@@ -12,9 +12,15 @@ PluginManager::PluginManager()
     , m_suffix(nullptr)
     , m_separator(nullptr)
 {
-    m_prefix = "lib";
-    m_suffix = ".so";
-    m_separator = "/";
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
+       m_prefix = "";
+       m_suffix = ".dll";
+       m_separator = "/";
+#elif defined(__linux__) || defined(__linux) || defined(linux)
+       m_prefix = "lib";
+       m_suffix = ".so";
+       m_separator = "/";
+#endif
 }
 ////////////////////////////////////////////////////////////////////////////////
 PluginManager::~PluginManager()

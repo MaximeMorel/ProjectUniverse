@@ -170,7 +170,8 @@ uint32_t PluginWindowContextSDL2::getWindowId() const
         #endif // SDL_VIDEO_DRIVER_WAYLAND
         #ifdef SDL_VIDEO_DRIVER_WINDOWS
         case SDL_SYSWM_WINDOWS:
-            return info.info.win.window;
+            //return info.info.win.window;
+            return 0;
         #endif // SDL_VIDEO_DRIVER_WINDOWS
         case SDL_SYSWM_ANDROID:
         case SDL_SYSWM_DIRECTFB:

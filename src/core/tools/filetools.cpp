@@ -21,7 +21,7 @@ char* FileTools::getcwd(char* buf, size_t size)
 bool FileTools::mkdir(const char* path)
 {
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-    return (_mkdir(path, 755) == 0);
+    return (_mkdir(path) == 0);
 #elif defined(__linux__) || defined(__linux) || defined(linux)
     return (::mkdir(path, 755) == 0);
 #endif

@@ -206,7 +206,7 @@ void Config::initDefaultConfig()
     m_config["renderplugin"] = renderplugin;
 
     if (!inputplugin)
-        inputplugin = new TConfigEntry<std::string>("inputplugin", "InputSDL");
+        inputplugin = new TConfigEntry<std::string>("inputplugin", "InputSDL2");
     m_config["inputplugin"] = inputplugin;
 
     if (!audioplugin)
@@ -218,7 +218,7 @@ void Config::initDefaultConfig()
     m_config["windowplugin"] = windowplugin;
 
     if (!codecplugins)
-        codecplugins = new TConfigEntry<std::string>("codecplugins", "ImageCodecJPEG,ImageCodecPNG,ImageCodecTIFF,ImageCodecCustom,ImageCodecSDL,MeshCodecCustom,MeshCodecASSIMP");
+        codecplugins = new TConfigEntry<std::string>("codecplugins", "ImageCodecJPEG,ImageCodecPNG,ImageCodecTIFF,ImageCodecCustom,ImageCodecSDL2,MeshCodecCustom,MeshCodecASSIMP");
     m_config["codecplugins"] = codecplugins;
 }
 ////////////////////////////////////////////////////////////////////////////////

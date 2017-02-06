@@ -1,9 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "iplugin.hpp"
-#ifdef __unix__
+#if defined(__linux__) || defined(__linux) || defined(linux)
 #include <dlfcn.h>
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
 #include <windows.h>
 #endif
 #include "core/log/logManager.hpp"
@@ -16,15 +15,14 @@ Plugin::Plugin(const std::string& name, const std::string& fileName)
     , m_pGetPluginInfo(nullptr)
 {
     // find real path (using resource manager tools and going through the registered paths)
-#ifdef __unix__
+#if defined(__linux__) || defined(__linux) || defined(linux)
     m_handle = dlopen(fileName.c_str(), RTLD_LAZY);
     if (m_handle == nullptr)
     {
         log().log() << "dlopen(" << fileName << ") failed\n";
         log().log() << dlerror() << std::endl;
     }
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
     // need backslashes
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx
     HMODULE module = LoadLibrary(fileName.c_str());
@@ -54,16 +52,15 @@ Plugin::~Plugin()
 {
     if (m_handle != nullptr)
     {
-#ifdef __unix__
+#if defined(__linux__) || defined(__linux) || defined(linux)
         int ret = dlclose(m_handle);
         if (ret != 0)
         {
             log().log() << "dlclose(" << getName() << ") failed\n";
         }
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
         BOOL ret = FreeLibrary(static_cast<HMODULE>(m_handle));
-        if (ret != 0)
+        if (ret == 0)
         {
             log().log() << "FreeLibrary(" << getName() << ") failed\n";
         }
@@ -74,7 +71,7 @@ Plugin::~Plugin()
 void* Plugin::getSymbol(const std::string& symbolname) const
 {
     void* symbol = nullptr;
-#ifdef __unix__
+#if defined(__linux__) || defined(__linux) || defined(linux)
     dlerror();
     symbol = dlsym(m_handle, symbolname.c_str());
     const char* error = dlerror();
@@ -83,8 +80,7 @@ void* Plugin::getSymbol(const std::string& symbolname) const
         log().log() << "dlsym(" << getName() << ", " << symbolname << ") failed\n";
         log().log() << error << "\n";
     }
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
     FARPROC proc = GetProcAddress(static_cast<HMODULE>(m_handle), symbolname.c_str());
     symbol = reinterpret_cast<void*>(proc);
     if (symbol == nullptr)
