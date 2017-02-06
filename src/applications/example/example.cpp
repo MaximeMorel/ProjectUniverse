@@ -95,6 +95,14 @@ void ApplicationExample::run()
                 mesh->save("test.obj");
             }
 
+            FBOPtr fbo = res().create<FBO>("fbo");
+            TexturePtr texfbo = res().create<Texture>("texfbo");
+            TexturePtr texfboDepth = res().create<Texture>("texfbodepth");
+            texfboDepth->makeDepth(0, 0);
+            fbo->attach(texfbo, 0);
+            fbo->attachDepth(texfboDepth);
+            fbo->resize(512, 512);
+
             Scene scene;
             if (mesh)
                 scene.add(mesh.get());
@@ -138,7 +146,7 @@ void ApplicationExample::run()
                      input().mouse(0)->isPressed(Input::Mouse::BT_2) ||
                      input().mouse(0)->isPressed(Input::Mouse::BT_3)))
                 {
-                    stop = true;
+                    //stop = true;
                 }
 
                 if (input().mouse(0) &&
@@ -180,6 +188,8 @@ void ApplicationExample::run()
 
                 Mat4f mvp = proj * mv;
 
+                //fbo->bind();
+
                 render().impl()->clear();
                 /*/
                 if (prog)
@@ -207,12 +217,16 @@ void ApplicationExample::run()
                     prog4->setUniformMat4f(1u, mvp);
                     render().impl()->drawScene(&scene);
                 }
-                /*if (prog5)
+                if (!prog5)
                 {
+                    Vec2i resolution = config().resolution->get();
                     render().impl()->clear();
                     prog5->bind();
+                    prog5->setUniform1f(0u, gameTimer.getTime().count() * 0.000001);
+                    prog5->setUniform2f(1u, resolution.x, resolution.y);
+                    prog5->setUniform2f(2u, mouseCoords.x, mouseCoords.y);
                     render().impl()->draw();
-                }*/
+                }
 
                 window().getWindow()->swapBuffers();
 
@@ -245,6 +259,8 @@ void ApplicationExample::run()
                         prog3->reload();
                     if (prog4)
                         prog4->reload();
+                    if (prog5)
+                        prog5->reload();
                     if (tex)
                         tex->reload();
                 }

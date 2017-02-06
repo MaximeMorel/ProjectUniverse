@@ -32,8 +32,6 @@ add_library(${PROJECT_NAME} MODULE ${APP_SOURCE})
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} cppunit)
-
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 find_package (CppUnit)
 if (CPPUNIT_FOUND)

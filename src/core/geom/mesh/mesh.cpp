@@ -5,6 +5,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Mesh::type("Mesh");
 ////////////////////////////////////////////////////////////////////////////////
+Mesh::Mesh(const std::string& name)
+    : ResourceFile(name)
+{
+}
+////////////////////////////////////////////////////////////////////////////////
 Mesh::Mesh(const std::string& name, const std::string& fileName)
     : ResourceFile(name, fileName)
 {
@@ -12,6 +17,15 @@ Mesh::Mesh(const std::string& name, const std::string& fileName)
 ////////////////////////////////////////////////////////////////////////////////
 Mesh::~Mesh()
 {
+}
+////////////////////////////////////////////////////////////////////////////////
+MeshPtr Mesh::create(const std::string& name)
+{
+    MeshPtr mesh = std::make_shared<Mesh>(name);
+    if (!mesh)
+        return nullptr;
+
+    return mesh;
 }
 ////////////////////////////////////////////////////////////////////////////////
 MeshPtr Mesh::create(const std::string& name, const std::string& fileName)
@@ -42,6 +56,36 @@ bool Mesh::save(const std::string& filePath)
     }
     log().log() << "No suitable writer for " << getName() << " -> " << filePath << "\n";
     return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Mesh::makeQuad()
+{
+    m_indices = { 0, 3, 1, 1, 3, 2 };
+    m_vertices = { -1.0f,  1.0f, 0.0f,
+                    1.0f,  1.0f, 0.0f,
+                    1.0f, -1.0f, 0.0f,
+                   -1.0f, -1.0f, 0.0f };
+    m_texCoords = { 0.0f, 0.0f,
+                    1.0f, 0.0f,
+                    1.0f, 1.0f,
+                    0.0f, 1.0f };
+    m_normals.clear();
+    m_renderMesh = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Mesh::makeCube()
+{
+
+}
+////////////////////////////////////////////////////////////////////////////////
+void Mesh::makeSphere()
+{
+
+}
+////////////////////////////////////////////////////////////////////////////////
+void Mesh::makeTorus()
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 size_t Mesh::getMemSize() const

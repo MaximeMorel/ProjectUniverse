@@ -46,11 +46,14 @@ public:
     /// Link the program. Will try to compile attached shaders if not done already
     virtual bool link();
 
-    virtual void setUniform1f(uint32_t id, float v);
-    virtual void setUniform1f(const char* str, float v);
+    virtual void setUniform1f(uint32_t id, float v0);
+    virtual void setUniform1f(const char* str, float v0);
 
-    virtual void setUniform1i(uint32_t id, int32_t v);
-    virtual void setUniform1i(const char* str, int32_t v);
+    virtual void setUniform2f(uint32_t id, float v0, float v1);
+    virtual void setUniform2f(const char* str, float v0, float v1);
+
+    virtual void setUniform1i(uint32_t id, int32_t v0);
+    virtual void setUniform1i(const char* str, int32_t v0);
 
     virtual void setUniformMat4f(uint32_t id, const Mat4f& m);
     virtual void setUniformMat4f(const char* str, const Mat4f& m);

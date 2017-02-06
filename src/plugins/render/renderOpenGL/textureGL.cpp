@@ -7,8 +7,22 @@
 #include "opengltools.hpp"
 #include <GL/glew.h>
 ////////////////////////////////////////////////////////////////////////////////
+TextureGL::TextureGL(const std::string& name)
+    : Texture(name)
+    , m_textureId(0)
+    , m_internalformat(GL_RGBA8)
+    , m_format(GL_RGBA)
+    , m_type(GL_UNSIGNED_BYTE)
+{
+    glGenTextures(1, &m_textureId);
+}
+////////////////////////////////////////////////////////////////////////////////
 TextureGL::TextureGL(const std::string& name, const std::string &fileName)
     : Texture(name, fileName)
+    , m_textureId(0)
+    , m_internalformat(GL_RGBA8)
+    , m_format(GL_RGBA)
+    , m_type(GL_UNSIGNED_BYTE)
 {
     glGenTextures(1, &m_textureId);
 }
@@ -24,9 +38,31 @@ TextureGL::~TextureGL()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+TexturePtr TextureGL::create(const std::string& name)
+{
+    return std::make_shared<TextureGL>(name);
+}
+////////////////////////////////////////////////////////////////////////////////
 TexturePtr TextureGL::create(const std::string& name, const std::string& fileName)
 {
     return std::make_shared<TextureGL>(name, fileName);
+}
+////////////////////////////////////////////////////////////////////////////////
+void TextureGL::makeDepth(uint32_t x, uint32_t y)
+{
+    m_resolution.x = x;
+    m_resolution.y = y;
+    m_resolution.z = 1;
+    m_internalformat = GL_DEPTH_COMPONENT24;
+    m_format = GL_DEPTH_COMPONENT;
+    m_type = GL_FLOAT;
+    m_image = nullptr;
+    glTexImage2D(GL_TEXTURE_2D, 0, m_internalformat, m_resolution.x, m_resolution.y, 0, m_format, m_type, nullptr);
+}
+////////////////////////////////////////////////////////////////////////////////
+GLuint TextureGL::getTextureId() const
+{
+    return m_textureId;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void TextureGL::bind(uint32_t unit)
@@ -51,44 +87,40 @@ void TextureGL::setImage(ImagePtr image)
 
     Texture::setImage(image);
     bind(m_textureUnit);
-    Vec2ui r = image->resolution();
-    GLint internalformat = GL_RGBA8;
-    GLenum format = GL_RGBA;
-    GLenum type = GL_UNSIGNED_BYTE;
     switch (image->imageType())
     {
     case Image::Type::GRAY8:
-        internalformat = GL_R8;
-        format = GL_RED;
-        type = GL_UNSIGNED_BYTE;
+        m_internalformat = GL_R8;
+        m_format = GL_RED;
+        m_type = GL_UNSIGNED_BYTE;
         break;
     case Image::Type::GRAYFP32:
-        internalformat = GL_R32F;
-        format = GL_RED;
-        type = GL_FLOAT;
+        m_internalformat = GL_R32F;
+        m_format = GL_RED;
+        m_type = GL_FLOAT;
         break;
     case Image::Type::RGB8:
-        internalformat = GL_RGB8;
-        format = GL_RGB;
-        type = GL_UNSIGNED_BYTE;
+        m_internalformat = GL_RGB8;
+        m_format = GL_RGB;
+        m_type = GL_UNSIGNED_BYTE;
         break;
     case Image::Type::RGBA8:
-        internalformat = GL_RGBA8;
-        format = GL_RGBA;
-        type = GL_UNSIGNED_BYTE;
+        m_internalformat = GL_RGBA8;
+        m_format = GL_RGBA;
+        m_type = GL_UNSIGNED_BYTE;
         break;
     case Image::Type::RGBFP32:
-        internalformat = GL_RGB32F;
-        format = GL_RGB;
-        type = GL_FLOAT;
+        m_internalformat = GL_RGB32F;
+        m_format = GL_RGB;
+        m_type = GL_FLOAT;
         break;
     case Image::Type::RGBAFP32:
-        internalformat = GL_RGBA32F;
-        format = GL_RGBA;
-        type = GL_FLOAT;
+        m_internalformat = GL_RGBA32F;
+        m_format = GL_RGBA;
+        m_type = GL_FLOAT;
         break;
     case Image::Type::RGBADXT1:
-        internalformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        m_internalformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
         break;
     default:
         break;
@@ -96,16 +128,30 @@ void TextureGL::setImage(ImagePtr image)
 
     if (image->imageType() == Image::Type::RGBADXT1)
     {
-        GLsizei size = ((r.x+3)/4)*((r.y+3)/4)*8;
-        glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalformat, r.x, r.y, 0, size, image->getui8(0, 0));
+        GLsizei size = ((m_resolution.x+3)/4)*((m_resolution.y+3)/4)*8;
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, m_internalformat, m_resolution.x, m_resolution.y, 0, size, image->getui8(0, 0));
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, internalformat, r.x, r.y, 0, format, type, image->getui8(0, 0));
+        glTexImage2D(GL_TEXTURE_2D, 0, m_internalformat, m_resolution.x, m_resolution.y, 0, m_format, m_type, image->getui8(0, 0));
     }
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
+}
+////////////////////////////////////////////////////////////////////////////////
+void TextureGL::resize(Vec2ui resolution)
+{
+    Texture::resize(resolution);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, m_internalformat, m_resolution.x, m_resolution.y, 0, m_format, m_type, nullptr);
+}
+////////////////////////////////////////////////////////////////////////////////
+void TextureGL::resize(Vec3ui resolution)
+{
+    Texture::resize(resolution);
+
+    glTexImage3D(GL_TEXTURE_3D, 0, m_internalformat, m_resolution.x, m_resolution.y, resolution.z, 0, m_format, m_type, nullptr);
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool TextureGL::reload()
@@ -121,5 +167,10 @@ bool TextureGL::reload()
         }
     }
     return false;
+}
+////////////////////////////////////////////////////////////////////////////////
+void TextureGL::printOn(Logger& o) const
+{
+    o << "Texture " << m_textureId << " " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

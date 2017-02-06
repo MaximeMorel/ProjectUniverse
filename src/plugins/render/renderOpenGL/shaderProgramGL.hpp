@@ -21,10 +21,12 @@ public:
 
     virtual bool link() override;
 
-    virtual void setUniform1f(uint32_t id, float v) override;
-    virtual void setUniform1f(const char* str, float v) override;
-    virtual void setUniform1i(uint32_t id, int32_t v) override;
-    virtual void setUniform1i(const char* str, int32_t v) override;
+    virtual void setUniform1f(uint32_t id, float v0) override;
+    virtual void setUniform1f(const char* str, float v0) override;
+    virtual void setUniform2f(uint32_t id, float v0, float v1) override;
+    virtual void setUniform2f(const char* str, float v0, float v1) override;
+    virtual void setUniform1i(uint32_t id, int32_t v0) override;
+    virtual void setUniform1i(const char* str, int32_t v0) override;
     virtual void setUniformMat4f(uint32_t id, const Mat4f& m) override;
     virtual void setUniformMat4f(const char* str, const Mat4f& m) override;
 

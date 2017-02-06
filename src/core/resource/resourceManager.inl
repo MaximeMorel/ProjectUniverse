@@ -15,19 +15,24 @@ std::shared_ptr<T> ResourceManager::create(const std::string& name, Params... p)
     }
 
     // is the resource already loaded?
-    auto it = m_resourceNames.find(name);
-    if (it == m_resourceNames.end())
+    if (type.getTypeId() < m_pools.size())
     {
-        std::shared_ptr<T> res = T::create(name, p...);
-        if (res)
+        ResourcePool& pool = m_pools[type.getTypeId()];
+        auto it = pool.m_resourceNames.find(name)   ;
+        if (it == pool.m_resourceNames.end())
         {
-            res->m_flags |= Resource::Flags::ENGINE_MANAGED;
-            addResourceNoCheck(res);
-            return res;
+            std::shared_ptr<T> res = T::create(name, p...);
+            if (res)
+            {
+                res->m_flags |= Resource::Flags::ENGINE_MANAGED;
+                addResourceNoCheck(res);
+                return res;
+            }
+            return nullptr;
         }
-        return nullptr;
+        return std::static_pointer_cast<T>(pool.m_resources[it->second].lock());
     }
-    return std::static_pointer_cast<T>(m_resources[it->second].lock());
+    return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
 template<class T, typename... Params>

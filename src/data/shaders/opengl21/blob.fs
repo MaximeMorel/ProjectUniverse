@@ -2,8 +2,8 @@
 
 uniform float iGlobalTime;
 uniform vec2 iResolution;
-uniform vec4 iMouse;
-uniform vec3 iPos;
+uniform vec2 iMouse;
+//uniform vec3 iPos;
 //------------------------------------------------------------------------------
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
@@ -19,88 +19,87 @@ float sdPlane(vec3 p)
     return p.y;
 }
 //------------------------------------------------------------------------------
-float sdSphere( vec3 p, float s )
+float sdSphere(vec3 p, float s)
 {
-return length(p)-s;
+    return length(p) - s;
 }
 //------------------------------------------------------------------------------
 float sdBox( vec3 p, vec3 b )
 {
-vec3 d = abs(p) - b;
-return min(max(d.x,max(d.y,d.z)),0.0) +
-     length(max(d,0.0));
+    vec3 d = abs(p) - b;
+    return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
 }
 //------------------------------------------------------------------------------
-float udRoundBox( vec3 p, vec3 b, float r )
+float udRoundBox(vec3 p, vec3 b, float r)
 {
-return length(max(abs(p)-b,0.0))-r;
+    return length(max(abs(p) - b, 0.0)) - r;
 }
 //------------------------------------------------------------------------------
-float sdTorus( vec3 p, vec2 t )
+float sdTorus(vec3 p, vec2 t)
 {
-vec2 q = vec2(length(p.xz)-t.x,p.y);
-return length(q)-t.y;
+    vec2 q = vec2(length(p.xz) - t.x, p.y);
+    return length(q) - t.y;
 }
 //------------------------------------------------------------------------------
-float sdHexPrism( vec3 p, vec2 h )
+float sdHexPrism(vec3 p, vec2 h)
 {
-vec3 q = abs(p);
-return max(q.z-h.y,max(q.x+q.y*0.57735,q.y*1.1547)-h.x);
+    vec3 q = abs(p);
+    return max(q.z - h.y, max(q.x + q.y * 0.57735, q.y * 1.1547) - h.x);
 }
 //------------------------------------------------------------------------------
-float sdCapsule( vec3 p, vec3 a, vec3 b, float r )
+float sdCapsule(vec3 p, vec3 a, vec3 b, float r)
 {
-vec3 pa = p - a;
-vec3 ba = b - a;
-float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+    vec3 pa = p - a;
+    vec3 ba = b - a;
+    float h = clamp(dot(pa,ba) / dot(ba,ba), 0.0, 1.0);
 
-return length( pa - ba*h ) - r;
+    return length(pa - ba * h) - r;
 }
 //------------------------------------------------------------------------------
-float sdTriPrism( vec3 p, vec2 h )
+float sdTriPrism(vec3 p, vec2 h)
 {
-vec3 q = abs(p);
-return max(q.z-h.y,max(q.x*0.866025+p.y*0.5,-p.y)-h.x*0.5);
+    vec3 q = abs(p);
+    return max(q.z - h.y, max(q.x * 0.866025 + p.y * 0.5, -p.y) - h.x * 0.5);
 }
 //------------------------------------------------------------------------------
-float sdCylinder( vec3 p, vec2 h )
+float sdCylinder(vec3 p, vec2 h)
 {
-return max( length(p.xz)-h.x, abs(p.y)-h.y );
+    return max(length(p.xz) - h.x, abs(p.y) - h.y);
 }
 //------------------------------------------------------------------------------
-float sdCone( in vec3 p, in vec3 c )
+float sdCone(in vec3 p, in vec3 c)
 {
-vec2 q = vec2( length(p.xz), p.y );
-return max( max( dot(q,c.xy), p.y), -p.y-c.z );
+    vec2 q = vec2(length(p.xz), p.y);
+    return max(max(dot(q, c.xy), p.y), -p.y - c.z);
 }
 //------------------------------------------------------------------------------
-float length2( vec2 p )
+float length2(vec2 p)
 {
-return sqrt( p.x*p.x + p.y*p.y );
+    return sqrt(p.x * p.x + p.y * p.y);
 }
 //------------------------------------------------------------------------------
-float length6( vec2 p )
+float length6(vec2 p)
 {
-p = p*p*p; p = p*p;
-return pow( p.x + p.y, 1.0/6.0 );
+    p = p * p * p; p = p * p;
+    return pow(p.x + p.y, 1.0 / 6.0);
 }
 //------------------------------------------------------------------------------
-float length8( vec2 p )
+float length8(vec2 p)
 {
-p = p*p; p = p*p; p = p*p;
-return pow( p.x + p.y, 1.0/8.0 );
+    p = p * p; p = p * p; p = p * p;
+    return pow(p.x + p.y, 1.0 / 8.0);
 }
 //------------------------------------------------------------------------------
-float sdTorus82( vec3 p, vec2 t )
+float sdTorus82(vec3 p, vec2 t)
 {
-vec2 q = vec2(length2(p.xz)-t.x,p.y);
-return length8(q)-t.y;
+    vec2 q = vec2(length2(p.xz) - t.x, p.y);
+    return length8(q) - t.y;
 }
 //------------------------------------------------------------------------------
-float sdTorus88( vec3 p, vec2 t )
+float sdTorus88(vec3 p, vec2 t)
 {
-    vec2 q = vec2(length8(p.xz)-t.x,p.y);
-    return length8(q)-t.y;
+    vec2 q = vec2(length8(p.xz) - t.x, p.y);
+    return length8(q) - t.y;
 }
 //------------------------------------------------------------------------------
 float sdCylinder6(vec3 p, vec2 h)
@@ -280,16 +279,21 @@ vec3 render(in vec3 ro, in vec3 rd)
 //------------------------------------------------------------------------------
 void main(void)
 {
-    vec2 q = gl_FragCoord.xy / iResolution.xy;
+    //vec2 q = gl_FragCoord.xy / iResolution.xy;
+    //vec2 p = -1.0 + 2.0 * q;
+    //p.x *= iResolution.x / iResolution.y;
+    //vec2 mo = iMouse.xy / iResolution.xy;
+
+    vec2 q = gl_PointCoord.xy;
     vec2 p = -1.0 + 2.0 * q;
-    p.x *= iResolution.x / iResolution.y;
     vec2 mo = iMouse.xy / iResolution.xy;
+    //mo.y *= 2.5f;
 
     float time = 15.0 + iGlobalTime;
 
     // camera
-    vec3 ro = vec3(3.2 * cos(0.1 + 6.0 * mo.x), 2.0 * mo.y, 0.5 + 3.2 * sin(0.1 + 6.0 * mo.x));
-    vec3 ta = vec3(0.0, 0.0, 0.0);
+    vec3 ro = vec3(3.2 * cos(0.1 + 6.0 * mo.x), 1.0 + 2.0 * mo.y, 0.5 + 3.2 * sin(0.1 + 6.0 * mo.x));
+    vec3 ta = vec3(0.0, 2.0, 0.0);
     //vec3 ta = vec3( 0.0, -1.0, 0.0 );
 
     // camera tx

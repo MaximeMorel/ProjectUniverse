@@ -5,6 +5,7 @@
 #include "textureGL21.hpp"
 #include "renderMeshGL21.hpp"
 #include "bufferObjectGL21.hpp"
+#include "fboGL21.hpp"
 #include "opengltools.hpp"
 #include "core/log/logManager.hpp"
 #include "core/resource/resourceManager.hpp"
@@ -90,6 +91,11 @@ ShaderProgramPtr PluginRenderOpenGL21::createShaderProgram(const std::string& na
     return ShaderProgramGL21::create(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
+TexturePtr PluginRenderOpenGL21::createTexture(const std::string& name)
+{
+    return TextureGL21::create(name);
+}
+////////////////////////////////////////////////////////////////////////////////
 TexturePtr PluginRenderOpenGL21::createTexture(const std::string& name, const std::string& fileName)
 {
     return TextureGL21::create(name, fileName);
@@ -103,6 +109,11 @@ BufferObjectPtr PluginRenderOpenGL21::createBufferObject(const std::string& name
 RenderMeshPtr PluginRenderOpenGL21::createRenderMesh(const std::string& name)
 {
     return RenderMeshGL21::create(name);
+}
+////////////////////////////////////////////////////////////////////////////////
+FBOPtr PluginRenderOpenGL21::createFBO(const std::string& name)
+{
+    return FBOGL21::create(name);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PluginRenderOpenGL21::draw()

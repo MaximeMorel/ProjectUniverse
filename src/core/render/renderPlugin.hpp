@@ -9,6 +9,7 @@
 #include "vao.hpp"
 #include "renderMesh.hpp"
 #include "bufferObject.hpp"
+#include "fbo.hpp"
 #include "core/scene/scene.hpp"
 #include "core/windowContext/windowContextTypes.hpp"
 #include "core/engine_export.h"
@@ -37,9 +38,12 @@ public:
 
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t);
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName);
+    virtual TexturePtr createTexture(const std::string& name);
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName);
     virtual BufferObjectPtr createBufferObject(const std::string& name);
     virtual RenderMeshPtr createRenderMesh(const std::string& name);
+    virtual FBOPtr createFBO(const std::string& name);
+
 
     virtual void clear();
     virtual void draw();

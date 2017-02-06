@@ -8,18 +8,34 @@
 ////////////////////////////////////////////////////////////////////////////////
 ResourceType Texture::type("Texture");
 ////////////////////////////////////////////////////////////////////////////////
-Texture::Texture(const std::string& name, const std::string& fileName)
-    : ResourceFile(name, fileName)
-    , m_textureId(0)
+Texture::Texture(const std::string& name)
+    : ResourceFile(name)
     , m_textureUnit(0)
     , m_setImagePending(false)
 {
-
+}
+////////////////////////////////////////////////////////////////////////////////
+Texture::Texture(const std::string& name, const std::string& fileName)
+    : ResourceFile(name, fileName)
+    , m_textureUnit(0)
+    , m_setImagePending(false)
+{
 }
 ////////////////////////////////////////////////////////////////////////////////
 Texture::~Texture()
 {
     log().log() << __FUNCTION__ << ": " << *this << std::endl;
+}
+////////////////////////////////////////////////////////////////////////////////
+TexturePtr Texture::create(const std::string& name)
+{
+    TexturePtr tex = render().impl()->createTexture(name);
+    if (!tex)
+    {
+        return nullptr;
+    }
+
+    return tex;
 }
 ////////////////////////////////////////////////////////////////////////////////
 TexturePtr Texture::create(const std::string& name, const std::string& fileName)
@@ -45,9 +61,13 @@ TexturePtr Texture::create(const std::string& name, const std::string& fileName)
     return tex;
 }
 ////////////////////////////////////////////////////////////////////////////////
-uint32_t Texture::getTextureId() const
+void Texture::makeDepth(uint32_t x, uint32_t y)
 {
-    return m_textureId;
+}
+////////////////////////////////////////////////////////////////////////////////
+Vec3ui Texture::getResolution() const
+{
+    return m_resolution;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::bind(uint32_t unit)
@@ -71,10 +91,32 @@ void Texture::setImage(ImagePtr image)
 {
     m_setImagePending = false;
     m_image = image;
+    if (image)
+    {
+        Vec2ui resolution = image->resolution();
+        m_resolution.x = resolution.x;
+        m_resolution.y = resolution.y;
+    }
+    else
+    {
+        m_resolution.x = 0;
+        m_resolution.y = 0;
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void Texture::resize(Vec2ui resolution)
+{
+    m_resolution.x = resolution.x;
+    m_resolution.y = resolution.y;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Texture::resize(Vec3ui resolution)
+{
+    m_resolution = resolution;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Texture::printOn(Logger& o) const
 {
-    o << "Texture " << m_textureId << " " << getName();
+    o << "Texture " << getName();
 }
 ////////////////////////////////////////////////////////////////////////////////

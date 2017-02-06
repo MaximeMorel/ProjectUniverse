@@ -39,6 +39,11 @@ ShaderProgramPtr RenderPlugin::createShaderProgram(const std::string& name, cons
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
+TexturePtr RenderPlugin::createTexture(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
 TexturePtr RenderPlugin::createTexture(const std::string& name, const std::string& fileName)
 {
     return nullptr;
@@ -50,6 +55,11 @@ BufferObjectPtr RenderPlugin::createBufferObject(const std::string& name)
 }
 ////////////////////////////////////////////////////////////////////////////////
 RenderMeshPtr RenderPlugin::createRenderMesh(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+FBOPtr RenderPlugin::createFBO(const std::string& name)
 {
     return nullptr;
 }

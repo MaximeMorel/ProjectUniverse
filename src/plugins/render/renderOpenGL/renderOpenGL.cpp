@@ -66,6 +66,11 @@ ShaderProgramPtr PluginRenderOpenGL::createShaderProgram(const std::string& name
     return nullptr;
 }
 ////////////////////////////////////////////////////////////////////////////////
+TexturePtr PluginRenderOpenGL::createTexture(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
 TexturePtr PluginRenderOpenGL::createTexture(const std::string& name, const std::string& fileName)
 {
     return nullptr;
@@ -77,6 +82,11 @@ BufferObjectPtr PluginRenderOpenGL::createBufferObject(const std::string& name)
 }
 ////////////////////////////////////////////////////////////////////////////////
 RenderMeshPtr PluginRenderOpenGL::createRenderMesh(const std::string& name)
+{
+    return nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////
+FBOPtr PluginRenderOpenGL::createFBO(const std::string& name)
 {
     return nullptr;
 }

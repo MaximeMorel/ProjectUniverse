@@ -8,6 +8,7 @@ class ENGINE_EXPORT FileTools
 {
 public:
     static char* getcwd(char* buf, size_t size);
+    static bool mkdir(const char* path);
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif // __FILETOOLS_HPP__

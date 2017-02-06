@@ -29,7 +29,6 @@ ShaderProgramGL::~ShaderProgramGL()
 ////////////////////////////////////////////////////////////////////////////////
 ShaderProgramPtr ShaderProgramGL::create(const std::string& name, const std::string& fileName)
 {
-    // check binary shader cache
     return std::make_shared<ShaderProgramGL>(name, fileName);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -227,27 +226,38 @@ bool ShaderProgramGL::link()
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL::setUniform1f(uint32_t id, float v)
+void ShaderProgramGL::setUniform1f(uint32_t id, float v0)
 {
-    glProgramUniform1f(m_shaderProgId, id, v);
+    glProgramUniform1f(m_shaderProgId, id, v0);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL::setUniform1f(const char* str, float v)
+void ShaderProgramGL::setUniform1f(const char* str, float v0)
 {
     GLint loc = glGetUniformLocation(m_shaderProgId, str);
-    setUniform1f(loc, v);
+    setUniform1f(loc, v0);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL::setUniform1i(uint32_t id, int32_t v)
+void ShaderProgramGL::setUniform2f(uint32_t id, float v0, float v1)
 {
-    glProgramUniform1i(m_shaderProgId, id, v);
-    glUniform1i(id, v);
+    glProgramUniform2f(m_shaderProgId, id, v0, v1);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ShaderProgramGL::setUniform1i(const char* str, int32_t v)
+void ShaderProgramGL::setUniform2f(const char* str, float v0, float v1)
 {
     GLint loc = glGetUniformLocation(m_shaderProgId, str);
-    setUniform1i(loc, v);
+    setUniform2f(loc, v0, v1);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL::setUniform1i(uint32_t id, int32_t v0)
+{
+    glProgramUniform1i(m_shaderProgId, id, v0);
+    glUniform1i(id, v0);
+}
+////////////////////////////////////////////////////////////////////////////////
+void ShaderProgramGL::setUniform1i(const char* str, int32_t v0)
+{
+    GLint loc = glGetUniformLocation(m_shaderProgId, str);
+    setUniform1i(loc, v0);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void ShaderProgramGL::setUniformMat4f(uint32_t id, const Mat4f& m)

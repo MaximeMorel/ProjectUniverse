@@ -19,9 +19,11 @@ public:
 
     virtual ShaderPtr createShader(const std::string& name, const std::string& fileName, Shader::Type t) override;
     virtual ShaderProgramPtr createShaderProgram(const std::string& name, const std::string& fileName) override;
+    virtual TexturePtr createTexture(const std::string& name) override;
     virtual TexturePtr createTexture(const std::string& name, const std::string& fileName) override;
     virtual BufferObjectPtr createBufferObject(const std::string& name) override;
     virtual RenderMeshPtr createRenderMesh(const std::string& name) override;
+    virtual FBOPtr createFBO(const std::string& name) override;
 
     virtual void clear() override;
     virtual void draw() override;

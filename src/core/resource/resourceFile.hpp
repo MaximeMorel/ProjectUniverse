@@ -12,6 +12,7 @@ using ResourceFilePtr = std::shared_ptr<ResourceFile>;
 class ENGINE_EXPORT ResourceFile : public Resource
 {
 protected:
+    ResourceFile(const std::string& name);
     ResourceFile(const std::string& name, const std::string& fileName);
 
 public:

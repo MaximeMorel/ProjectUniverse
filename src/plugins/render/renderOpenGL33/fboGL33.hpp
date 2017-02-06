@@ -6,7 +6,7 @@
 class FBOGL33 : public FBOGL
 {
 public:
-    FBOGL33();
+    FBOGL33(const std::string &name);
     virtual ~FBOGL33() override;
 
 protected:

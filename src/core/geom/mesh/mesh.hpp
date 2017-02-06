@@ -14,11 +14,18 @@ using MeshPtr = std::shared_ptr<Mesh>;
 class ENGINE_EXPORT Mesh : public ResourceFile
 {
 public:
+    Mesh(const std::string& name);
     Mesh(const std::string& name, const std::string& fileName);
     virtual ~Mesh() override;
 
+    static MeshPtr create(const std::string& name);
     static MeshPtr create(const std::string& name, const std::string& fileName);
     bool save(const std::string& filePath);
+
+    void makeQuad();
+    void makeCube();
+    void makeSphere();
+    void makeTorus();
 
     virtual size_t getMemSize() const override;
 
