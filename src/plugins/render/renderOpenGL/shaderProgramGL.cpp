@@ -2,6 +2,7 @@
 #include "shaderProgramGL.hpp"
 #include "core/resource/resourceManager.hpp"
 #include "core/log/logManager.hpp"
+#include "core/tools/filetools.hpp"
 #include "opengltools.hpp"
 #include <GL/glew.h>
 #include <sys/types.h>
@@ -83,7 +84,7 @@ void ShaderProgramGL::removeShader(ShaderPtr shader)
 ////////////////////////////////////////////////////////////////////////////////
 bool ShaderProgramGL::link()
 {
-    // this will try to link the shader porgram if not already done
+    // this will try to link the shader program if not already done
     // binary cache will be tried first
     // if the binary cache cannot be loaded, it will be invalidated
     // and we will compile and link the normal way
@@ -102,7 +103,7 @@ bool ShaderProgramGL::link()
     bool binaryCacheUsed = false;
     if (!m_skipBinaryCache)
     {
-        std::string cacheFile = getFileName() + ".cache";
+        std::string cacheFile = res().getUserSearchPath() + getFileName() + ".cache";
         std::ifstream file(cacheFile, std::ios::in | std::ios::binary);
         if (file)
         {
@@ -213,11 +214,28 @@ bool ShaderProgramGL::link()
                     if (lenWritten < binLength)
                         binary.resize(lenWritten);
                     log().log() << "Shader program " << m_shaderProgId << " binary: " << binary.size() << " bytes, format: " << binaryFormat << "\n";
-                    std::ofstream file(getFileName() + ".cache", std::ios::out | std::ios::binary);
-                    const char* s = reinterpret_cast<const char*>(&binaryFormat);
-                    file.write(s, sizeof(binaryFormat));
-                    s = reinterpret_cast<const char*>(&binary.front());
-                    file.write(s, binary.size());
+					std::string binaryCachePath = res().getUserSearchPath() + getFileName() + ".cache";
+                    std::ofstream file(binaryCachePath, std::ios::out | std::ios::binary);
+					if (!file)
+					{
+						size_t pos = binaryCachePath.rfind('/');
+						if (pos != std::string::npos)
+						{
+							FileTools::mkdir(binaryCachePath.substr(0, pos));
+							file = std::ofstream(binaryCachePath, std::ios::out | std::ios::binary);
+						}
+					}
+					if (file)
+					{
+						const char* s = reinterpret_cast<const char*>(&binaryFormat);
+						file.write(s, sizeof(binaryFormat));
+						s = reinterpret_cast<const char*>(&binary.front());
+						file.write(s, binary.size());
+					}
+					else
+					{
+						log().log() << "Cannot write binary cache: " << binaryCachePath << "\n";
+					}
                 }
             }
         }

@@ -19,7 +19,7 @@ generate_export_header(${PROJECT_NAME})
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 find_package (OggVorbis)
 if (OGGVORBIS_FOUND)
-    include_directories(${VORBIS_INCLUDE_DIR})
+    include_directories(${VORBIS_INCLUDE_DIR} ${OGG_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${VORBISFILE_LIBRARY})
 endif (OGGVORBIS_FOUND)
 

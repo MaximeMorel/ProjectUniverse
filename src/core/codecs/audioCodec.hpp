@@ -4,8 +4,9 @@
 #include "core/library.hpp"
 #include "core/codecs/codec.hpp"
 #include "core/audio/audioBuffer.hpp"
+#include "core/engine_export.h"
 ////////////////////////////////////////////////////////////////////////////////
-class AudioCodec : public Codec
+class ENGINE_EXPORT AudioCodec : public Codec
 {
 public:
     AudioCodec(Engine& engine);

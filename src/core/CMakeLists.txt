@@ -85,8 +85,12 @@ set(CORE_SOURCE main.cpp
                 windowContext/windowPlugin.cpp
                 )
 
+if (MSVC)
+    set(ENGINE_OPTS WIN32)
+endif (MSVC)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/bin)
-add_executable(${PROJECT_NAME} ${CORE_SOURCE})
+add_executable(${PROJECT_NAME} ${ENGINE_OPTS} ${CORE_SOURCE})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 set_property(TARGET ${PROJECT_NAME} PROPERTY ENABLE_EXPORTS on)
 target_compile_definitions(${PROJECT_NAME} PRIVATE engine_EXPORTS)

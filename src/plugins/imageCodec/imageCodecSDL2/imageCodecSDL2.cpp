@@ -2,7 +2,7 @@
 #include "imageCodecSDL2.hpp"
 #include "core/log/logManager.hpp"
 #include "core/codecs/codecManager.hpp"
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 ////////////////////////////////////////////////////////////////////////////////
 PluginInfo pluginInfo = { "imageCodecSDL2",
                           "imageCodecSDL2",

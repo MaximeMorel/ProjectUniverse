@@ -9,8 +9,11 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D LUA_INCLUDE_DIR=%PREFIX%\build-vs14\packages\lua.5.3.3\build\native\include ^
 -D LUA_LIBRARY=%PREFIX%\build-vs14\packages\lua.5.3.3\build\native\lib\v140\x64\Release\lua.lib ^
  ^
+-D ZLIB_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\include ^
+-D ZLIB_LIBRARIES=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\x64\Release\zlib.lib ^
+ ^
 -D JPEG_INCLUDE_DIR=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\include ^
--D JPEG_LIBRARY=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\lib\v140\x64\Release\dynamic\cdecl\jpeg.lib ^
+-D JPEG_LIBRARIES=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\lib\v140\x64\Release\dynamic\cdecl\jpeg.lib ^
  ^
 -D PNG_PNG_INCLUDE_DIR=%PREFIX%\build-vs14\packages\libpng.1.6.28.1\build\native\include ^
 -D PNG_LIBRARY=%PREFIX%\build-vs14\packages\libpng.1.6.28.1\build\native\lib\x64\v140\dynamic\Release\libpng16.lib ^
@@ -36,18 +39,15 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D SDL2_INCLUDE_DIR=%PREFIX%\build-vs14\packages\sdl2.2.0.5\build\native\include ^
 -D SDL2_LIBRARY=%PREFIX%\build-vs14\packages\sdl2.2.0.5\build\native\lib\x64\dynamic\SDL2.lib ^
  ^
--D SDL_IMAGE_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\include ^
--D SDL_IMAGE_LIBRARIES=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\lib\Release\x64\v140\SDL_image.lib ^
+-D SDL2_IMAGE_INCLUDE_DIR=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\include ^
+-D SDL2_IMAGE_LIBRARY=%PREFIX%\build-vs14\packages\sdl2_image.v140.2.0.1\build\native\lib\x64\Release\SDL2_image.lib ^
  ^
--D SDL2_IMAGE_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\include ^
--D SDL2_IMAGE_LIBRARIES=%PREFIX%\build-vs14\packages\SDL_image.1.2.12.3\build\native\lib\Release\x64\v140\SDL2_image.lib ^
- ^
--D VORBIS_LIBRARY=%PREFIX%\build-vs14\mypackages ^
--D OGG_LIBRARY=%PREFIX%\build-vs14\mypackages ^
--D VORBISFILE_LIBRARY=%PREFIX%\build-vs14\mypackages ^
+-D OGG_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages\libogg\include ^
+-D OGG_LIBRARY=%PREFIX%\build-vs14\mypackages\libogg\win32\VS2010\x64\Release\libogg.lib ^
+-D VORBIS_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages\libvorbis-1.3.5\include ^
+-D VORBIS_LIBRARY=%PREFIX%\build-vs14\mypackages\libvorbis-1.3.5\win32\VS2010\x64\Release\libvorbis.lib ^
+-D VORBISFILE_LIBRARY=%PREFIX%\build-vs14\mypackages\libvorbis-1.3.5\win32\VS2010\x64\Release\libvorbisfile.lib ^
 -D VORBISENC_LIBRARY=%PREFIX%\build-vs14\mypackages ^
--D VORBIS_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages ^
--D OGG_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages ^
 ..
 
 cd ..

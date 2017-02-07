@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "resourceManager.hpp"
+#include "core/tools/filetools.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
-//#include <unistd.h>
 ////////////////////////////////////////////////////////////////////////////////
 // ideas: store resources in array, ordered, a resource can be found by id
 // when deleting a resource, maintain a list of holes
@@ -14,6 +14,7 @@ ResourceManager* gRes = nullptr;
 ResourceManager::ResourceManager(LogManager& logManager)
     : m_logManager(logManager)
 {
+	addSearchPath(FileTools::getdirGame(""));
     addSearchPath("data/");
     addSearchPath("./");
     m_pools.emplace_back("Default", 0);
@@ -28,6 +29,12 @@ ResourceManager::~ResourceManager()
 void ResourceManager::addSearchPath(const std::string& path)
 {
     m_searchPaths.push_back(path);
+}
+////////////////////////////////////////////////////////////////////////////////
+const std::string& ResourceManager::getUserSearchPath() const
+{
+	// must be the first search path as it has highest priority
+	return m_searchPaths[0];
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::addResource(ResourcePtr res)

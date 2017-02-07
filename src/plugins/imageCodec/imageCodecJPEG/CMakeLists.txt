@@ -18,7 +18,7 @@ generate_export_header(${PROJECT_NAME})
 
 find_package (JPEG)
 if (JPEG_FOUND)
-    include_directories(${JPEG_INCLUDE_DIRS})
+    include_directories(${JPEG_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${JPEG_LIBRARIES})
 endif (JPEG_FOUND)
 

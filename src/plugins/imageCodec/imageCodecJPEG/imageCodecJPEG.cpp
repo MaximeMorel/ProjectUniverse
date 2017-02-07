@@ -333,10 +333,12 @@ bool PluginImageCodecJPEG::save(Image* image, const std::string& filePath)
         jpegWriter.cinfo.input_components = 3;
         jpegWriter.cinfo.in_color_space = JCS_RGB;
         break;
+#if defined(__linux__) || defined(__linux) || defined(linux)
     case Image::Type::RGBA8:
         jpegWriter.cinfo.input_components = 4;
         jpegWriter.cinfo.in_color_space = JCS_EXT_RGBA;
         break;
+#endif
     case Image::Type::GRAYFP32:
     case Image::Type::RGBFP32:
     case Image::Type::RGBAFP32:
