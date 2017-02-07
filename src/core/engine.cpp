@@ -35,10 +35,13 @@ Engine::Engine(const std::string& name)
     char buf[256];
     m_logManager.log() << "cwd: " << FileTools::getcwd(buf, sizeof(buf)) << "\n";
 
+    FileTools::mkdirGame("");
+
     m_config.initDefaultConfig();
 
     m_engineLua.registerEngineLua();
     m_engineLua.executeFile("config.lua");
+    m_engineLua.executeFile(FileTools::getdirGame("") + "config.lua");
 }
 ////////////////////////////////////////////////////////////////////////////////
 Engine::~Engine()
@@ -58,9 +61,12 @@ bool Engine::init(int argc, char **argv)
     // load current app config
     std::string appConfigPath = "app/" + m_config.app->get() + "/config.lua";
     m_engineLua.executeFile(appConfigPath);
+    m_engineLua.executeFile(FileTools::getdirGame(m_config.app->get().c_str()) + "config.lua");
 
     // reapply command line arguments as they have highest priority
     parseArgs(argc, argv);
+
+    FileTools::mkdirGame(m_config.app->get().c_str());
 
     if (!loadPlugins())
     {

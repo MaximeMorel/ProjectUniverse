@@ -98,10 +98,13 @@ void ApplicationExample::run()
             FBOPtr fbo = res().create<FBO>("fbo");
             TexturePtr texfbo = res().create<Texture>("texfbo");
             TexturePtr texfboDepth = res().create<Texture>("texfbodepth");
-            texfboDepth->makeDepth(0, 0);
-            fbo->attach(texfbo, 0);
-            fbo->attachDepth(texfboDepth);
-            fbo->resize(512, 512);
+            if (fbo && texfbo &&  texfboDepth)
+            {
+                texfboDepth->makeDepth(0, 0);
+                fbo->attach(texfbo, 0);
+                fbo->attachDepth(texfboDepth);
+                fbo->resize(512, 512);
+            }
 
             Scene scene;
             if (mesh)
@@ -217,7 +220,8 @@ void ApplicationExample::run()
                     prog4->setUniformMat4f(1u, mvp);
                     render().impl()->drawScene(&scene);
                 }
-                if (!prog5)
+                prog5 = nullptr;
+                if (prog5)
                 {
                     Vec2i resolution = config().resolution->get();
                     render().impl()->clear();
