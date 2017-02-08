@@ -9,11 +9,11 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D LUA_INCLUDE_DIR=%PREFIX%\build-vs14\packages\lua.5.3.3\build\native\include ^
 -D LUA_LIBRARY=%PREFIX%\build-vs14\packages\lua.5.3.3\build\native\lib\v140\x64\Release\lua.lib ^
  ^
--D ZLIB_INCLUDE_DIRS=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\include ^
--D ZLIB_LIBRARIES=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\x64\Release\zlib.lib ^
+-D ZLIB_INCLUDE_DIR=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\include ^
+-D ZLIB_LIBRARY=%PREFIX%\build-vs14\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\x64\Release\zlib.lib ^
  ^
 -D JPEG_INCLUDE_DIR=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\include ^
--D JPEG_LIBRARIES=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\lib\v140\x64\Release\dynamic\cdecl\jpeg.lib ^
+-D JPEG_LIBRARY=%PREFIX%\build-vs14\packages\libjpeg.9.2.0.1\build\native\lib\v140\x64\Release\dynamic\cdecl\jpeg.lib ^
  ^
 -D PNG_PNG_INCLUDE_DIR=%PREFIX%\build-vs14\packages\libpng.1.6.28.1\build\native\include ^
 -D PNG_LIBRARY=%PREFIX%\build-vs14\packages\libpng.1.6.28.1\build\native\lib\x64\v140\dynamic\Release\libpng16.lib ^
@@ -31,7 +31,7 @@ set PREFIX=C:\projects\maxime\ProjectUniverse\
 -D BULLET_SOFTBODY_LIBRARY=%PREFIX%\build-vs14\mypackages\bullet3-2.86\bin\BulletSoftBody_vs2010_x64_release.lib ^
  ^
 -D ASSIMP_INCLUDE_DIR=%PREFIX%\build-vs14\packages\Assimp.3.0.0\build\native\include ^
--D ASSIMP_LIBRARY=%PREFIX%\build-vs14\packages\Assimp.3.0.0\build\native\lib\x64\assimp.lib ^
+-D ASSIMP_LIBRARY_DIR=%PREFIX%\build-vs14\packages\Assimp.3.0.0\build\native\lib\x64\ ^
  ^
 -D OPENAL_INCLUDE_DIR=%PREFIX%\build-vs14\mypackages\openal-soft-1.17.2-bin\include ^
 -D OPENAL_LIBRARY=%PREFIX%\build-vs14\mypackages\openal-soft-1.17.2-bin\libs\Win64\OpenAL32.lib ^

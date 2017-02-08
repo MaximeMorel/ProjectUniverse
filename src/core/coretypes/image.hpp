@@ -9,6 +9,7 @@
 #include "core/engine_export.h"
 #include <vector>
 #include <atomic>
+#include <mutex>
 ////////////////////////////////////////////////////////////////////////////////
 class Image;
 using ImagePtr = std::shared_ptr<Image>;
@@ -46,6 +47,7 @@ public:
 
     /// Save image to file
     bool save(const std::string& filePath);
+    static void save(ImagePtr image, const std::string& filePath);
 
     /// Get the sub search path for this resource
     static const char* getSearchPath();
@@ -93,12 +95,19 @@ public:
         return m_asyncLoadStatus;
     }
 
+private:
+    void loadAsync();
+    void saveAsync(const std::string& filePath);
+
 protected:
     std::vector<uint8_t> m_buffer;  ///< buffer containing image data
     Info m_info;                    ///< struct holding resolution, channels, bpp, type, compression
 
 public:
     std::atomic<bool> m_asyncLoadStatus;
+
+private:
+    std::mutex m_lock;
 
 private:
     using super = ResourceFile;

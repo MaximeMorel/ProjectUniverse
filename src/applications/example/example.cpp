@@ -53,6 +53,9 @@ void ApplicationExample::run()
 {
     {
         {
+            //ImagePtr im = res().createFromFile<Image>("data/images/im.png");
+            //im->save("im.png");
+
             //SoundPtr sound = res().createFromFile<Sound>("data/sound/test.ogg");
             //SoundSourcePtr s = res().createFromFile<SoundSource>("data/sound/test.ogg");
             //sound->play();
@@ -81,7 +84,7 @@ void ApplicationExample::run()
 
             //TexturePtr tex2 = res().createFromFile<Texture>("data/images/car1.tiff");
             //TexturePtr tex1 = res().createFromFile<Texture>("data/images/im.tif");
-            TexturePtr tex = res().createFromFile<Texture>("data/images/car1.dds");
+            TexturePtr tex = res().createFromFile<Texture>("data/images/im.png");
 
             //ImagePtr im = res().createFromFile<Image>("data/images/im.dds");
 
@@ -274,7 +277,6 @@ void ApplicationExample::run()
             }
             //log().log() << res() << "\n";
         }
-        threads().joinAll();
     }
 
     //log().log() << res() << "\n";

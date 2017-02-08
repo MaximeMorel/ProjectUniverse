@@ -74,8 +74,8 @@ int CALLBACK WinMain(
     {
         MessageBox(nullptr,
                    _T("Call to RegisterClassEx failed!"),
-                  _T("Win32 Guided Tour"),
-                  nullptr);
+                   _T("Win32 Guided Tour"),
+                   MB_OK);
 
         return 1;
     }

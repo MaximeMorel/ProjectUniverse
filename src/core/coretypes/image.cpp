@@ -31,20 +31,20 @@ Image::~Image()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void loadImage(ImagePtr image)
+void Image::loadAsync()
 {
+    std::lock_guard<std::mutex> lock(m_lock);
     // go through image codecs plugins
     for (auto* codec : codecs().getImageCodecs())
     {
-        bool success = codec->load(image.get());
+        bool success = codec->load(this);
         if (success)
         {
-            image->m_asyncLoadStatus = false;
+            m_asyncLoadStatus = false;
             return;
-            //return image;
         }
     }
-    log().log() << "No suitable reader for " << image->getName() << "\n";
+    log().log() << "No suitable reader for " << getName() << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 ImagePtr Image::create(const std::string& name, const std::string& fileName)
@@ -53,30 +53,41 @@ ImagePtr Image::create(const std::string& name, const std::string& fileName)
     if (!image)
         return nullptr;
 
-    bool async = true;
-    if (async)
-    {
-        image->m_asyncLoadStatus = true;
-        threads().getNextThread() = std::thread(loadImage, image);
-    }
-    else
-    {
-        loadImage(image);
-    }
+    image->m_asyncLoadStatus = true;
+    threads().addTask([image]() { image->loadAsync(); });
     return image;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Image::saveAsync(const std::string& filePath)
+{
+    std::lock_guard<std::mutex> lock(m_lock);
+    for (auto* codec : codecs().getImageCodecs())
+    {
+        bool success = codec->save(this, res().getUserSearchPath() + filePath);
+        if (success)
+            return;
+    }
+    log().log() << "No suitable writer for " << getName() << " -> " << filePath << "\n";
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool Image::save(const std::string& filePath)
 {
+    threads().addTask([this, filePath]() { this->saveAsync(filePath); });
     // go through image codecs plugins
-    for (auto* codec : codecs().getImageCodecs())
+    /*for (auto* codec : codecs().getImageCodecs())
     {
         bool success = codec->save(this, res().getUserSearchPath() + filePath);
         if (success)
             return true;
     }
     log().log() << "No suitable writer for " << getName() << " -> " << filePath << "\n";
-    return false;
+    return false;*/
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Image::save(ImagePtr image, const std::string& filePath)
+{
+    threads().addTask([image, filePath]() { image->saveAsync(filePath); });
 }
 ////////////////////////////////////////////////////////////////////////////////
 const char* Image::getSearchPath()
