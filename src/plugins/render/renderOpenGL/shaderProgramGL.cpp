@@ -214,28 +214,29 @@ bool ShaderProgramGL::link()
                     if (lenWritten < binLength)
                         binary.resize(lenWritten);
                     log().log() << "Shader program " << m_shaderProgId << " binary: " << binary.size() << " bytes, format: " << binaryFormat << "\n";
-					std::string binaryCachePath = res().getUserSearchPath() + getFileName() + ".cache";
+                    std::string binaryCachePath = res().getUserSearchPath() + getFileName() + ".cache";
                     std::ofstream file(binaryCachePath, std::ios::out | std::ios::binary);
-					if (!file)
-					{
-						size_t pos = binaryCachePath.rfind('/');
-						if (pos != std::string::npos)
-						{
-							FileTools::mkdir(binaryCachePath.substr(0, pos));
-							file = std::ofstream(binaryCachePath, std::ios::out | std::ios::binary);
-						}
-					}
-					if (file)
-					{
-						const char* s = reinterpret_cast<const char*>(&binaryFormat);
-						file.write(s, sizeof(binaryFormat));
-						s = reinterpret_cast<const char*>(&binary.front());
-						file.write(s, binary.size());
-					}
-					else
-					{
-						log().log() << "Cannot write binary cache: " << binaryCachePath << "\n";
-					}
+                    if (!file)
+                    {
+                        // try to mkdir, then reopen the file
+                        size_t pos = binaryCachePath.rfind('/');
+                        if (pos != std::string::npos)
+                        {
+                            FileTools::mkdir(binaryCachePath.substr(0, pos));
+                            file = std::ofstream(binaryCachePath, std::ios::out | std::ios::binary);
+                        }
+                    }
+                    if (file)
+                    {
+                        const char* s = reinterpret_cast<const char*>(&binaryFormat);
+                        file.write(s, sizeof(binaryFormat));
+                        s = reinterpret_cast<const char*>(&binary.front());
+                        file.write(s, binary.size());
+                    }
+                    else
+                    {
+                        log().log() << "Cannot write binary cache: " << binaryCachePath << "\n";
+                    }
                 }
             }
         }

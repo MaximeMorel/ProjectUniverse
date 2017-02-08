@@ -29,10 +29,10 @@ public:
 
     void addSearchPath(const std::string& path);
 
-	/// Get user writable area
-	/// %localappdata%/ProjectUniverse on windows
-	/// ~/.config/ProjectUniverse on linux
-	const std::string& getUserSearchPath() const;
+    /// Get user writable area
+    /// %localappdata%/ProjectUniverse on windows
+    /// ~/.config/ProjectUniverse on linux
+    const std::string& getUserSearchPath() const;
 
     ResourcePtr addResource(ResourcePtr res);
 

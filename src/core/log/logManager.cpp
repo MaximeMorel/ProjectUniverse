@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "logManager.hpp"
+#include "core/tools/filetools.hpp"
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////////////
 LogManager* gLog = nullptr;
@@ -8,7 +9,7 @@ LogManager::LogManager()
 {
     LoggerGroup* logAll = new LoggerGroup("all");
     LoggerStream* logStdout =  new LoggerStream("stdout", std::cout);
-    LoggerFile* logFile = new LoggerFile("log", "engine.log");
+    LoggerFile* logFile = new LoggerFile("log", FileTools::getdirGame("") + "engine.log");
 
     logAll->addLogger(logStdout);
     logAll->addLogger(logFile);

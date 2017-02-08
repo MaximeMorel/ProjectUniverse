@@ -71,7 +71,7 @@ bool Image::save(const std::string& filePath)
     // go through image codecs plugins
     for (auto* codec : codecs().getImageCodecs())
     {
-        bool success = codec->save(this, filePath);
+        bool success = codec->save(this, res().getUserSearchPath() + filePath);
         if (success)
             return true;
     }

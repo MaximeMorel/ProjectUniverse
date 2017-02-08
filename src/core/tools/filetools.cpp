@@ -27,39 +27,39 @@ char* FileTools::getcwd(char* buf, size_t size)
 ////////////////////////////////////////////////////////////////////////////////
 bool FileTools::mkdir(const std::string& path)
 {
-	bool res = true;
+    bool res = true;
 
-	size_t pos = 0;
-	do
-	{
-		pos = path.find('/', pos + 1);
+    size_t pos = 0;
+    do
+    {
+        pos = path.find('/', pos + 1);
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-		res = (CreateDirectory(path.substr(0, pos).c_str(), nullptr) == 0 ? false : true);
+        res = (CreateDirectory(path.substr(0, pos).c_str(), nullptr) == 0 ? false : true);
 #elif defined(__linux__) || defined(__linux) || defined(linux)
-		res = ::mkdir(path.substr(0, pos).c_str(), S_IRWXU | S_IRGRP | S_IROTH | S_IXGRP | S_IXOTH);
+        res = ::mkdir(path.substr(0, pos).c_str(), S_IRWXU | S_IRGRP | S_IROTH | S_IXGRP | S_IXOTH);
 #endif
-	} while (pos != std::string::npos);
+    } while (pos != std::string::npos);
     return res;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool FileTools::mkdirGame(const char* app)
 {
-	std::string path;
+    std::string path;
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-	PWSTR home = nullptr;
-	SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &home);
-	if (home == nullptr)
-		return false;
-	std::wstring wstrhome(home);
-	path = std::string(wstrhome.begin(), wstrhome.end());
-	std::replace(path.begin(), path.end(), '\\', '/');
-	CoTaskMemFree(home);
+    PWSTR home = nullptr;
+    SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &home);
+    if (home == nullptr)
+        return false;
+    std::wstring wstrhome(home);
+    path = std::string(wstrhome.begin(), wstrhome.end());
+    std::replace(path.begin(), path.end(), '\\', '/');
+    CoTaskMemFree(home);
 #elif defined(__linux__) || defined(__linux) || defined(linux)
     char* home = getenv("HOME");
-	if (home == nullptr)
-		return false;
-	path = home;
-	path.append("/.config");
+    if (home == nullptr)
+        return false;
+    path = home;
+    path.append("/.config");
 #endif
     path.append("/ProjectUniverse/");
     if (strlen(app) > 0)
@@ -67,7 +67,7 @@ bool FileTools::mkdirGame(const char* app)
         path.append("app/");
         path.append(app);
     }
-	FileTools::mkdir(path.c_str());
+    FileTools::mkdir(path.c_str());
 
     return true;
 }
@@ -75,37 +75,37 @@ bool FileTools::mkdirGame(const char* app)
 bool FileTools::chdirGame()
 {
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-	WCHAR filename[MAX_PATH];
-	DWORD len = GetModuleFileNameW(nullptr, filename, RTL_NUMBER_OF_V1(filename));
-	if (len > 0 && len < RTL_NUMBER_OF_V1(filename))
-	{
-		WCHAR path[MAX_PATH];
-		DWORD lenNorm = GetFullPathNameW(filename, RTL_NUMBER_OF_V1(path), path, nullptr); // normalize
-		if (lenNorm > 0 && lenNorm < RTL_NUMBER_OF_V1(path))
-		{
-			DWORD i = lenNorm - 1;
-			int count = 0;
-			while (count < 2 && i >= 0)
-			{
-				if (path[i] == L'\\')
-					++count;
-				--i;
-			}
-			if (count == 2)
-			{
-				path[i + 1] = L'\0';
-				if (SetCurrentDirectoryW(path) != 0)
-				{
-					/*std::wstring libPath(path);
-					libPath.append(L"\\lib");
-					AddDllDirectory(libPath.c_str());
-					libPath.append(L"\\thirdparty");
-					AddDllDirectory(libPath.c_str());*/
-					return true;
-				}
-			}
-		}
-	}
+    WCHAR filename[MAX_PATH];
+    DWORD len = GetModuleFileNameW(nullptr, filename, RTL_NUMBER_OF_V1(filename));
+    if (len > 0 && len < RTL_NUMBER_OF_V1(filename))
+    {
+        WCHAR path[MAX_PATH];
+        DWORD lenNorm = GetFullPathNameW(filename, RTL_NUMBER_OF_V1(path), path, nullptr); // normalize
+        if (lenNorm > 0 && lenNorm < RTL_NUMBER_OF_V1(path))
+        {
+            DWORD i = lenNorm - 1;
+            int count = 0;
+            while (count < 2 && i >= 0)
+            {
+                if (path[i] == L'\\')
+                    ++count;
+                --i;
+            }
+            if (count == 2)
+            {
+                path[i + 1] = L'\0';
+                if (SetCurrentDirectoryW(path) != 0)
+                {
+                    /*std::wstring libPath(path);
+                    libPath.append(L"\\lib");
+                    AddDllDirectory(libPath.c_str());
+                    libPath.append(L"\\thirdparty");
+                    AddDllDirectory(libPath.c_str());*/
+                    return true;
+                }
+            }
+        }
+    }
 #elif defined(__linux__) || defined(__linux) || defined(linux)
     char buf[PATH_MAX];
     readlink("/proc/self/exe", buf, sizeof(buf));
@@ -128,32 +128,32 @@ bool FileTools::chdirGame()
 ////////////////////////////////////////////////////////////////////////////////
 std::string FileTools::getdirGame(const char* app)
 {
-	std::string res;
+    std::string res;
 #if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-	PWSTR home = nullptr;
-	SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &home);
-	if (home != nullptr)
-	{
-		std::wstring wstrhome(home);
-		res = std::string(wstrhome.begin(), wstrhome.end());
-		std::replace(res.begin(), res.end(), '\\', '/');
-		CoTaskMemFree(home);
-	}
+    PWSTR home = nullptr;
+    SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &home);
+    if (home != nullptr)
+    {
+        std::wstring wstrhome(home);
+        res = std::string(wstrhome.begin(), wstrhome.end());
+        std::replace(res.begin(), res.end(), '\\', '/');
+        CoTaskMemFree(home);
+    }
 #elif defined(__linux__) || defined(__linux) || defined(linux)
     char* home = getenv("HOME");
-	if (home)
-	{
-		res = home;
-		res.append("/.config");
-	}
+    if (home)
+    {
+        res = home;
+        res.append("/.config");
+    }
 #endif
-	res.append("/ProjectUniverse/");
-	if (strlen(app) > 0)
-	{
-		res.append("app/");
-		res.append(app);
-		res.push_back('/');
-	}
-	return res;
+    res.append("/ProjectUniverse/");
+    if (strlen(app) > 0)
+    {
+        res.append("app/");
+        res.append(app);
+        res.push_back('/');
+    }
+    return res;
 }
 ////////////////////////////////////////////////////////////////////////////////

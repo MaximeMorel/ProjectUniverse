@@ -50,7 +50,7 @@ bool Mesh::save(const std::string& filePath)
     // go through mesh codecs plugins
     for (auto* codec : codecs().getMeshCodecs())
     {
-        bool success = codec->save(this, filePath);
+        bool success = codec->save(this, res().getUserSearchPath() + filePath);
         if (success)
             return true;
     }

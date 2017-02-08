@@ -14,7 +14,7 @@ ResourceManager* gRes = nullptr;
 ResourceManager::ResourceManager(LogManager& logManager)
     : m_logManager(logManager)
 {
-	addSearchPath(FileTools::getdirGame(""));
+    addSearchPath(FileTools::getdirGame(""));
     addSearchPath("data/");
     addSearchPath("./");
     m_pools.emplace_back("Default", 0);
@@ -33,8 +33,8 @@ void ResourceManager::addSearchPath(const std::string& path)
 ////////////////////////////////////////////////////////////////////////////////
 const std::string& ResourceManager::getUserSearchPath() const
 {
-	// must be the first search path as it has highest priority
-	return m_searchPaths[0];
+    // must be the first search path as it has highest priority
+    return m_searchPaths[0];
 }
 ////////////////////////////////////////////////////////////////////////////////
 ResourcePtr ResourceManager::addResource(ResourcePtr res)

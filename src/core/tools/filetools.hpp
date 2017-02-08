@@ -13,7 +13,7 @@ public:
     static bool mkdirGame(const char* app);
     static bool chdirGame();
 
-	/// Get user writable area, always ends with a folder separator: /
+    /// Get user writable area, always ends with a folder separator: /
     static std::string getdirGame(const char* app);
 };
 ////////////////////////////////////////////////////////////////////////////////
